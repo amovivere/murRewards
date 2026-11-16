@@ -42,6 +42,7 @@ pub fn spawn(channel: &str, tx: Sender<Cmd>) {
                         "PASS SCHMOOPIIE\r\nNICK justinfan12345\r\nJOIN #{channel}\r\n"
                     );
                     let _ = writer.write_all(hello.as_bytes());
+                    log::info!("Чат: подключён к каналу #{channel}, команда !трек доступна");
 
                     let reader = BufReader::new(stream);
                     for line in reader.lines().map_while(Result::ok) {

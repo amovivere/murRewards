@@ -176,7 +176,7 @@ function musicPageHtml(view) {
         <div class="section-title">Состояние</div>
         <div class="state-list">
           ${stateRow(music.ytdlp_version ? 'ok' : 'warn', music.ytdlp_version ? `yt-dlp ${escapeHtml(music.ytdlp_version)} — готов` : 'yt-dlp не найден', music.ytdlp_version ? '' : 'recheck')}
-          ${stateRow(view.chat_ready ? 'ok' : 'warn', view.chat_ready ? 'Чат: команда !трек работает' : 'Чат: нужен Twitch', view.chat_ready ? '' : 'chat')}
+          ${stateRow(view.chat_ready ? 'ok' : 'warn', view.chat_ready ? 'Чат: команда !трек включена' : 'Чат: нужен Twitch', view.chat_ready ? '' : 'chat')}
           ${stateRow(view.audio_ready ? 'ok' : 'error', view.audio_ready ? `Звук: ${escapeHtml(view.audio_device || 'устройство по умолчанию')}` : 'Звук: нет аудиовыхода', view.audio_ready ? '' : 'audio')}
         </div>
       </div>

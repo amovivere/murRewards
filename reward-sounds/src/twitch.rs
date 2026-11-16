@@ -69,6 +69,8 @@ pub struct RemoteReward {
     pub is_in_stock: bool,
     /// Цвет фона награды в формате #RRGGBB.
     pub color: String,
+    /// Награда требует ввода текста от зрителя.
+    pub requires_input: bool,
 }
 
 impl RemoteReward {
@@ -95,6 +97,10 @@ impl RemoteReward {
                 .get("is_in_stock")
                 .and_then(json::Value::as_bool)
                 .unwrap_or(true),
+            requires_input: value
+                .get("is_user_input_required")
+                .and_then(json::Value::as_bool)
+                .unwrap_or(false),
         })
     }
 
@@ -1233,6 +1239,18 @@ mod tests {
     }
 
     #[test]
+    fn parses_requires_input_flag() {
+        let value =
+            json::parse(r#"{"id":"x","cost":10,"is_user_input_required":true}"#).unwrap();
+        let reward = RemoteReward::from_json(&value).unwrap();
+        assert!(reward.requires_input);
+
+        let value = json::parse(r#"{"id":"y","cost":10}"#).unwrap();
+        let reward = RemoteReward::from_json(&value).unwrap();
+        assert!(!reward.requires_input);
+    }
+
+    #[test]
     fn reward_without_title_is_still_usable() {
         let value = json::parse(r#"{"id":"x","cost":10}"#).unwrap();
         let reward = RemoteReward::from_json(&value).unwrap();
@@ -1250,6 +1268,7 @@ mod tests {
             is_paused: paused,
             is_in_stock: stock,
             color: "#A970FF".to_string(),
+            requires_input: false,
         };
 
         let mut rewards = vec![

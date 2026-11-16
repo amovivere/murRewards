@@ -162,6 +162,8 @@ enum Cmd {
         id: String,
         volume: f32,
     },
+    /// Переоткрыть устройство вывода (кнопка «Перезапустить аудио» в настройках).
+    Restart,
 }
 
 /// Публичный интерфейс аудиодвижка.
@@ -218,6 +220,12 @@ impl AudioEngine {
     /// Останавливает всё, что звучит прямо сейчас.
     pub fn stop_all(&self) -> Result<(), String> {
         self.send(Cmd::StopAll)
+    }
+
+    /// Переоткрывает устройство вывода: помогает, если звук «пропал» после
+    /// смены устройства или проблем с драйвером. Играющие звуки остановятся.
+    pub fn restart(&self) -> Result<(), String> {
+        self.send(Cmd::Restart)
     }
 
     /// Изменяет громкость уже играющих звуков и запоминает её для новых.
@@ -416,6 +424,33 @@ fn run(
                         sink.set_volume(volume);
                     }
                 }
+            }
+            Ok(Cmd::Restart) => {
+                log::info!("Перезапуск аудиовыхода по запросу пользователя");
+                for (_, sink) in &sinks {
+                    sink.stop();
+                }
+                sinks.clear();
+                drop(stream.take());
+                match OutputStream::try_default() {
+                    Ok((new_stream, new_handle)) => {
+                        stream = Some(new_stream);
+                        handle = new_handle;
+                        device_name = default_device_name()
+                            .unwrap_or_else(|| "Устройство по умолчанию".to_string());
+                        set_device(&status, Some(device_name.clone()));
+                        log::info!("Аудиовыход перезапущен: {device_name}");
+                    }
+                    Err(err) => {
+                        set_device(&status, None);
+                        log::error!("Не удалось перезапустить аудиовыход: {err}");
+                        push_error(
+                            &errors,
+                            format!("Не удалось перезапустить аудиовыход: {err}"),
+                        );
+                    }
+                }
+                changed = true;
             }
             Err(RecvTimeoutError::Timeout) => {}
             Err(RecvTimeoutError::Disconnected) => {

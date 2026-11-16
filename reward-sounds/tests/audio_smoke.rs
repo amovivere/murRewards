@@ -191,6 +191,8 @@ fn playback_plays_sound_for_bound_reward() {
         reward_id: "reward-1".to_string(),
         reward_title: "Награда".to_string(),
         user_login: "viewer".to_string(),
+        user_input: String::new(),
+        redeemed_at: "2026-11-14T10:00:01Z".to_string(),
     });
 
     let playing = wait_until(Duration::from_secs(4), || !engine.snapshot().active.is_empty());

@@ -425,6 +425,7 @@ impl RewardSoundsApp {
                 is_paused: paused,
                 is_in_stock: true,
                 color: color.to_string(),
+                requires_input: false,
             }
         };
         self.remote_rewards = vec![

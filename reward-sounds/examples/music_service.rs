@@ -27,6 +27,12 @@ fn main() {
         max_queue: 10,
         max_duration_sec: 480,
         volume: 0.7,
+        pause_yandex: false,
+        channel: String::new(),
+        restore_queue: false,
+        overlay_seconds: 10,
+        overlay_position: "top".to_string(),
+        overlay_font: 17,
     };
 
     let service = MusicService::spawn(config, ytdlp_arg, temp_dir);

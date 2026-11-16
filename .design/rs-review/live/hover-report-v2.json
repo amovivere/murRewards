@@ -1,0 +1,4148 @@
+[
+  {
+    "screen": "rewards",
+    "desc": "button.nav-item.active",
+    "text": "Награды",
+    "rect": [
+      14,
+      48,
+      208,
+      38
+    ],
+    "changes": []
+  },
+  {
+    "screen": "rewards",
+    "desc": "button.nav-item",
+    "text": "Музыка",
+    "rect": [
+      14,
+      88,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "button.nav-item",
+    "text": "Настройки",
+    "rect": [
+      14,
+      172,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "button.nav-item",
+    "text": "Журнал",
+    "rect": [
+      14,
+      212,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "button.winbtn title=\"Свернуть\"",
+    "text": "",
+    "rect": [
+      1094,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "button.winbtn title=\"Развернуть\"",
+    "text": "",
+    "rect": [
+      1134,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "button.winbtn.winbtn-close title=\"Закрыть\"",
+    "text": "",
+    "rect": [
+      1174,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgb(196, 43, 28)",
+      "color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "outline-color: rgb(139, 139, 139) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div#top-volume.slider",
+    "text": "",
+    "rect": [
+      1016,
+      58,
+      128,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-icon.btn-ghost",
+    "text": "···",
+    "rect": [
+      959,
+      110,
+      34,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.09)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-primary",
+    "text": "Создать награду",
+    "rect": [
+      1005,
+      110,
+      183,
+      34
+    ],
+    "changes": [
+      "background-color: rgb(237, 237, 237) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "label.search",
+    "text": "",
+    "rect": [
+      260,
+      183,
+      252,
+      34
+    ],
+    "changes": [
+      "border-top-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-right-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-bottom-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-left-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.seg-item.active",
+    "text": "Плитка",
+    "rect": [
+      525,
+      186,
+      99,
+      28
+    ],
+    "changes": []
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.seg-item",
+    "text": "Список",
+    "rect": [
+      626,
+      186,
+      98,
+      28
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "select#reward-sort.select",
+    "text": "Все наградыСначала дорогиеСначала дешёвы",
+    "rect": [
+      737,
+      183,
+      168,
+      34
+    ],
+    "changes": [
+      "border-top-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.28)",
+      "border-right-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.28)",
+      "border-bottom-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.28)",
+      "border-left-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.28)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-icon.btn-secondary title=\"Обновить список\"",
+    "text": "",
+    "rect": [
+      973,
+      183,
+      34,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.09)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-ghost.btn-danger-ghost",
+    "text": "Остановить всё",
+    "rect": [
+      1017,
+      183,
+      171,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.pill.active",
+    "text": "Все 11",
+    "rect": [
+      260,
+      229,
+      66,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(237, 237, 237, 0.12) -> rgba(237, 237, 237, 0.16)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.pill",
+    "text": "Со звуком 9",
+    "rect": [
+      334,
+      229,
+      108,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.pill",
+    "text": "Без звука 2",
+    "rect": [
+      450,
+      229,
+      115,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.pill",
+    "text": "Играет 0",
+    "rect": [
+      573,
+      229,
+      98,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.pill",
+    "text": "Выключенные 9",
+    "rect": [
+      679,
+      229,
+      145,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      490,
+      292,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      288,
+      351,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      350,
+      388,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      277,
+      416,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      378,
+      416,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      792,
+      292,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      587,
+      351,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      649,
+      388,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      576,
+      416,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      676,
+      416,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      1131,
+      292,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-primary",
+    "text": "Выбрать звук",
+    "rect": [
+      878,
+      416,
+      123,
+      30
+    ],
+    "changes": [
+      "background-color: rgb(237, 237, 237) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red.ghost-neutral title=\"Открыть вкладку «Музыка»\"",
+    "text": "Открыть в «Музыке»",
+    "rect": [
+      1007,
+      416,
+      155,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      490,
+      490,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-primary",
+    "text": "Выбрать звук",
+    "rect": [
+      277,
+      614,
+      123,
+      30
+    ],
+    "changes": [
+      "background-color: rgb(237, 237, 237) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      792,
+      490,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      587,
+      549,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      649,
+      586,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      576,
+      614,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      676,
+      614,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      1131,
+      490,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      889,
+      549,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      951,
+      586,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      878,
+      614,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      979,
+      614,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      490,
+      688,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      288,
+      747,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      350,
+      784,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      277,
+      812,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      378,
+      812,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      792,
+      688,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      587,
+      747,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      649,
+      784,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      576,
+      812,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      676,
+      812,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      1131,
+      688,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      889,
+      747,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      951,
+      784,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      878,
+      812,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      979,
+      812,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      490,
+      886,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      288,
+      945,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      350,
+      982,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      277,
+      1010,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      378,
+      1010,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      792,
+      886,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      587,
+      945,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      649,
+      982,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      576,
+      1010,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      676,
+      1010,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "rewards",
+    "desc": "div.collapsed",
+    "text": "Выключенные и недоступные награды · 9Пок",
+    "rect": [
+      260,
+      1069,
+      928,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.035)",
+      "border-top-color: rgba(255, 255, 255, 0.13) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.13) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.13) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.13) -> rgba(255, 255, 255, 0.22)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "button.nav-item",
+    "text": "Награды",
+    "rect": [
+      14,
+      48,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "button.nav-item.active",
+    "text": "Музыка",
+    "rect": [
+      14,
+      88,
+      208,
+      38
+    ],
+    "changes": []
+  },
+  {
+    "screen": "music",
+    "desc": "button.nav-item",
+    "text": "Настройки",
+    "rect": [
+      14,
+      172,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "button.nav-item",
+    "text": "Журнал",
+    "rect": [
+      14,
+      212,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "button.winbtn title=\"Свернуть\"",
+    "text": "",
+    "rect": [
+      1094,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "button.winbtn title=\"Развернуть\"",
+    "text": "",
+    "rect": [
+      1134,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "button.winbtn.winbtn-close title=\"Закрыть\"",
+    "text": "",
+    "rect": [
+      1174,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgb(196, 43, 28)",
+      "color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "outline-color: rgb(139, 139, 139) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div#top-volume.slider",
+    "text": "",
+    "rect": [
+      1016,
+      58,
+      128,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div.btn.btn-icon.btn-ghost",
+    "text": "···",
+    "rect": [
+      791,
+      110,
+      34,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.09)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div#obs-header.btn.btn-secondary",
+    "text": "Оверлей OBS",
+    "rect": [
+      837,
+      110,
+      156,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div.btn.btn-primary.btn-music-state",
+    "text": "Принимаем заявки",
+    "rect": [
+      1005,
+      110,
+      191,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(139, 0, 255, 0.16) -> rgba(139, 0, 255, 0.26)",
+      "color: rgb(139, 0, 255) -> rgb(201, 167, 255)",
+      "border-top-color: rgba(139, 0, 255, 0.38) -> rgba(139, 0, 255, 0.58)",
+      "border-right-color: rgba(139, 0, 255, 0.38) -> rgba(139, 0, 255, 0.58)",
+      "border-bottom-color: rgba(139, 0, 255, 0.38) -> rgba(139, 0, 255, 0.58)",
+      "border-left-color: rgba(139, 0, 255, 0.38) -> rgba(139, 0, 255, 0.58)",
+      "outline-color: rgb(139, 0, 255) -> rgb(201, 167, 255)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div.btn.btn-sm.btn-ghost",
+    "text": "Изменить",
+    "rect": [
+      537,
+      182,
+      96,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div#track-progress",
+    "text": "",
+    "rect": [
+      435,
+      298,
+      492,
+      14
+    ],
+    "changes": [
+      "knob: 14px|14px|0px|none -> 14px|14px|0px|matrix(1.18, 0, 0, 1.18, 0, 0)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div",
+    "text": "",
+    "rect": [
+      395,
+      325,
+      32,
+      32
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.07) -> rgba(255, 255, 255, 0.16)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div",
+    "text": "",
+    "rect": [
+      485,
+      325,
+      32,
+      32
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.07) -> rgba(255, 255, 255, 0.16)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div#skip-track",
+    "text": "Пропустить трек",
+    "rect": [
+      538,
+      333,
+      109,
+      16
+    ],
+    "changes": [
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div.slider",
+    "text": "",
+    "rect": [
+      1000,
+      276,
+      120,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div.ghost-red",
+    "text": "Очистить",
+    "rect": [
+      1102,
+      404,
+      77,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "label.search",
+    "text": "",
+    "rect": [
+      277,
+      484,
+      793,
+      34
+    ],
+    "changes": [
+      "border-top-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-right-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-bottom-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-left-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div.btn.btn-secondary.btn-sm",
+    "text": "В очередь",
+    "rect": [
+      1080,
+      484,
+      99,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div#obs-open.btn.btn-sm.btn-ghost",
+    "text": "Настроить",
+    "rect": [
+      650,
+      574,
+      101,
+      28
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div#obs-copy-url.copy-btn title=\"Скопировать ссылку\"",
+    "text": "",
+    "rect": [
+      487,
+      613,
+      28,
+      28
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.12)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "music",
+    "desc": "div#obs-show.btn.btn-sm.btn-secondary",
+    "text": "Показать сейчас",
+    "rect": [
+      609,
+      612,
+      143,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "button.nav-item.active",
+    "text": "Награды",
+    "rect": [
+      14,
+      48,
+      208,
+      38
+    ],
+    "changes": []
+  },
+  {
+    "screen": "onboarding",
+    "desc": "button.nav-item",
+    "text": "Музыка",
+    "rect": [
+      14,
+      88,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "button.nav-item",
+    "text": "Настройки",
+    "rect": [
+      14,
+      172,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "button.nav-item",
+    "text": "Журнал",
+    "rect": [
+      14,
+      212,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "button.winbtn title=\"Свернуть\"",
+    "text": "",
+    "rect": [
+      1094,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "button.winbtn title=\"Развернуть\"",
+    "text": "",
+    "rect": [
+      1134,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "button.winbtn.winbtn-close title=\"Закрыть\"",
+    "text": "",
+    "rect": [
+      1174,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgb(196, 43, 28)",
+      "color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "outline-color: rgb(139, 139, 139) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "div#top-volume.slider",
+    "text": "",
+    "rect": [
+      1016,
+      58,
+      128,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "div.btn.btn-primary",
+    "text": "Подключить Twitch",
+    "rect": [
+      325,
+      343,
+      179,
+      34
+    ],
+    "changes": [
+      "background-color: rgb(237, 237, 237) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "div.btn.btn-ghost",
+    "text": "Где взять Client ID?",
+    "rect": [
+      514,
+      343,
+      174,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "div.btn.btn-sm.btn-ghost",
+    "text": "Проверить подключение",
+    "rect": [
+      614,
+      567,
+      197,
+      28
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Открыть инструкцию",
+    "rect": [
+      863,
+      350,
+      172,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "div.btn.btn-sm.btn-ghost",
+    "text": "Показать все",
+    "rect": [
+      1060,
+      640,
+      119,
+      28
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      318,
+      710,
+      82,
+      16
+    ],
+    "changes": [
+      "knob: 11px|11px|2.5px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      622,
+      710,
+      82,
+      16
+    ],
+    "changes": [
+      "knob: 11px|11px|2.5px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "onboarding",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      926,
+      710,
+      82,
+      16
+    ],
+    "changes": [
+      "knob: 11px|11px|2.5px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "settings",
+    "desc": "button.nav-item",
+    "text": "Награды",
+    "rect": [
+      14,
+      48,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "settings",
+    "desc": "button.nav-item",
+    "text": "Музыка",
+    "rect": [
+      14,
+      88,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "settings",
+    "desc": "button.nav-item.active",
+    "text": "Настройки",
+    "rect": [
+      14,
+      172,
+      208,
+      38
+    ],
+    "changes": []
+  },
+  {
+    "screen": "settings",
+    "desc": "button.nav-item",
+    "text": "Журнал",
+    "rect": [
+      14,
+      212,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "settings",
+    "desc": "button.winbtn title=\"Свернуть\"",
+    "text": "",
+    "rect": [
+      1094,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "settings",
+    "desc": "button.winbtn title=\"Развернуть\"",
+    "text": "",
+    "rect": [
+      1134,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "settings",
+    "desc": "button.winbtn.winbtn-close title=\"Закрыть\"",
+    "text": "",
+    "rect": [
+      1174,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgb(196, 43, 28)",
+      "color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "outline-color: rgb(139, 139, 139) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "settings",
+    "desc": "div#top-volume.slider",
+    "text": "",
+    "rect": [
+      1016,
+      58,
+      128,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "button.nav-item",
+    "text": "Награды",
+    "rect": [
+      14,
+      48,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "button.nav-item",
+    "text": "Музыка",
+    "rect": [
+      14,
+      88,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "button.nav-item",
+    "text": "Настройки",
+    "rect": [
+      14,
+      172,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "button.nav-item.active",
+    "text": "Журнал",
+    "rect": [
+      14,
+      212,
+      208,
+      38
+    ],
+    "changes": []
+  },
+  {
+    "screen": "log",
+    "desc": "button.winbtn title=\"Свернуть\"",
+    "text": "",
+    "rect": [
+      1094,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "button.winbtn title=\"Развернуть\"",
+    "text": "",
+    "rect": [
+      1134,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "button.winbtn.winbtn-close title=\"Закрыть\"",
+    "text": "",
+    "rect": [
+      1174,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgb(196, 43, 28)",
+      "color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "outline-color: rgb(139, 139, 139) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "div#top-volume.slider",
+    "text": "",
+    "rect": [
+      1016,
+      58,
+      128,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "button#log-refresh.btn.btn-secondary",
+    "text": "Обновить",
+    "rect": [
+      1092,
+      110,
+      104,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "div.search",
+    "text": "",
+    "rect": [
+      260,
+      187,
+      340,
+      34
+    ],
+    "changes": [
+      "border-top-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-right-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-bottom-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-left-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "div.pill.active",
+    "text": "Все 138",
+    "rect": [
+      610,
+      195,
+      77,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(237, 237, 237, 0.12) -> rgba(237, 237, 237, 0.16)"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "div.pill",
+    "text": "Инфо",
+    "rect": [
+      695,
+      195,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "div.pill",
+    "text": "Предупреждения",
+    "rect": [
+      766,
+      195,
+      141,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "log",
+    "desc": "div.pill",
+    "text": "Ошибки",
+    "rect": [
+      915,
+      195,
+      80,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button.nav-item",
+    "text": "Награды",
+    "rect": [
+      14,
+      48,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button.nav-item.active",
+    "text": "Музыка",
+    "rect": [
+      14,
+      88,
+      208,
+      38
+    ],
+    "changes": []
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button.nav-item",
+    "text": "Настройки",
+    "rect": [
+      14,
+      172,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button.nav-item",
+    "text": "Журнал",
+    "rect": [
+      14,
+      212,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button.winbtn title=\"Свернуть\"",
+    "text": "",
+    "rect": [
+      1094,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button.winbtn title=\"Развернуть\"",
+    "text": "",
+    "rect": [
+      1134,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button.winbtn.winbtn-close title=\"Закрыть\"",
+    "text": "",
+    "rect": [
+      1174,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgb(196, 43, 28)",
+      "color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "outline-color: rgb(139, 139, 139) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div#top-volume.slider",
+    "text": "",
+    "rect": [
+      1016,
+      58,
+      128,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div.btn.btn-icon.btn-ghost",
+    "text": "···",
+    "rect": [
+      791,
+      110,
+      34,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.09)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div#obs-header.btn.btn-secondary",
+    "text": "Оверлей OBS",
+    "rect": [
+      837,
+      110,
+      156,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div.btn.btn-primary.btn-music-state",
+    "text": "Принимаем заявки",
+    "rect": [
+      1005,
+      110,
+      191,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(139, 0, 255, 0.16) -> rgba(139, 0, 255, 0.26)",
+      "color: rgb(139, 0, 255) -> rgb(201, 167, 255)",
+      "border-top-color: rgba(139, 0, 255, 0.38) -> rgba(139, 0, 255, 0.58)",
+      "border-right-color: rgba(139, 0, 255, 0.38) -> rgba(139, 0, 255, 0.58)",
+      "border-bottom-color: rgba(139, 0, 255, 0.38) -> rgba(139, 0, 255, 0.58)",
+      "border-left-color: rgba(139, 0, 255, 0.38) -> rgba(139, 0, 255, 0.58)",
+      "outline-color: rgb(139, 0, 255) -> rgb(201, 167, 255)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div.btn.btn-sm.btn-ghost",
+    "text": "Изменить",
+    "rect": [
+      537,
+      182,
+      96,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div#track-progress",
+    "text": "",
+    "rect": [
+      435,
+      298,
+      492,
+      14
+    ],
+    "changes": [
+      "knob: 14px|14px|0px|none -> 14px|14px|0px|matrix(1.18, 0, 0, 1.18, 0, 0)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div",
+    "text": "",
+    "rect": [
+      395,
+      325,
+      32,
+      32
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.07) -> rgba(255, 255, 255, 0.16)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div",
+    "text": "",
+    "rect": [
+      485,
+      325,
+      32,
+      32
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.07) -> rgba(255, 255, 255, 0.16)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div#skip-track",
+    "text": "Пропустить трек",
+    "rect": [
+      538,
+      333,
+      109,
+      16
+    ],
+    "changes": [
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div.slider",
+    "text": "",
+    "rect": [
+      1000,
+      276,
+      120,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div.ghost-red",
+    "text": "Очистить",
+    "rect": [
+      1102,
+      404,
+      77,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "label.search",
+    "text": "",
+    "rect": [
+      277,
+      484,
+      793,
+      34
+    ],
+    "changes": [
+      "border-top-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-right-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-bottom-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-left-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div.btn.btn-secondary.btn-sm",
+    "text": "В очередь",
+    "rect": [
+      1080,
+      484,
+      99,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div#obs-open.btn.btn-sm.btn-ghost",
+    "text": "Настроить",
+    "rect": [
+      650,
+      574,
+      101,
+      28
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div#obs-copy-url.copy-btn title=\"Скопировать ссылку\"",
+    "text": "",
+    "rect": [
+      487,
+      613,
+      28,
+      28
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.12)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "div#obs-show.btn.btn-sm.btn-secondary",
+    "text": "Показать сейчас",
+    "rect": [
+      609,
+      612,
+      143,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button#obs-close.modal-close",
+    "text": "",
+    "rect": [
+      833,
+      222,
+      30,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button#obs-copy.btn.btn-icon.btn-ghost title=\"Скопировать\"",
+    "text": "",
+    "rect": [
+      824,
+      338,
+      26,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.09)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button.active",
+    "text": "Сверху",
+    "rect": [
+      442,
+      464,
+      72,
+      32
+    ],
+    "changes": []
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button",
+    "text": "Снизу",
+    "rect": [
+      518,
+      464,
+      62,
+      32
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button#obs-browser.btn.btn-secondary",
+    "text": "Открыть в браузере",
+    "rect": [
+      357,
+      585,
+      176,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button#obs-show-now.btn.btn-secondary",
+    "text": "Показать сейчас",
+    "rect": [
+      606,
+      585,
+      154,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "obs-modal",
+    "desc": "button#obs-done.btn.btn-primary",
+    "text": "Закрыть",
+    "rect": [
+      767,
+      585,
+      96,
+      34
+    ],
+    "changes": [
+      "background-color: rgb(237, 237, 237) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button.nav-item.active",
+    "text": "Награды",
+    "rect": [
+      14,
+      48,
+      208,
+      38
+    ],
+    "changes": []
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button.nav-item",
+    "text": "Музыка",
+    "rect": [
+      14,
+      88,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button.nav-item",
+    "text": "Настройки",
+    "rect": [
+      14,
+      172,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button.nav-item",
+    "text": "Журнал",
+    "rect": [
+      14,
+      212,
+      208,
+      38
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.055)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button.winbtn title=\"Свернуть\"",
+    "text": "",
+    "rect": [
+      1094,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button.winbtn title=\"Развернуть\"",
+    "text": "",
+    "rect": [
+      1134,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button.winbtn.winbtn-close title=\"Закрыть\"",
+    "text": "",
+    "rect": [
+      1174,
+      6,
+      38,
+      26
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgb(196, 43, 28)",
+      "color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(255, 255, 255)",
+      "outline-color: rgb(139, 139, 139) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div#top-volume.slider",
+    "text": "",
+    "rect": [
+      1016,
+      58,
+      128,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-icon.btn-ghost",
+    "text": "···",
+    "rect": [
+      959,
+      110,
+      34,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.09)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-primary",
+    "text": "Создать награду",
+    "rect": [
+      1005,
+      110,
+      183,
+      34
+    ],
+    "changes": [
+      "background-color: rgb(237, 237, 237) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "label.search",
+    "text": "",
+    "rect": [
+      260,
+      183,
+      252,
+      34
+    ],
+    "changes": [
+      "border-top-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-right-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-bottom-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)",
+      "border-left-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.26)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.seg-item.active",
+    "text": "Плитка",
+    "rect": [
+      525,
+      186,
+      99,
+      28
+    ],
+    "changes": []
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.seg-item",
+    "text": "Список",
+    "rect": [
+      626,
+      186,
+      98,
+      28
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "select#reward-sort.select",
+    "text": "Все наградыСначала дорогиеСначала дешёвы",
+    "rect": [
+      737,
+      183,
+      168,
+      34
+    ],
+    "changes": [
+      "border-top-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.28)",
+      "border-right-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.28)",
+      "border-bottom-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.28)",
+      "border-left-color: rgba(255, 255, 255, 0.16) -> rgba(255, 255, 255, 0.28)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-icon.btn-secondary title=\"Обновить список\"",
+    "text": "",
+    "rect": [
+      973,
+      183,
+      34,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.09)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-ghost.btn-danger-ghost",
+    "text": "Остановить всё",
+    "rect": [
+      1017,
+      183,
+      171,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.pill.active",
+    "text": "Все 11",
+    "rect": [
+      260,
+      229,
+      66,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(237, 237, 237, 0.12) -> rgba(237, 237, 237, 0.16)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.pill",
+    "text": "Со звуком 9",
+    "rect": [
+      334,
+      229,
+      108,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.pill",
+    "text": "Без звука 2",
+    "rect": [
+      450,
+      229,
+      115,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.pill",
+    "text": "Играет 0",
+    "rect": [
+      573,
+      229,
+      98,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.pill",
+    "text": "Выключенные 9",
+    "rect": [
+      679,
+      229,
+      145,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.04) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(160, 160, 160) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.22)",
+      "outline-color: rgb(160, 160, 160) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      490,
+      292,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      288,
+      351,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      350,
+      388,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      277,
+      416,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      378,
+      416,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      792,
+      292,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      587,
+      351,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      649,
+      388,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      576,
+      416,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      676,
+      416,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      1131,
+      292,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-primary",
+    "text": "Выбрать звук",
+    "rect": [
+      878,
+      416,
+      123,
+      30
+    ],
+    "changes": [
+      "background-color: rgb(237, 237, 237) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red.ghost-neutral title=\"Открыть вкладку «Музыка»\"",
+    "text": "Открыть в «Музыке»",
+    "rect": [
+      1007,
+      416,
+      155,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      490,
+      490,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-primary",
+    "text": "Выбрать звук",
+    "rect": [
+      277,
+      614,
+      123,
+      30
+    ],
+    "changes": [
+      "background-color: rgb(237, 237, 237) -> rgb(255, 255, 255)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      792,
+      490,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      587,
+      549,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      649,
+      586,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      576,
+      614,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      676,
+      614,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      1131,
+      490,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      889,
+      549,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      951,
+      586,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      878,
+      614,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      979,
+      614,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      490,
+      688,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      288,
+      747,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      350,
+      784,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      277,
+      812,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      378,
+      812,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      792,
+      688,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      587,
+      747,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      649,
+      784,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      576,
+      812,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      676,
+      812,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      1131,
+      688,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      889,
+      747,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      951,
+      784,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      878,
+      812,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      979,
+      812,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      490,
+      886,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      288,
+      945,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      350,
+      982,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      277,
+      1010,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      378,
+      1010,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.dots",
+    "text": "•••",
+    "rect": [
+      792,
+      886,
+      40,
+      20
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.07)",
+      "color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-top-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-right-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "border-left-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)",
+      "outline-color: rgba(139, 139, 139, 0.8) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "span.play.sound-play",
+    "text": "",
+    "rect": [
+      587,
+      945,
+      18,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.1) -> rgba(255, 255, 255, 0.2)",
+      "color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(237, 237, 237) -> rgb(245, 245, 245)",
+      "outline-color: rgb(237, 237, 237) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.slider.sm",
+    "text": "",
+    "rect": [
+      649,
+      982,
+      104,
+      16
+    ],
+    "changes": [
+      "knob: 14px|14px|1px|none -> 15px|15px|0.5px|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.btn.btn-sm.btn-secondary",
+    "text": "Заменить",
+    "rect": [
+      576,
+      1010,
+      95,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.ghost-red",
+    "text": "Убрать",
+    "rect": [
+      676,
+      1010,
+      63,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(239, 68, 68, 0.13)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "div.collapsed",
+    "text": "Выключенные и недоступные награды · 9Пок",
+    "rect": [
+      260,
+      1069,
+      928,
+      18
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.035)",
+      "border-top-color: rgba(255, 255, 255, 0.13) -> rgba(255, 255, 255, 0.22)",
+      "border-right-color: rgba(255, 255, 255, 0.13) -> rgba(255, 255, 255, 0.22)",
+      "border-bottom-color: rgba(255, 255, 255, 0.13) -> rgba(255, 255, 255, 0.22)",
+      "border-left-color: rgba(255, 255, 255, 0.13) -> rgba(255, 255, 255, 0.22)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button#reward-modal-close.modal-close",
+    "text": "",
+    "rect": [
+      833,
+      287,
+      30,
+      30
+    ],
+    "changes": [
+      "background-color: rgba(0, 0, 0, 0) -> rgba(255, 255, 255, 0.08)",
+      "color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "outline-color: rgb(139, 139, 139) -> rgb(245, 245, 245)",
+      "svg: rgb(139, 139, 139)|none -> rgb(245, 245, 245)|none"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "label.reward-check",
+    "text": "Нужен ввод текста от зрителя",
+    "rect": [
+      357,
+      486,
+      506,
+      15
+    ],
+    "changes": [
+      "color: rgb(189, 189, 189) -> rgb(245, 245, 245)",
+      "border-top-color: rgb(189, 189, 189) -> rgb(245, 245, 245)",
+      "border-right-color: rgb(189, 189, 189) -> rgb(245, 245, 245)",
+      "border-bottom-color: rgb(189, 189, 189) -> rgb(245, 245, 245)",
+      "border-left-color: rgb(189, 189, 189) -> rgb(245, 245, 245)",
+      "outline-color: rgb(189, 189, 189) -> rgb(245, 245, 245)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button#reward-cancel.btn.btn-secondary",
+    "text": "Отмена",
+    "rect": [
+      670,
+      519,
+      91,
+      34
+    ],
+    "changes": [
+      "background-color: rgba(255, 255, 255, 0.05) -> rgba(255, 255, 255, 0.11)",
+      "border-top-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-right-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-bottom-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)",
+      "border-left-color: rgba(255, 255, 255, 0.28) -> rgba(255, 255, 255, 0.42)"
+    ]
+  },
+  {
+    "screen": "reward-modal",
+    "desc": "button#reward-save.btn.btn-primary",
+    "text": "Создать",
+    "rect": [
+      768,
+      519,
+      95,
+      34
+    ],
+    "changes": [
+      "background-color: rgb(237, 237, 237) -> rgb(255, 255, 255)"
+    ]
+  }
+]

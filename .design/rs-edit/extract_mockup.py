@@ -1,0 +1,11 @@
+import re, pathlib
+p = pathlib.Path(r"C:\Users\mur\Documents\deepseek-harness\default-workspace\.tmp\rs-review\mockups\mockup-02-music.html")
+s = p.read_text(encoding="utf-8")
+css = re.search(r"(?s)<style>(.*?)</style>", s).group(1)
+body = re.search(r"(?s)<body>(.*?)</body>", s).group(1)
+out = pathlib.Path(r"C:\Users\mur\Documents\deepseek-harness\default-workspace\.tmp\rs-edit")
+(out/"mockup.css").write_text(css, encoding="utf-8")
+(out/"mockup-body.html").write_text(body, encoding="utf-8")
+print("css", len(css), "body", len(body))
+print("CSS start:\n", css[:1500])
+print("BODY start:\n", body[:1500])

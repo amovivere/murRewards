@@ -1,0 +1,29 @@
+# Rust / Cargo
+/target/
+**/target/
+
+# Артефакты сборки и запуска: exe, yt-dlp, сгенерированные схемы Tauri
+**/dist/
+*.exe
+*.pdb
+*.msi
+**/gen/schemas/
+err.txt
+out.txt
+
+# Кэш Python
+__pycache__/
+*.py[cod]
+
+# Временные файлы и логи
+*.tmp
+config.broken-*.toml
+*.log
+
+# ОС и редакторы
+Thumbs.db
+desktop.ini
+.DS_Store
+.idea/
+.vscode/
+*.swp

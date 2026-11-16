@@ -1,0 +1,14 @@
+# Текстовые файлы нормализуются автоматически, бинарные не трогаем.
+* text=auto
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.ttf binary
+*.wav binary
+*.mp3 binary
+*.exe binary
+*.lnk binary
+*.zip binary

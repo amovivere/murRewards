@@ -1,0 +1,687 @@
+app.rs:170: "Настройки загружены: {} {}, громкость {}, {}",
+app.rs:172: util::plural_ru(settings.twitch_rewards.len(), "привязка", "привязки", "привязок"),
+app.rs:174: if settings.muted { "режим «без звука»" } else { "звук включён" }
+app.rs:316: log::info!("Окно открыто из трея");
+app.rs:323: log::info!("Окно свёрнуто в трей");
+app.rs:331: log::warn!("Не удалось остановить звуки: {err}");
+app.rs:334: "Звуки наград выключены. Включить можно в трее или в настройках.",
+app.rs:338: self.notify("Звуки наград включены.", ToastKind::Info);
+app.rs:392: log::warn!("Twitch: сохранённый вход недоступен (другая учётная запись Windows?)");
+app.rs:396: "Сохранённый вход в Twitch не читается. Подключите аккаунт заново.",
+app.rs:405: log::info!("Twitch: обновляем истёкший токен");
+app.rs:407: self.twitch_progress = Some("Обновляем вход в Twitch…".to_string());
+app.rs:413: log::warn!("Twitch: недостаточно данных для обновления входа, нужен повторный вход");
+app.rs:419: "Twitch: восстановлен вход для @{}",
+app.rs:434: log::info!("Twitch: активация {redemption_id} — {status}");
+app.rs:440: log::warn!("Twitch: активация {redemption_id} не обновлена: {message}");
+app.rs:447: log::info!("Twitch: выдан код подтверждения (действует {expires_in} с)");
+app.rs:460: "Код для Twitch: {user_code}. Введите его на открывшейся странице."
+app.rs:467: "Код для Twitch: {user_code}. Откройте twitch.tv/activate вручную."
+app.rs:485: format!("Twitch подключён: {}", user.display_name),
+app.rs:512: log::info!("Twitch: список наград обновлён ({count})");
+app.rs:517: log::warn!("Twitch: токен не принят при загрузке наград");
+app.rs:523: "Нужно заново подключить Twitch, чтобы загрузить награды.".to_string(),
+app.rs:539: "Награда создана, но Twitch не вернул её ID — привяжите звук вручную.",
+app.rs:545: log::info!("Награда {id}: звук привязан при создании");
+app.rs:548: "Награда создана, но выбранный файл звука пропал.",
+app.rs:553: self.notify(format!("Награда «{title}» создана."), ToastKind::Success);
+app.rs:572: self.notify(format!("Награда «{title}» изменена."), ToastKind::Success);
+app.rs:578: self.notify(format!("Награда «{title}» удалена."), ToastKind::Success);
+app.rs:587: "Twitch не дал право управлять наградами. Переподключите аккаунт в настройках."
+app.rs:592: "Нужно переподключить Twitch: добавлено право управлять наградами.",
+app.rs:608: log::warn!("Twitch: сессия истекла, требуется повторный вход");
+app.rs:627: self.notify("Twitch отключён.", ToastKind::Info);
+app.rs:661: "Не удалось прочитать сохранённый токен. Подключите Twitch заново.".to_string(),
+app.rs:680: self.twitch_progress = Some("Обновляем вход в Twitch…".to_string());
+app.rs:697: Some("Не удалось прочитать сохранённый токен Twitch.".to_string());
+app.rs:708: log::info!("EventSub: подключаемся к Twitch");
+app.rs:722: EventSubState::Listening => ("Слушаем награды", SUCCESS),
+app.rs:723: EventSubState::Connecting => ("Переподключение…", WARN),
+app.rs:724: EventSubState::Stopped => ("Не слушаем", TEXT_DIM),
+app.rs:734: log::info!("EventSub: слушаем активации наград");
+app.rs:741: log::warn!("EventSub: переподключение ({message})");
+app.rs:753: Some("Нужно обновить вход в Twitch.".to_string());
+app.rs:771: "Награда активирована: «{}» (@{})",
+app.rs:789: "Музыка: заявка от @{} принята в обработку",
+app.rs:810: log::info!("Музыка: «{title}» в очереди, позиция {position}");
+app.rs:813: log::info!("Музыка: играет «{title}»");
+app.rs:825: log::warn!("Музыка: заявка отклонена — {reason}");
+app.rs:826: self.notify(format!("Заявка отклонена: {reason}"), ToastKind::Warning);
+app.rs:836: log::warn!("Музыка: трек не сыграл — {reason}");
+app.rs:838: format!("Трек не сыграл: {reason}"),
+app.rs:912: format!("Файл «{}» пустой.", util::file_name(&path)),
+app.rs:921: "Не удалось прочитать файл «{}»: {err}",
+app.rs:931: log::info!("Награда «{title}»: привязан звук {}", path.display());
+app.rs:935: format!("Звук для награды «{title}» сохранён."),
+app.rs:955: log::error!("Не удалось сохранить вход Twitch: {err}");
+app.rs:956: self.twitch_error = Some(format!("Не удалось сохранить вход: {err}"));
+app.rs:958: format!("Не удалось сохранить вход в Twitch: {err}"),
+app.rs:969: "Client ID должен состоять примерно из 30 букв и цифр без пробелов. Скопируйте его из Twitch Developer Console."
+app.rs:979: self.twitch_progress = Some("Запрашиваем код у Twitch…".to_string());
+app.rs:991: log::info!("Twitch: вход отменён пользователем");
+app.rs:992: self.notify("Вход в Twitch отменён.", ToastKind::Info);
+app.rs:1007: self.notify("Twitch отключён. Звуки и настройки сохранены.", ToastKind::Info);
+app.rs:1014: self.twitch_progress = Some("Обновляем данные аккаунта…".to_string());
+app.rs:1021: "Нет сохранённого входа. Подключите аккаунт заново.",
+app.rs:1057: Ok(()) => log::debug!("Настройки сохранены"),
+app.rs:1059: format!("Не удалось сохранить настройки: {err}"),
+app.rs:1186: format!("Подключено · {account}")
+app.rs:1188: "Twitch не подключён".to_string()
+app.rs:1221: RichText::new("ЗВУК")
+app.rs:1264: RichText::new("ОСНОВНОЕ")
+app.rs:1270: (Tab::Rewards, NavIcon::Rewards, "Награды"),
+app.rs:1271: (Tab::Music, NavIcon::Music, "Музыка"),
+app.rs:1282: RichText::new("СИСТЕМА")
+app.rs:1288: (Tab::Settings, NavIcon::Settings, "Настройки"),
+app.rs:1289: (Tab::Log, NavIcon::Log, "Журнал"),
+app.rs:1303: RichText::new(format!("версия {}", crate::VERSION))
+app.rs:1313: "звук готов"
+app.rs:1315: "нет аудиовыхода"
+app.rs:1343: ("Готово".to_string(), with_alpha(TEXT_DIM, 170))
+app.rs:1346: "Аудиовыход недоступен — откройте настройки".to_string(),
+app.rs:1369: ("Twitch: подключение…".to_string(), WARN)
+app.rs:1371: TwitchState::Disconnected => ("Twitch: не подключён".to_string(), TEXT_DIM),
+app.rs:1379: response.on_hover_text("Нажмите, чтобы открыть подключение к Twitch");
+app.rs:1388: "Файл «{}» не найден. Нажмите «Заменить файл» и выберите его заново.",
+app.rs:1407: "Звук запущен, но включён режим «Без звука» — выключите его в настройках.",
+app.rs:1442: ui.label(RichText::new("Награды").family(semibold()).size(36.0).color(TEXT));
+app.rs:1445: "Подключите Twitch, чтобы увидеть награды".to_string()
+app.rs:1447: "Загружаем список наград…".to_string()
+app.rs:1452: util::plural_ru(count, "награда", "награды", "наград")
+app.rs:1461: if connected && accent_button(ui, "Создать награду").clicked() {
+app.rs:1467: if connected && secondary_button(ui, "Обновить").clicked() {
+app.rs:1473: if connected && secondary_button(ui, "Панель Twitch").clicked() {
+app.rs:1478: let view_label = if grid_view { "Список" } else { "Плитка" };
+app.rs:1480: .on_hover_text("Переключить вид: список или плитка")
+app.rs:1495: .add_enabled_ui(!playing.is_empty(), |ui| secondary_button(ui, "Стоп"))
+app.rs:1507: stat_card(ui, "НАГРАД", &rewards.len().to_string(), TEXT);
+app.rs:1509: stat_card(ui, "СО ЗВУКОМ", &bindings.len().to_string(), TEXT);
+app.rs:1513: "ИГРАЕТ",
+app.rs:1522: section_card(ui, "Twitch не подключён", |ui| {
+app.rs:1525: "Награды Channel Points доступны только после входа в Twitch. Подключение занимает пару минут и сохраняется между запусками.",
+app.rs:1530: go_settings = accent_button(ui, "Перейти к подключению").clicked();
+app.rs:1537: RichText::new("Загружаем награды из Twitch…")
+app.rs:1560: section_card(ui, "Наград не найдено", |ui| {
+app.rs:1563: "У канала пока нет пользовательских наград Channel Points. Создайте награду в панели Twitch — она появится здесь после обновления списка.",
+app.rs:1568: open_panel = secondary_button(ui, "Открыть панель наград Twitch").clicked();
+app.rs:1584: RichText::new("Выключенные и недоступные награды")
+app.rs:1600: RichText::new("Привязки без награды на Twitch")
+app.rs:1624: RichText::new("Выключенные и недоступные награды")
+app.rs:1649: RichText::new("Привязки без награды на Twitch")
+app.rs:1700: log::info!("Награда {reward_id}: привязка звука удалена");
+app.rs:1703: self.notify("Звук отвязан от награды.", ToastKind::Info);
+app.rs:1797: editor.error = Some("Сначала подключите Twitch в настройках.".to_string());
+app.rs:1830: log::info!("Награда {reward_id}: звук выбран в редакторе");
+app.rs:1835: log::info!("Награда {reward_id}: звук отвязан в редакторе");
+app.rs:1844: self.notify("Сначала подключите Twitch в настройках.", ToastKind::Error);
+app.rs:1869: "Изменить награду"
+app.rs:1871: "Новая награда"
+app.rs:1874: "Изменения сразу уйдут на Twitch"
+app.rs:1876: "Награда сразу появится у зрителей"
+app.rs:1910: RichText::new("НАЗВАНИЕ")
+app.rs:1919: .hint_text("Например, «Сменить игру»"),
+app.rs:1926: RichText::new("СТОИМОСТЬ, БАЛЛОВ")
+app.rs:1940: RichText::new("ЦВЕТ")
+app.rs:1962: RichText::new("ЗВУК НАГРАДЫ")
+app.rs:1989: RichText::new("Файл не выбран — награда будет без звука")
+app.rs:2000: "Заменить"
+app.rs:2002: "Выбрать звук"
+app.rs:2015: editor.error = Some("Выбранный файл пустой.".to_string());
+app.rs:2023: if ghost_button(ui, "▶  Прослушать", with_alpha(ACCENT, 230))
+app.rs:2032: if ghost_button(ui, "Убрать", with_alpha(DANGER, 220)).clicked() {
+app.rs:2056: if accent_button(ui, if is_edit { "Сохранить" } else { "Создать" })
+app.rs:2062: if secondary_button(ui, "Отмена").clicked() && !editor.pending {
+app.rs:2092: egui::Window::new("Удалить награду?")
+app.rs:2100: RichText::new(format!("Удалить награду «{}» на Twitch?", reward.title))
+app.rs:2108: RichText::new("Действие необратимо: награда исчезнет у зрителей.")
+app.rs:2114: if danger_button(ui, "Удалить").clicked() && !self.reward_busy {
+app.rs:2117: if secondary_button(ui, "Отмена").clicked() && !self.reward_busy {
+app.rs:2137: RichText::new("Настройки")
+app.rs:2144: RichText::new("Изменения сохраняются автоматически")
+app.rs:2168: section_card(ui, "Подключение к Twitch", |ui| match self.twitch_state {
+app.rs:2179: "Приложение подключится к Twitch, чтобы получать награды канала. Пароль вводится только на сайте Twitch — приложение его не видит. Client Secret не требуется.",
+app.rs:2197: .hint_text("30 букв и цифр из Twitch Developer Console")
+app.rs:2214: .add_enabled_ui(valid, |ui| accent_button(ui, "Подключить Twitch"))
+app.rs:2217: help = secondary_button(ui, "Где взять Client ID?").clicked();
+app.rs:2229: "Создайте приложение на dev.twitch.tv/console/apps (тип Public), скопируйте Client ID и вставьте сюда. Подробная инструкция — в README.md, раздел «Подключение к Twitch».",
+app.rs:2242: .unwrap_or_else(|| "Подключаемся к Twitch…".to_string());
+app.rs:2248: if secondary_button(ui, "Отмена").clicked() {
+app.rs:2270: "Браузер уже открыт. Введите этот код на странице Twitch:",
+app.rs:2296: open_page = accent_button(ui, "Открыть страницу Twitch").clicked();
+app.rs:2297: copy = secondary_button(ui, "Скопировать код").clicked();
+app.rs:2298: cancel = secondary_button(ui, "Отмена").clicked();
+app.rs:2303: self.notify("Не удалось открыть браузер. Откройте twitch.tv/activate вручную.", ToastKind::Warning);
+app.rs:2308: self.notify("Код скопирован в буфер обмена.", ToastKind::Info);
+app.rs:2318: "Код действует ещё примерно {minutes_left} мин. После подтверждения на Twitch окно обновится само."
+app.rs:2340: ui.label(RichText::new("Аккаунт").size(13.8).color(TEXT_DIM));
+app.rs:2343: ui.label(RichText::new("подключён").size(13.8).color(SUCCESS));
+app.rs:2348: "Вход сохраняется между запусками, токен обновляется автоматически. Пароль и Client Secret приложение не хранит.",
+app.rs:2353: ui.label(RichText::new("Активации наград").size(13.2).color(TEXT_DIM));
+app.rs:2363: if secondary_button(ui, "Переподключить события").clicked() {
+app.rs:2373: refresh = secondary_button(ui, "Обновить данные").clicked();
+app.rs:2374: disconnect = danger_button(ui, "Отключить Twitch").clicked();
+app.rs:2390: section_card(ui, "Запуск и системный трей", |ui| {
+app.rs:2395: ui.label("Закрывать окно в трей, не завершая программу");
+app.rs:2403: ui.label("При запуске показывать только иконку в трее");
+app.rs:2416: log::error!("Автозапуск: {err}");
+app.rs:2417: self.notify(format!("Автозапуск: {err}"), ToastKind::Error);
+app.rs:2421: ui.label("Запускать вместе с Windows");
+app.rs:2428: .add_enabled_ui(tray_ready, |ui| secondary_button(ui, "Свернуть в трей"))
+app.rs:2437: ("трей доступен", SUCCESS)
+app.rs:2439: ("трей недоступен", WARN)
+app.rs:2446: "Иконка в трее: левый клик — открыть окно, правый клик — меню (открыть, включить/выключить звуки, остановить все звуки, выход).",
+app.rs:2452: section_card(ui, "Громкость", |ui| {
+app.rs:2484: RichText::new("Без звука")
+app.rs:2496: ui.label("Воспроизводить звуки наград");
+app.rs:2503: RichText::new("Включён режим «Без звука»: награды будут запускаться без звука.")
+app.rs:2513: "Громкость действует только на звуки Reward Sounds. Громкость Windows не меняется.",
+app.rs:2521: section_card(ui, "Аудиовыход", |ui| {
+app.rs:2523: ui.label(RichText::new("Устройство").size(13.8).color(TEXT_DIM));
+app.rs:2527: RichText::new("недоступно — проверьте колонки или наушники")
+app.rs:2536: if secondary_button(ui, "Проверить звук").clicked() {
+app.rs:2541: "Тестовый сигнал отправлен на устройство вывода.",
+app.rs:2548: if secondary_button(ui, "Перезапустить аудио").clicked() {
+app.rs:2551: if secondary_button(ui, "Остановить все звуки").clicked() {
+app.rs:2564: secondary_button(ui, "Выровнять громкость звуков")
+app.rs:2573: ui.label(RichText::new("Измеряем громкость…").size(13.2).color(TEXT_DIM));
+app.rs:2580: "Выравнивание измеряет громкость каждого файла и подстраивает индивидуальные ползунки, чтобы звуки наград звучали ровно относительно друг друга.",
+app.rs:2585: "Используется текущее устройство вывода Windows. Если вы переключите звук в системе, приложение подхватит новое устройство автоматически (в течение нескольких секунд).",
+app.rs:2607: "Нет привязанных звуков для выравнивания.",
+app.rs:2629: "Не удалось измерить громкость {}: {err}",
+app.rs:2654: "Не удалось измерить громкость звуков.",
+app.rs:2666: "Громкость выровнена по {count} {}.",
+app.rs:2667: util::plural_ru(count, "звуку", "звукам", "звукам")
+app.rs:2682: log::info!("Перезапуск аудиодвижка по запросу пользователя");
+app.rs:2687: self.notify("Аудиовыход перезапущен.", ToastKind::Info);
+app.rs:2696: section_card(ui, "Данные приложения", |ui| {
+app.rs:2697: ui.label(RichText::new("Настройки").size(13.2).color(TEXT_DIM));
+app.rs:2700: ui.label(RichText::new("Журнал").size(13.2).color(TEXT_DIM));
+app.rs:2704: if secondary_button(ui, "Открыть папку настроек").clicked() {
+app.rs:2707: if secondary_button(ui, "Открыть папку журнала").clicked() {
+app.rs:2715: section_card(ui, "О программе", |ui| {
+app.rs:2722: ui.label(RichText::new("· версия 1.0").size(13.2).color(TEXT_DIM));
+app.rs:2744: ui.label(RichText::new("Журнал").family(semibold()).size(36.0).color(TEXT));
+app.rs:2746: RichText::new("Последние события и ошибки приложения")
+app.rs:2752: if secondary_button(ui, "Обновить").clicked() {
+app.rs:2757: if secondary_button(ui, "Открыть папку журнала").clicked() {
+app.rs:2766: RichText::new(format!("Файл: {}", log_file.display()))
+app.rs:2787: RichText::new("Записей пока нет.")
+app.rs:2840: ui.label(RichText::new("Музыка").family(semibold()).size(36.0).color(TEXT));
+app.rs:2842: RichText::new("Треки по заявке: зритель присылает ссылку на YouTube")
+app.rs:2849: ("Выключено", TEXT_DIM)
+app.rs:2851: ("Нет yt-dlp", DANGER)
+app.rs:2853: ("Слушаем заявки", SUCCESS)
+app.rs:2859: .checkbox(&mut enabled, RichText::new("Включено").size(13.6).color(TEXT_DIM))
+app.rs:2899: section_card(ui, &format!("Очередь · {}", pending.len()), |ui| {
+app.rs:2901: hint(ui, "Очередь пуста.");
+app.rs:2917: if ui.small_button("✕").on_hover_text("Убрать").clicked() {
+app.rs:2920: if ui.small_button("↑").on_hover_text("Выше").clicked() {
+app.rs:2937: if secondary_button(ui, "Очистить очередь").clicked() {
+app.rs:2945: hint(ui, "Сыграно — нажми ↻, чтобы поставить снова");
+app.rs:2954: if ui.small_button("↻").on_hover_text("Поставить снова").clicked() {
+app.rs:2999: format!("{} · {} баллов", reward.title, reward.cost),
+app.rs:3007: .unwrap_or_else(|| "Награда не выбрана".to_string());
+app.rs:3009: section_card(ui, "Награда и цена", |ui| {
+app.rs:3023: let apply = secondary_button(ui, "Применить цену").clicked();
+app.rs:3028: ui.label(RichText::new("Цена").size(13.6).color(TEXT_DIM));
+app.rs:3035: hint(ui, "Список наград пуст — обновите его на вкладке «Награды».");
+app.rs:3045: section_card(ui, "Настройки", |ui| {
+app.rs:3048: RichText::new("Очередь, длительность, поведение плеера")
+app.rs:3053: let label = if open { "Свернуть" } else { "Развернуть" };
+app.rs:3067: ui.label(RichText::new("Заявок в очереди").size(13.6).color(TEXT_DIM));
+app.rs:3082: ui.label(RichText::new("Максимум, минут").size(13.6).color(TEXT_DIM));
+app.rs:3100: RichText::new("Ставить Яндекс Музыку на паузу и возвращать после")
+app.rs:3113: "Длительность и лимит очереди применяются сразу. Путь к yt-dlp — в карточке «Состояние».",
+app.rs:3130: section_card(ui, "Состояние", |ui| {
+app.rs:3135: "yt-dlp не найден: положите yt-dlp.exe рядом с программой (или в папку tools).",
+app.rs:3144: if secondary_button(ui, "Проверить снова").clicked() {
+app.rs:3146: self.notify("Ищу yt-dlp заново", ToastKind::Info);
+app.rs:3151: hint(ui, "Оверлей для OBS (источник «Браузер»):");
+app.rs:3160: if secondary_button(ui, "Скопировать").clicked() {
+app.rs:3162: self.notify("Ссылка на оверлей скопирована", ToastKind::Success);
+app.rs:3169: hint(ui, "Следующий трек уже в памяти — стартует без задержки.");
+app.rs:3177: egui::Window::new("OBS — строка «Сейчас играет»")
+app.rs:3183: hint(ui, "Добавьте ссылку в OBS как источник «Браузер»:");
+app.rs:3187: if secondary_button(ui, "Скопировать").clicked() {
+app.rs:3189: self.notify("Ссылка на оверлей скопирована", ToastKind::Success);
+app.rs:3195: ui.label(RichText::new("Показывать, секунд").size(13.6).color(TEXT_DIM));
+app.rs:3205: hint(ui, "0 — показывать всегда");
+app.rs:3210: ui.label(RichText::new("Размер шрифта").size(13.6).color(TEXT_DIM));
+app.rs:3225: ui.label(RichText::new("Положение").size(13.6).color(TEXT_DIM));
+app.rs:3227: if ui.selectable_label(top, "Сверху").clicked() {
+app.rs:3232: if ui.selectable_label(!top, "Снизу").clicked() {
+app.rs:3242: "Источник: ширина 1920, высота 200–300. «Обновлять при активации» и «Выключать, когда не виден» — выключить.",
+app.rs:3244: hint(ui, "Команда !трек в чате показывает строку ещё раз.");
+app.rs:3265: format!("заказал @{}", item.user_login)
+app.rs:3269: "Ничего не играет".to_string(),
+app.rs:3270: "Активируйте награду на канале".to_string(),
+app.rs:3355: .on_hover_text("С начала")
+app.rs:3368: "Продолжить"
+app.rs:3370: "Пауза"
+app.rs:3378: .on_hover_text("Пропустить")
+app.rs:3397: ui.label(RichText::new("Громкость").size(13.2).color(TEXT_DIM));
+app.rs:3412: self.notify("Сначала выберите награду", ToastKind::Warning);
+app.rs:3416: self.notify("Цена должна быть числом", ToastKind::Warning);
+app.rs:3420: self.notify("Цена — от 1 до 1 000 000 баллов", ToastKind::Warning);
+app.rs:3431: "Награда не найдена в списке — обновите его на вкладке «Награды»",
+app.rs:3438: self.notify("Нужно заново войти в Twitch", ToastKind::Warning);
+app.rs:3455: format!("Новая цена награды: {cost} баллов"),
+app.rs:3485: "У награды включён обязательный ввод ссылки",
+app.rs:3528: log::warn!("Трей недоступен — показываем окно");
+app.rs:3531: "Системный трей недоступен, поэтому окно открыто. Проверьте, что проводник Windows запущен.",
+app.rs:3596: log::info!("Reward Sounds закрыт");
+app.rs:3604: .set_title("Выберите аудиофайл")
+app.rs:3606: "Аудиофайлы (MP3, WAV, OGG, FLAC)",
+app.rs:3609: .add_filter("Все файлы", &["*"])
+app.rs:3896: if ui.button("Изменить награду").clicked() {
+app.rs:3902: if ui.button("Удалить награду").clicked() {
+app.rs:3911: .on_hover_text("Настройки награды");
+app.rs:4000: RichText::new(format!("{} БАЛЛОВ · {}", reward.cost, state.to_uppercase()))
+app.rs:4030: .on_hover_text("Прослушать")
+app.rs:4051: RichText::new("Звук не выбран")
+app.rs:4065: RichText::new("ГРОМКОСТЬ")
+app.rs:4099: if secondary_button(ui, "Заменить").clicked() {
+app.rs:4105: if ghost_button(ui, "Убрать", with_alpha(DANGER, 220)).clicked() {
+app.rs:4112: if accent_button(ui, "Выбрать звук").clicked() {
+app.rs:4183: "{} БАЛЛОВ · {}",
+app.rs:4207: if ghost_button(ui, "Убрать", DANGER).clicked() {
+app.rs:4212: if ghost_button(ui, "Заменить звук", TEXT).clicked() {
+app.rs:4218: } else if accent_button(ui, "Выбрать звук").clicked() {
+app.rs:4243: "файл не найден — выберите звук заново".to_string()
+app.rs:4277: RichText::new("Звук не выбран")
+app.rs:4289: RichText::new("ГРОМКОСТЬ")
+app.rs:4328: "Награда без названия"
+app.rs:4337: RichText::new("Награда не найдена на Twitch — возможно, удалена")
+app.rs:4343: if danger_button(ui, "Убрать звук").clicked() {
+app.rs:4352: if secondary_button(ui, "Прослушать").clicked() && Path::new(&binding.path).is_file() {
+audio.rs:45: .unwrap_or_else(|| "ФАЙЛ".to_string())
+audio.rs:54: .unwrap_or_else(|| "без расширения".to_string());
+audio.rs:56: "Формат «{ext}» не поддерживается. Reward Sounds играет MP3, WAV, OGG и FLAC."
+audio.rs:79: .map_err(|err| format!("Не удалось открыть файл: {err}"))?;
+audio.rs:81: .map_err(|err| format!("Не удалось прочитать аудио: {err}"))?;
+audio.rs:95: return Err("Файл не содержит звука".to_string());
+audio.rs:172: log::error!("Не удалось запустить аудиопоток: {err}");
+audio.rs:174: errors.push("Не удалось запустить аудиопоток. Перезапустите приложение.".into());
+audio.rs:238: "Аудиодвижок не отвечает. Нажмите «Перезапустить аудио» в настройках.".to_string()
+audio.rs:259: log::error!("Не удалось открыть устройство вывода звука: {err}");
+audio.rs:263: "Не удалось открыть устройство вывода звука. Проверьте, что колонки или наушники подключены. (Детали: {err})"
+audio.rs:270: let mut device_name = default_device_name().unwrap_or_else(|| "Устройство по умолчанию".to_string());
+audio.rs:271: log::info!("Аудиовыход открыт: {device_name}");
+audio.rs:287: log::info!("Аудиовыход Windows изменился: {current}");
+audio.rs:300: log::info!("Аудиовыход переключён на {device_name}");
+audio.rs:303: log::error!("Не удалось переключить аудиовыход: {err}");
+audio.rs:307: format!("Не удалось переключить устройство вывода звука: {err}"),
+audio.rs:320: log::debug!("Воспроизведение завершено: id={id}");
+audio.rs:339: "Играет звук: {} (id={id}, громкость {:.0}%)",
+audio.rs:378: log::info!("Остановлен звук id={id} (копий: {stopped})");
+audio.rs:383: log::info!("Остановлены все звуки ({} шт.)", sinks.len());
+audio.rs:404: log::info!("Аудиодвижок остановлен");
+audio.rs:422: .map_err(|err| format!("Не удалось открыть файл «{name}»: {err}"))?;
+audio.rs:425: .map_err(|err| format!("Не удалось прочитать аудиофайл «{name}»: {err}"))?;
+audio.rs:427: let sink = Sink::try_new(handle).map_err(|err| format!("Не удалось создать аудиопоток: {err}"))?;
+audio.rs:434: let sink = Sink::try_new(handle).map_err(|err| format!("Не удалось создать аудиопоток: {err}"))?;
+audio.rs:440: log::info!("Проверка аудиовыхода: тестовый сигнал 880 Гц");
+audio.rs:487: assert!(volume > 1.0, "тихий звук должен усиливаться: {volume}");
+audio.rs:497: assert!(volume < 0.5, "громкий звук должен приглушаться: {volume}");
+audio.rs:509: "громкость не должна приводить к клиппингу: {volume}"
+audio.rs:528: assert!((db + 18.0).abs() < 0.5, "ожидалось около −18 дБFS: {db}");
+autostart.rs:54: .map_err(|err| format!("Не удалось определить путь программы: {err}"))?;
+autostart.rs:74: "Не удалось открыть реестр для автозапуска (код {status})"
+autostart.rs:92: return Err(format!("Не удалось записать автозапуск (код {status})"));
+autostart.rs:94: log::info!("Автозапуск включён: {command}");
+autostart.rs:115: log::info!("Автозапуск выключен");
+autostart.rs:118: Err(format!("Не удалось убрать автозапуск (код {status})"))
+autostart.rs:130: /// Командная строка автозапуска: `"путь" --minimized`.
+config.rs:92: reward_title: "Трек по заявке".to_string(),
+config.rs:199: "аккаунт Twitch".to_string()
+config.rs:361: self.music.reward_title = "Трек по заявке".to_string();
+config.rs:380: log::error!("Не удалось прочитать файл настроек: {err}");
+config.rs:383: Some(format!("Не удалось прочитать настройки: {err}")),
+config.rs:405: "Настройки предыдущей версии: импортировано {count} {}. Копия старого файла: {}",
+config.rs:406: crate::util::plural_ru(count, "привязка", "привязки", "привязок"),
+config.rs:414: "Настройки прошлой версии перенесены: {} {}. Копия старого файла сохранена в папке настроек.",
+config.rs:416: crate::util::plural_ru(count, "привязка", "привязки", "привязок"),
+config.rs:422: "Найдены настройки предыдущей версии, но копию создать не удалось: {err}"
+config.rs:439: "Файл настроек повреждён ({err}), резервную копию создать не удалось: {rename_err}"
+config.rs:443: Some("Файл настроек повреждён. Загружены настройки по умолчанию.".into()),
+config.rs:447: "Файл настроек повреждён ({err}). Резервная копия: {}",
+config.rs:453: "Файл настроек был повреждён. Сохранена копия «{}», загружены настройки по умолчанию.",
+config.rs:530: /// name = "Испугать стримера"
+config.rs:595: std::fs::create_dir_all(&dir).expect("не удалось создать временную папку теста");
+config.rs:607: settings.set_reward_sound("reward-1", "Тревога", r"C:\Sounds\alarm.mp3");
+config.rs:613: "громкость должна сохраняться без длинного «хвоста»: {saved_text}"
+config.rs:623: assert_eq!(binding.title, "Тревога");
+config.rs:633: std::fs::write(&file, "volume = \"совсем не число\"").unwrap();
+config.rs:638: assert!(!file.exists(), "испорченный файл должен быть переименован");
+config.rs:643: assert!(backup_exists, "должна остаться резервная копия");
+config.rs:654: "[[rewards]]\nname = \"Тревога\"\nsound = 'D:\\Stream\\shot.mp3'\nreward_id = \"abc123\"\n",
+config.rs:659: assert!(warning.is_some(), "пользователь должен узнать о переносе");
+config.rs:661: assert_eq!(binding.title, "Тревога");
+config.rs:668: assert!(backup_exists, "старый файл должен быть сохранён");
+config.rs:684: "[[rewards]]\nname = \"АЛО\"\nsound = 'D:\\Stream\\shot.mp3'\nreward_id = \"\"\n",
+config.rs:691: assert!(file.exists(), "старый файл не должен переименовываться");
+config.rs:702: title: "  Тревога  ".into(),
+config.rs:708: title: "Без ID".into(),
+config.rs:716: assert_eq!(settings.twitch_rewards[0].title, "Тревога");
+config.rs:723: settings.set_reward_sound("reward-1", "Тревога", r"C:\Sounds\alarm.mp3");
+config.rs:726: settings.set_reward_sound("reward-1", "Тревога", r"C:\Sounds\new.mp3");
+config.rs:740: settings.set_reward_sound("reward-1", "Тревога", r"C:\Sounds\alarm.mp3");
+config.rs:761: title = "Старая привязка"
+config.rs:779: settings.set_reward_sound("r1", "Тест", r"C:\a.mp3");
+eventsub.rs:84: log::error!("Не удалось запустить поток EventSub: {err}");
+eventsub.rs:188: log::warn!("EventSub: соединение потеряно ({message}), переподключаемся");
+eventsub.rs:245: SessionError::Network(format!("Некорректный ответ Twitch: {err}"))
+eventsub.rs:264: "Twitch закрыл соединение при подключении".to_string(),
+eventsub.rs:272: welcome.ok_or_else(|| SessionError::Network("Twitch не прислал идентификатор сессии".to_string()))?;
+eventsub.rs:282: log::info!("EventSub: подписка на награды активна (сессия {session})");
+eventsub.rs:301: log::warn!("EventSub: пропущено некорректное сообщение ({err})");
+eventsub.rs:313: log::debug!("EventSub: повторное событие пропущено");
+eventsub.rs:319: log::info!("EventSub: Twitch просит переподключиться");
+eventsub.rs:331: "Twitch отозвал подписку на награды ({status})."
+eventsub.rs:342: "нет данных от Twitch слишком долго".to_string(),
+eventsub.rs:347: return Err(SessionError::Network("Twitch закрыл соединение".to_string()))
+eventsub.rs:352: "нет данных от Twitch слишком долго".to_string(),
+eventsub.rs:395: log::info!("EventSub: подписка на активации наград создана");
+eventsub.rs:401: "Нет доступа к событиям наград. {}",
+eventsub.rs:408: log::info!("EventSub: подписка уже существует, обновляем её");
+eventsub.rs:414: log::info!("EventSub: старая подписка {existing_id} удалена");
+eventsub.rs:417: "EventSub: не удалось удалить старую подписку {existing_id} (HTTP {})",
+eventsub.rs:421: log::warn!("EventSub: не удалось удалить старую подписку {existing_id} ({err})")
+eventsub.rs:429: log::info!("EventSub: подписка на активации наград создана");
+eventsub.rs:433: log::warn!("EventSub: подписка уже существует, продолжаем с ней");
+eventsub.rs:439: "Twitch не создал подписку на награды (HTTP {status}). {}",
+eventsub.rs:446: log::warn!("EventSub: подписка уже существует, продолжаем с ней");
+eventsub.rs:451: "Twitch не создал подписку на награды (HTTP {status}). {}",
+eventsub.rs:464: .unwrap_or_else(|| "Twitch не уточнил причину.".to_string())
+eventsub.rs:520: .unwrap_or("зритель")
+eventsub.rs:584: "user_input":"вот трек https://youtu.be/dQw4w9WgXcQ",
+eventsub.rs:585: "reward": {"id":"reward-7","title":"Тревога","cost":500},
+eventsub.rs:598: assert_eq!(redemption.reward_title, "Тревога");
+eventsub.rs:603: "вот трек https://youtu.be/dQw4w9WgXcQ"
+eventsub.rs:651: assert!(first_data_id("не json").is_none());
+eventsub.rs:666: assert_eq!(api_message(&empty), "Twitch не уточнил причину.");
+http.rs:43: .map_err(|err| format!("Не удалось подготовить HTTP-клиент: {err}"))
+http.rs:59: .map_err(|err| format!("Не удалось подготовить локальный HTTP-клиент: {err}"))
+http.rs:99: .map_err(|err| format!("Ошибка сети: {err}"))?;
+http.rs:103: .map_err(|err| format!("Не удалось прочитать ответ: {err}"))?;
+http.rs:207: .map_err(|err| format!("Некорректный адрес WebSocket: {err}"))?;
+http.rs:213: .map_err(|err| format!("Некорректный заголовок {name}: {err}"))?;
+http.rs:215: .map_err(|err| format!("Некорректное значение заголовка {name}: {err}"))?;
+http.rs:221: .map_err(|err| format!("Не удалось подключиться к Twitch: {err}"))?;
+http.rs:225: "Сервер не подтвердил WebSocket-соединение (HTTP {})",
+http.rs:240: .map_err(|err| format!("Не удалось настроить ожидание данных: {err}")),
+http.rs:244: .map_err(|err| format!("Не удалось настроить ожидание данных: {err}")),
+http.rs:273: Err(err) => return Err(format!("Ошибка WebSocket: {err}")),
+json.rs:7: serde_json::from_str(input).map_err(|err| format!("некорректный JSON: {err}"))
+json.rs:52: let value = parse(r#"{"data":[{"id":"1","title":"Тест","cost":500}]}"#).unwrap();
+json.rs:55: assert_eq!(data[0].str_field("title"), Some("Тест"));
+json.rs:75: let escaped = escape("кавычка \" и перевод\nстроки");
+json.rs:77: assert_eq!(value.as_str(), Some("кавычка \" и перевод\nстроки"));
+logging.rs:33: Level::Error => "ОШИБКА",
+logging.rs:34: Level::Warn => "ВНИМАНИЕ",
+logging.rs:35: Level::Info => "ИНФО",
+logging.rs:36: Level::Debug => "ОТЛАДКА",
+logging.rs:37: Level::Trace => "ТРАССИРОВКА",
+logging.rs:166: self.write_record(record.level(), "[запись скрыта: похоже на токен]");
+logging.rs:215: log::error!("Критическая ошибка (паника): {info}");
+main.rs:20: "Запуск Reward Sounds v{} (Windows)",
+main.rs:25: log::error!("Не удалось создать папки данных: {err}");
+main.rs:30: log::info!("Reward Sounds уже запущен — открыто существующее окно");
+main.rs:64: log::error!("Не удалось запустить окно приложения: {err}");
+main.rs:66: "Reward Sounds не смог открыть окно.\n\n{err}\n\nПодробности записаны в журнал:\n%APPDATA%\\RewardSounds\\logs\\reward-sounds.log"
+music\chat.rs:16: const COMMANDS: [&str; 2] = ["!трек", "!track"];
+music\chat.rs:24: log::info!("Чат: канал не известен, команда !трек недоступна");
+music\chat.rs:47: log::info!("Чат: команда показа оверлея");
+music\chat.rs:51: log::warn!("Чат: соединение закрыто, переподключаемся");
+music\chat.rs:57: log::error!("Чат: не удалось запустить чтение: {err}");
+music\decode.rs:104: .map_err(|err| format!("не удалось разобрать аудио: {err}"))?;
+music\decode.rs:109: .ok_or_else(|| "в потоке нет аудиодорожки".to_string())?;
+music\decode.rs:128: .map_err(|err| format!("кодек не поддерживается: {err}"))?;
+music\decode.rs:160: return Err("в треке не оказалось звука".to_string());
+music\links.rs:41: LinkError::NoLink => "Не нашёл ссылку в заявке".to_string(),
+music\links.rs:43: format!("Поддерживается только YouTube, а тут {service}")
+music\links.rs:45: LinkError::BadVideoId(reason) => format!("Не понял ссылку YouTube: {reason}"),
+music\links.rs:78: None => return Err(LinkError::BadVideoId("в ссылке нет параметра v".into())),
+music\links.rs:91: "это клип, нужна ссылка на видео".into(),
+music\links.rs:96: "неизвестный адрес YouTube: {path}"
+music\links.rs:101: return Err(LinkError::UnsupportedService("Яндекс Музыка".into()));
+music\links.rs:104: return Err(LinkError::BadVideoId("в ссылке нет домена".into()));
+music\links.rs:120: "идентификатор видео «{id}» выглядит неверно"
+music\links.rs:199: parse(text).expect("ссылка должна разбираться").video_id
+music\links.rs:218: id("вот трек https://youtu.be/dQw4w9WgXcQ спасибо"),
+music\links.rs:222: id("послушай (https://www.youtube.com/watch?v=dQw4w9WgXcQ)."),
+music\links.rs:250: Err(LinkError::UnsupportedService("Яндекс Музыка".into()))
+music\links.rs:260: assert_eq!(parse("просто сообщение"), Err(LinkError::NoLink));
+music\links.rs:282: assert_eq!(find_first_url("смотри https://youtu.be/dQw4w9WgXcQ!!!").unwrap(), "https://youtu.be/dQw4w9WgXcQ");
+music\links.rs:288: assert!(LinkError::NoLink.message().contains("ссылку"));
+music\overlay.rs:27: log::warn!("Оверлей: порт {port} занят, строка «Сейчас играет» недоступна");
+music\overlay.rs:30: log::info!("Оверлей: http://127.0.0.1:{port}/overlay");
+music\overlay.rs:39: log::error!("Оверлей: не удалось запустить сервер: {err}");
+music\player.rs:109: log::error!("Не удалось запустить поток музыки: {err}");
+music\player.rs:111: state.error = Some("Не удалось запустить воспроизведение музыки".into());
+music\player.rs:168: .map_err(|_| "Плеер музыки не отвечает".to_string())
+music\player.rs:185: log::error!("Музыка: не удалось открыть устройство вывода: {err}");
+music\player.rs:188: "Не удалось открыть устройство вывода звука для музыки: {err}"
+music\player.rs:246: let message = format!("Не удалось создать поток вывода: {err}");
+music\player.rs:247: log::error!("Музыка: {message}");
+music\player.rs:255: log::error!("Музыка: {err}");
+music\player.rs:294: log::warn!("Музыка: перемотка на {sec} с не поддерживается");
+music\prefetch.rs:88: let taken = prefetch.take("aaa").expect("трек должен быть готов");
+music\prefetch.rs:90: assert!(!prefetch.is_ready_for("aaa"), "ячейка опустела");
+music\queue.rs:51: ItemState::Queued => "в очереди",
+music\queue.rs:52: ItemState::Loading => "загружается",
+music\queue.rs:53: ItemState::Playing => "играет",
+music\queue.rs:54: ItemState::Done => "сыграно",
+music\queue.rs:55: ItemState::Failed => "ошибка",
+music\queue.rs:56: ItemState::Refunded => "баллы возвращены",
+music\queue.rs:57: ItemState::Skipped => "пропущено",
+music\queue.rs:145: QueueReject::Full => "Очередь заявок заполнена".to_string(),
+music\queue.rs:146: QueueReject::Duplicate => "Эта заявка уже в очереди".to_string(),
+music\queue.rs:148: "Трек длиннее лимита: {} вместо {}",
+music\queue.rs:152: QueueReject::Live => "Прямые эфиры не поддерживаются".to_string(),
+music\queue.rs:333: "Очередь заявок версии {} не поддерживается — начинаем с пустой",
+music\queue.rs:351: log::warn!("Файл очереди повреждён: {err}");
+music\queue.rs:418: std::fs::create_dir_all(&dir).expect("временная папка");
+music\queue.rs:470: assert_eq!(queue.pending(), 0, "завершённые не занимают место");
+music\queue.rs:480: let first = queue.take_next().expect("первая заявка");
+music\queue.rs:488: let second = queue.take_next().expect("вторая заявка");
+music\queue.rs:520: assert!(!queue.move_up("redemption-b"), "уже сверху");
+music\queue.rs:529: title: "Тестовый трек".into(),
+music\queue.rs:530: channel: "Канал".into(),
+music\queue.rs:536: queue.save(&file).expect("очередь должна сохраниться");
+music\queue.rs:540: assert_eq!(loaded.items()[0].title, "Тестовый трек");
+music\queue.rs:552: queue.save(&file).expect("сохранение");
+music\queue.rs:564: std::fs::write(&file, "{это не json").unwrap();
+music\queue.rs:577: assert_eq!(ItemState::Playing.label(), "играет");
+music\queue.rs:582: assert!(QueueReject::Full.message().contains("заполнена"));
+music\queue.rs:583: assert!(QueueReject::Live.message().contains("эфир"));
+music\service.rs:181: log::error!("Не удалось запустить службу музыки: {err}");
+music\service.rs:183: state.error = Some("Не удалось запустить службу музыки".to_string());
+music\service.rs:344: log::warn!("Музыка: повторная заявка {redemption_id} проигнорирована");
+music\service.rs:346: reject(&events, redemption_id, "Вкладка «Музыка» выключена".into());
+music\service.rs:348: reject(&events, redemption_id, "yt-dlp не найден".into());
+music\service.rs:377: log::info!("Музыка: заявка {redemption_id} «{title}» в очереди, позиция {position}");
+music\service.rs:405: log::error!("Музыка: плеер не запустился: {err}");
+music\service.rs:427: log::warn!("Музыка: не удалось загрузить {}: {message}", item.video_id);
+music\service.rs:552: "Музыка: «{}» сыгран: длительность {} с, позиция плеера {} с",
+music\service.rs:582: log::info!("Музыка: старт «{title}» (@{})", item.user_login);
+music\service.rs:602: log::info!("Музыка: Яндекс Музыка поставлена на паузу");
+music\service.rs:613: log::error!("Музыка: плеер не запустился: {err}");
+music\service.rs:636: queue.fail(&item.redemption_id, "yt-dlp не найден");
+music\service.rs:653: log::info!("Музыка: предзагрузка «{}»", next.label());
+music\service.rs:668: log::info!("Музыка: Яндекс Музыка продолжает играть");
+music\service.rs:692: Some("yt-dlp не найден: положите yt-dlp.exe рядом с программой".to_string())
+music\service.rs:700: log::info!("Музыка: служба остановлена");
+music\service.rs:707: log::info!("Музыка: yt-dlp {version} ({})", path.display())
+music\service.rs:709: _ => log::error!("Музыка: yt-dlp не найден — заявки приниматься не будут"),
+music\service.rs:713: fn reject(events: &Sender<MusicEvent>, redemption_id: String, reason: String) {    log::info!("Музыка: заявка {redemption_id} отклонена — {reason}");
+music\service.rs:747: log::error!("Музыка: не удалось запустить проверку ссылки: {err}");
+music\service.rs:771: log::error!("Музыка: не удалось запустить загрузку: {err}");
+music\ytdlp.rs:65: YtError::NotFound => write!(f, "yt-dlp не найден"),
+music\ytdlp.rs:66: YtError::Io(message) => write!(f, "не удалось запустить yt-dlp: {message}"),
+music\ytdlp.rs:68: YtError::Timeout(what) => write!(f, "не дождались ответа: {what}"),
+music\ytdlp.rs:69: YtError::TooLarge => write!(f, "аудио больше допустимого размера"),
+music\ytdlp.rs:70: YtError::BadOutput(message) => write!(f, "непонятный ответ yt-dlp: {message}"),
+music\ytdlp.rs:199: return Err(YtError::BadOutput("yt-dlp вернул пустой поток".into()));
+music\ytdlp.rs:217: .unwrap_or("обновление выполнено");
+music\ytdlp.rs:281: "загрузка аудио"
+music\ytdlp.rs:283: "ответ yt-dlp"
+music\ytdlp.rs:295: .unwrap_or("yt-dlp завершился с ошибкой");
+music\ytdlp.rs:304: "yt-dlp завершился с ошибкой".to_string()
+music\ytdlp.rs:402: return Err(YtError::BadOutput("yt-dlp ничего не вернул".into()));
+music\ytdlp.rs:412: return Err(YtError::BadOutput("нет названия видео".into()));
+music\ytdlp.rs:452: let meta = parse_meta("Стрим\tNA\tTrue\tКанал\n").unwrap();
+music\ytdlp.rs:477: std::fs::create_dir_all(&dir).expect("временная папка");
+music\ytdlp.rs:479: std::fs::write(&fake, b"stub").expect("файл-заглушка");
+playback.rs:88: log::error!("Не удалось получить настройки проигрывания");
+playback.rs:103: "Звуки выключены — активация «{}» пропущена",
+playback.rs:111: "У награды {} нет звука — пропускаем",
+playback.rs:120: "Награда «{}»: файл не найден ({})",
+playback.rs:128: "Награда «{}»: {}",
+playback.rs:138: "Играет звук награды «{}» (громкость {:.0}%)",
+playback.rs:142: Err(err) => log::error!("Не удалось включить звук награды: {err}"),
+playback.rs:155: settings.set_reward_sound(reward_id, "Тест", path);
+playback.rs:177: title: "Пустая".to_string(),
+playback.rs:218: std::fs::write(path, data).expect("не удалось записать тестовый WAV");
+playback.rs:233: settings.set_reward_sound("volume-test", "Громкость", wav.to_str().unwrap());
+playback.rs:262: reward_title: "Громкость".to_string(),
+playback.rs:269: .expect("звук не дошёл до аудиопотока");
+playback.rs:272: "ожидалось 0.8 × 0.5 = 0.4, получено {volume}"
+secure_store.rs:42: return Err("Не удалось зашифровать токен средствами Windows".to_string());
+secure_store.rs:57: return Err("Токен отсутствует".to_string());
+secure_store.rs:61: from_hex(hex.trim()).ok_or_else(|| "Данные токена повреждены".to_string())?;
+secure_store.rs:86: "Не удалось расшифровать токен: данные сохранены под другой учётной записью Windows"
+secure_store.rs:97: String::from_utf8(decrypted).map_err(|_| "Токен повреждён".to_string())
+secure_store.rs:139: let secret = "secret-token-пример-123";
+secure_store.rs:140: let encrypted = protect(secret).expect("шифрование должно работать");
+secure_store.rs:141: assert_ne!(encrypted, secret, "шифротекст не должен совпадать с токеном");
+secure_store.rs:144: let restored = unprotect(&encrypted).expect("расшифровка должна работать");
+tray.rs:80: log::error!("Не удалось запустить поток трея: {err}");
+tray.rs:161: log::error!("Не удалось создать скрытое окно для трея");
+tray.rs:190: log::warn!("Не удалось добавить иконку в трей (попытка {attempt}, код {code})");
+tray.rs:195: log::info!("Иконка добавлена в системный трей");
+tray.rs:197: log::error!("Трей недоступен: окно нельзя скрывать в трей");
+tray.rs:247: log::info!("Трей: выбран пункт меню {command}");
+tray.rs:302: AppendMenuW(menu, MF_STRING, 1, wide("Открыть Reward Sounds").as_ptr());
+tray.rs:309: wide("Воспроизводить звуки").as_ptr(),
+tray.rs:315: wide("Остановить все звуки").as_ptr(),
+tray.rs:318: AppendMenuW(menu, MF_STRING, 4, wide("Выход").as_ptr());
+tray.rs:444: assert!(!icon.is_null(), "иконка трея должна создаваться");
+tray.rs:468: "класс окна трея должен регистрироваться"
+tray.rs:494: "пункты меню должны превращаться в события для приложения"
+twitch.rs:41: .ok_or_else(|| "Twitch не вернул id аккаунта".to_string())?
+twitch.rs:45: .ok_or_else(|| "Twitch не вернул логин аккаунта".to_string())?
+twitch.rs:78: .ok_or_else(|| "У награды нет id".to_string())?
+twitch.rs:82: .unwrap_or("Без названия")
+twitch.rs:104: ("выключена", false)
+twitch.rs:106: ("на паузе", false)
+twitch.rs:108: ("нет в наличии", false)
+twitch.rs:110: ("активна", true)
+twitch.rs:160: return Err("Название награды не может быть пустым.".to_string());
+twitch.rs:163: return Err("Название награды — не больше 45 символов.".to_string());
+twitch.rs:166: return Err("Стоимость должна быть от 1 до 1 000 000 баллов.".to_string());
+twitch.rs:169: return Err("Цвет должен быть в формате #RRGGBB.".to_string());
+twitch.rs:182: "prompt": if self.requires_input { "Вставьте ссылку на трек из YouTube" } else { "" },
+twitch.rs:194: "prompt": if self.requires_input { "Вставьте ссылку на трек из YouTube" } else { "" },
+twitch.rs:287: RedemptionStatus::Fulfilled => "засчитано",
+twitch.rs:288: RedemptionStatus::Canceled => "баллы возвращены",
+twitch.rs:357: log::error!("Не удалось запустить поток Twitch: {err}");
+twitch.rs:489: log::warn!("Twitch: вход не выполнен: {message}");
+twitch.rs:498: log::warn!("Twitch: не удалось обновить токен: {message}");
+twitch.rs:520: log::info!("Twitch: награда «{}» создана", draft.title);
+twitch.rs:531: log::warn!("Twitch: не удалось создать награду: {message}");
+twitch.rs:549: log::info!("Twitch: награда «{}» изменена", draft.title);
+twitch.rs:560: log::warn!("Twitch: не удалось изменить награду: {message}");
+twitch.rs:572: log::info!("Twitch: награда «{title}» удалена");
+twitch.rs:580: log::warn!("Twitch: не удалось удалить награду: {message}");
+twitch.rs:601: "Twitch: активация {redemption_id} — {}",
+twitch.rs:614: "Twitch: не удалось обновить активацию {redemption_id}: {message}"
+twitch.rs:635: log::info!("Twitch: получено наград — {}", rewards.len());
+twitch.rs:639: log::warn!("Twitch: токен не принят при загрузке наград");
+twitch.rs:643: log::warn!("Twitch: не удалось загрузить награды: {message}");
+twitch.rs:661: format!("Не удалось связаться с Twitch. Проверьте интернет. ({err})")
+twitch.rs:665: return Err(http_error(&response, "Twitch не выдал код подтверждения"));
+twitch.rs:669: .map_err(|err| format!("Некорректный ответ Twitch: {err}"))?;
+twitch.rs:673: .ok_or_else(|| "Twitch не вернул код устройства".to_string())?
+twitch.rs:677: .ok_or_else(|| "Twitch не вернул код для ввода".to_string())?
+twitch.rs:686: log::info!("Twitch: запрошен код подтверждения (действует {expires_in} с)");
+twitch.rs:698: log::info!("Twitch: вход отменён пользователем");
+twitch.rs:708: "Код подтверждения истёк. Нажмите «Подключить Twitch» и попробуйте снова."
+twitch.rs:727: "Twitch: вход выполнен, аккаунт @{} (id {})",
+twitch.rs:739: "Ждём подтверждения на Twitch…".to_string(),
+twitch.rs:745: "Twitch просит подождать немного дольше…".to_string(),
+twitch.rs:750: "Код подтверждения истёк. Нажмите «Подключить Twitch» ещё раз."
+twitch.rs:756: "Доступ отклонён на Twitch. Попробуйте подключиться снова."
+twitch.rs:760: "" => return Err(http_error(&response, "Twitch отклонил вход")),
+twitch.rs:761: other => return Err(format!("Twitch отклонил вход: {other}")),
+twitch.rs:768: "Не удалось связаться с Twitch. Проверьте интернет. ({err})"
+twitch.rs:772: "Нет связи с Twitch, пробуем снова…".to_string(),
+twitch.rs:792: .map_err(|err| format!("Не удалось связаться с Twitch. ({err})"))?;
+twitch.rs:796: "Twitch: обновление токена отклонено (HTTP {})",
+twitch.rs:800: "Сессия Twitch истекла. Подключите аккаунт заново — звуки при этом сохранятся."
+twitch.rs:812: log::info!("Twitch: вход обновлён для @{}", user.login);
+twitch.rs:826: Ok(response) if response.is_success() => log::info!("Twitch: доступ отозван"),
+twitch.rs:827: Ok(response) => log::warn!("Twitch: не подтвердил отзыв доступа (HTTP {})", response.status),
+twitch.rs:828: Err(err) => log::warn!("Twitch: не удалось отозвать доступ ({err})"),
+twitch.rs:867: "Twitch не {action} (HTTP {status}). {}",
+twitch.rs:868: http_error(response, "Проверьте права приложения.")
+twitch.rs:898: "Активация не найдена: возможно, награда уже удалена".to_string(),
+twitch.rs:901: "Twitch не обновил активацию (HTTP {code}). {}",
+twitch.rs:902: http_error(&response, "Проверьте права приложения.")
+twitch.rs:929: "Twitch не создал награду (HTTP {status}). {}",
+twitch.rs:930: http_error(&response, "Проверьте права приложения.")
+twitch.rs:938: log::warn!("Twitch: ответ на создание награды не разобран: {err}");
+twitch.rs:939: ManageError::Failed("Twitch вернул неожиданный ответ при создании награды.".to_string())
+twitch.rs:966: check_manage(&response, "изменил награду")
+twitch.rs:983: check_manage(&response, "удалил награду")
+twitch.rs:1013: "Не удалось получить награды. Проверьте интернет. ({err})"
+twitch.rs:1022: "Twitch не разрешил читать награды. Отключите и подключите аккаунт заново."
+twitch.rs:1026: _ => return Err(FetchError::Failed(http_error(&response, "Twitch не вернул награды"))),
+twitch.rs:1030: .map_err(|err| FetchError::Failed(format!("Некорректный ответ Twitch: {err}")))?;
+twitch.rs:1034: .ok_or_else(|| FetchError::Failed("Twitch вернул неожиданный ответ".to_string()))?;
+twitch.rs:1039: Err(err) => log::warn!("Twitch: награда пропущена ({err})"),
+twitch.rs:1068: .map_err(|err| format!("Не удалось получить данные аккаунта Twitch. ({err})"))?;
+twitch.rs:1071: return Err("Twitch отклонил токен. Подключите аккаунт заново.".to_string());
+twitch.rs:1074: return Err(http_error(&response, "Twitch не вернул данные аккаунта"));
+twitch.rs:1078: .map_err(|err| format!("Некорректный ответ Twitch: {err}"))?;
+twitch.rs:1082: .ok_or_else(|| "Twitch вернул неожиданный ответ".to_string())?;
+twitch.rs:1085: .ok_or_else(|| "Twitch не вернул аккаунт".to_string())?;
+twitch.rs:1092: .map_err(|err| format!("Некорректный ответ Twitch: {err}"))?;
+twitch.rs:1095: .ok_or_else(|| "Twitch не вернул access token".to_string())?
+twitch.rs:1179: let text = r#"{"data":[{"id":"42","login":"streamer","display_name":"Стример","type":""}]}"#;
+twitch.rs:1185: assert_eq!(user.display_name, "Стример");
+twitch.rs:1203: http_error(&response, "Ошибка"),
+twitch.rs:1204: "Ошибка: Invalid client id"
+twitch.rs:1218: {"id":"abc","title":"Тревога","cost":1000,"is_enabled":true,"is_paused":false,"is_in_stock":true},
+twitch.rs:1219: {"id":"def","title":"Мем","cost":50,"is_enabled":false,"is_paused":true,"is_in_stock":false}
+twitch.rs:1226: assert_eq!(first.title, "Тревога");
+twitch.rs:1229: assert_eq!(first.state_label(), ("активна", true));
+twitch.rs:1232: assert_eq!(second.state_label(), ("выключена", false));
+twitch.rs:1239: assert_eq!(reward.title, "Без названия");
+twitch.rs:1240: assert_eq!(reward.state_label(), ("активна", true));
+twitch.rs:1270: assert!(RewardDraft::new("Награда", 500, "#A970FF").validate().is_ok());
+twitch.rs:1272: assert!(RewardDraft::new("Награда", 0, "#A970FF").validate().is_err());
+twitch.rs:1273: assert!(RewardDraft::new("Награда", 500, "A970FF").validate().is_err());
+twitch.rs:1274: assert!(RewardDraft::new("Награда", 500, "#A97").validate().is_err());
+twitch.rs:1276: let long_title = "я".repeat(46);
+twitch.rs:1284: let draft = RewardDraft::new("Тест", 777, "#123456");
+twitch.rs:1287: assert_eq!(create.str_field("title"), Some("Тест"));
+twitch.rs:1294: assert_eq!(update.str_field("title"), Some("Тест"));
+twitch.rs:1304: check_manage(&unauthorized, "создал награду"),
+twitch.rs:1312: match check_manage(&bad, "создал награду") {
+twitch.rs:1316: _ => panic!("ожидалась ошибка с текстом Twitch"),
+twitch.rs:1323: assert!(check_manage(&ok, "удалил награду").is_ok());
+util.rs:11: format!("{bytes} Б")
+util.rs:13: format!("{:.0} КБ", value / KB)
+util.rs:15: format!("{:.1} МБ", value / (KB * KB))
+util.rs:17: format!("{:.2} ГБ", value / (KB * KB * KB))
+util.rs:66: log::warn!("Не удалось открыть проводник: {err}");
+util.rs:76: assert_eq!(plural_ru(1, "звук", "звука", "звуков"), "звук");
+util.rs:77: assert_eq!(plural_ru(2, "звук", "звука", "звуков"), "звука");
+util.rs:78: assert_eq!(plural_ru(5, "звук", "звука", "звуков"), "звуков");
+util.rs:79: assert_eq!(plural_ru(11, "звук", "звука", "звуков"), "звуков");
+util.rs:80: assert_eq!(plural_ru(21, "звук", "звука", "звуков"), "звук");
+util.rs:81: assert_eq!(plural_ru(112, "звук", "звука", "звуков"), "звуков");
+util.rs:86: assert_eq!(format_size(900), "900 Б");
+util.rs:87: assert_eq!(format_size(2048), "2 КБ");
+util.rs:88: assert_eq!(format_size(3 * 1024 * 1024), "3.0 МБ");

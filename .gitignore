@@ -20,6 +20,10 @@ __pycache__/
 config.broken-*.toml
 *.log
 
+# Временные профили браузера/распакованные макеты (генерация скриншотов)
+**/_edgetmp/
+**/_screens-extract/
+
 # ОС и редакторы
 Thumbs.db
 desktop.ini

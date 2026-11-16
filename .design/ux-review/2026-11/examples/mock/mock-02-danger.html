@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../../../reward-sounds-tauri/src-tauri/ui/style.css">
+<link rel="stylesheet" href="../../../../../reward-sounds-tauri/src-tauri/ui/app.css">
+<link rel="stylesheet" href="mock.css">
+<title>Макет: опасные действия</title>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Проблема 3 · макет решения</div>
+    <div class="title" style="margin-top:3px">Опасные действия: подтверждение, отмена и профилактика</div>
+    <div class="sub">Сейчас «Остановить всё», «Убрать» и «Очистить» срабатывают мгновенно. Ниже — два уровня защиты: диалог+отмена (A) и недопущение ошибки (B).</div>
+  </div>
+
+  <!-- СЕЙЧАС -->
+  <div class="frame">
+    <div class="frame-head"><span class="tag tag-now">СЕЙЧАС</span><span class="frame-title">Одинаково «громкие» и одинаково необратимые</span></div>
+    <div class="row">
+      <div class="stage" style="flex:1 1 auto">
+        <div class="hstack" style="gap:26px">
+          <div class="hstack">
+            <div class="btn btn-sm btn-secondary">Заменить</div>
+            <div class="ghost-red" style="font-size:13px">Убрать</div>
+            <span class="caption">привязка файла стирается сразу</span>
+          </div>
+          <div class="hstack">
+            <span style="font-size:14px;font-weight:600">Очередь · 3 из 10</span>
+            <div class="ghost-red" style="font-size:13px">Очистить</div>
+            <span class="caption">вся очередь — сразу</span>
+          </div>
+          <div class="hstack">
+            <div class="btn btn-ghost btn-danger-ghost" style="font-size:13px">Остановить всё</div>
+            <span class="caption">без подтверждения</span>
+          </div>
+        </div>
+      </div>
+      <div style="flex:0 0 290px">
+        <ul class="notes">
+          <li class="neg">Красный цвет — единственный сигнал опасности</li>
+          <li class="neg">Нет ни отмены, ни возврата баллов зрителям</li>
+          <li class="neg">Удаление награды — системный confirm, остальное — без</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row grow">
+    <!-- A -->
+    <div class="col">
+      <div class="frame" style="height:100%">
+        <div class="frame-head"><span class="tag tag-a">ВАРИАНТ A</span><span class="frame-title">Подтверждение + отмена в тосте</span></div>
+        <div class="stage">
+          <div class="scrim" style="position:relative;inset:auto;border-radius:10px;padding:16px 0">
+            <div class="dlg" style="width:400px">
+              <div class="dlg-title">Остановить все звуки?</div>
+              <div class="dlg-sub">Сейчас играют 2 звука и музыка. Воспроизведение остановится на стриме.</div>
+              <div class="dlg-actions">
+                <div class="btn btn-secondary">Отмена</div>
+                <div class="right"><div class="btn btn-primary">Остановить всё</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="toasts" style="margin-top:12px">
+            <div class="toast">
+              <div class="toast-ico ok">✓</div>
+              <div><div class="toast-title">Привязка «Шиза» удалена</div><div class="toast-sub">Файл остался на диске — его можно выбрать снова.</div></div>
+              <div class="toast-act">Отменить</div>
+            </div>
+            <div class="toast warn">
+              <div class="toast-ico warn">!</div>
+              <div><div class="toast-title">Очередь очищена · 3 трека</div><div class="toast-sub">Баллы зрителям не возвращены — вернуть?</div></div>
+              <div class="toast-act">Вернуть баллы</div>
+            </div>
+          </div>
+        </div>
+        <ul class="notes">
+          <li class="pos">Диалог только для по-настоящему необратимого (стоп всего)</li>
+          <li class="pos">Отмена живёт 10 с — покрывает «промахнулся мышью»</li>
+          <li class="neg">Лишний клик в сценарии, где стример спешит</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- B -->
+    <div class="col">
+      <div class="frame" style="height:100%">
+        <div class="frame-head"><span class="tag tag-b">ВАРИАНТ B</span><span class="frame-title">Профилактика: действия недоступны, когда не нужны</span></div>
+        <div class="stage">
+          <div class="playbar" style="background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.1)">
+            <span class="dot" style="background:#5A5A5A"></span>
+            <span style="color:#8B8B8B">Ничего не играет</span>
+            <span class="count">стоп недоступен</span>
+            <div class="btn btn-danger-ghost stop" style="height:28px;font-size:12.5px;padding:0 10px;opacity:.4;pointer-events:none">Остановить всё</div>
+          </div>
+          <div class="hstack" style="margin-top:12px;position:relative">
+            <div class="btn btn-sm btn-secondary">Заменить</div>
+            <div class="ghost-red ghost-neutral" style="font-size:13px;color:#FCA5A5">Убрать…</div>
+            <div class="pop" style="position:absolute;left:110px;top:40px;width:270px;z-index:3">
+              <div style="font-size:12.5px;font-weight:600">Убрать звук у «Шиза»?</div>
+              <div class="caption" style="margin-top:4px">Привязка удалится, файл останется на диске.</div>
+              <div class="hstack" style="margin-top:10px;justify-content:flex-end">
+                <div class="btn btn-sm btn-secondary">Отмена</div>
+                <div class="btn btn-sm btn-primary">Убрать</div>
+              </div>
+            </div>
+          </div>
+          <div class="hstack" style="margin-top:150px">
+            <span style="font-size:13px;font-weight:600">Очередь · 0 из 10</span>
+            <span class="caption">«Очистить» скрыта, пока очередь пуста</span>
+          </div>
+          <div class="banner ok" style="margin-top:10px">
+            <span>✓</span> Отменяемые действия пишутся в журнал с кнопкой «Вернуть»
+            <div class="btn btn-sm btn-ghost" style="height:26px;font-size:11.5px">Открыть журнал</div>
+          </div>
+        </div>
+        <ul class="notes">
+          <li class="pos">Ошибку нельзя совершить — лучше, чем отменить</li>
+          <li class="pos">Inline-подтверждение не блокирует экран модалкой</li>
+          <li class="neg">Нужно аккуратно проектировать состояния disabled</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

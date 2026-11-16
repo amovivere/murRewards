@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../../../reward-sounds-tauri/src-tauri/ui/style.css">
+<link rel="stylesheet" href="../../../../../reward-sounds-tauri/src-tauri/ui/app.css">
+<link rel="stylesheet" href="mock.css">
+<title>Макет: панель инструментов «Награды»</title>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Проблема 2 · макет решения</div>
+    <div class="title" style="margin-top:3px">Панель «Наград»: один ряд управления и контекстный стоп</div>
+    <div class="sub">Сейчас над сеткой два ряда и пять чипов, а «Остановить всё» всегда активно. Ниже — два способа оставить один ряд.</div>
+  </div>
+
+  <!-- СЕЙЧАС -->
+  <div class="frame">
+    <div class="frame-head"><span class="tag tag-now">СЕЙЧАС</span><span class="frame-title">2 ряда + 5 чипов + всегда активный стоп</span>
+      <span class="caption" style="margin-left:auto">высота панели 92px</span></div>
+    <div class="row">
+      <div class="stage" style="flex:1 1 auto">
+        <div class="tb">
+          <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7C7C7C" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Поиск награды"></label>
+          <div class="seg"><div class="seg-item active">Плитка</div><div class="seg-item">Список</div></div>
+          <select class="select"><option>Все награды</option></select>
+          <div class="spacer"></div>
+          <div class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8B8B8B" stroke-width="1.7" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 6"/><path d="M20 4v7h-7"/></svg></div>
+          <div class="btn btn-ghost btn-danger-ghost"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="1.6"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor" stroke="none"/></svg>Остановить всё</div>
+        </div>
+        <div class="pills" style="margin-top:10px">
+          <div class="pill active">Все <b>11</b></div>
+          <div class="pill">Со звуком <b>9</b></div>
+          <div class="pill"><span class="dot" style="background:#F59E0B"></span>Без звука <b>2</b></div>
+          <div class="pill"><span class="dot" style="background:#8B00FF"></span>Играет <b>0</b></div>
+          <div class="pill"><span class="dot" style="background:#5A5A5A"></span>Выключенные <b>9</b></div>
+        </div>
+      </div>
+      <div style="flex:0 0 300px">
+        <ul class="notes">
+          <li class="neg">7 контролов и 5 фильтров конкурируют за внимание над списком</li>
+          <li class="neg">Стоп активен, когда останавливать нечего (Играет 0)</li>
+          <li class="neg">На 980px ряд разрывается: стоп уезжает на вторую строку</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ВАРИАНТ A -->
+  <div class="frame">
+    <div class="frame-head"><span class="tag tag-a">ВАРИАНТ A</span><span class="frame-title">Один ряд: фильтр в селект, стоп — в полосу воспроизведения</span></div>
+    <div class="row">
+      <div class="stage" style="flex:1 1 auto">
+        <div class="tb">
+          <label class="search" style="width:212px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7C7C7C" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Поиск награды"></label>
+          <select class="select" style="height:32px;font-size:12.8px"><option>Все награды · 11</option></select>
+          <select class="select" style="height:32px;font-size:12.8px"><option>Сначала дорогие</option></select>
+          <div class="seg"><div class="seg-item active">Плитка</div><div class="seg-item">Список</div></div>
+          <div class="spacer"></div>
+          <div class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8B8B8B" stroke-width="1.7" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 6"/><path d="M20 4v7h-7"/></svg></div>
+        </div>
+        <div class="playbar" style="margin-top:11px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#C9A7FF"><path d="M8 5v14l11-7z"/></svg>
+          <span style="color:#EDEDED;font-weight:600">Играют 2 звука</span>
+          <span class="count">«Шиза», «Выстрел» · 46% / 200%</span>
+          <div class="btn btn-danger-ghost stop" style="height:28px;font-size:12.5px;padding:0 10px">Остановить всё</div>
+        </div>
+        <div class="caption" style="margin-top:9px">Полоса появляется только когда есть что останавливать, и исчезает вместе со звуком.</div>
+      </div>
+      <div style="flex:0 0 300px">
+        <ul class="notes">
+          <li class="pos">Один ряд: сетка поднимается на 30px — помещается ещё ряд карточек</li>
+          <li class="pos">Стоп по контексту: рядом с тем, что останавливаем, и только когда актуально</li>
+          <li class="neg">Фильтры уходят в селект: чтобы увидеть «Играет 0», нужно открыть список</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ВАРИАНТ B -->
+  <div class="frame">
+    <div class="frame-head"><span class="tag tag-b">ВАРИАНТ B</span><span class="frame-title">Один ряд: «Фильтры» с поповером и счётчиком</span></div>
+    <div class="row">
+      <div class="stage" style="flex:1 1 auto">
+        <div class="tb">
+          <label class="search" style="width:212px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7C7C7C" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Поиск награды"></label>
+          <div class="btn btn-secondary filter-btn" style="height:32px;font-size:12.8px;padding:0 14px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Фильтры
+            <span class="badge">2</span>
+          </div>
+          <select class="select" style="height:32px;font-size:12.8px"><option>Сначала дорогие</option></select>
+          <div class="seg"><div class="seg-item active">Плитка</div><div class="seg-item">Список</div></div>
+          <div class="spacer"></div>
+          <div class="btn btn-icon btn-secondary"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8B8B8B" stroke-width="1.7" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 6"/><path d="M20 4v7h-7"/></svg></div>
+        </div>
+        <div class="pop" style="margin-top:9px;width:310px">
+          <div class="pop-title">ФИЛЬТРЫ</div>
+          <div class="pop-row"><span class="chk"></span>Все награды<span class="c">11</span></div>
+          <div class="pop-row"><span class="chk on"></span>Со звуком<span class="c">9</span></div>
+          <div class="pop-row"><span class="chk"></span>Без звука<span class="c">2</span></div>
+          <div class="pop-row"><span class="chk on"></span>Играет<span class="c">0</span></div>
+          <div class="pop-row"><span class="chk"></span>Выключенные<span class="c">9</span></div>
+          <div class="pop-sep"></div>
+          <div class="pop-row" style="color:#C9A7FF">Сбросить фильтры</div>
+        </div>
+      </div>
+      <div style="flex:0 0 300px">
+        <ul class="notes">
+          <li class="pos">Один контрол вместо пяти; счётчик показывает, что фильтр активен</li>
+          <li class="pos">Поповер масштабируется на любые будущие фильтры и не занимает высоту списка</li>
+          <li class="pos">Комбинации фильтров («Со звуком + Играет») становятся возможны</li>
+          <li class="neg">Фильтр за одним кликом; на 980px поповер открывается вверх</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

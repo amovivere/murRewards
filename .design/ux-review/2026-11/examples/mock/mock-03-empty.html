@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../../../reward-sounds-tauri/src-tauri/ui/style.css">
+<link rel="stylesheet" href="../../../../../reward-sounds-tauri/src-tauri/ui/app.css">
+<link rel="stylesheet" href="mock.css">
+<title>Макет: пустые состояния и выключенные награды</title>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Проблема 4 · макет решения</div>
+    <div class="title" style="margin-top:3px">Пустые состояния и выключенные награды</div>
+    <div class="sub">Фильтр «Выключенные 9» сейчас показывает пустую сетку без объяснений. Ниже — что должно появляться вместо пустоты и как вернуть 9 наград в оборот.</div>
+  </div>
+
+  <div class="row grow">
+    <!-- СЕЙЧАС -->
+    <div class="col">
+      <div class="frame" style="height:100%">
+        <div class="frame-head"><span class="tag tag-now">СЕЙЧАС</span><span class="frame-title">Активный фильтр и пустой экран</span></div>
+        <div class="stage" style="flex:1 1 auto;display:flex;flex-direction:column">
+          <div class="pills compact" style="margin-top:0">
+            <div class="pill">Все <b>11</b></div>
+            <div class="pill">Со звуком <b>9</b></div>
+            <div class="pill"><span class="dot" style="background:#F59E0B"></span>Без звука <b>2</b></div>
+            <div class="pill"><span class="dot" style="background:#8B00FF"></span>Играет <b>0</b></div>
+            <div class="pill active"><span class="dot" style="background:#5A5A5A"></span>Выключенные <b>9</b></div>
+          </div>
+          <div style="flex:1 1 auto;min-height:80px"></div>
+          <div class="caption" style="color:#FCA5A5">Результат: пустая сетка. Ни сообщения, ни сброса, ни объяснения, куда делись 9 наград.</div>
+        </div>
+        <ul class="notes">
+          <li class="neg">Чип выглядит рабочим — и приводит в пустоту</li>
+          <li class="neg">Отключённые награды нельзя ни увидеть, ни включить</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- A -->
+    <div class="col">
+      <div class="frame" style="height:100%">
+        <div class="frame-head"><span class="tag tag-a">ВАРИАНТ A</span><span class="frame-title">Понятное пустое состояние + сброс</span></div>
+        <div class="stage" style="flex:1 1 auto;display:flex;flex-direction:column">
+          <div class="pills compact" style="margin-top:0">
+            <div class="pill">Все <b>20</b></div>
+            <div class="pill">Со звуком <b>9</b></div>
+            <div class="pill"><span class="dot" style="background:#F59E0B"></span>Без звука <b>2</b></div>
+            <div class="pill"><span class="dot" style="background:#8B00FF"></span>Играет <b>0</b></div>
+            <div class="pill active"><span class="dot" style="background:#5A5A5A"></span>Выключенные <b>9</b></div>
+          </div>
+          <div class="empty" style="margin-top:10px;flex:1 1 auto;justify-content:center">
+            <div class="empty-ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A7FF" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h16M9 12h6M11 17h2"/></svg>
+            </div>
+            <div class="empty-title">Выключенные награды скрыты</div>
+            <div class="empty-sub">На канале 9 наград сняты с публикации. Их можно показать в списке и включить обратно.</div>
+            <div class="hstack" style="margin-top:2px">
+              <div class="btn btn-sm btn-primary">Показать 9 наград</div>
+              <div class="btn btn-sm btn-ghost">Сбросить фильтры</div>
+            </div>
+          </div>
+        </div>
+        <ul class="notes">
+          <li class="pos">Фильтр объясняет результат и даёт следующий шаг</li>
+          <li class="pos">Тот же блок переиспользуется для поиска и пустого канала</li>
+          <li class="neg">Не решает проблему доступа к выключенным наградам</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="frame" style="flex:1 1 auto">
+    <div class="frame-head"><span class="tag tag-b">ВАРИАНТ B</span><span class="frame-title">Пустые состояния везде + «Выключенные» как секция списка</span></div>
+    <div class="row" style="flex:1 1 auto">
+      <div class="stage" style="flex:0 0 400px;display:flex;flex-direction:column">
+        <label class="search" style="width:100%;margin-bottom:9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7C7C7C" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6" stroke-linecap="round"/></svg>
+          <input type="text" value="аниме" placeholder="Поиск награды"></label>
+        <div class="empty" style="flex:1 1 auto;justify-content:center;padding:16px">
+          <div class="empty-ico">⌕</div>
+          <div class="empty-title">Ничего не найдено</div>
+          <div class="empty-sub">По запросу «аниме» нет наград. Проверьте раскладку или сбросьте поиск.</div>
+          <div class="btn btn-sm btn-secondary" style="margin-top:2px">Сбросить поиск</div>
+        </div>
+      </div>
+      <div class="stage" style="flex:1 1 auto;overflow:hidden">
+        <div class="hstack" style="margin-bottom:6px">
+          <span class="grp" style="padding:0">СНЯТЫ С ПУБЛИКАЦИИ · 9</span>
+          <div class="spacer"></div>
+          <span class="caption">включаются прямо здесь</span>
+        </div>
+        <div class="lrow" style="height:46px;grid-template-columns:26px minmax(0,1fr) 78px 92px;border-top:0;padding:0 8px">
+          <div class="ctile" style="background:#3A3A3A;color:#B9B9B9">Т</div>
+          <div><div class="lname" style="color:#B9B9B9">Ты новичок?</div><div class="lmeta">200 баллов · без звука</div></div>
+          <div class="pill" style="height:22px;font-size:10.5px">выключена</div>
+          <div class="btn btn-sm btn-secondary" style="height:26px;font-size:11.5px">Включить</div>
+        </div>
+        <div class="lrow" style="height:46px;grid-template-columns:26px minmax(0,1fr) 78px 92px;padding:0 8px">
+          <div class="ctile" style="background:#5B4A3A;color:#F5F5F5">С</div>
+          <div><div class="lname" style="color:#B9B9B9">Сказануть чего</div><div class="lmeta">250 баллов · newbie.mp3</div></div>
+          <div class="pill" style="height:22px;font-size:10.5px">выключена</div>
+          <div class="btn btn-sm btn-secondary" style="height:26px;font-size:11.5px">Включить</div>
+        </div>
+        <div class="lrow" style="height:46px;grid-template-columns:26px minmax(0,1fr) 78px 92px;padding:0 8px">
+          <div class="ctile" style="background:#3A4A5B;color:#F5F5F5">А</div>
+          <div><div class="lname" style="color:#B9B9B9">А где донаты</div><div class="lmeta">100 баллов · где.mp3</div></div>
+          <div class="pill" style="height:22px;font-size:10.5px">выключена</div>
+          <div class="btn btn-sm btn-secondary" style="height:26px;font-size:11.5px">Включить</div>
+        </div>
+        <div class="caption" style="margin-top:6px;color:#C9A7FF">Показать ещё 6 →</div>
+      </div>
+      <div style="flex:0 0 240px">
+        <ul class="notes">
+          <li class="pos">Все состояния объяснены: фильтр, поиск, пустой канал</li>
+          <li class="pos">Выключенные награды доступны и включаются одним кликом</li>
+          <li class="neg">Секция добавляет высоту списку — нужен «Показать ещё»</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

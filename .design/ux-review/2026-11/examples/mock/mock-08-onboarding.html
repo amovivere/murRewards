@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../../../reward-sounds-tauri/src-tauri/ui/style.css">
+<link rel="stylesheet" href="../../../../../reward-sounds-tauri/src-tauri/ui/app.css">
+<link rel="stylesheet" href="mock.css">
+<style>
+  .step { display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .step-num { width: 26px; height: 26px; border-radius: 50%; flex: 0 0 26px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+  .step-done .step-num { background: rgba(139,0,255,.18); color: #C9A7FF; border: 1px solid rgba(139,0,255,.4); }
+  .step-now .step-num { background: #EDEDED; color: #0A0A0A; }
+  .step-title { font-size: 14px; font-weight: 600; }
+  .step-sub { font-size: 11.8px; color: #8B8B8B; line-height: 16px; margin-top: 2px; }
+  .meter { display: flex; align-items: flex-end; gap: 2px; height: 22px; }
+  .meter span { width: 4px; border-radius: 2px; background: #8B00FF; }
+  .minirow { display: flex; align-items: center; gap: 9px; height: 40px; padding: 0 8px; border-top: 1px solid rgba(255,255,255,.055); }
+</style>
+<title>Макет: онбординг и локальные привязки</title>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Проблема 10 · макет решения</div>
+    <div class="title" style="margin-top:3px">Онбординг-чеклист с реальным прогрессом и рабочими кнопками</div>
+    <div class="sub">Прогресс считается по факту, шаг 3 действительно проверяет звук, а все 9 локальных привязок доступны и без Twitch.</div>
+  </div>
+
+  <div class="row grow">
+    <!-- Чеклист -->
+    <div class="frame" style="flex:1 1 58%">
+      <div class="frame-head"><span class="tag tag-a">ВАРИАНТ A</span><span class="frame-title">Чеклист: 1 из 3, каждый шаг — с действием</span>
+        <span class="caption" style="margin-left:auto">скрывается после 3 из 3</span></div>
+      <div class="stage" style="flex:1 1 auto">
+        <div class="hstack">
+          <span style="font-size:15px;font-weight:600">Быстрый старт</span>
+          <div class="pill" style="height:24px;font-size:11.5px;color:#C9A7FF;border-color:rgba(139,0,255,.35)">1 из 3</div>
+          <div class="spacer"></div>
+          <div class="ghost-red ghost-neutral" style="font-size:11.5px">Скрыть</div>
+        </div>
+        <div style="margin-top:6px">
+          <div class="step step-done">
+            <div class="step-num">✓</div>
+            <div style="flex:1 1 auto">
+              <div class="step-title">Подключите Twitch</div>
+              <div class="step-sub">goshanmur · подключено 2 минуты назад · награды читаются</div>
+            </div>
+            <div class="btn btn-sm btn-ghost" style="height:26px;font-size:11.5px">Сменить</div>
+          </div>
+          <div class="step step-done">
+            <div class="step-num">✓</div>
+            <div style="flex:1 1 auto">
+              <div class="step-title">Выберите награду и привяжите звук</div>
+              <div class="step-sub">9 наград со звуком из 11 · можно менять в любой момент</div>
+            </div>
+            <div class="btn btn-sm btn-ghost" style="height:26px;font-size:11.5px">Открыть</div>
+          </div>
+          <div class="step step-now" style="border-bottom:0">
+            <div class="step-num">3</div>
+            <div style="flex:1 1 auto">
+              <div class="step-title">Проверьте звук</div>
+              <div class="step-sub">Нажмите — прозвучит файл «Ты новичок?» так же, как при активации награды. Индикатор в шапке покажет уровень.</div>
+              <div class="hstack" style="margin-top:9px;gap:9px">
+                <div class="btn btn-sm btn-primary" style="height:30px">Проверить звук</div>
+                <div class="btn btn-sm btn-ghost" style="height:30px;font-size:12px">Выбрать файл</div>
+                <div class="meter">
+                  <span style="height:6px"></span><span style="height:11px"></span><span style="height:17px"></span><span style="height:22px"></span><span style="height:13px"></span><span style="height:8px"></span><span style="height:4px"></span>
+                </div>
+                <span class="caption">Analogue 1/2 (Audient iD4)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="banner ok" style="margin-top:4px"><span>✓</span>Услышали звук? Всё готово — можно выходить в эфир.</div>
+      </div>
+      <ul class="notes">
+        <li class="pos">Прогресс честный: считается по подключению и привязкам</li>
+        <li class="pos">Шаг 3 замкнут: кнопка, индикатор, устройство вывода</li>
+        <li class="neg">Нужно место в интерфейсе для возврата к чеклисту</li>
+      </ul>
+    </div>
+
+    <!-- Локальные привязки -->
+    <div class="frame" style="flex:1 1 42%">
+      <div class="frame-head"><span class="tag tag-b">ВАРИАНТ B</span><span class="frame-title">Локальные привязки: все 9 доступны</span></div>
+      <div class="stage" style="flex:1 1 auto;padding:10px">
+        <div class="hstack">
+          <span style="font-size:13.5px;font-weight:600">Без Twitch · 9</span>
+          <div class="spacer"></div>
+          <label class="search" style="width:150px;height:28px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7C7C7C" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Поиск"></label>
+        </div>
+        <div style="margin-top:6px">
+          <div class="minirow" style="border-top:0">
+            <div style="width:26px;height:26px;border-radius:8px;background:#FF5A5F;color:#0A0A0A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">Т</div>
+            <div style="flex:1 1 auto;min-width:0"><div style="font-size:12.5px;font-weight:600">Ты новичок?</div><div style="font-size:10.5px;color:#8B8B8B">newbie.mp3 · 0:08</div></div>
+            <div class="slider sm" style="width:60px"><div class="track"></div><div class="fill" style="width:100%"></div><div class="knob" style="left:100%;width:10px;height:10px;top:3px"></div></div>
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#EDEDED"><path d="M8 5l11 7-11 7z"/></svg></div>
+          </div>
+          <div class="minirow">
+            <div style="width:26px;height:26px;border-radius:8px;background:#A970FF;color:#0A0A0A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">Ш</div>
+            <div style="flex:1 1 auto;min-width:0"><div style="font-size:12.5px;font-weight:600">Шиза</div><div style="font-size:10.5px;color:#8B8B8B">Kanye - Vulvas.mp3 · 3:14</div></div>
+            <div class="slider sm" style="width:60px"><div class="track"></div><div class="fill" style="width:23%"></div><div class="knob" style="left:23%;width:10px;height:10px;top:3px"></div></div>
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#EDEDED"><path d="M8 5l11 7-11 7z"/></svg></div>
+          </div>
+          <div class="minirow">
+            <div style="width:26px;height:26px;border-radius:8px;background:#5B6CFF;color:#0A0A0A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">В</div>
+            <div style="flex:1 1 auto;min-width:0"><div style="font-size:12.5px;font-weight:600">Выстрел</div><div style="font-size:10.5px;color:#8B8B8B">shot.mp3 · 0:01</div></div>
+            <div class="slider sm" style="width:60px"><div class="track"></div><div class="fill" style="width:100%"></div><div class="knob" style="left:100%;width:10px;height:10px;top:3px"></div></div>
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#EDEDED"><path d="M8 5l11 7-11 7z"/></svg></div>
+          </div>
+          <div class="minirow">
+            <div style="width:26px;height:26px;border-radius:8px;background:#4E7CFF;color:#0A0A0A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">М</div>
+            <div style="flex:1 1 auto;min-width:0"><div style="font-size:12.5px;font-weight:600">Мне нравится как он</div><div style="font-size:10.5px;color:#8B8B8B">ilikehowhesmoving.mp3 · 0:12</div></div>
+            <div class="slider sm" style="width:60px"><div class="track"></div><div class="fill" style="width:100%"></div><div class="knob" style="left:100%;width:10px;height:10px;top:3px"></div></div>
+            <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#EDEDED"><path d="M8 5l11 7-11 7z"/></svg></div>
+          </div>
+        </div>
+        <div class="caption" style="margin-top:8px;color:#C9A7FF">Показать все 9 →</div>
+        <div class="banner" style="margin-top:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);color:#B9B9B9">
+          Можно создать награду без Twitch — она появится здесь и сработает после подключения.
+        </div>
+      </div>
+      <ul class="notes">
+        <li class="pos">Главная ценность видна до подключения: все звуки и громкости</li>
+        <li class="pos">Поиск и «Показать все» работают, а не обещают «следующий этап»</li>
+        <li class="neg">Нужен отдельный путь для «хочу только локальные звуки»</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -25,8 +25,14 @@ pub fn spawn(state: Arc<Mutex<Snapshot>>, port: u16) {
         .spawn(move || {
             let Ok(listener) = TcpListener::bind(("127.0.0.1", port)) else {
                 log::warn!("Оверлей: порт {port} занят, строка «Сейчас играет» недоступна");
+                if let Ok(mut snapshot) = state.lock() {
+                    snapshot.overlay_ready = false;
+                }
                 return;
             };
+            if let Ok(mut snapshot) = state.lock() {
+                snapshot.overlay_ready = true;
+            }
             log::info!("Оверлей: http://127.0.0.1:{port}/overlay");
 
             for stream in listener.incoming().flatten() {

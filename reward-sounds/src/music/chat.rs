@@ -15,7 +15,6 @@ use std::thread;
 use std::time::Duration;
 
 use super::service::Cmd;
-
 /// Команды, которые показывают оверлей.
 const COMMANDS: [&str; 2] = ["!трек", "!track"];
 
@@ -26,6 +25,7 @@ pub fn spawn(channel: &str, tx: Sender<Cmd>) {
     let channel = channel.trim().to_lowercase();
     if channel.is_empty() {
         log::info!("Чат: канал не известен, команда !трек недоступна");
+        let _ = tx.send(Cmd::ChatState(false));
         return;
     }
 
@@ -43,6 +43,7 @@ pub fn spawn(channel: &str, tx: Sender<Cmd>) {
                     );
                     let _ = writer.write_all(hello.as_bytes());
                     log::info!("Чат: подключён к каналу #{channel}, команда !трек доступна");
+                    let _ = tx.send(Cmd::ChatState(true));
 
                     let reader = BufReader::new(stream);
                     for line in reader.lines().map_while(Result::ok) {
@@ -61,9 +62,11 @@ pub fn spawn(channel: &str, tx: Sender<Cmd>) {
                         }
                     }
                     log::warn!("Чат: соединение закрыто, переподключаемся");
+                    let _ = tx.send(Cmd::ChatState(false));
                 }
                 Err(err) => {
                     log::warn!("Чат: не удалось подключиться ({err}), переподключаемся");
+                    let _ = tx.send(Cmd::ChatState(false));
                 }
             }
             thread::sleep(Duration::from_secs(15));

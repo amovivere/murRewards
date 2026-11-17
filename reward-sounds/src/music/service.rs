@@ -80,6 +80,10 @@ pub struct Snapshot {
     /// Размер шрифта оверлея.
     pub overlay_font: u32,
     pub error: Option<String>,
+    /// Чат канала подключён: команда `!трек` действительно доступна.
+    pub chat_online: bool,
+    /// HTTP-оверлей поднялся и слушает порт.
+    pub overlay_ready: bool,
 }
 
 impl Snapshot {
@@ -148,6 +152,8 @@ pub(super) enum Cmd {
     Recheck,
     SetPaused(bool),
     SetVolume(f32),
+    /// Состояние подключения к чату (true — читаем сообщения).
+    ChatState(bool),
     Validated(Result<QueueItem, (String, String)>),
     AudioReady {
         video_id: String,
@@ -323,6 +329,8 @@ fn run(
     let mut start_generation: u64 = 0;
     /// Видели ли, что текущий трек действительно играет (позиция внутри).
     let mut seen_running = false;
+    /// Подключён ли читатель чата (команда `!трек` реально доступна).
+    let mut chat_online = false;
 
     let data_dir = temp_dir
         .parent()
@@ -593,6 +601,9 @@ fn run(
                     );
                 }
             }
+            Ok(Cmd::ChatState(online)) => {
+                chat_online = online;
+            }
             Ok(Cmd::Replay(redemption_id)) => {
                 if let Some(item) = queue
                     .items()
@@ -787,6 +798,7 @@ fn run(
             };
             snapshot.overlay_position = config.overlay_position.clone();
             snapshot.overlay_font = config.overlay_font;
+            snapshot.chat_online = chat_online;
             snapshot.error = if version.is_none() {
                 Some("yt-dlp не найден: положите yt-dlp.exe рядом с программой".to_string())
             } else {

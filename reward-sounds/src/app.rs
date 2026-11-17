@@ -523,6 +523,8 @@ impl RewardSoundsApp {
             overlay_position: "top".to_string(),
             overlay_font: 17,
             error: None,
+            chat_online: true,
+            overlay_ready: true,
         };
         if let Some(tab) = std::env::var_os("REWARD_SOUNDS_DEMO_TAB") {
             match tab.to_string_lossy().to_lowercase().as_str() {

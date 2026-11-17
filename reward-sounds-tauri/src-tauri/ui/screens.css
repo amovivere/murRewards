@@ -842,7 +842,7 @@ button:disabled, .player-round:disabled, .player-play:disabled, .player-text:dis
 .card-flags { display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; }
 .card-flag {
   height: 15px; padding: 0 4px; border-radius: 7px; font-size: 8.6px; line-height: 13px;
-  color: var(--accent-text, var(--accent-text)); border: 1px solid rgba(var(--accent-rgb),.35); background: rgba(var(--accent-rgb),.12);
+  color: #9A9A9A; border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.06);
 }
 .reward-card .card-title {
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
@@ -889,3 +889,9 @@ button:disabled, .player-round:disabled, .player-play:disabled, .player-text:dis
 /* акцент: активная вкладка в полном сайдбаре и равная высота карточек */
 .sidebar .nav-item.active { background: rgba(var(--accent-rgb), .13); color: #F5F5F5; }
 .reward-card { min-height: 168px; }
+
+/* доступность: без пульсации для prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .tile-playing { animation: none; }
+  .toast { animation: none; }
+}

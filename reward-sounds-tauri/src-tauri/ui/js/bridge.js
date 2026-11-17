@@ -261,7 +261,7 @@ export const DEFAULT_ACCENT = '#8B00FF';
 /// Пресеты акцента; проверены по контрасту и применяются без автокоррекции.
 export const ACCENT_PRESETS = [
   '#8B00FF',
-  '#6366F1',
+  '#5B5FE0',
   '#3B82F6',
   '#06B6D4',
   '#14B8A6',

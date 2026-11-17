@@ -45,6 +45,10 @@ function init() {
     pollNow,
     view: () => state.view,
     api: { invoke, tryInvoke },
+    // Хук для UI-тестов/скриншотов с мок-состоянием: ставит опрос на паузу.
+    pausePolling: (paused) => {
+      window.__RS_PAUSE_POLL__ = !!paused;
+    },
   };
 
   pollNow();
@@ -54,6 +58,7 @@ function init() {
 }
 
 async function pollNow() {
+  if (window.__RS_PAUSE_POLL__) return;
   if (pollInFlight) return;
   pollInFlight = true;
   try {

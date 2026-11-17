@@ -296,8 +296,8 @@ export function confirmDialog({ title, text, confirmLabel = 'Подтверди�
         ${text ? `<div class="modal-sub">${escapeHtml(text)}</div>` : ''}
         <div class="modal-actions">
           <div class="right">
-            <button class="btn btn-secondary" data-act="cancel">${escapeHtml(cancelLabel)}</button>
-            <button class="btn ${danger ? 'btn-danger' : 'btn-primary'}" data-act="confirm" data-autofocus>${escapeHtml(confirmLabel)}</button>
+            <button class="btn btn-secondary" data-act="cancel" data-autofocus>${escapeHtml(cancelLabel)}</button>
+            <button class="btn ${danger ? 'btn-danger' : 'btn-primary'}" data-act="confirm">${escapeHtml(confirmLabel)}</button>
           </div>
         </div>`,
       onClose: () => finish(false),

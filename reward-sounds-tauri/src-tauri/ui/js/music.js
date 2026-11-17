@@ -116,13 +116,7 @@ function musicPageHtml(view) {
         <div class="player-meta" id="player-meta">${escapeHtml(playerMeta(current))}</div>
         ${
           current
-            ? ''
-            : `<div class="player-cta">
-                 <button class="btn btn-sm btn-secondary" id="player-empty-add">Поставить трек вручную</button>
-                 <button class="btn btn-sm btn-ghost" id="player-empty-reward">Настроить награду</button>
-               </div>`
-        }
-        <div class="player-progress-row">
+            ? `<div class="player-progress-row">
           <span class="player-time" id="player-position">${fmtDuration(music.player?.position_sec)}</span>
           <div id="track-progress" role="slider" tabindex="0" aria-label="Перемотка" aria-valuemin="0" aria-valuemax="${Number(music.player?.duration_sec) || 0}" aria-valuenow="${Number(music.player?.position_sec) || 0}">
             <div class="track"></div>
@@ -132,11 +126,17 @@ function musicPageHtml(view) {
           <span class="player-time" id="player-duration">${fmtDuration(music.player?.duration_sec || current?.duration_sec)}</span>
         </div>
         <div class="player-controls">
-          <button class="player-round" id="player-restart" title="Сначала"${current ? '' : ' disabled'}>${restartIcon()}</button>
-          <button class="player-play" id="play-toggle" title="${music.player?.paused ? 'Продолжить' : 'Пауза'}"${current ? '' : ' disabled'}>${music.player?.paused ? icons.play : icons.pause}</button>
-          <button class="player-round" id="player-skip" title="Пропустить трек"${current ? '' : ' disabled'}>${skipIcon()}</button>
-          <button class="player-text" id="skip-track"${current ? '' : ' disabled'}>Пропустить трек</button>
-        </div>
+          <button class="player-round" id="player-restart" title="Сначала">${restartIcon()}</button>
+          <button class="player-play" id="play-toggle" title="${music.player?.paused ? 'Продолжить' : 'Пауза'}">${music.player?.paused ? icons.play : icons.pause}</button>
+          <button class="player-round" id="player-skip" title="Пропустить трек">${skipIcon()}</button>
+          <button class="player-text" id="skip-track">Пропустить трек</button>
+        </div>`
+            : `<div class="player-cta">
+                 <button class="btn btn-sm btn-secondary" id="player-empty-add">Поставить трек вручную</button>
+                 <button class="btn btn-sm btn-ghost" id="player-empty-reward">Настроить награду</button>
+               </div>
+               <div class="player-empty-hint">Плеер появится, когда придёт первый трек — из награды или ручной очереди.</div>`
+        }
       </div>
       <div class="player-side">
         <div class="player-side-title">Громкость музыки</div>

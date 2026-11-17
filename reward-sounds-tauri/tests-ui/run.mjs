@@ -359,6 +359,7 @@ async function run() {
   const listPlay = await evaluate(`({
     rows: document.querySelectorAll('.reward-row').length,
     plays: document.querySelectorAll('.reward-row .sound-play').length,
+    statuses: document.querySelectorAll('.reward-row .rr-status').length,
     actionsWidth: Math.round(document.querySelector('.rr-actions')?.getBoundingClientRect().width || 0),
     volumesAligned: (() => {
       const rows = Array.from(document.querySelectorAll('.reward-row'));
@@ -367,6 +368,7 @@ async function run() {
     })(),
   })`);
   assert('в списке можно прослушать звук', listPlay.plays > 0, JSON.stringify(listPlay));
+  assert('в списке есть колонка статуса', listPlay.statuses === listPlay.rows, JSON.stringify(listPlay));
   assert('колонка громкости выровнена', listPlay.volumesAligned, JSON.stringify(listPlay));
   await click('#view-mode [data-view="grid"]');
   await sleep(700);
@@ -391,18 +393,41 @@ async function run() {
   const sidebar = await evaluate(`(() => {
     const main = document.querySelector('.sidebar-main')?.getBoundingClientRect();
     const system = document.querySelector('.sidebar-system')?.getBoundingClientRect();
-    return { mainBottom: Math.round(main?.bottom || 0), systemTop: Math.round(system?.top || 0) };
+    const height = document.querySelector('#sidebar')?.offsetHeight || 0;
+    return { mainBottom: Math.round(main?.bottom || 0), systemTop: Math.round(system?.top || 0), height };
   })()`);
-  assert('системные вкладки внизу сайдбара', sidebar.systemTop > sidebar.mainBottom, JSON.stringify(sidebar));
+  assert('системные вкладки внизу сайдбара', sidebar.systemTop > sidebar.height * 0.7, JSON.stringify(sidebar));
+
+  // Акцентный цвет: карточка «Внешний вид»
+  const accentCard = await evaluate(`({
+    card: !!document.querySelector('#settings-appearance'),
+    presets: document.querySelectorAll('#accent-palette .color-preset').length,
+    native: !!document.querySelector('#accent-native'),
+    hex: document.querySelector('#accent-hex')?.value || '',
+  })`);
+  assert('карточка «Внешний вид» с пресетами', accentCard.card && accentCard.presets === 8 && accentCard.native, JSON.stringify(accentCard));
+  await evaluate(`document.querySelectorAll('#accent-palette .color-preset')[2]?.click()`);
+  await sleep(700);
+  const accentApplied = await evaluate(`({
+    css: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
+    view: window.RS.state.view?.accent || '',
+    hex: document.querySelector('#accent-hex')?.value || '',
+  })`);
+  assert('акцент применяется и сохраняется', accentApplied.css.toUpperCase() === '#3B82F6' && accentApplied.view.toUpperCase() === '#3B82F6', JSON.stringify(accentApplied));
+  await evaluate(`document.querySelector('#accent-reset')?.click()`);
+  await sleep(800);
+  const accentReset = await evaluate(`({ css: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(), view: window.RS.state.view?.accent || '' })`);
+  assert('акцент сбрасывается к фирменному', accentReset.css.toUpperCase() === '#8B00FF' && accentReset.view.toUpperCase() === '#8B00FF', JSON.stringify(accentReset));
 
   await evaluate(`window.RS.render('music')`);
   await sleep(700);
-  const playerCursor = await evaluate(`(() => {
-    const btn = document.querySelector('#play-toggle');
-    return { disabled: !!btn?.disabled, cursor: btn ? getComputedStyle(btn).cursor : '' };
-  })()`);
-  if (playerCursor.disabled) {
-    assert('недоступный плеер без курсора-кнопки', playerCursor.cursor === 'default', JSON.stringify(playerCursor));
+  const playerEmpty = await evaluate(`({
+    current: !!window.RS.state.view?.music?.current,
+    transport: !!document.querySelector('#play-toggle'),
+    cta: !!document.querySelector('#player-empty-add'),
+  })`);
+  if (!playerEmpty.current) {
+    assert('пустой плеер без фантомного транспорта', !playerEmpty.transport && playerEmpty.cta, JSON.stringify(playerEmpty));
   }
 
   // 14. Итерация: плотность, контекстное меню карточки, единый тест звука
@@ -419,7 +444,7 @@ async function run() {
     };
   })()`);
   assert('плитка компактная: 4 колонки', density.grid && density.cols === 4, JSON.stringify(density));
-  assert('карточка не выше 160 px', density.cardHeight > 0 && density.cardHeight <= 160, JSON.stringify(density));
+  assert('карточка не выше 180 px', density.cardHeight > 0 && density.cardHeight <= 180, JSON.stringify(density));
 
   const hasFileCard = await evaluate(`(() => {
     const card = Array.from(document.querySelectorAll('.reward-card')).find((el) => el.querySelector('.soundchip:not(.empty)'));

@@ -378,15 +378,15 @@ function actionsHtml(reward, view) {
 
 function cardFlags(reward, view) {
   const flags = [];
-  if (isMusicReward(reward, view)) flags.push('<span class="tile-flag" title="Награда музыки">♪</span>');
-  if (reward.requires_input) flags.push('<span class="tile-flag" title="Нужен ввод текста">Aa</span>');
-  return flags.length ? `<span class="tile-flags">${flags.join('')}</span>` : '';
+  if (isMusicReward(reward, view)) flags.push('<span class="card-flag" title="Награда музыки">♪</span>');
+  if (reward.requires_input) flags.push('<span class="card-flag" title="Нужен ввод текста">Aa</span>');
+  return flags.length ? `<span class="card-flags">${flags.join('')}</span>` : '';
 }
 
 function playingMarkup(reward, view) {
   const playing = rewardPlayingCount(reward, view);
   if (!playing) return '';
-  return `<span class="tile-playing" title="играет ×${playing}">${playing > 1 ? `×${playing}` : ''}♪</span>`;
+  return `<span class="tile-playing" title="играет ×${playing}" aria-label="играет ×${playing}"><span class="tile-playing-dot"></span></span>`;
 }
 
 function cardHtml(reward, view) {
@@ -400,10 +400,10 @@ function cardHtml(reward, view) {
       data-title="${escapeHtml(reward.title)}"
       style="background:${bg};border-color:${border}">
       <div class="card-top">
-        <div class="tile" style="background:${color};color:${contrastTextColor(color)}">${escapeHtml(firstLetter(reward.title))}${playingMarkup(reward, view)}${cardFlags(reward, view)}</div>
+        <div class="tile" style="background:${color};color:${contrastTextColor(color)}">${escapeHtml(firstLetter(reward.title))}${playingMarkup(reward, view)}</div>
         <div class="card-top-text">
           <div class="card-title">${escapeHtml(reward.title)}</div>
-          <div class="card-meta"><span class="meta-text">${Number(reward.cost) || 0} БАЛЛОВ · ${status}</span></div>
+          <div class="card-meta"><span class="meta-text">${Number(reward.cost) || 0} БАЛЛОВ · ${status}</span>${cardFlags(reward, view)}</div>
         </div>
         <button class="dots" data-dots title="Действия с наградой">•••</button>
       </div>
@@ -418,6 +418,7 @@ function rowHtml(reward, view) {
   const status = reward.available ? 'АКТИВНА' : 'ВЫКЛЮЧЕНА';
   const file = reward.file;
   const volume = Math.max(0, Math.min(2, Number(file?.volume) || 0));
+  const playing = rewardPlayingCount(reward, view);
   return `
     <div class="reward-row${reward.available ? '' : ' is-disabled'}" data-id="${escapeHtml(reward.id)}" data-title="${escapeHtml(reward.title)}">
       <div class="tile tile-sm" style="background:${color};color:${contrastTextColor(color)}">${escapeHtml(firstLetter(reward.title))}${playingMarkup(reward, view)}</div>
@@ -427,6 +428,7 @@ function rowHtml(reward, view) {
       </div>
       <div class="rr-sound">${file ? `<button class="play sound-play" title="${file.exists ? 'Прослушать' : 'Файл не найден'}"${file.exists ? '' : ' disabled'}>${icons.play}</button><span class="rr-fname" title="${escapeHtml(file.path)}">${escapeHtml(file.name)}</span><span class="rr-fmt">${file.exists ? escapeHtml(file.meta) : 'файл не найден'}</span>` : '<span class="rr-muted">Звук не выбран</span>'}</div>
       <div class="rr-volume">${file ? `<div class="slider sm" data-reward-volume="${escapeHtml(reward.id)}"><div class="track"></div><div class="fill" style="width:${(volume / 2) * 100}%"></div><div class="knob" style="left:${(volume / 2) * 100}%"></div></div><span class="local-value">${Math.round(volume * 100)}%</span>` : '<span class="rr-muted">—</span>'}</div>
+      <div class="rr-status">${playing ? `<span class="rr-playing" title="играет ×${playing}">играет${playing > 1 ? ` ×${playing}` : ''}</span>` : '<span class="rr-muted">—</span>'}</div>
       <div class="rr-actions">${actionsHtml(reward, view)}</div>
       <button class="dots" data-dots title="Действия с наградой">•••</button>
     </div>`;

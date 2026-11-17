@@ -17,6 +17,11 @@ import {
   menu,
   exitMenuItem,
   diagnosticsText,
+  applyAccent,
+  normalizeAccent,
+  accentInk,
+  DEFAULT_ACCENT,
+  ACCENT_PRESETS,
 } from './bridge.js';
 import { soundTestHtml, bindSoundTest } from './sound-test.js';
 import { openMusicSettings } from './music.js';
@@ -60,6 +65,7 @@ function settingsSignature(view) {
     audio_ready: view.audio_ready,
     audio_device: view.audio_device,
     health: view.health,
+    accent: view.accent,
   });
 }
 
@@ -83,6 +89,7 @@ function settingsPageHtml(view) {
       ${twitchCard(view, auth)}
       ${soundCard(view)}
       ${audioCard(view)}
+      ${appearanceCard(view)}
       ${appCard(view)}
       ${musicCard(view)}
       ${dataCard(view)}
@@ -126,6 +133,109 @@ function healthCard(view) {
 
 function healthDot(state) {
   return { ok: 'dot-green', warn: 'dot-amber', error: 'dot-red', off: 'dot-muted' }[state] || 'dot-muted';
+}
+
+const ACCENT_PRESET_LIST = ACCENT_PRESETS;
+
+function appearanceCard(view) {
+  const accent = /^#[0-9a-f]{6}$/i.test(view.accent || '') ? view.accent.toUpperCase() : DEFAULT_ACCENT;
+  return `
+    <div class="card settings-card appearance-card" id="settings-appearance">
+      <div class="settings-card-title">Внешний вид</div>
+      <div class="settings-card-sub">Акцентный цвет кнопок, фокуса и активных элементов</div>
+      <div class="appearance-preview">
+        <button class="btn btn-sm btn-primary" type="button" id="appearance-example" style="background:${accent};border-color:${accent};color:${accentInk(accent)}">Пример кнопки</button>
+        <span class="pill pill-accent">Акцент</span>
+        <div class="slider sm appearance-slider" aria-hidden="true">
+          <div class="track"></div><div class="fill" style="width:60%;background:${accent}"></div><div class="knob" style="left:60%;background:${accent}"></div>
+        </div>
+      </div>
+      <div class="color-controls appearance-controls">
+        <label class="color-swatch" id="accent-swatch" title="Выбрать акцентный цвет" style="background:${accent}">
+          <input type="color" id="accent-native" value="${accent}" aria-label="Выбрать акцентный цвет">
+        </label>
+        <input class="input reward-input color-hex" id="accent-hex" maxlength="7" value="${accent}" aria-label="Акцентный цвет в формате HEX">
+        <button class="btn btn-sm btn-ghost" id="accent-reset" title="Вернуть фирменный фиолетовый">Сбросить</button>
+      </div>
+      <div class="color-palette" id="accent-palette">
+        ${ACCENT_PRESET_LIST.map(
+          (color) =>
+            `<button type="button" class="color-preset${color.toLowerCase() === accent.toLowerCase() ? ' active' : ''}" data-accent="${color}" style="background:${color}" title="${color}" aria-label="Акцент ${color}"></button>`
+        ).join('')}
+      </div>
+      <div class="settings-row-hint">Меняются только акцентные элементы. Статусы, опасные действия, цвета наград и чат-пользователей остаются прежними; слишком тёмный или яркий цвет мягко корректируется для читаемости.</div>
+      <div class="accent-note" id="accent-note" hidden></div>
+    </div>`;
+}
+
+function bindAppearance(root, view) {
+  const native = $('#accent-native', root);
+  const hex = $('#accent-hex', root);
+  const swatch = $('#accent-swatch', root);
+  const palette = $('#accent-palette', root);
+  const note = $('#accent-note', root);
+  const example = $('#appearance-example', root);
+  if (!native || !hex || !swatch) return;
+
+  let timer = null;
+  let lastSaved = (view.accent || DEFAULT_ACCENT).toUpperCase();
+  const markActive = (value) =>
+    palette?.querySelectorAll('[data-accent]').forEach((button) =>
+      button.classList.toggle('active', button.dataset.accent.toLowerCase() === value.toLowerCase())
+    );
+  const showNote = (normalized, original) => {
+    if (!note) return;
+    if (normalized.adjusted) {
+      note.hidden = false;
+      note.textContent = `Цвет мягко скорректирован для контраста: ${normalized.hex}${original && original.toUpperCase() !== normalized.hex ? ` (было ${original.toUpperCase()})` : ''}`;
+    } else {
+      note.hidden = true;
+      note.textContent = '';
+    }
+  };
+  const persist = (value) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(async () => {
+      try {
+        const result = await invoke('set_app_setting', { key: 'accent', value });
+        if (result) {
+          state.view = result;
+          applyAccent(result.accent);
+          lastSaved = result.accent.toUpperCase();
+        }
+      } catch {}
+    }, 300);
+  };
+  const paint = (input, { save = false, silent = false } = {}) => {
+    const normalized = normalizeAccent(input);
+    if (!normalized) {
+      if (!silent) toast('Цвет должен быть в формате #RRGGBB', 'warn');
+      return;
+    }
+    hex.value = normalized.hex;
+    native.value = normalized.hex;
+    swatch.style.background = normalized.hex;
+    if (example) {
+      example.style.background = normalized.hex;
+      example.style.borderColor = normalized.hex;
+      example.style.color = accentInk(normalized.hex);
+    }
+    markActive(normalized.hex);
+    applyAccent(normalized.hex);
+    showNote(normalized, input);
+    if (save && normalized.hex.toUpperCase() !== lastSaved) persist(normalized.hex);
+  };
+
+  native.addEventListener('input', () => paint(native.value, { save: true }));
+  hex.addEventListener('input', () => paint(hex.value, { silent: true }));
+  hex.addEventListener('change', () => paint(hex.value, { save: true }));
+  palette?.querySelectorAll('[data-accent]').forEach((button) =>
+    button.addEventListener('click', () => paint(button.dataset.accent, { save: true }))
+  );
+  $('#accent-reset', root)?.addEventListener('click', () => {
+    paint(DEFAULT_ACCENT, { save: true });
+    toast('Акцентный цвет сброшен');
+  });
 }
 
 function card(title, subtitle, body) {
@@ -294,6 +404,7 @@ function toggleHtml(key, enabled, label, hint) {
 /* ============================ события ============================ */
 
 function bind(root, view) {
+  bindAppearance(root, view);
   $('#settings-menu', root)?.addEventListener('click', (event) => {
     menu(event.currentTarget, [
       { label: 'Открыть журнал', icon: icons.folder, onClick: () => navigate('log') },

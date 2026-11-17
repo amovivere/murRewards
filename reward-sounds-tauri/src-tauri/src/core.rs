@@ -232,6 +232,8 @@ pub struct CoreView {
     pub start_minimized: bool,
     pub playback_enabled: bool,
     pub grid_view: bool,
+    /// Акцентный цвет интерфейса (#RRGGBB).
+    pub accent: String,
     pub normalizing: bool,
     pub normalize_message: Option<String>,
     pub data_dir: String,
@@ -1132,6 +1134,7 @@ impl AppCore {
             start_minimized: settings.start_minimized,
             playback_enabled: settings.playback_enabled,
             grid_view: settings.grid_view,
+            accent: settings.accent.clone(),
             normalizing: inner.normalizing,
             normalize_message: inner.normalize_message.clone(),
             data_dir: self.paths.data_dir.display().to_string(),
@@ -1763,9 +1766,20 @@ pub fn chat_set_settings(
     Ok(core.view())
 }
 
+/// Проверяет акцентный цвет: только `#RRGGBB`.
+fn normalize_accent(value: &str) -> Result<String, String> {
+    let value = value.trim();
+    let valid = value.len() == 7
+        && value.starts_with('#')
+        && value[1..].chars().all(|ch| ch.is_ascii_hexdigit());
+    if !valid {
+        return Err("Акцентный цвет должен быть в формате #RRGGBB".to_string());
+    }
+    Ok(value.to_uppercase())
+}
+
 #[tauri::command]
-pub fn set_app_setting(
-    app: AppHandle,
+pub fn set_app_setting(    app: AppHandle,
     core: State<'_, Arc<AppCore>>,
     key: String,
     value: String,
@@ -1794,6 +1808,9 @@ pub fn set_app_setting(
             }
             "grid_view" => {
                 inner.settings.grid_view = value == "1" || value.eq_ignore_ascii_case("true");
+            }
+            "accent" => {
+                inner.settings.accent = normalize_accent(&value)?;
             }
             "muted" => {
                 inner.settings.muted = value == "1" || value.eq_ignore_ascii_case("true");
@@ -1858,13 +1875,30 @@ pub fn get_logs(limit: Option<usize>) -> Vec<LogEntryView> {
     entries
 }
 
-/// Полностью очищает файл журнала (с подтверждением в интерфейсе).
+/// Очищает журнал, сохранив копию в `logs/archive-*.log`.
+/// Возвращает имя архива, если было что сохранять.
 #[tauri::command]
-pub fn clear_log() -> Result<(), String> {
+pub fn clear_log() -> Result<Option<String>, String> {
     let paths = AppPaths::resolve();
+    let text = std::fs::read_to_string(&paths.log_file).unwrap_or_default();
+    let mut archived = None;
+    if !text.trim().is_empty() {
+        let stamp = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|duration| duration.as_secs())
+            .unwrap_or(0);
+        let name = format!("archive-{stamp}.log");
+        let archive = paths.log_dir.join(&name);
+        std::fs::write(&archive, text)
+            .map_err(|error| format!("Не удалось сохранить архив журнала: {error}"))?;
+        archived = Some(name);
+    }
     std::fs::write(&paths.log_file, "")
         .map_err(|error| format!("Не удалось очистить журнал: {error}"))?;
-    Ok(())
+    if let Some(name) = &archived {
+        log::info!("Журнал очищен, архив: {name}");
+    }
+    Ok(archived)
 }
 
 #[tauri::command]
@@ -2511,5 +2545,15 @@ mod tests {
         std::fs::write(&valid, b"ID3").unwrap();
         assert!(validate_sound_path(&valid.display().to_string()).is_ok());
         std::fs::remove_file(&valid).ok();
+    }
+
+    #[test]
+    fn accent_color_validation() {
+        assert_eq!(normalize_accent("#8b00ff").unwrap(), "#8B00FF");
+        assert_eq!(normalize_accent("  #22C55E ").unwrap(), "#22C55E");
+        assert!(normalize_accent("8B00FF").is_err());
+        assert!(normalize_accent("#8B00F").is_err());
+        assert!(normalize_accent("#GGGGGG").is_err());
+        assert!(normalize_accent("#8B00FF00").is_err());
     }
 }

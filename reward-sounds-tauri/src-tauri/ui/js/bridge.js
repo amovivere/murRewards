@@ -255,6 +255,137 @@ export function friendlyError(message) {
 }
 
 
+/* ---------- акцентный цвет интерфейса ---------- */
+
+export const DEFAULT_ACCENT = '#8B00FF';
+/// Пресеты акцента; проверены по контрасту и применяются без автокоррекции.
+export const ACCENT_PRESETS = [
+  '#8B00FF',
+  '#6366F1',
+  '#3B82F6',
+  '#06B6D4',
+  '#14B8A6',
+  '#22C55E',
+  '#EC4899',
+  '#A3A3A3',
+];
+
+function isApprovedAccent(hex) {
+  return ACCENT_PRESETS.some((color) => color.toLowerCase() === hex.toLowerCase());
+}
+
+function hexToRgb(hex) {
+  const value = parseInt(hex.slice(1), 16);
+  return [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+}
+
+function rgbToHsl([r, g, b]) {
+  const [rr, gg, bb] = [r / 255, g / 255, b / 255];
+  const max = Math.max(rr, gg, bb);
+  const min = Math.min(rr, gg, bb);
+  const l = (max + min) / 2;
+  if (max === min) return [0, 0, l];
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h;
+  if (max === rr) h = ((gg - bb) / d + (gg < bb ? 6 : 0)) / 6;
+  else if (max === gg) h = ((bb - rr) / d + 2) / 6;
+  else h = ((rr - gg) / d + 4) / 6;
+  return [h, s, l];
+}
+
+function hslToHex([h, s, l]) {
+  if (s === 0) {
+    const gray = Math.round(l * 255);
+    return `#${[gray, gray, gray].map((v) => v.toString(16).padStart(2, '0')).join('').toUpperCase()}`;
+  }
+  const hue = (p, q, t) => {
+    let tt = t;
+    if (tt < 0) tt += 1;
+    if (tt > 1) tt -= 1;
+    if (tt < 1 / 6) return p + (q - p) * 6 * tt;
+    if (tt < 1 / 2) return q;
+    if (tt < 2 / 3) return p + (q - p) * (2 / 3 - tt) * 6;
+    return p;
+  };
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const rgb = [hue(p, q, h + 1 / 3), hue(p, q, h), hue(p, q, h - 1 / 3)].map((v) =>
+    Math.round(v * 255)
+  );
+  return `#${rgb.map((v) => v.toString(16).padStart(2, '0')).join('').toUpperCase()}`;
+}
+
+function relativeLuminance(hex) {
+  return hexToRgb(hex)
+    .map((channel) => {
+      const c = channel / 255;
+      return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    })
+    .reduce((acc, value, index) => acc + value * [0.2126, 0.7152, 0.0722][index], 0);
+}
+
+function contrastRatio(a, b) {
+  const [l1, l2] = [relativeLuminance(a), relativeLuminance(b)].sort((x, y) => y - x);
+  return (l1 + 0.05) / (l2 + 0.05);
+}
+
+/**
+ * Приводит произвольный цвет к безопасному для тёмного интерфейса:
+ * ограничивает светлоту, насыщенность и проверяет контраст мягкого текста.
+ * Возвращает { hex, adjusted }.
+ */
+export function normalizeAccent(input) {
+  const raw = String(input || '').trim();
+  if (!/^#[0-9a-f]{6}$/i.test(raw)) return null;
+  if (isApprovedAccent(raw)) return { hex: raw.toUpperCase(), adjusted: false };
+  const [hue, saturation, lightness] = rgbToHsl(hexToRgb(raw));
+  const neutral = saturation < 0.12;
+  let s = neutral ? saturation : Math.max(0.35, Math.min(0.9, saturation));
+  let l = Math.max(0.42, Math.min(0.68, lightness));
+  let hex = hslToHex([hue, s, l]);
+
+  // Мягкий текст (45 % белого) должен читаться на фоне #0A0A0A.
+  let soft = hslToHex([hue, s, Math.min(0.9, Math.max(l, 0.55))]);
+  for (let attempt = 0; attempt < 12 && contrastRatio(soft, '#0A0A0A') < 4.5; attempt += 1) {
+    l = Math.min(0.85, l + 0.03);
+    hex = hslToHex([hue, s, l]);
+    soft = hslToHex([hue, s, Math.min(0.9, l + 0.1)]);
+  }
+  const adjusted =
+    Math.abs(l - lightness) > 0.015 ||
+    (!neutral && Math.abs(s - saturation) > 0.015) ||
+    hex.toLowerCase() !== raw.toLowerCase();
+  return { hex, adjusted };
+}
+
+/** Текст поверх акцентной заливки: тёмный на светлом, белый на тёмном. */
+export function accentInk(color) {
+  const normalized = normalizeAccent(color) || normalizeAccent(DEFAULT_ACCENT);
+  return relativeLuminance(normalized.hex) > 0.42 ? '#0A0A0A' : '#FFFFFF';
+}
+
+/** Немедленно применяет акцент ко всему интерфейсу и кэширует его. */
+export function applyAccent(color) {
+  const normalized = normalizeAccent(color) || normalizeAccent(DEFAULT_ACCENT);
+  const root = document.documentElement;
+  root.style.setProperty('--accent', normalized.hex);
+  root.style.setProperty('--accent-rgb', hexToRgb(normalized.hex).join(', '));
+  try {
+    localStorage.setItem('rs.accent', normalized.hex);
+  } catch {}
+  return normalized;
+}
+
+/** Кэш акцента до первого опроса состояния: без вспышки чужого цвета. */
+export function applyCachedAccent() {
+  try {
+    applyAccent(localStorage.getItem('rs.accent') || DEFAULT_ACCENT);
+  } catch {
+    applyAccent(DEFAULT_ACCENT);
+  }
+}
+
 /* ---------- мост к Tauri ---------- */
 
 export function tauriCore() {

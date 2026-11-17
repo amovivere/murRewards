@@ -122,6 +122,11 @@ fn default_volume() -> f64 {
     0.8
 }
 
+/// Акцентный цвет интерфейса по умолчанию (фирменный фиолетовый).
+fn default_accent() -> String {
+    "#8B00FF".to_string()
+}
+
 /// Данные подключения к Twitch.
 ///
 /// `client_id` — публичный идентификатор приложения Twitch, его не нужно
@@ -227,6 +232,9 @@ pub struct Settings {
     pub playback_enabled: bool,
     /// Показывать награды плиткой (3 в ряд) вместо списка.
     pub grid_view: bool,
+    /// Акцентный цвет интерфейса в формате #RRGGBB.
+    #[serde(default = "default_accent")]
+    pub accent: String,
 
 
     /// Подключение к Twitch.
@@ -248,6 +256,7 @@ impl Default for Settings {
             autostart: false,
             playback_enabled: true,
             grid_view: false,
+            accent: default_accent(),
 
             twitch: TwitchSettings::default(),
             twitch_rewards: Vec::new(),

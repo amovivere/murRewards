@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../../reward-sounds-tauri/src-tauri/ui/style.css">
+<link rel="stylesheet" href="../../../../reward-sounds-tauri/src-tauri/ui/app.css">
+<link rel="stylesheet" href="../../../../reward-sounds-tauri/src-tauri/ui/screens.css">
+<link rel="stylesheet" href="mock.css">
+<style>
+  body { padding: 20px 22px; }
+  .sec { background: #0D0D0D; border: 1px solid rgba(255,255,255,.09); border-radius: 16px; padding: 14px 16px; }
+  .sec-head { display: flex; align-items: baseline; gap: 9px; margin-bottom: 10px; }
+  .sec-tag { font-weight: 600; font-size: 9px; letter-spacing: .8px; padding: 3px 8px; border-radius: 7px; background: rgba(139,0,255,.14); color: #C9A7FF; border: 1px solid rgba(139,0,255,.32); white-space: nowrap; }
+  .sec-title { font-size: 13.4px; font-weight: 600; }
+  .cap { font-size: 10.8px; color: #8B8B8B; line-height: 15px; }
+  .row3 { display: flex; gap: 13px; align-items: stretch; }
+
+  /* «Внешний вид»: карточка настроек */
+  .appearance { width: 470px; flex: 0 0 470px; }
+  .appearance .label { font-size: 9.4px; letter-spacing: .8px; color: rgba(139,139,139,.85); margin-top: 10px; }
+  .accent-row { display: flex; align-items: center; gap: 9px; margin-top: 6px; }
+  .swatch-lg { width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18); position: relative; overflow: hidden; flex: 0 0 38px; background: var(--accent); }
+  .swatch-lg input { position: absolute; inset: -8px; width: 62px; height: 62px; border: 0; padding: 0; background: none; cursor: pointer; }
+  .hex-lg { width: 110px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); background: #161616; color: #F5F5F5; font: inherit; font-size: 12.6px; padding: 0 11px; font-family: Consolas, monospace; }
+  .presets { display: flex; gap: 9px; margin-top: 10px; flex-wrap: wrap; }
+  .preset { width: 28px; height: 28px; border-radius: 50%; border: 0; position: relative; cursor: pointer; }
+  .preset.active { box-shadow: 0 0 0 2px #0D0D0D, 0 0 0 4px var(--accent-text); }
+  .preset[data-p="#8B00FF"] { background: #8B00FF; }
+  .preset[data-p="#6366F1"] { background: #6366F1; }
+  .preset[data-p="#3B82F6"] { background: #3B82F6; }
+  .preset[data-p="#06B6D4"] { background: #06B6D4; }
+  .preset[data-p="#14B8A6"] { background: #14B8A6; }
+  .preset[data-p="#22C55E"] { background: #22C55E; }
+  .preset[data-p="#EC4899"] { background: #EC4899; }
+  .preset[data-p="#A3A3A3"] { background: #A3A3A3; }
+  .preset-note { font-size: 9.6px; color: #6E6E6E; margin-top: 4px; }
+  .reset-row { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+  .scope { margin-top: 12px; border-radius: 10px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); padding: 9px 11px; }
+
+  /* Превью Mini-UI */
+  .preview { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  .pv-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .pv { background: #0A0A0A; border: 1px solid rgba(255,255,255,.07); border-radius: 12px; padding: 11px 12px; }
+  .pv-title { font-size: 9.4px; letter-spacing: .7px; color: #6E6E6E; font-weight: 600; margin-bottom: 8px; }
+  .accent { color: var(--accent); }
+  .accent-text { color: var(--accent-text); }
+  .accent-bg { background: var(--accent); }
+  .accent-soft { background: rgba(var(--accent-rgb), .14); border: 1px solid rgba(var(--accent-rgb), .38); color: var(--accent); }
+  .nav-demo { display: flex; flex-direction: column; gap: 3px; }
+  .nav-demo .it { height: 32px; border-radius: 9px; display: flex; align-items: center; gap: 9px; padding: 0 9px; font-size: 12.2px; color: #8B8B8B; }
+  .nav-demo .it.on { background: rgba(var(--accent-rgb), .16); color: #F5F5F5; font-weight: 600; }
+  .nav-demo .ic { width: 16px; height: 16px; border-radius: 4px; background: currentColor; opacity: .8; }
+  .nav-demo .it.on .ic { background: var(--accent); opacity: 1; }
+  .toggle-demo { width: 38px; height: 22px; border-radius: 11px; background: rgba(255,255,255,.16); position: relative; display: inline-block; }
+  .toggle-demo.on { background: var(--accent); }
+  .toggle-demo::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #F5F5F5; }
+  .toggle-demo.on::after { left: 19px; background: #0A0A0A; }
+  .slider-demo { position: relative; width: 150px; height: 16px; }
+  .slider-demo .tr { position: absolute; left: 0; right: 0; top: 7px; height: 2px; border-radius: 2px; background: rgba(255,255,255,.2); }
+  .slider-demo .fl { position: absolute; left: 0; top: 7px; height: 2px; border-radius: 2px; background: var(--accent); width: 46%; }
+  .slider-demo .kn { position: absolute; left: 46%; top: 1px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px rgba(var(--accent-rgb), .35); }
+  .pill-demo { display: inline-flex; align-items: center; gap: 7px; height: 24px; padding: 0 9px; border-radius: 12px; border: 1px solid rgba(var(--accent-rgb), .35); background: rgba(var(--accent-rgb), .12); color: var(--accent-text); font-size: 10.8px; }
+  .eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+  .eq span { width: 3px; border-radius: 2px; background: var(--accent); }
+  .eq span:nth-child(1) { height: 5px; } .eq span:nth-child(2) { height: 11px; } .eq span:nth-child(3) { height: 8px; }
+  .btn-demo { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 15px; font-size: 12.2px; }
+  .btn-primary-demo { background: #EDEDED; color: #0A0A0A; font-weight: 600; }
+  .focus-demo { outline: 2px solid rgba(var(--accent-rgb), .75); outline-offset: 2px; }
+  .link-demo { color: var(--accent-text); font-size: 12px; }
+  .status-strip { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .st { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px; border-radius: 12px; font-size: 10.6px; border: 1px solid rgba(255,255,255,.14); color: #B9B9B9; }
+  .st .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .st.ok { color: #86EFAC; border-color: rgba(34,197,94,.3); } .st.ok .dot { background: #22C55E; }
+  .st.warn { color: #FCD34D; border-color: rgba(245,158,11,.32); } .st.warn .dot { background: #F59E0B; }
+  .st.err { color: #FCA5A5; border-color: rgba(239,68,68,.35); } .st.err .dot { background: #EF4444; }
+  .danger-demo { color: #EF4444; border: 1px solid rgba(239,68,68,.35); background: rgba(239,68,68,.08); }
+  .rcolor-card { width: 120px; border-radius: 10px; padding: 8px 9px; background: #2A1718; border: 1px solid #4A2A2C; }
+  .rcolor-tile { width: 22px; height: 22px; border-radius: 6px; background: #FF5A5F; color: #0A0A0A; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+
+  /* варианты */
+  .variants { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+  .variant { background: #0A0A0A; border: 1px solid rgba(255,255,255,.08); border-radius: 13px; padding: 12px 13px; }
+  .variant-head { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+  .vdot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); }
+  .vname { font-size: 11.6px; font-weight: 600; }
+  .vhex { font-size: 10px; color: #6E6E6E; font-family: Consolas, monospace; margin-left: auto; }
+  .vrow { display: flex; align-items: center; gap: 8px; margin-top: 7px; font-size: 11px; color: #9A9A9A; }
+  .thead { font-size: 9px; letter-spacing: .8px; color: #6E6E6E; font-weight: 600; }
+</style>
+<title>Аддендум: акцентный цвет</title>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Аддендум к аудиту · акцентный цвет интерфейса</div>
+    <div class="title" style="margin-top:3px">«Внешний вид»: выбор акцента, пресеты и что перекрашивается</div>
+    <div class="sub">CSS-переменные --accent / --accent-rgb / --accent-text. Цвет наград, статусы ok/warn/error и опасные действия не перекрашиваются. Белые primary-кнопки остаются белыми.</div>
+  </div>
+
+  <!-- Карточка настроек + превью -->
+  <div class="row3">
+    <div class="sec appearance" style="--accent:#8B00FF; --accent-rgb:139,0,255; --accent-text:#C9A7FF">
+      <div class="sec-head"><span class="sec-tag">НАСТРОЙКИ</span><span class="sec-title">Карточка «Внешний вид»</span></div>
+      <div class="settings-card-title">Внешний вид</div>
+      <div class="settings-card-sub" style="margin-top:2px">Акцентный цвет интерфейса. Не меняет цвет наград и статусы</div>
+      <div class="label">АКЦЕНТ</div>
+      <div class="accent-row">
+        <span class="swatch-lg"><input type="color" value="#8b00ff" aria-label="Системный выбор акцентного цвета"></span>
+        <input class="hex-lg" value="#8B00FF" aria-label="HEX акцентного цвета">
+        <span class="cap">системный пикер — по клику<br>на образец</span>
+      </div>
+      <div class="presets">
+        <button class="preset active" data-p="#8B00FF" title="Фиолетовый (по умолчанию)"></button>
+        <button class="preset" data-p="#6366F1" title="Индиго"></button>
+        <button class="preset" data-p="#3B82F6" title="Синий"></button>
+        <button class="preset" data-p="#06B6D4" title="Циан"></button>
+        <button class="preset" data-p="#14B8A6" title="Бирюза"></button>
+        <button class="preset" data-p="#22C55E" title="Зелёный"></button>
+        <button class="preset" data-p="#EC4899" title="Розовый"></button>
+        <button class="preset" data-p="#A3A3A3" title="Серый"></button>
+      </div>
+      <div class="preset-note">8 пресетов (без красного/янтарного — семантика статусов) · свой цвет через пикер или HEX</div>
+      <div class="reset-row">
+        <button class="btn btn-sm btn-secondary">Сбросить</button>
+        <span class="cap">вернуться к #8B00FF</span>
+        <span style="margin-left:auto" class="cap">Применяется сразу · сохраняется автоматически</span>
+      </div>
+      <div class="scope">
+        <div class="cap" style="color:#B9B9B9">Перекрашивается: активная вкладка, фокус, тумблеры и чекбоксы, ссылки/действия, «играет», полоса плеера, кнопка приёма заявок.<br>
+        Не перекрашивается: <b style="color:#F5F5F5">статусы</b> (ok / warn / error), <b style="color:#F5F5F5">опасные действия</b> (красные), <b style="color:#F5F5F5">цвет наград</b>, оверлеи OBS.</div>
+      </div>
+    </div>
+
+    <div class="preview sec" style="--accent:#8B00FF; --accent-rgb:139,0,255; --accent-text:#C9A7FF">
+      <div class="sec-head"><span class="sec-tag">ПРЕВЬЮ</span><span class="sec-title">Где акцент видно сразу</span><span class="cap" style="margin-left:auto">живой пересчёт CSS-переменных</span></div>
+      <div class="pv-grid">
+        <div class="pv">
+          <div class="pv-title">АКТИВНАЯ ВКЛАДКА</div>
+          <div class="nav-demo">
+            <div class="it on"><span class="ic"></span>Награды</div>
+            <div class="it"><span class="ic"></span>Музыка</div>
+            <div class="it"><span class="ic"></span>Чат</div>
+          </div>
+        </div>
+        <div class="pv">
+          <div class="pv-title">ТУМБЛЕР · СЛАЙДЕР</div>
+          <div class="hstack" style="justify-content:space-between"><span style="font-size:11.8px">Закрывать в трей</span><span class="toggle-demo on"></span></div>
+          <div class="hstack" style="margin-top:12px;gap:8px"><div class="slider-demo"><div class="tr"></div><div class="fl"></div><div class="kn"></div></div><span style="font-size:11px;color:#DADADA">46%</span></div>
+        </div>
+        <div class="pv">
+          <div class="pv-title">«ИГРАЕТ» И ПРИЁМ ЗАЯВОК</div>
+          <div class="hstack" style="gap:8px"><span class="pill-demo"><span class="eq"><span></span><span></span><span></span></span>играет ×1</span>
+            <span class="pill-demo" style="background:rgba(var(--accent-rgb),.18)">● Принимаем заявки</span></div>
+          <div class="hstack" style="margin-top:10px;gap:8px"><span class="accent-text" style="font-size:11.6px">✓ yt-dlp готов</span><span class="cap">статус «ок» — зелёный, не акцент</span></div>
+        </div>
+        <div class="pv">
+          <div class="pv-title">ФОКУС · ССЫЛКА · ОПАСНОЕ</div>
+          <div class="hstack" style="gap:8px;flex-wrap:wrap">
+            <span class="btn-demo btn-primary-demo focus-demo" style="--accent-rgb:139,0,255">Primary</span>
+            <span class="link-demo">Открыть журнал →</span>
+            <span class="btn-demo danger-demo">Удалить</span>
+          </div>
+          <div class="cap" style="margin-top:8px">primary остаётся белым; красное — только опасное</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Три варианта акцента -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-tag">ВАРИАНТЫ</span><span class="sec-title">Как выглядит один и тот же экран с разным акцентом</span>
+      <span class="cap" style="margin-left:auto">фиолетовый (дефолт) · синий · зелёный</span></div>
+    <div class="variants">
+      <div class="variant" style="--accent:#8B00FF; --accent-rgb:139,0,255; --accent-text:#C9A7FF">
+        <div class="variant-head"><span class="vdot"></span><span class="vname">Фиолетовый</span><span class="vhex">#8B00FF</span></div>
+        <div class="vrow"><span class="it" style="display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 9px;border-radius:8px;background:rgba(var(--accent-rgb),.16);color:#F5F5F5;font-weight:600"><span style="width:12px;height:12px;border-radius:3px;background:var(--accent)"></span>Награды</span><span style="font-size:10px;color:#6E6E6E">активная вкладка</span></div>
+        <div class="vrow"><span class="toggle-demo on"></span><span>тумблер вкл</span><span class="toggle-demo" style="margin-left:auto"></span></div>
+        <div class="vrow"><div class="slider-demo" style="width:120px"><div class="tr"></div><div class="fl"></div><div class="kn"></div></div><span>46%</span></div>
+        <div class="vrow"><span class="pill-demo"><span class="eq"><span></span><span></span><span></span></span>играет ×1</span></div>
+        <div class="vrow"><span class="link-demo">Проверить звук →</span><span class="cap" style="margin-left:auto">контраст 3.34 / текст 6.70</span></div>
+      </div>
+      <div class="variant" style="--accent:#3B82F6; --accent-rgb:59,130,246; --accent-text:#93BAFA">
+        <div class="variant-head"><span class="vdot"></span><span class="vname">Синий</span><span class="vhex">#3B82F6</span></div>
+        <div class="vrow"><span class="it" style="display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 9px;border-radius:8px;background:rgba(var(--accent-rgb),.16);color:#F5F5F5;font-weight:600"><span style="width:12px;height:12px;border-radius:3px;background:var(--accent)"></span>Награды</span><span style="font-size:10px;color:#6E6E6E">активная вкладка</span></div>
+        <div class="vrow"><span class="toggle-demo on"></span><span>тумблер вкл</span><span class="toggle-demo" style="margin-left:auto"></span></div>
+        <div class="vrow"><div class="slider-demo" style="width:120px"><div class="tr"></div><div class="fl"></div><div class="kn"></div></div><span>46%</span></div>
+        <div class="vrow"><span class="pill-demo"><span class="eq"><span></span><span></span><span></span></span>играет ×1</span></div>
+        <div class="vrow"><span class="link-demo">Проверить звук →</span><span class="cap" style="margin-left:auto">контраст 5.38 / текст 10.0</span></div>
+      </div>
+      <div class="variant" style="--accent:#22C55E; --accent-rgb:34,197,94; --accent-text:#85DFA6">
+        <div class="variant-head"><span class="vdot"></span><span class="vname">Зелёный</span><span class="vhex">#22C55E</span></div>
+        <div class="vrow"><span class="it" style="display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 9px;border-radius:8px;background:rgba(var(--accent-rgb),.16);color:#F5F5F5;font-weight:600"><span style="width:12px;height:12px;border-radius:3px;background:var(--accent)"></span>Награды</span><span style="font-size:10px;color:#6E6E6E">активная вкладка</span></div>
+        <div class="vrow"><span class="toggle-demo on"></span><span>тумблер вкл</span><span class="toggle-demo" style="margin-left:auto"></span></div>
+        <div class="vrow"><div class="slider-demo" style="width:120px"><div class="tr"></div><div class="fl"></div><div class="kn"></div></div><span>46%</span></div>
+        <div class="vrow"><span class="pill-demo"><span class="eq"><span></span><span></span><span></span></span>играет ×1</span></div>
+        <div class="vrow"><span class="link-demo">Проверить звук →</span><span class="cap" style="margin-left:auto;color:#FCD34D">совпадает с «успех» ⚠</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Что не перекрашиваем -->
+  <div class="sec">
+    <div class="sec-head"><span class="sec-tag">ГРАНИЦЫ</span><span class="sec-title">Что нельзя перекрашивать (семантика сильнее бренда)</span></div>
+    <div class="row3" style="align-items:center">
+      <div class="status-strip">
+        <span class="st ok"><span class="dot"></span>Подключено</span>
+        <span class="st warn"><span class="dot"></span>Переподключение…</span>
+        <span class="st err"><span class="dot"></span>Ошибка Twitch</span>
+        <span class="st danger-demo">Остановить всё</span>
+        <span class="btn-demo btn-primary-demo">Создать награду</span>
+      </div>
+      <div class="cap" style="flex:1 1 auto">Статусы ok/warn/error, красные опасные действия и белые primary-кнопки не зависят от акцента: иначе зелёный акцент сделает «ошибку» похожей на «успех», а пользовательская палитра — небезопасной.</div>
+      <div class="rcolor-card">
+        <div class="hstack" style="gap:7px"><span class="rcolor-tile">Т</span><span style="font-size:10.6px;font-weight:600">Ты новичок?</span></div>
+        <div class="cap" style="margin-top:5px">цвет награды — отдельный, не акцент</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

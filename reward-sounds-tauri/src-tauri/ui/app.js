@@ -15,6 +15,9 @@ import {
   popover,
   closePopover,
   diagnosticsText,
+  applyAccent,
+  applyCachedAccent,
+  DEFAULT_ACCENT,
   setRefreshHandler,
   setNavigateHandler,
   tauriWindow,
@@ -42,6 +45,7 @@ function init() {
   setRefreshHandler(pollNow);
   setNavigateHandler(switchTab);
   installErrorHandlers();
+  applyCachedAccent();
   window.RS = {
     state,
     render: switchTab,
@@ -263,6 +267,7 @@ function healthDotClass(state) {
 function updateChrome(view) {
   document.body.classList.toggle('offline', !view.connected);
   document.body.classList.toggle('muted', !!view.muted);
+  applyAccent(view.accent || DEFAULT_ACCENT);
 
   const summary = healthSummary(view);
   const chip = $('#health-chip');

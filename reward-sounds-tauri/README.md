@@ -68,8 +68,14 @@ Twitch, привязки/громкости/прослушивание, EventSub
   — список по умолчанию, фильтры и сортировка в поповере «Фильтры».
 - **Цвет награды** выбирается палитрой или системным пикером, HEX остаётся
   для точного значения; у недоступных кнопок плеера нет hover и курсора-кнопки.
-- **Журнал** показывает новые записи сверху и очищается по подтверждению;
-  системные вкладки («Настройки», «Журнал») — внизу сайдбара.
+- **Акцентный цвет интерфейса**: карточка «Внешний вид» в настройках — 8
+  проверенных пресетов, системный пикер и HEX; применяется мгновенно ко всем
+  акцентным элементам, сохраняется в `config.toml`, произвольный цвет мягко
+  корректируется для контраста. Статусы, опасные действия и цвета наград не
+  перекрашиваются.
+- **Журнал** показывает новые записи сверху, очищается по подтверждению
+  с архивом в `logs/archive-*.log`; системные вкладки («Настройки», «Журнал»)
+  закреплены внизу сайдбара и в рейле 64 px.
 - **Адаптив и DPI**: сайдбар-рейл 64 px до 1120 px, тулбар в один ряд, минимум
   900×620; стартовый размер окна подстраивается под рабочую область монитора,
   чтобы при 150 % DPI окно не выходило за экран.
@@ -99,7 +105,7 @@ cargo build --release
   (настройки музыки, валидация путей, IRC-парсер, команды, троттлинг).
 - `cargo test --release` в `reward-sounds` — 98 юнит-тестов библиотеки
   (+ 5 интеграционных), включая оверлей и чат-страницу.
-- `node tests-ui/run.mjs` из `reward-sounds-tauri` — **60 проверок** реального
+- `node tests-ui/run.mjs` из `reward-sounds-tauri` — **64 проверки** реального
   окна через DevTools Protocol: вкладки, фильтры, модалки, чат и оверлей,
   тосты, адаптив 980×680, журнал, ошибки IPC, окно, геометрия. Требуется
   Node.js 20+, приложение должно быть закрыто. Подробнее — `tests-ui/README.md`.
@@ -109,10 +115,11 @@ cargo build --release
 `screens/` — реальные снимки окна: `tauri-rewards-real.png` (плитка),
 `tauri-rewards-list.png` (список), `tauri-980-rewards.png` (980×680),
 `tauri-status-popover.png`, `tauri-toast-error.png`, `tauri-music-real.png`,
-`tauri-settings-real.png` (+ `tauri-settings-bottom.png`), `tauri-chat-real.png`,
-`tauri-chat-feed.png`, `tauri-980-chat.png`, `tauri-log-real.png`,
-`tauri-onboarding.png`, `tauri-reward-modal.png`, `tauri-music-price.png`,
-`tauri-obs.png`.
+`tauri-settings-real.png` (+ `tauri-settings-bottom.png`, `tauri-appearance.png`),
+`tauri-accent-blue.png`, `tauri-chat-real.png`,
+`tauri-chat-feed.png`, `tauri-980-chat.png`, `tauri-980-settings.png`,
+`tauri-log-real.png`, `tauri-onboarding.png`, `tauri-reward-modal.png`,
+`tauri-music-price.png`, `tauri-obs.png`.
 
 ## Ограничения
 

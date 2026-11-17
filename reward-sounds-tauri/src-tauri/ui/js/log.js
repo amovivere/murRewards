@@ -124,17 +124,17 @@ function renderRows() {
 async function clearLog() {
   const ok = await confirmDialog({
     title: 'Очистить журнал?',
-    text: 'Файл журнала будет очищен. Записи о прошлых запусках и ошибках удалятся без возможности отмены.',
+    text: 'Текущий файл перенесётся в архив рядом с журналом (logs/archive-*.log), после чего журнал начнётся заново.',
     confirmLabel: 'Очистить',
     danger: true,
   });
   if (!ok) return;
   try {
-    await invoke('clear_log');
+    const archive = await invoke('clear_log');
     lastRows = [];
     renderRows();
     await refreshLog({ silent: true });
-    toast('Журнал очищен');
+    toast(archive ? `Журнал очищен, архив: ${archive}` : 'Журнал очищен');
   } catch {}
 }
 

@@ -132,9 +132,9 @@ button:disabled { cursor: not-allowed; }
 .btn.btn-danger-ghost:hover { background-color: rgba(239,68,68,.13); color: #EF4444; }
 .btn.btn-icon:hover { background-color: rgba(255,255,255,.09); color: #F5F5F5; }
 
-.btn.btn-music-state { background-color: rgba(139,0,255,.16); border-color: rgba(139,0,255,.38); color: #8B00FF; }
-.btn.btn-music-state:hover { background-color: rgba(139,0,255,.26); border-color: rgba(139,0,255,.58); color: #C9A7FF; }
-.btn.btn-music-state:active { background-color: rgba(139,0,255,.32); }
+.btn.btn-music-state { background-color: rgba(var(--accent-rgb),.16); border-color: rgba(var(--accent-rgb),.38); color: var(--accent); }
+.btn.btn-music-state:hover { background-color: rgba(var(--accent-rgb),.26); border-color: rgba(var(--accent-rgb),.58); color: var(--accent-text); }
+.btn.btn-music-state:active { background-color: rgba(var(--accent-rgb),.32); }
 
 .ghost-red { transition: background-color .12s ease, color .12s ease; border-radius: 9px; }
 .ghost-red:hover { background-color: rgba(239,68,68,.13); }
@@ -229,7 +229,7 @@ select.select:focus { outline: none; border-color: rgba(255,255,255,.34); }
 .settings-input:focus { outline: none; border-color: rgba(255,255,255,.34); background-color: rgba(255,255,255,.06); }
 .reward-input { transition: border-color .12s ease, background-color .12s ease; }
 .reward-input:hover { border-color: rgba(255,255,255,.18); }
-.reward-input:focus { outline: none; border-color: rgba(139,0,255,.55); background-color: #191919; }
+.reward-input:focus { outline: none; border-color: rgba(var(--accent-rgb),.55); background-color: #191919; }
 
 /* фокус с клавиатуры */
 .btn:focus-visible, .nav-item:focus-visible, .seg-item:focus-visible,
@@ -237,7 +237,7 @@ select.select:focus { outline: none; border-color: rgba(255,255,255,.34); }
 .modal-close:focus-visible, .reward-check input:focus-visible,
 .settings-input:focus-visible, .reward-input:focus-visible,
 select.select:focus-visible {
-  outline: 2px solid rgba(139,0,255,.65);
+  outline: 2px solid rgba(var(--accent-rgb),.65);
   outline-offset: 2px;
 }
 
@@ -268,7 +268,7 @@ select.select:focus-visible {
 .auth-code { font-size: 24px; font-weight: 600; letter-spacing: 2px; color: #F5F5F5; background: rgba(255,255,255,.05); border-radius: 10px; padding: 10px 14px; text-align: center; }
 .toggle { width: 38px; height: 22px; flex: 0 0 38px; border-radius: 11px; border: 0; background: rgba(255,255,255,.16); position: relative; cursor: pointer; }
 .toggle span { position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #F5F5F5; transition: left .15s ease, background-color .15s ease; }
-.toggle.on { background: #8B00FF; }
+.toggle.on { background: var(--accent); }
 .toggle.on span { left: 19px; background: #0A0A0A; }
 
 
@@ -282,7 +282,7 @@ select.select:focus-visible {
 .log-level { font-size: 10.2px; letter-spacing: .3px; text-transform: uppercase; color: #8B8B8B; }
 .log-level-error { color: #EF4444; }
 .log-level-warn { color: #F59E0B; }
-.log-level-info { color: #C9A7FF; }
+.log-level-info { color: var(--accent-text); }
 .log-message { font-size: 12.4px; color: #D6D6D6; line-height: 17px; overflow-wrap: anywhere; }
 .log-empty { padding: 28px; text-align: center; color: #8B8B8B; font-size: 12.6px; }
 
@@ -294,6 +294,6 @@ select.select:focus-visible {
 .reward-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
 .reward-check { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12px; color: #BDBDBD; cursor: pointer; transition: color .12s ease; }
 .reward-check:hover { color: #F5F5F5; }
-.reward-check input { accent-color: #8B00FF; width: 15px; height: 15px; cursor: pointer; }
+.reward-check input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
 .reward-delete { color: #EF4444; }
 .btn.btn-secondary.reward-delete:hover { background-color: rgba(239,68,68,.13); border-color: rgba(239,68,68,.40); color: #EF4444; }

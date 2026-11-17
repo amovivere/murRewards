@@ -17,6 +17,7 @@ import {
   requestRefresh,
   navigate,
   createModal,
+  exitMenuItem,
 } from './bridge.js';
 
 const OVERLAY_URL = 'http://127.0.0.1:8770/overlay';
@@ -113,9 +114,17 @@ function musicPageHtml(view) {
         <div class="player-state" id="player-state">${playerStateLabel(view)}</div>
         <div class="player-title" id="player-title">${escapeHtml(current?.title || 'Ничего не играет')}</div>
         <div class="player-meta" id="player-meta">${escapeHtml(playerMeta(current))}</div>
+        ${
+          current
+            ? ''
+            : `<div class="player-cta">
+                 <button class="btn btn-sm btn-secondary" id="player-empty-add">Поставить трек вручную</button>
+                 <button class="btn btn-sm btn-ghost" id="player-empty-reward">Настроить награду</button>
+               </div>`
+        }
         <div class="player-progress-row">
           <span class="player-time" id="player-position">${fmtDuration(music.player?.position_sec)}</span>
-          <div id="track-progress" role="slider" tabindex="0" aria-label="Перемотка">
+          <div id="track-progress" role="slider" tabindex="0" aria-label="Перемотка" aria-valuemin="0" aria-valuemax="${Number(music.player?.duration_sec) || 0}" aria-valuenow="${Number(music.player?.position_sec) || 0}">
             <div class="track"></div>
             <div class="fill" id="progress-fill"></div>
             <div class="knob" id="progress-knob"></div>
@@ -323,10 +332,17 @@ function bind(root, view) {
       { label: 'Настройки музыки', icon: icons.folder, onClick: openMusicSettings },
       { label: 'Проверить yt-dlp', icon: icons.refresh, onClick: () => recheckYtdlp() },
       { label: 'Открыть журнал', icon: icons.external, onClick: () => navigate('log') },
+      exitMenuItem(),
     ]);
   });
 
   $('#music-price', root)?.addEventListener('click', openPriceModal);
+  $('#player-empty-add', root)?.addEventListener('click', () => {
+    const input = $('#manual-url');
+    input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    input?.focus();
+  });
+  $('#player-empty-reward', root)?.addEventListener('click', openPriceModal);
   $('#music-reward-pill', root)?.addEventListener('click', openPriceModal);
   $('#obs-open', root)?.addEventListener('click', openObsModal);
   $('#obs-settings', root)?.addEventListener('click', openObsModal);
@@ -356,6 +372,21 @@ function bind(root, view) {
     const rect = progress.getBoundingClientRect();
     const fraction = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
     await tryInvoke('music_seek', { sec: Math.round(total * fraction) });
+    requestRefresh();
+  });
+  progress?.addEventListener('keydown', async (event) => {
+    const total = Number(state.view?.music?.player?.duration_sec) || 0;
+    if (!total) return;
+    let position = Number(state.view?.music?.player?.position_sec) || 0;
+    const step = event.shiftKey ? 30 : 5;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowUp') position += step;
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') position -= step;
+    else if (event.key === 'Home') position = 0;
+    else if (event.key === 'End') position = total;
+    else return;
+    event.preventDefault();
+    position = Math.max(0, Math.min(total, position));
+    await tryInvoke('music_seek', { sec: Math.round(position) });
     requestRefresh();
   });
 
@@ -521,6 +552,12 @@ function updateProgress(view) {
   if (knob) knob.style.left = `${(fraction * 100).toFixed(2)}%`;
   if (positionEl) positionEl.textContent = fmtDuration(Math.floor(position));
   if (durationEl) durationEl.textContent = fmtDuration(total);
+  const progressNode = $('#track-progress');
+  if (progressNode) {
+    progressNode.setAttribute('aria-valuemax', String(Math.round(total)));
+    progressNode.setAttribute('aria-valuenow', String(Math.round(position)));
+    progressNode.setAttribute('aria-valuetext', `${fmtDuration(Math.floor(position))} из ${fmtDuration(total)}`);
+  }
 }
 
 /* ============================ модалка «Награда и цена» ============================ */
@@ -608,49 +645,59 @@ export function openMusicSettings() {
     html: `
       <div class="modal-head">
         <div class="modal-title">Настройки музыки</div>
+        <span class="save-indicator" id="ms-save-state">Изменения сохраняются сразу</span>
         <button class="modal-close" data-act="close" aria-label="Закрыть">${icons.close}</button>
       </div>
       <div class="setting-row"><span>Заявок в очереди</span><input class="input reward-input setting-number" id="ms-max-queue" type="number" min="1" max="50" value="${Number(music.max_queue) || 10}"></div>
       <div class="setting-row"><span>Максимум, минут</span><input class="input reward-input setting-number" id="ms-max-duration" type="number" min="1" max="120" value="${minutes}"></div>
       <label class="setting-toggle"><input type="checkbox" id="ms-pause-yandex" ${music.pause_yandex ? 'checked' : ''}> Ставить Яндекс Музыку на паузу и возвращать после</label>
       <label class="setting-toggle"><input type="checkbox" id="ms-restore-queue" ${music.restore_queue ? 'checked' : ''}> Восстанавливать очередь после перезапуска</label>
-      <div class="modal-sub">Длительность и лимит применяются сразу. Очередь хранится в queue.json рядом с настройками.</div>
+      <div class="modal-sub">Кнопки «Сохранить» нет: изменения применяются сразу, как в OBS-модалке. Очередь хранится в queue.json рядом с настройками.</div>
       <div class="modal-actions">
-        <button class="btn btn-secondary" id="ms-obs">Оверлей OBS</button>
         <div class="right">
-          <button class="btn btn-secondary" data-act="close">Закрыть</button>
-          <button class="btn btn-primary" id="ms-save">Сохранить</button>
+          <button class="btn btn-secondary" id="ms-obs">Настроить оверлей</button>
+          <button class="btn btn-primary" data-act="close">Закрыть</button>
         </div>
       </div>`,
   });
+
+  let timer = null;
+  const setSaveState = (text, saved = false) => {
+    const node = $('#ms-save-state', modal.root);
+    if (!node) return;
+    node.textContent = text;
+    node.classList.toggle('saved', saved);
+  };
+  const collect = () => ({
+    maxQueue: Number($('#ms-max-queue', modal.root).value) || 10,
+    maxDurationSec: Math.max(1, Number($('#ms-max-duration', modal.root).value) || 8) * 60,
+    pauseYandex: $('#ms-pause-yandex', modal.root).checked,
+    restoreQueue: $('#ms-restore-queue', modal.root).checked,
+  });
+  const save = () => {
+    if (timer) clearTimeout(timer);
+    setSaveState('Сохраняем…');
+    timer = setTimeout(async () => {
+      try {
+        const result = await invoke('set_music_settings', { patch: collect() });
+        if (result) {
+          state.view = result;
+          setSaveState('✓ Сохранено', true);
+          requestRefresh();
+        }
+      } catch {
+        setSaveState('Не сохранено', false);
+      }
+    }, 400);
+  };
+
   modal.root.querySelectorAll('[data-act="close"]').forEach((button) =>
     button.addEventListener('click', () => modal.close())
   );
+  modal.root.querySelectorAll('input').forEach((input) => input.addEventListener('change', save));
   $('#ms-obs', modal.root)?.addEventListener('click', () => {
     modal.close();
     openObsModal();
-  });
-  $('#ms-save', modal.root)?.addEventListener('click', async () => {
-    const patch = {
-      maxQueue: Number($('#ms-max-queue', modal.root).value) || 10,
-      maxDurationSec: Math.max(1, Number($('#ms-max-duration', modal.root).value) || 8) * 60,
-      pauseYandex: $('#ms-pause-yandex', modal.root).checked,
-      restoreQueue: $('#ms-restore-queue', modal.root).checked,
-    };
-    const button = $('#ms-save', modal.root);
-    button.disabled = true;
-    try {
-      const result = await invoke('set_music_settings', { patch });
-      if (result) {
-        state.view = result;
-        modal.close();
-        toast('Настройки музыки сохранены');
-        requestRefresh();
-      }
-    } catch (error) {
-      toast(error.message || String(error), 'error');
-      button.disabled = false;
-    }
   });
 }
 

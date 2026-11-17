@@ -12,6 +12,9 @@ import {
   fmtDuration,
   bindSlider,
   paintSlider,
+  popover,
+  closePopover,
+  diagnosticsText,
   setRefreshHandler,
   setNavigateHandler,
   tauriWindow,
@@ -21,6 +24,7 @@ import { renderMusic, syncMusic, tickPlayer } from './js/music.js';
 import { renderSettings, syncSettings } from './js/settings.js';
 import { renderLog, refreshLog, syncLog } from './js/log.js';
 import { renderOnboarding, syncOnboarding } from './js/onboarding.js';
+import { renderChat, syncChat } from './js/chat.js';
 
 const content = () => $('#content');
 let pollTimer = null;
@@ -35,7 +39,6 @@ function init() {
   bindWindowControls();
   bindNavigation();
   bindTopbar();
-  bindFooter();
   setRefreshHandler(pollNow);
   setNavigateHandler(switchTab);
   installErrorHandlers();
@@ -100,6 +103,8 @@ function applyView(view) {
     syncOnboarding(root, view);
   } else if (tab === 'music') {
     syncMusic(root, view);
+  } else if (tab === 'chat') {
+    syncChat(root, view);
   } else if (tab === 'settings') {
     syncSettings(root, view);
   } else if (tab === 'log') {
@@ -110,7 +115,7 @@ function applyView(view) {
 function initialTab() {
   const params = new URLSearchParams(location.search);
   const screen = params.get('screen');
-  if (screen && ['rewards', 'music', 'settings', 'log', 'onboarding'].includes(screen)) return screen;
+  if (screen && ['rewards', 'music', 'chat', 'settings', 'log', 'onboarding'].includes(screen)) return screen;
   return 'rewards';
 }
 
@@ -146,6 +151,8 @@ function renderTab(tab) {
     else renderRewards(root, view);
   } else if (tab === 'music') {
     renderMusic(root, view);
+  } else if (tab === 'chat') {
+    renderChat(root, view);
   } else if (tab === 'settings') {
     renderSettings(root, view);
   } else if (tab === 'log') {
@@ -194,6 +201,21 @@ function emptyView() {
     playback_enabled: true,
     data_dir: '',
     log_file: '',
+    health: [],
+    chat: {
+      enabled: false,
+      connected: false,
+      read_only: false,
+      error: null,
+      login: '',
+      messages: [],
+      overlay_url: 'http://127.0.0.1:8770/chat',
+      overlay_theme: 'dark',
+      overlay_opacity: 60,
+      overlay_font: 16,
+      overlay_seconds: 0,
+      commands: { queue: true, song: true, skip: true, sound: true },
+    },
   };
 }
 
@@ -212,38 +234,45 @@ function renderDisconnected() {
 
 /* ============================ шапка, сайдбар, футер ============================ */
 
+function healthSummary(view) {
+  const items = view?.health || [];
+  const errors = items.filter((item) => item.state === 'error').length;
+  const warns = items.filter((item) => item.state === 'warn').length;
+  const problems = errors + warns;
+  const overall = errors > 0 ? 'error' : warns > 0 ? 'warn' : 'ok';
+  return { items, errors, warns, problems, overall };
+}
+
+function healthChipText(summary) {
+  if (summary.errors > 0) {
+    return summary.errors === 1 ? 'Есть проблема' : `Проблем: ${summary.errors}`;
+  }
+  if (summary.warns > 0) {
+    return summary.warns === 1 ? 'Есть замечание' : `Замечаний: ${summary.warns}`;
+  }
+  return 'Все системы работают';
+}
+
+function healthDotClass(state) {
+  if (state === 'ok') return 'dot-green';
+  if (state === 'warn') return 'dot-amber';
+  if (state === 'error') return 'dot-red';
+  return 'dot-muted';
+}
+
 function updateChrome(view) {
   document.body.classList.toggle('offline', !view.connected);
   document.body.classList.toggle('muted', !!view.muted);
 
-  const status = $('#twitch-status');
-  if (status) {
-    status.textContent = view.connected ? `Подключено · ${view.login || view.display_name || ''}` : 'Twitch не подключён';
-  }
-  const statusLine = $('#statusline');
-  if (statusLine) statusLine.title = view.connected ? `Аккаунт ${view.login || view.display_name || ''}` : 'Открыть настройки Twitch';
-  const statusDot = $('#twitch-status-dot');
-  if (statusDot) statusDot.className = `dot ${view.connected ? 'dot-green' : 'dot-muted'}`;
-
-  const eventsubText = $('#eventsub-text');
-  if (eventsubText) {
-    eventsubText.textContent =
-      !view.connected
-        ? ''
-        : view.eventsub === 'listening'
-          ? 'Слушаем награды'
-          : view.eventsub === 'connecting'
-            ? 'Переподключение…'
-            : 'Не слушаем';
-  }
-  const eventsub = $('#eventsub-status');
-  if (eventsub) {
-    eventsub.hidden = !view.connected;
-    eventsub.title = view.eventsub_error || 'Статус прослушивания активаций наград';
-  }
-  const eventsubDot = $('#eventsub-dot');
-  if (eventsubDot) {
-    eventsubDot.className = `dot ${view.eventsub === 'listening' ? 'dot-green' : view.eventsub === 'connecting' ? 'dot-amber' : 'dot-muted'}`;
+  const summary = healthSummary(view);
+  const chip = $('#health-chip');
+  if (chip) {
+    chip.dataset.state = summary.overall;
+    chip.title = summary.problems ? 'Есть проблемы — открыть статус систем' : 'Все системы работают';
+    const dot = $('#health-dot', chip);
+    if (dot) dot.className = `dot ${healthDotClass(summary.overall)}`;
+    const text = $('#health-text', chip);
+    if (text) text.textContent = healthChipText(summary);
   }
 
   const volumeValue = $('#top-volume-value');
@@ -266,30 +295,99 @@ function updateChrome(view) {
     playingNode.title = 'Остановить все звуки';
   }
 
-  const audioState = $('#audio-state');
-  if (audioState) {
-    if (!view.audio_ready) {
-      audioState.textContent = 'Нет аудиовыхода';
-      $('#audio-state-dot').className = 'dot dot-red';
-    } else if (view.muted) {
-      audioState.textContent = 'Без звука';
-      $('#audio-state-dot').className = 'dot dot-amber';
-    } else {
-      const device = view.audio_device || 'устройство по умолчанию';
-      audioState.textContent = device.length > 22 ? `Звук: ${device.slice(0, 20)}…` : `Звук: ${device}`;
-      $('#audio-state-dot').className = 'dot dot-green';
-    }
-    audioState.title = view.audio_error || view.audio_device || '';
-  }
-
-  const version = $('#version');
-  if (version) version.textContent = `версия ${view.version || '—'}`;
+  const versionText = `версия ${view.version || '—'}`;
+  const footerVersion = $('#footer-version');
+  if (footerVersion) footerVersion.textContent = versionText;
   chromeReady = true;
 }
 
+function openHealthPopover(anchor) {
+  const view = state.view || emptyView();
+  const summary = healthSummary(view);
+  const rows = summary.items
+    .map(
+      (item) => `
+      <button class="health-row" data-health-key="${escapeHtml(item.key)}" data-health-action="${escapeHtml(item.action)}">
+        <span class="dot ${healthDotClass(item.state)}"></span>
+        <span class="health-row-main">
+          <span class="health-row-title">${escapeHtml(item.title)}</span>
+          <span class="health-row-detail">${escapeHtml(item.detail)}</span>
+        </span>
+        <span class="health-row-state">${escapeHtml(healthStateLabel(item.state))}</span>
+      </button>`
+    )
+    .join('');
+
+  popover(
+    anchor,
+    `
+    <div class="health-popover-head">
+      <div>
+        <div class="section-title">Состояние систем</div>
+        <div class="settings-row-hint">${
+          summary.problems
+            ? 'Есть проблемы — они подсвечены и ведут туда, где исправляются'
+            : 'Всё готово к работе: награды, звук, музыка, чат и оверлей'
+        }</div>
+      </div>
+      <span class="pill ${summary.errors ? 'pill-danger' : summary.warns ? 'pill-warn' : 'pill-accent'}">${
+        summary.problems ? `Проблем: ${summary.problems}` : 'ОК'
+      }</span>
+    </div>
+    <div class="health-list">${rows || '<div class="settings-row-hint">Нет данных о подсистемах</div>'}</div>
+    <div class="health-popover-foot">
+      <button class="btn btn-sm btn-secondary" id="health-open-settings">Открыть «Здоровье системы»</button>
+      <button class="btn btn-sm btn-ghost" id="health-copy">Скопировать диагностику</button>
+    </div>`,
+    {
+      className: 'health-popover',
+      onMount: (node, close) => {
+        node.querySelectorAll('[data-health-action]').forEach((button) =>
+          button.addEventListener('click', () => {
+            close();
+            switchTab(button.dataset.healthAction || 'settings');
+          })
+        );
+        $('#health-open-settings', node)?.addEventListener('click', () => {
+          close();
+          switchTab('settings');
+          setTimeout(() => {
+            document.getElementById('settings-health')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 160);
+        });
+        $('#health-copy', node)?.addEventListener('click', () => {
+          copyDiagnostics();
+          close();
+        });
+      },
+    }
+  );
+}
+
+function healthStateLabel(state) {
+  return { ok: 'работает', warn: 'внимание', error: 'ошибка', off: 'выключено' }[state] || state;
+}
+
+async function copyDiagnostics() {
+  const view = state.view || emptyView();
+  try {
+    await navigator.clipboard.writeText(diagnosticsText(view));
+    toast('Диагностика скопирована');
+  } catch {
+    toast('Не удалось скопировать диагностику', 'error');
+  }
+}
+
 function bindTopbar() {
-  $('#statusline')?.addEventListener('click', () => switchTab('settings'));
-  $('#eventsub-status')?.addEventListener('click', () => switchTab('settings'));
+  $('#health-chip')?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    openHealthPopover(event.currentTarget);
+  });
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.health-popover') && !event.target.closest('#health-chip')) {
+      closePopover();
+    }
+  });
 
   const slider = $('#top-volume');
   if (slider) {
@@ -332,9 +430,7 @@ function bindTopbar() {
 }
 
 function bindFooter() {
-  $('#footer-exit')?.addEventListener('click', () => {
-    invoke('exit_app').catch(() => {});
-  });
+  // Выход перенесён из футера в меню «···» — всегда с подтверждением.
 }
 
 /* ============================ окно ============================ */

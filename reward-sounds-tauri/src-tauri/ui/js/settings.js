@@ -14,7 +14,11 @@ import {
   requestRefresh,
   navigate,
   createModal,
+  menu,
+  exitMenuItem,
+  diagnosticsText,
 } from './bridge.js';
+import { soundTestHtml, bindSoundTest } from './sound-test.js';
 import { openMusicSettings } from './music.js';
 
 let boundRoot = null;
@@ -55,6 +59,7 @@ function settingsSignature(view) {
     eventsub_error: view.eventsub_error,
     audio_ready: view.audio_ready,
     audio_device: view.audio_device,
+    health: view.health,
   });
 }
 
@@ -68,9 +73,13 @@ function settingsPageHtml(view) {
         <h1 class="h1">Настройки</h1>
         <div class="sub">Twitch, звук и поведение приложения</div>
       </div>
-      <div class="head-actions"><span class="save-indicator" id="settings-save-state">Изменения сохраняются автоматически</span></div>
+      <div class="head-actions">
+        <span class="save-indicator" id="settings-save-state">Изменения сохраняются автоматически</span>
+        <button class="btn btn-icon btn-ghost" id="settings-menu" title="Действия">•••</button>
+      </div>
     </div>
     <div class="settings-grid">
+      ${healthCard(view)}
       ${twitchCard(view, auth)}
       ${soundCard(view)}
       ${audioCard(view)}
@@ -78,6 +87,45 @@ function settingsPageHtml(view) {
       ${musicCard(view)}
       ${dataCard(view)}
     </div>`;
+}
+
+function healthCard(view) {
+  const items = view.health || [];
+  const problems = items.filter((item) => item.state === 'error' || item.state === 'warn').length;
+  const rows = items
+    .map(
+      (item) => `
+      <div class="health-row static">
+        <span class="dot ${healthDot(item.state)}"></span>
+        <span class="health-row-main">
+          <span class="health-row-title">${escapeHtml(item.title)}</span>
+          <span class="health-row-detail">${escapeHtml(item.detail)}</span>
+        </span>
+        ${item.action && item.action !== 'settings' ? `<button class="btn btn-sm btn-ghost state-action" data-health-go="${escapeHtml(item.action)}">Открыть</button>` : ''}
+      </div>`
+    )
+    .join('');
+  return `
+    <div class="card settings-card health-card" id="settings-health">
+      <div class="health-card-head">
+        <div>
+          <div class="settings-card-title">Здоровье системы</div>
+          <div class="settings-card-sub">${
+            problems ? `Требуют внимания: ${problems}` : 'Все подсистемы в порядке'
+          }</div>
+        </div>
+        <span class="pill ${problems ? 'pill-warn' : 'pill-accent'}">${problems ? `${problems} ${problems === 1 ? 'замечание' : 'замечания'}` : 'ОК'}</span>
+      </div>
+      <div class="health-list">${rows || '<div class="settings-row-hint">Нет данных о подсистемах</div>'}</div>
+      <div class="settings-actions">
+        <button class="btn btn-sm btn-secondary" id="settings-copy-diag">Скопировать диагностику</button>
+        <button class="btn btn-sm btn-ghost" id="settings-open-log">Открыть журнал</button>
+      </div>
+    </div>`;
+}
+
+function healthDot(state) {
+  return { ok: 'dot-green', warn: 'dot-amber', error: 'dot-red', off: 'dot-muted' }[state] || 'dot-muted';
 }
 
 function card(title, subtitle, body) {
@@ -117,8 +165,18 @@ function twitchCard(view, auth) {
       <div class="settings-actions">
         <button class="btn btn-primary" id="twitch-refresh-data">Обновить данные</button>
         <button class="btn btn-secondary" id="twitch-restart-eventsub">Переподключить события</button>
-        <button class="btn btn-secondary" id="twitch-reconnect">Сменить аккаунт</button>
-        <button class="btn btn-secondary reward-delete-text" id="twitch-disconnect">Отключить Twitch</button>
+      </div>
+      <div class="settings-row account-row">
+        <div>
+          <div class="settings-row-title">Аккаунт</div>
+          <div class="settings-row-hint">Сменить канал можно только после отключения текущего</div>
+        </div>
+        <button class="btn btn-sm btn-secondary" id="twitch-reconnect">Сменить…</button>
+      </div>
+      <div class="danger-zone">
+        <div class="danger-zone-title">Опасная зона</div>
+        <div class="danger-zone-text">Отключить Twitch — награды и чат перестанут работать до повторного входа. Потребуется подтверждение.</div>
+        <button class="btn btn-sm btn-danger" id="twitch-disconnect">Отключить Twitch</button>
       </div>
       <div class="settings-row-hint">Client ID: <code>${escapeHtml(view.client_id || '—')}</code></div>
       ${auth.error ? `<div class="settings-error">${escapeHtml(auth.error)}</div>` : ''}`;
@@ -167,8 +225,8 @@ function audioCard(view) {
     </div>
     ${view.audio_error ? `<div class="settings-error">${escapeHtml(view.audio_error)}</div>` : ''}
     ${view.normalizing ? `<div class="settings-status"><span class="dot dot-amber"></span>Измеряем громкость звуков…</div>` : ''}
+    ${soundTestHtml()}
     <div class="settings-actions">
-      <button class="btn btn-secondary" id="audio-test">Проверить звук</button>
       <button class="btn btn-secondary" id="audio-restart">Перезапустить аудио</button>
       <button class="btn btn-secondary" id="audio-stop-all">Остановить все звуки</button>
       <button class="btn btn-secondary" id="audio-normalize"${view.bindings > 0 && !view.normalizing ? '' : ' disabled'}>Выровнять громкость</button>
@@ -236,6 +294,19 @@ function toggleHtml(key, enabled, label, hint) {
 /* ============================ события ============================ */
 
 function bind(root, view) {
+  $('#settings-menu', root)?.addEventListener('click', (event) => {
+    menu(event.currentTarget, [
+      { label: 'Открыть журнал', icon: icons.folder, onClick: () => navigate('log') },
+      { label: 'Скопировать диагностику', icon: icons.copy, onClick: copySettingsDiagnostics },
+      exitMenuItem(),
+    ]);
+  });
+  root.querySelectorAll('[data-health-go]').forEach((button) =>
+    button.addEventListener('click', () => navigate(button.dataset.healthGo))
+  );
+  $('#settings-copy-diag', root)?.addEventListener('click', copySettingsDiagnostics);
+  $('#settings-open-log', root)?.addEventListener('click', () => navigate('log'));
+
   $$('[data-setting]', root).forEach((button) => {
     button.addEventListener('click', async () => {
       const key = button.dataset.setting;
@@ -344,10 +415,7 @@ function bind(root, view) {
     }
   });
 
-  $('#audio-test', root)?.addEventListener('click', async () => {
-    const ok = await tryInvoke('test_audio');
-    if (ok !== null) toast('Тестовый сигнал отправлен на устройство вывода');
-  });
+  bindSoundTest(root);
   $('#audio-restart', root)?.addEventListener('click', async () => {
     const result = await tryInvoke('restart_audio');
     if (result) {
@@ -397,8 +465,16 @@ function bind(root, view) {
   $('#open-log-folder', root)?.addEventListener('click', () => invoke('open_folder', { kind: 'logs' }).catch(() => {}));
 }
 
-async function startLogin(clientId) {
-  const result = await tryInvoke('twitch_start_login', { clientId });
+async function copySettingsDiagnostics() {
+  try {
+    await navigator.clipboard.writeText(diagnosticsText(state.view || {}));
+    toast('Диагностика скопирована');
+  } catch {
+    toast('Не удалось скопировать диагностику', 'error');
+  }
+}
+
+async function startLogin(clientId) {  const result = await tryInvoke('twitch_start_login', { clientId });
   if (result) {
     state.view = result;
     requestRefresh();

@@ -47,7 +47,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function screenshot(send, name) {
   const { data } = await send('Page.captureScreenshot', { format: 'png' });
-  const file = path.join(OUT, name + '.png');
+  const base = path.isAbsolute(name) ? name : path.join(OUT, name);
+  const file = base.endsWith('.png') ? base : base + '.png';
   fs.writeFileSync(file, Buffer.from(data, 'base64'));
   return file;
 }

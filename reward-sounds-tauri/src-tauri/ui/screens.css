@@ -495,3 +495,248 @@ button.dots:hover { color: #F5F5F5; background: rgba(255,255,255,.07); }
 .version { color: rgba(181,181,181,.8); }
 .footer { color: rgba(168,168,168,.85); }
 .settings-label, .player-side-hint, .queue-hint, .settings-row-hint { color: rgba(158,158,158,.9); }
+
+/* ===== статус-хаб, тосты, здоровье системы (итерация 2) ===== */
+.top-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.health-chip {
+  display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 11px;
+  border-radius: 15px; border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04); color: #C9C9C9; font: inherit; font-size: 12.4px;
+  cursor: pointer; white-space: nowrap; transition: background-color .12s ease, border-color .12s ease;
+}
+.health-chip:hover { background: rgba(255,255,255,.07); color: #F5F5F5; }
+.health-chip[data-state="warn"] { border-color: rgba(245,158,11,.38); color: #F5C97B; }
+.health-chip[data-state="error"] { border-color: rgba(239,68,68,.42); color: #FCA5A5; }
+.health-chevron { color: #8B8B8B; font-size: 14px; line-height: 1; }
+
+.popover {
+  position: fixed; z-index: 130; width: 380px; max-width: calc(100vw - 20px);
+  background: #151515; border: 1px solid rgba(255,255,255,.10); border-radius: 16px;
+  box-shadow: 0 18px 56px rgba(0,0,0,.6); padding: 14px;
+}
+.health-popover-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.health-popover-head .pill { margin-left: auto; }
+.health-list { display: flex; flex-direction: column; gap: 2px; }
+.health-row {
+  display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 9px;
+  border: 0; background: transparent; font: inherit; color: #DADADA; text-align: left;
+  cursor: pointer; width: 100%;
+}
+.health-row.static { cursor: default; }
+.health-row:hover { background: rgba(255,255,255,.05); }
+.health-row-main { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+.health-row-title { font-size: 12.2px; color: #E6E6E6; }
+.health-row-detail {
+  font-size: 11px; color: #8B8B8B; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.health-row-state { font-size: 10.6px; color: #8B8B8B; flex: 0 0 auto; }
+.health-popover-foot {
+  display: flex; gap: 8px; margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.07); flex-wrap: wrap;
+}
+.health-card { grid-column: 1 / -1; }
+.health-card-head { display: flex; align-items: flex-start; gap: 10px; }
+.health-card-head .pill { margin-left: auto; }
+.health-card .health-list { display: flex; flex-direction: column; gap: 0; }
+.health-card .health-row { padding: 5px 8px; }
+
+.toast-stack {
+  position: fixed; right: 22px; bottom: 54px; z-index: 200;
+  display: flex; flex-direction: column; gap: 8px; width: 340px;
+  max-width: calc(100vw - 40px); pointer-events: none;
+}
+.toast {
+  display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px;
+  border-radius: 13px; background: #161616; border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 14px 40px rgba(0,0,0,.5); pointer-events: auto;
+  animation: toast-in .16s ease-out;
+}
+@keyframes toast-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.toast-error { border-color: rgba(239,68,68,.4); }
+.toast-warn { border-color: rgba(245,158,11,.35); }
+.toast-success { border-color: rgba(34,197,94,.35); }
+.toast-icon { flex: 0 0 auto; display: flex; margin-top: 1px; color: #8B8B8B; }
+.toast-error .toast-icon { color: #EF4444; }
+.toast-warn .toast-icon { color: #F59E0B; }
+.toast-success .toast-icon { color: #22C55E; }
+.toast-body { flex: 1 1 auto; min-width: 0; }
+.toast-title { font-size: 10.2px; letter-spacing: .5px; text-transform: uppercase; color: #8B8B8B; }
+.toast-text { font-size: 12.6px; color: #EAEAEA; line-height: 17px; margin-top: 2px; overflow-wrap: anywhere; }
+.toast-actions { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.toast-action { border: 0; background: transparent; color: #C9A7FF; font: inherit; font-size: 11.8px; padding: 0; cursor: pointer; }
+.toast-action:hover { color: #F5F5F5; }
+.toast-close { border: 0; background: transparent; color: #6E6E6E; cursor: pointer; padding: 2px; display: flex; }
+.toast-close:hover { color: #F5F5F5; }
+.toast-count { color: #8B8B8B; font-size: 10px; margin-left: 4px; }
+.footer { gap: 10px; }
+.footer-version { font-size: 10.6px; color: rgba(160,160,160,.7); }
+#footer-hint { color: #8B8B8B; font-size: 12.4px; }
+@media (max-width: 980px) {
+  .toast-stack { right: 14px; bottom: 46px; width: 300px; }
+}
+/* ===== единый тест звука и иерархия настроек (итерация 5) ===== */
+.sound-test {
+  display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 11px;
+  background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.07);
+}
+.sound-test.compact { padding: 7px 9px; }
+.sound-test-info { flex: 1 1 auto; min-width: 0; }
+.sound-test-title { font-size: 12.4px; font-weight: 600; color: #E6E6E6; }
+.sound-test-hint { font-size: 11px; color: #8B8B8B; margin-top: 1px; }
+.sound-test-state { font-size: 10.8px; color: #8B8B8B; flex: 0 0 auto; }
+.danger-zone {
+  margin-top: 10px; padding: 10px 12px; border-radius: 11px;
+  background: rgba(239,68,68,.06); border: 1px solid rgba(239,68,68,.22);
+}
+.danger-zone-title { font-size: 10.4px; letter-spacing: .5px; text-transform: uppercase; color: #EF4444; }
+.danger-zone-text { font-size: 11.4px; color: #B9B9B9; line-height: 16px; margin: 4px 0 8px; }
+.account-row { margin-top: 2px; }
+
+/* ===== доступность: видимый фокус и размеры целей (итерация 7) ===== */
+:where(button, [role="button"], [tabindex], input, select, textarea, .seg-item, .pill, .dots):focus-visible {
+  outline: 2px solid rgba(139,0,255,.72);
+  outline-offset: 2px;
+}
+.icon-button, .copy-btn { width: 32px; height: 32px; flex: 0 0 32px; }
+.soundchip-play { width: 26px; height: 26px; flex: 0 0 26px; }
+.soundchip .play { width: 22px; height: 22px; flex: 0 0 22px; }
+.queue-btn { width: 30px; height: 30px; flex: 0 0 30px; }
+.player-round { width: 34px; height: 34px; }
+.toast-close { min-width: 26px; min-height: 26px; display: flex; align-items: center; justify-content: center; }
+button.dots { min-width: 30px; min-height: 28px; display: inline-flex; align-items: center; justify-content: center; }
+.winbtn { min-height: 28px; }
+#track-progress:focus-visible { outline-offset: 4px; }
+.health-row:focus-visible { outline-offset: -2px; }
+/* ===== музыка: пустой плеер с CTA и очередь со скроллом (итерация 6) ===== */
+.player-cta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.queue-list { max-height: 264px; overflow-y: auto; overscroll-behavior: contain; }
+.queue-list::-webkit-scrollbar { width: 8px; }
+.queue-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 4px; }
+.queue-empty { padding: 18px 4px 10px; color: #8B8B8B; font-size: 12.4px; text-align: center; }
+.music-columns { align-items: start; }
+/* компактная карточка здоровья и единый тест звука */
+.health-card .health-row { padding: 3px 6px; }
+.health-card .health-row-main { flex-direction: row; align-items: baseline; gap: 7px; }
+.health-card .health-row-state { display: none; }
+.health-card .health-row-detail { white-space: nowrap; }
+.health-card .settings-actions { margin-top: 8px; }
+.sound-test-hint { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sound-test-state:empty { display: none; }
+/* ===== плотность: компактная плитка и список с колонками (итерация 3) ===== */
+.content .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.reward-card { padding: 12px 12px 10px; border-radius: 14px; }
+.reward-card .card-top { align-items: center; gap: 8px; }
+.reward-card .tile { width: 28px; height: 28px; flex: 0 0 28px; border-radius: 8px; font-size: 14px; }
+.reward-card .card-title { font-size: 13.2px; line-height: 16px; max-width: none; }
+.reward-card .card-meta { font-size: 9.4px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; }
+.reward-card .dots { font-size: 14px; line-height: 16px; }
+.reward-card .soundchip { margin-top: 8px; height: 30px; padding: 0 9px; font-size: 11px; gap: 7px; }
+.reward-card .soundchip .fmt { font-size: 9.6px; }
+.reward-card .volrow { margin-top: 7px; gap: 7px; }
+.reward-card .volrow .cap { display: none; }
+.reward-card .volrow .val { font-size: 9.6px; }
+.reward-card .card-actions { margin-top: 8px; gap: 4px; }
+.reward-card .card-actions .btn { height: 26px; font-size: 11.4px; padding: 0 9px; }
+.reward-card .card-actions .ghost-red { font-size: 11.4px; }
+.reward-card .music-badge, .reward-card .input-badge { font-size: 8.6px; padding: 0 5px; margin-left: 4px; }
+
+.reward-row { grid-template-columns: 26px minmax(0, 1.5fr) minmax(0, 1fr) 128px auto 24px; gap: 10px; padding: 8px 12px; border-radius: 12px; }
+.reward-row .tile-sm { width: 26px; height: 26px; flex-basis: 26px; font-size: 12.6px; }
+.rr-title { font-size: 13.2px; }
+.rr-meta { font-size: 10px; }
+.rr-sound { font-size: 11.8px; }
+.rr-actions .btn { height: 26px; font-size: 11.4px; padding: 0 8px; }
+.rr-actions .ghost-red { font-size: 11.4px; }
+.rr-volume .slider { flex: 0 0 84px; }
+.rr-volume .local-value { font-size: 10px; }
+.filters-toggle { display: none; }
+.filters-toggle.active { border-color: rgba(139,0,255,.45); color: #E9D8FF; }
+
+@media (max-width: 1120px) {
+  .content .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #reward-pills { display: none; }
+  .filters-toggle { display: inline-flex; }
+  .reward-row { grid-template-columns: 26px minmax(0, 1.3fr) minmax(0, .9fr) 96px auto 24px; gap: 8px; }
+  .rr-volume .slider { flex-basis: 64px; }
+  #sidebar { width: 64px; flex-basis: 64px; padding: 12px 8px; }
+  #sidebar .nav-label { display: none; }
+  #sidebar .nav-item { justify-content: center; padding: 0; gap: 0; height: 40px; }
+  #sidebar .nav-item span { display: none; }
+  #sidebar .sidebar-bottom { display: none; }
+  #sidebar .nav-item.active { background: rgba(139,0,255,.16); color: #F5F5F5; }
+  .topbar { padding: 0 16px; }
+  .footer { padding: 0 16px; }
+}
+
+@media (max-width: 1020px) {
+  .rr-volume { display: flex; }
+}
+
+@media (max-width: 980px) {
+  .content .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reward-row { grid-template-columns: 24px minmax(0, 1.2fr) minmax(0, .8fr) 74px auto 22px; gap: 7px; padding: 7px 10px; }
+  .rr-sound .rr-fmt { display: none; }
+  .rr-volume .slider { flex-basis: 52px; }
+  .reward-row .rr-actions .btn { padding: 0 6px; }
+}
+/* компактные карточки: высота по контенту, без пустот от растяжения ряда */
+.content .grid { align-items: start; }
+.content .grid > .card { height: auto; }
+.reward-card .card-meta { white-space: nowrap; }
+.reward-card .card-actions { margin-top: 8px; }
+.reward-card .card-actions:empty { display: none; }
+/* тулбар в один ряд на узких окнах: сортировка уходит в «Фильтры» */
+@media (max-width: 1120px) {
+  #reward-sort { display: none; }
+  .toolbar { flex-wrap: nowrap; gap: 8px; }
+  .toolbar .search { flex: 1 1 auto; min-width: 0; }
+  .toolbar-actions { flex: 0 0 auto; gap: 6px; }
+  .toolbar-actions .btn-ghost.btn-danger-ghost { padding: 0 8px; font-size: 12px; }
+}
+/* плеер на минимальной ширине: без обложки, громкость отдельной строкой */
+@media (max-width: 980px) {
+  .music-player { flex-wrap: wrap; gap: 10px; }
+  .player-art { display: none; }
+  .player-side {
+    width: 100%; flex: 1 1 100%; border-left: 0;
+    border-top: 1px solid rgba(255,255,255,.07); padding: 10px 0 0; margin-top: 2px;
+  }
+  .player-side-hint { margin-top: 4px; }
+  .player-progress-row { margin-top: 10px; }
+}
+/* ===== вкладка «Чат» ===== */
+.chat-pills { margin-top: 12px; flex-wrap: wrap; }
+.chat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.chat-card { padding: 14px 16px; min-width: 0; }
+.chat-live { grid-column: 1 / -1; }
+.chat-conn-status { margin: 8px 0 6px; }
+.chat-command-list { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; }
+.chat-command { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+.chat-command code { font-size: 11.6px; color: #C9A7FF; background: rgba(139,0,255,.10); border: 1px solid rgba(139,0,255,.22); border-radius: 7px; padding: 2px 7px; white-space: nowrap; }
+.chat-command-info { flex: 1 1 auto; min-width: 0; }
+.chat-command-title { font-size: 12.4px; color: #E6E6E6; }
+.chat-command-hint { font-size: 10.6px; color: #8B8B8B; }
+.chat-overlay-url { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.chat-overlay-url code { flex: 1 1 auto; min-width: 0; font-size: 11.4px; color: #DADADA; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 6px 9px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chat-overlay-controls { margin-top: 8px; }
+.chat-overlay-controls .setting-row { margin-top: 6px; }
+.chat-overlay-slider-row { display: flex; align-items: center; gap: 8px; }
+.chat-live-head { display: flex; align-items: center; gap: 10px; }
+.chat-live-count { font-size: 11px; color: #8B8B8B; }
+.chat-feed { margin-top: 10px; height: 300px; overflow-y: auto; overscroll-behavior: contain; border-radius: 10px; background: rgba(255,255,255,.025); border: 1px solid rgba(255,255,255,.06); padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; }
+.chat-feed-empty { margin: auto; color: #6E6E6E; font-size: 12.4px; }
+.chat-message { display: flex; align-items: baseline; gap: 7px; font-size: 12.6px; line-height: 18px; }
+.chat-time { font-size: 10px; color: #6E6E6E; flex: 0 0 auto; }
+.chat-user { font-weight: 600; flex: 0 0 auto; }
+.chat-badge { font-size: 8.6px; letter-spacing: .4px; text-transform: uppercase; color: #8B8B8B; border: 1px solid rgba(255,255,255,.14); border-radius: 6px; padding: 0 4px; flex: 0 0 auto; }
+.chat-badge-broadcaster { color: #F5C97B; border-color: rgba(245,158,11,.35); }
+.chat-text { color: #DADADA; min-width: 0; overflow-wrap: anywhere; }
+.chat-send-row { display: flex; gap: 8px; margin-top: 10px; }
+.chat-input { flex: 1 1 auto; min-width: 0; height: 34px; border-radius: 9px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); padding: 0 10px; }
+.chat-input:disabled { opacity: .55; }
+@media (max-width: 1120px) {
+  .chat-grid { grid-template-columns: minmax(0, 1fr); }
+  .chat-card { padding: 12px 14px; }
+  .chat-feed { height: 240px; }
+}

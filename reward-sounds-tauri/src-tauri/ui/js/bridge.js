@@ -131,34 +131,129 @@ export function fmtPercent(value) {
   return `${Math.round((Number(value) || 0) * 100)}%`;
 }
 
-/* ---------- тосты в футере (старый «footer-text» остаётся каналом) ---------- */
+/* ---------- стек тостов (ошибки не исчезают сами) ---------- */
 
-let toastTimer = null;
-let toastKind = '';
-export function toast(text, kind = 'info', timeout) {
-  const el = $('#footer-text');
-  if (!el) return;
-  el.textContent = text;
-  toastKind = kind;
-  document.body.dataset.toastKind = kind;
-  if (toastTimer) clearTimeout(toastTimer);
-  const delay = timeout ?? (kind === 'error' ? 9000 : kind === 'warn' ? 7000 : 4500);
+let toastHost = null;
+
+function ensureToastHost() {
+  if (toastHost && toastHost.isConnected) return toastHost;
+  toastHost = document.createElement('div');
+  toastHost.id = 'toast-stack';
+  toastHost.className = 'toast-stack';
+  toastHost.setAttribute('aria-live', 'polite');
+  document.body.appendChild(toastHost);
+  return toastHost;
+}
+
+function toastTitle(kind) {
+  return (
+    { error: 'Ошибка', warn: 'Внимание', success: 'Готово', info: 'Сообщение' }[kind] || 'Сообщение'
+  );
+}
+
+function toastIcon(kind) {
+  if (kind === 'error') return icons.warning;
+  if (kind === 'warn') return icons.warning;
+  if (kind === 'success') return icons.check;
+  return icons.external;
+}
+
+/**
+ * Тост справа снизу. Ошибки — липкие, с действием «Журнал» и текстом
+ * на русском; успех и подсказки исчезают сами.
+ */
+export function toast(text, kind = 'info', timeoutOrOptions) {
+  const options = typeof timeoutOrOptions === 'object' && timeoutOrOptions !== null
+    ? timeoutOrOptions
+    : { timeout: timeoutOrOptions };
+  const host = ensureToastHost();
+  const message = String(text ?? '').trim();
+  if (!message) return null;
+  const display = kind === 'error' ? friendlyError(message) : message;
+
+  // Дубликаты не плодим: обновляем существующий тост и продлеваем ему жизнь.
+  const duplicate = Array.from(host.children).find(
+    (node) => node.dataset.message === display && node.dataset.kind === kind
+  );
+  if (duplicate) {
+    const count = Number(duplicate.dataset.count || '1') + 1;
+    duplicate.dataset.count = String(count);
+    const countNode = duplicate.querySelector('.toast-count');
+    if (countNode) countNode.textContent = `×${count}`;
+    else duplicate.querySelector('.toast-title')?.insertAdjacentHTML('beforeend', ` <span class="toast-count">×${count}</span>`);
+    if (duplicate._timer) clearTimeout(duplicate._timer);
+    scheduleHide(duplicate, kind, options);
+    return duplicate;
+  }
+
+  while (host.children.length >= 3) host.firstElementChild.remove();
+
+  const node = document.createElement('div');
+  node.className = `toast toast-${kind}`;
+  node.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+  node.dataset.message = display;
+  node.dataset.kind = kind;
+  const actions = Array.isArray(options.actions)
+    ? options.actions
+    : kind === 'error'
+      ? [{ label: 'Журнал', onClick: () => navigate('log') }]
+      : [];
+  node.innerHTML = `
+    <span class="toast-icon">${toastIcon(kind)}</span>
+    <div class="toast-body">
+      <div class="toast-title">${escapeHtml(options.title || toastTitle(kind))}</div>
+      <div class="toast-text">${escapeHtml(display)}</div>
+      ${actions.length ? `<div class="toast-actions">${actions
+        .map((action, index) => `<button class="toast-action" data-action="${index}">${escapeHtml(action.label)}</button>`)
+        .join('')}</div>` : ''}
+    </div>
+    <button class="toast-close" title="Закрыть" aria-label="Закрыть">${icons.close}</button>`;
+  host.appendChild(node);
+
+  node.querySelector('.toast-close').addEventListener('click', () => node.remove());
+  node.querySelectorAll('.toast-action').forEach((button) =>
+    button.addEventListener('click', () => {
+      actions[Number(button.dataset.action)]?.onClick?.();
+      node.remove();
+    })
+  );
+  scheduleHide(node, kind, options);
+  return node;
+}
+
+function scheduleHide(node, kind, options) {
+  const delay = options.timeout ?? (kind === 'error' ? 0 : kind === 'warn' ? 7000 : 4200);
   if (delay > 0) {
-    toastTimer = setTimeout(() => {
-      el.textContent = 'Готово';
-      document.body.dataset.toastKind = '';
-      toastTimer = null;
-    }, delay);
+    node._timer = setTimeout(() => node.remove(), delay);
   }
 }
 
 export function clearToast() {
-  if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = null;
-  const el = $('#footer-text');
-  if (el) el.textContent = 'Готово';
-  document.body.dataset.toastKind = '';
+  ensureToastHost().replaceChildren();
 }
+
+/** Переводит частые английские ошибки ядра в человеческий русский. */
+export function friendlyError(message) {
+  const text = String(message ?? '').trim();
+  if (!text) return 'Не удалось выполнить действие. Подробности — в журнале.';
+  const rules = [
+    [/command .*not found|unknown command/i, 'Внутренняя команда недоступна. Откройте журнал или обновите приложение.'],
+    [/error sending request|dns error|connection (refused|reset)|network|timed? ?out|timeout|os error 100/i, 'Нет связи с Twitch. Проверьте интернет и повторите попытку.'],
+    [/401|unauthorized|invalid.*token|token.*(invalid|expired)/i, 'Twitch отклонил вход — переподключите аккаунт в настройках.'],
+    [/403|forbidden|scope|permission/i, 'Не хватает прав Twitch — переподключите аккаунт, чтобы выдать нужные права.'],
+    [/404|not found|no such file|os error 2/i, 'Не найдено. Возможно, объект уже удалён или файл перемещён.'],
+    [/500|502|503|504|internal server error/i, 'Twitch временно недоступен. Повторите попытку позже.'],
+    [/5[0-9][0-9] /, 'Сервис временно недоступен. Повторите попытку позже.'],
+    [/unsupported|not supported|invalid format/i, 'Формат не поддерживается.'],
+  ];
+  for (const [pattern, replacement] of rules) {
+    if (pattern.test(text)) return replacement;
+  }
+  // Уже русский текст показываем как есть.
+  if (/[А-Яа-яЁё]/.test(text)) return text;
+  return 'Не удалось выполнить действие. Подробности — в журнале.';
+}
+
 
 /* ---------- мост к Tauri ---------- */
 
@@ -220,6 +315,14 @@ export function createModal({ className = 'modal', html = '', scrimClass = 'moda
   scrim.className = scrimClass;
   scrim.innerHTML = `<div class="${className}" role="dialog" aria-modal="true">${html}</div>`;
   document.body.appendChild(scrim);
+  const dialog = scrim.firstElementChild;
+  const titleNode = scrim.querySelector('.modal-title');
+  if (titleNode) {
+    titleNode.id = titleNode.id || `modal-title-${Math.random().toString(36).slice(2, 8)}`;
+    dialog.setAttribute('aria-labelledby', titleNode.id);
+  } else {
+    dialog.setAttribute('aria-label', 'Диалог');
+  }
 
   const entry = { scrim, onClose, previousFocus: document.activeElement };
   openModals.push(entry);
@@ -315,10 +418,11 @@ export function menu(anchor, items) {
   closeMenus();
   const pop = document.createElement('div');
   pop.className = 'popmenu';
+  pop.setAttribute('role', 'menu');
   pop.innerHTML = items
     .map(
       (item, index) => `
-      <button class="popmenu-item${item.danger ? ' danger' : ''}" data-index="${index}">
+      <button class="popmenu-item${item.danger ? ' danger' : ''}" role="menuitem" data-index="${index}">
         ${item.icon ? `<span class="popmenu-icon">${item.icon}</span>` : ''}<span>${escapeHtml(item.label)}</span>
       </button>`
     )
@@ -345,6 +449,7 @@ export function menu(anchor, items) {
   setTimeout(() => {
     document.addEventListener('mousedown', onOutside, true);
     document.addEventListener('keydown', onKey, true);
+    pop.querySelector('.popmenu-item')?.focus();
   }, 0);
 
   function onOutside(event) {
@@ -355,7 +460,20 @@ export function menu(anchor, items) {
     if (event.key === 'Escape') {
       event.preventDefault();
       closeMenus();
+      anchor.focus?.();
+      return;
     }
+    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+    const buttons = Array.from(pop.querySelectorAll('.popmenu-item'));
+    if (!buttons.length) return;
+    event.preventDefault();
+    const current = buttons.indexOf(document.activeElement);
+    let next = current;
+    if (event.key === 'ArrowDown') next = (current + 1) % buttons.length;
+    else if (event.key === 'ArrowUp') next = (current - 1 + buttons.length) % buttons.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = buttons.length - 1;
+    buttons[next]?.focus();
   }
 
   function close() {
@@ -369,6 +487,91 @@ export function menu(anchor, items) {
 
 export function closeMenus() {
   document.querySelectorAll('.popmenu').forEach((pop) => pop._close?.());
+}
+
+/* ---------- поповеры произвольного вида ---------- */
+
+let openPopover = null;
+
+/** Открывает поповер с произвольным HTML, привязанный к элементу. */
+export function popover(anchor, html, { className = '', onMount } = {}) {
+  closePopover();
+  const node = document.createElement('div');
+  node.className = `popover ${className}`.trim();
+  node.innerHTML = html;
+  document.body.appendChild(node);
+  const rect = anchor.getBoundingClientRect();
+  const width = node.offsetWidth || 320;
+  const height = node.offsetHeight || 240;
+  let left = Math.min(rect.right - width, window.innerWidth - width - 10);
+  left = Math.max(10, left);
+  let top = rect.bottom + 8;
+  if (top + height > window.innerHeight - 10) top = Math.max(10, rect.top - height - 8);
+  node.style.left = `${Math.round(left)}px`;
+  node.style.top = `${Math.round(top)}px`;
+
+  const onOutside = (event) => {
+    if (!node.contains(event.target) && !anchor.contains(event.target)) close();
+  };
+  const onKey = (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+    }
+  };
+  function close() {
+    document.removeEventListener('mousedown', onOutside, true);
+    document.removeEventListener('keydown', onKey, true);
+    node.remove();
+    if (openPopover === entry) openPopover = null;
+  }
+  setTimeout(() => {
+    document.addEventListener('mousedown', onOutside, true);
+    document.addEventListener('keydown', onKey, true);
+  }, 0);
+  const entry = { node, close };
+  openPopover = entry;
+  onMount?.(node, close);
+  return entry;
+}
+
+export function closePopover() {
+  openPopover?.close();
+  openPopover = null;
+}
+
+/** Пункт меню «Завершить работу…»: выход только с подтверждением. */
+export function exitMenuItem() {
+  return {
+    label: 'Завершить работу…',
+    icon: icons.external,
+    danger: true,
+    onClick: () => {
+      confirmDialog({
+        title: 'Выйти из Reward Sounds?',
+        text: 'Звуки наград, музыка и чат перестанут работать до следующего запуска. Свернуть в трей можно кнопкой окна.',
+        confirmLabel: 'Выйти',
+        danger: true,
+      }).then((confirmed) => {
+        if (confirmed) invoke('exit_app').catch(() => {});
+      });
+    },
+  };
+}
+
+/** Текст диагностики для «Скопировать диагностику» (статус-хаб и настройки). */
+export function diagnosticsText(view) {
+  const items = view?.health || [];
+  const stateLabel = (state) =>
+    ({ ok: 'работает', warn: 'внимание', error: 'ошибка', off: 'выключено' })[state] || state;
+  return [
+    `Reward Sounds ${view?.version || ''}`,
+    `Twitch: ${view?.connected ? `подключено @${view.login}` : 'не подключено'}`,
+    ...items.map((item) => `${item.title}: ${stateLabel(item.state)} — ${item.detail}`),
+    `Звук: ${view?.audio_ready ? view.audio_device || 'устройство по умолчанию' : 'нет аудиовыхода'}`,
+    `Данные: ${view?.data_dir || '—'}`,
+    `Журнал: ${view?.log_file || '—'}`,
+  ].join('\n');
 }
 
 /* ---------- иконки ---------- */

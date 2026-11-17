@@ -18,8 +18,10 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use crate::http;
 use crate::json::{self, JsonExt};
 
-/// Минимально необходимый доступ: только чтение наград Channel Points.
-pub const REQUIRED_SCOPES: &str = "channel:read:redemptions channel:manage:redemptions";
+/// Минимально необходимый доступ: чтение и управление наградами Channel Points,
+/// а также чтение и отправка сообщений в чат (`!queue`, `!song`, `!skip`, `!звук`).
+pub const REQUIRED_SCOPES: &str =
+    "channel:read:redemptions channel:manage:redemptions chat:read chat:edit";
 
 const DEVICE_URL: &str = "https://id.twitch.tv/oauth2/device";
 const TOKEN_URL: &str = "https://id.twitch.tv/oauth2/token";

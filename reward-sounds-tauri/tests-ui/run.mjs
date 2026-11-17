@@ -264,27 +264,174 @@ async function run() {
   assert('поиск по журналу фильтрует', logSearch > 0 && logSearch <= logAll, `${logSearch} из ${logAll}`);
   await setValue('#log-search', '');
 
-  // 10. Ошибки IPC показываются пользователю, а не проглатываются
-  const beforeError = consoleErrors().length;
+  // 10. Ошибки IPC показываются стеком тостов, а не глотаются
   await evaluate(
     `window.RS.api.invoke('this_command_does_not_exist').then(() => 'resolved').catch(() => 'rejected')`
   );
-  await sleep(400);
-  const footer = await evaluate(`document.querySelector('#footer-text')?.textContent`);
-  const bodyKind = await evaluate(`document.body.dataset.toastKind`);
-  assert('ошибка IPC превращается в тост', bodyKind === 'error' && footer && footer !== 'Готово', `${bodyKind}: ${footer}`);
+  await sleep(500);
+  const toastInfo = await evaluate(`(() => {
+    const toast = document.querySelector('.toast.toast-error');
+    return {
+      exists: !!toast,
+      text: toast?.querySelector('.toast-text')?.textContent || '',
+      action: toast?.querySelector('.toast-action')?.textContent || '',
+    };
+  })()`);
+  assert('ошибка IPC превращается в тост', toastInfo.exists, JSON.stringify(toastInfo));
+  assert('текст ошибки на русском', /[А-Яа-яЁё]/.test(toastInfo.text) && !/not found/i.test(toastInfo.text), toastInfo.text);
+  assert('у ошибки есть действие «Журнал»', /журнал/i.test(toastInfo.action), toastInfo.action);
   assert('ошибка IPC не роняет интерфейс', (await evaluate(`typeof window.RS`)) === 'object');
+  await evaluate(`document.querySelectorAll('.toast').forEach((node) => node.remove()); true`);
   clearEvents();
-  void beforeError;
 
-  // 11. Сайдбар: статус звука и версия
-  const sidebar = await evaluate(
-    `({ audio: document.querySelector('#audio-state')?.textContent, version: document.querySelector('#version')?.textContent })`
-  );
-  assert('статус звука в сайдбаре заполнен', !!sidebar.audio && sidebar.audio !== 'Звук готов' || sidebar.audio === 'Звук готов', JSON.stringify(sidebar));
-  assert('версия показана', /версия \d/.test(sidebar.version || ''), sidebar.version);
+  // 11. Статус-хаб и версия
+  const health = await evaluate(`({
+    state: document.querySelector('#health-chip')?.dataset.state,
+    text: document.querySelector('#health-text')?.textContent || '',
+    footerVersion: document.querySelector('#footer-version')?.textContent || '',
+  })`);
+  assert('статус-хаб показывает общее состояние', ['ok', 'warn', 'error'].includes(health.state) && health.text.length > 0, JSON.stringify(health));
+  assert('версия показана в футере', /версия \d/.test(health.footerVersion), JSON.stringify(health));
 
-  // 12. Окно: maximize/restore
+  await click('#health-chip');
+  await sleep(350);
+  const healthPopover = await evaluate(`({
+    open: !!document.querySelector('.health-popover'),
+    rows: document.querySelectorAll('.health-popover .health-row').length,
+    hasSettings: !!document.querySelector('#health-open-settings'),
+  })`);
+  assert('поповер статус-хаба открывается', healthPopover.open && healthPopover.rows >= 6 && healthPopover.hasSettings, JSON.stringify(healthPopover));
+  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
+  await sleep(200);
+  assert('Esc закрывает поповер статуса', !(await evaluate(`!!document.querySelector('.health-popover')`)));
+
+  // 12. Вкладка «Чат» и чат-оверлей
+  await evaluate(`window.RS.render('chat')`);
+  await sleep(900);
+  const chatUi = await evaluate(`({
+    grid: !!document.querySelector('.chat-grid'),
+    connection: !!document.querySelector('#chat-connection'),
+    commands: document.querySelectorAll('.chat-command').length,
+    overlayUrl: document.querySelector('#chat-overlay-url')?.textContent || '',
+    feed: !!document.querySelector('#chat-feed'),
+    input: !!document.querySelector('#chat-input'),
+    healthChat: (window.RS.state.view?.health || []).find((item) => item.key === 'chat')?.state,
+  })`);
+  assert('вкладка «Чат» рендерится', chatUi.grid && chatUi.connection && chatUi.feed, JSON.stringify(chatUi));
+  assert('в чате 4 команды и поле ввода', chatUi.commands === 4 && chatUi.input, JSON.stringify(chatUi));
+  assert('ссылка на оверлей чата /chat', /\/chat/.test(chatUi.overlayUrl), chatUi.overlayUrl);
+  assert('чат есть в здоровье системы', !!chatUi.healthChat, String(chatUi.healthChat));
+
+  try {
+    const chatPage = await fetch('http://127.0.0.1:8770/chat');
+    const chatState = await fetch('http://127.0.0.1:8770/chat/state');
+    const stateJson = await chatState.json();
+    assert('чат-оверлей отдаёт страницу', chatPage.ok && (await chatPage.text()).length > 100);
+    assert('чат-оверлей отдаёт состояние', chatState.ok && Array.isArray(stateJson.messages));
+  } catch (error) {
+    assert('чат-оверлей отвечает по HTTP', false, error.message);
+  }
+
+  // 13. Итерация: плотность, контекстное меню карточки, единый тест звука
+  await evaluate(`window.RS.render('rewards')`);
+  await sleep(700);
+  const density = await evaluate(`(() => {
+    const grid = document.querySelector('#rewards-list.grid');
+    const card = document.querySelector('.reward-card');
+    return {
+      grid: !!grid,
+      cols: grid ? getComputedStyle(grid).gridTemplateColumns.split(' ').length : 0,
+      cardHeight: card?.offsetHeight || 0,
+      cards: document.querySelectorAll('.reward-card').length,
+    };
+  })()`);
+  assert('плитка компактная: 4 колонки', density.grid && density.cols === 4, JSON.stringify(density));
+  assert('карточка не выше 150 px', density.cardHeight > 0 && density.cardHeight <= 150, JSON.stringify(density));
+
+  const hasFileCard = await evaluate(`(() => {
+    const card = Array.from(document.querySelectorAll('.reward-card')).find((el) => el.querySelector('.soundchip:not(.empty)'));
+    if (!card) return false;
+    card.querySelector('[data-dots]').click();
+    return true;
+  })()`);
+  if (hasFileCard) {
+    await sleep(300);
+    const cardMenu = await evaluate(`Array.from(document.querySelectorAll('.popmenu-item')).map((el) => el.textContent.trim())`);
+    assert('меню карточки: заменить/убрать звук', cardMenu.some((item) => item.includes('Заменить звук')) && cardMenu.some((item) => item.includes('Убрать звук')), JSON.stringify(cardMenu));
+    await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
+  }
+
+  await evaluate(`window.RS.render('settings')`);
+  await sleep(700);
+  const settingsNew = await evaluate(`({
+    soundTest: document.querySelectorAll('.sound-test').length,
+    danger: !!document.querySelector('.danger-zone'),
+    healthCard: !!document.querySelector('#settings-health'),
+    oldAudioTest: !!document.querySelector('#audio-test'),
+  })`);
+  assert('единый компонент теста звука', settingsNew.soundTest === 1 && !settingsNew.oldAudioTest, JSON.stringify(settingsNew));
+  assert('Twitch: опасная зона и здоровье системы', settingsNew.danger && settingsNew.healthCard, JSON.stringify(settingsNew));
+
+  await evaluate(`window.RS.render('music')`);
+  await sleep(700);
+  const musicNew = await evaluate(`({
+    emptyCta: !!document.querySelector('#player-empty-add'),
+    hasCurrent: !!window.RS.state.view?.music?.current,
+    saveButton: !!document.querySelector('#ms-save'),
+  })`);
+  if (!musicNew.hasCurrent) assert('у пустого плеера есть CTA', musicNew.emptyCta, JSON.stringify(musicNew));
+  await evaluate(`document.querySelector('#music-menu').click()`);
+  await sleep(250);
+  await evaluate(`Array.from(document.querySelectorAll('.popmenu-item')).find((el) => el.textContent.includes('Настройки музыки'))?.click()`);
+  await sleep(500);
+  const musicModal = await evaluate(`({
+    open: !!document.querySelector('.modal-scrim'),
+    save: !!document.querySelector('#ms-save'),
+    indicator: document.querySelector('#ms-save-state')?.textContent || '',
+  })`);
+  assert('настройки музыки сохраняются автосейвом', musicModal.open && !musicModal.save && /сохраня/i.test(musicModal.indicator), JSON.stringify(musicModal));
+  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
+  await sleep(250);
+
+  // 13. Клавиатура меню
+  await evaluate(`window.RS.render('rewards')`);
+  await sleep(600);
+  await click('#rewards-menu');
+  await sleep(300);
+  await evaluate(`document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', {key:'ArrowDown', bubbles:true}))`);
+  await sleep(150);
+  const menuFocus = await evaluate(`({ tag: document.activeElement?.tagName, cls: document.activeElement?.className || '' })`);
+  assert('меню управляется стрелками', menuFocus.tag === 'BUTTON' && String(menuFocus.cls).includes('popmenu-item'), JSON.stringify(menuFocus));
+  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
+  await sleep(200);
+
+  // 14. Адаптив 980×680
+  await send('Emulation.setDeviceMetricsOverride', { width: 980, height: 680, deviceScaleFactor: 1, mobile: false });
+  await sleep(400);
+  await evaluate(`document.querySelector('#content').dataset.rendered = ''; window.RS.render('rewards')`);
+  await sleep(800);
+  const narrow = await evaluate(`(() => {
+    const toolbar = document.querySelector('.toolbar');
+    const tops = new Set(Array.from(toolbar?.children || [])
+      .filter((el) => el.offsetHeight > 2 && getComputedStyle(el).display !== 'none')
+      .map((el) => Math.round(el.getBoundingClientRect().top)));
+    return {
+      sidebar: document.querySelector('#sidebar')?.offsetWidth,
+      rows: document.querySelectorAll('#rewards-list .reward-row').length,
+      cards: document.querySelectorAll('#rewards-list .reward-card').length,
+      filters: getComputedStyle(document.querySelector('#rewards-filters')).display !== 'none',
+      pills: getComputedStyle(document.querySelector('#reward-pills')).display !== 'none',
+      volume: getComputedStyle(document.querySelector('.rr-volume')).display !== 'none',
+      toolbarRows: tops.size,
+    };
+  })()`);
+  assert('980: рейл-сайдбар 64 px', narrow.sidebar === 64, JSON.stringify(narrow));
+  assert('980: список по умолчанию, громкость на месте', narrow.rows > 0 && narrow.cards === 0 && narrow.volume, JSON.stringify(narrow));
+  assert('980: фильтры в поповере, тулбар в один ряд', narrow.filters && !narrow.pills && narrow.toolbarRows === 1, JSON.stringify(narrow));
+  await send('Emulation.clearDeviceMetricsOverride');
+  await sleep(400);
+
+  // 15. Окно: maximize/restore
   await click('#window-max');
   await sleep(800);
   const maximized = await evaluate(`({ w: innerWidth, h: innerHeight })`);

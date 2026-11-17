@@ -14,6 +14,7 @@ import {
   requestRefresh,
   navigate,
 } from './bridge.js';
+import { soundTestHtml, bindSoundTest } from './sound-test.js';
 
 let boundRoot = null;
 let signature = '';
@@ -91,11 +92,7 @@ function onboardingHtml(view) {
         </div>
         <div class="card audio-mini">
           <div class="audio-mini-icon">${bars()}</div>
-          <div>
-            <div class="settings-row-title">${view.audio_ready ? 'Звук готов' : 'Нет аудиовыхода'}</div>
-            <div class="settings-row-hint">${view.audio_ready ? 'Можно проверить его без Twitch — ниже локальные привязки.' : 'Проверьте колонки или наушники в настройках Windows.'}</div>
-            <div class="settings-actions"><button class="btn btn-sm btn-secondary" id="onb-test-audio">Проверить звук</button></div>
-          </div>
+          ${soundTestHtml({ compact: true, hint: view.audio_ready ? 'Аудиовыход в порядке' : 'Аудиовыход не найден' })}
         </div>
       </div>
     </div>
@@ -131,7 +128,7 @@ function stepHtml(step, index) {
         <div class="step-text">${stepText(step.action)}</div>
         ${step.action === 'connect' && !step.done ? '<div class="settings-actions"><button class="btn btn-primary" id="onb-connect">Подключить Twitch</button><button class="btn btn-ghost" id="onb-client-id">Где взять Client ID?</button></div>' : ''}
         ${step.action === 'connect' && step.done ? '<div class="settings-actions"><button class="btn btn-sm btn-ghost" id="onb-settings">Открыть настройки Twitch</button></div>' : ''}
-        ${step.action === 'test' ? '<div class="settings-actions"><button class="btn btn-sm btn-secondary" id="onb-test">Проверить звук</button></div>' : ''}
+        ${step.action === 'test' ? soundTestHtml({ compact: true }) : ''}
         ${step.action === 'rewards' && step.done ? '<div class="settings-actions"><button class="btn btn-sm btn-ghost" id="onb-local-edit">Открыть локальные привязки</button></div>' : ''}
       </div>
     </div>`;
@@ -183,12 +180,6 @@ function bind(root, view) {
       toast(result.connected ? 'Twitch подключён' : 'Twitch пока не подключён', result.connected ? 'info' : 'warn');
     }
   });
-  const test = async () => {
-    const ok = await tryInvoke('test_audio');
-    if (ok !== null) toast('Тестовый сигнал отправлен на устройство вывода');
-  };
-  $('#onb-test', root)?.addEventListener('click', test);
-  $('#onb-test-audio', root)?.addEventListener('click', test);
   $('#onb-local-edit', root)?.addEventListener('click', () => {
     localOpen = true;
     renderOnboarding(root, lastView);
@@ -198,6 +189,7 @@ function bind(root, view) {
     renderOnboarding(root, lastView);
   });
   bindLocal(root);
+  bindSoundTest(root);
 }
 
 function bindLocal(root) {

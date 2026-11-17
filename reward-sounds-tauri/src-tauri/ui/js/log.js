@@ -1,6 +1,6 @@
 /* Вкладка «Журнал»: поиск, уровни, «показывать отладку», автообновление. */
 
-import { state, $, $$, invoke, tryInvoke, toast, icons, escapeHtml, requestRefresh, navigate } from './bridge.js';
+import { state, $, $$, invoke, tryInvoke, toast, icons, escapeHtml, requestRefresh, navigate, menu, exitMenuItem } from './bridge.js';
 
 const filters = { search: '', level: 'all', debug: false };
 let boundRoot = null;
@@ -44,6 +44,7 @@ function logPageHtml() {
       <div class="head-actions">
         <button class="btn btn-secondary" id="log-open-folder">${icons.folder} Папка журнала</button>
         <button class="btn btn-secondary" id="log-refresh">Обновить</button>
+        <button class="btn btn-icon btn-ghost" id="log-menu" title="Действия">•••</button>
       </div>
     </div>
     <div class="toolbar" id="log-toolbar">
@@ -77,6 +78,12 @@ function bind(root) {
   $('#log-open-folder', root)?.addEventListener('click', () =>
     invoke('open_folder', { kind: 'logs' }).catch(() => {})
   );
+  $('#log-menu', root)?.addEventListener('click', (event) => {
+    menu(event.currentTarget, [
+      { label: 'Открыть настройки', icon: icons.edit, onClick: () => navigate('settings') },
+      exitMenuItem(),
+    ]);
+  });
 
   const search = $('#log-search', root);
   search?.addEventListener('input', () => {

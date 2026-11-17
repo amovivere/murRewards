@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod chat;
 mod core;
 
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -25,8 +26,22 @@ fn geometry_path() -> std::path::PathBuf {
         .join("window.json")
 }
 
-fn load_geometry() -> Option<WindowGeometry> {
-    let text = std::fs::read_to_string(geometry_path()).ok()?;
+/// Логический размер основного монитора и его масштаб (для clamp окна).
+fn primary_monitor_logical(app: &tauri::App) -> (f64, f64, f64) {
+    match app.primary_monitor() {
+        Ok(Some(monitor)) => {
+            let scale = monitor.scale_factor();
+            (
+                monitor.size().width as f64 / scale,
+                monitor.size().height as f64 / scale,
+                scale,
+            )
+        }
+        _ => (1920.0, 1080.0, 1.0),
+    }
+}
+
+fn load_geometry() -> Option<WindowGeometry> {    let text = std::fs::read_to_string(geometry_path()).ok()?;
     let geometry: WindowGeometry = serde_json::from_str(&text).ok()?;
     if geometry.width < 800 || geometry.height < 560 {
         return None;
@@ -142,6 +157,11 @@ fn main() {
             std::fs::create_dir_all(&data_dir)?;
 
             let geometry = load_geometry();
+            let (monitor_w, monitor_h, monitor_scale) = primary_monitor_logical(app);
+            // Окно не должно оказываться больше рабочей области: при 150 % DPI
+            // 1220×840 логических превращаются в 1830×1260 физических.
+            let max_w = (monitor_w - 24.0).max(900.0);
+            let max_h = (monitor_h - 80.0).max(620.0);
             let devtools_args = std::env::var("REWARD_SOUNDS_DEVTOOLS_PORT")
                 .ok()
                 .map(|port| format!("--remote-debugging-port={port}"));
@@ -151,18 +171,22 @@ fn main() {
                 tauri::WebviewUrl::App("index.html".into()),
             )
             .title("Reward Sounds")
-            .min_inner_size(980.0, 680.0)
+            .min_inner_size(900.0, 620.0)
             .resizable(true)
             .maximizable(true)
             .minimizable(true)
             .decorations(false)
             .data_directory(data_dir);
             if let Some(geometry) = &geometry {
-                builder = builder
-                    .inner_size(geometry.width as f64, geometry.height as f64)
-                    .position(geometry.x as f64, geometry.y as f64);
+                let width = (geometry.width as f64).clamp(900.0, max_w);
+                let height = (geometry.height as f64).clamp(620.0, max_h);
+                let x = (geometry.x as f64 / monitor_scale).clamp(0.0, (monitor_w - width).max(0.0));
+                let y = (geometry.y as f64 / monitor_scale).clamp(0.0, (monitor_h - height).max(0.0));
+                builder = builder.inner_size(width, height).position(x, y);
             } else {
-                builder = builder.inner_size(1220.0, 840.0).center();
+                builder = builder
+                    .inner_size(1220.0f64.min(max_w), 840.0f64.min(max_h))
+                    .center();
             }
             if let Some(args) = devtools_args.as_deref() {
                 builder = builder.additional_browser_args(args);
@@ -301,6 +325,12 @@ fn main() {
             core::twitch_start_login,
             core::twitch_cancel_login,
             core::twitch_disconnect,
+            core::chat_connect,
+            core::chat_disconnect,
+            core::chat_send_message,
+            core::chat_refresh,
+            core::chat_clear_messages,
+            core::chat_set_settings,
             core::set_app_setting,
             core::open_url,
             core::get_logs,

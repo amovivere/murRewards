@@ -20,6 +20,7 @@ import {
   requestRefresh,
   navigate,
   createModal,
+  exitMenuItem,
 } from './bridge.js';
 
 const DASHBOARD_URL = 'https://dashboard.twitch.tv/';
@@ -109,6 +110,7 @@ function rewardsPageHtml(view) {
       </select>
       <div class="spacer"></div>
       <div class="toolbar-actions">
+        <button class="btn btn-sm btn-secondary filters-toggle" id="rewards-filters" title="Фильтры наград">Фильтры <span id="filters-count"></span></button>
         <button class="btn btn-icon btn-secondary" id="reward-refresh" title="Обновить список">${icons.refresh}</button>
         <button class="btn btn-ghost btn-danger-ghost" id="stop-all"${playing ? '' : ' disabled title="Нет играющих звуков"'}>
           ${icons.stop}Остановить всё
@@ -288,17 +290,44 @@ function renderCards(root, view) {
   else rewards = rewards.filter((reward) => reward.available);
   rewards = sortedFiltered(rewards, view);
 
-  container.className = view.grid_view ? 'grid' : 'reward-list';
+  const forceList = window.innerWidth < 1120;
+  const useGrid = !!view.grid_view && !forceList;
+  container.className = useGrid ? 'grid' : 'reward-list';
   if (rewards.length === 0) {
     container.classList.remove('grid', 'reward-list');
     container.innerHTML = emptyState(view);
+    syncModeButtons(root, useGrid);
+    syncFilterButton(root);
     return;
   }
-  container.innerHTML = view.grid_view
+  container.innerHTML = useGrid
     ? rewards.map((reward) => cardHtml(reward, view)).join('')
     : rewards.map((reward) => rowHtml(reward, view)).join('');
   bindCardActions(container, view);
   bindVolumeSliders(container, view);
+  syncModeButtons(root, useGrid);
+  syncFilterButton(root);
+}
+
+const FILTER_LABELS = {
+  all: 'Все',
+  sound: 'Со звуком',
+  nosound: 'Без звука',
+  playing: 'Играет',
+  disabled: 'Выключенные',
+};
+
+function syncModeButtons(root, useGrid) {
+  root.querySelectorAll('#view-mode [data-view]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.view === (useGrid ? 'grid' : 'list'));
+  });
+}
+
+function syncFilterButton(root) {
+  const count = root.querySelector('#filters-count');
+  if (count) count.textContent = filters.filter === 'all' ? '' : FILTER_LABELS[filters.filter] || '';
+  const button = root.querySelector('#rewards-filters');
+  if (button) button.classList.toggle('active', filters.filter !== 'all');
 }
 
 function rewardPlayingCount(reward, view) {
@@ -342,17 +371,11 @@ function isMusicReward(reward, view) {
 function actionsHtml(reward, view) {
   const playing = rewardPlayingCount(reward, view);
   const parts = [];
-  if (reward.file) {
-    parts.push(`<button class="btn btn-sm btn-secondary" data-act="replace">Заменить</button>`);
-    parts.push(`<button class="ghost-red" data-act="remove">Убрать</button>`);
-  } else {
+  if (!reward.file) {
     parts.push(`<button class="btn btn-sm btn-primary" data-act="choose">Выбрать звук</button>`);
   }
-  if (isMusicReward(reward, view)) {
-    parts.push(`<button class="ghost-red ghost-neutral" data-act="open-music">Открыть в «Музыке»</button>`);
-  }
   if (playing) parts.push(`<span class="playing-badge">играет ×${playing}</span>`);
-  return `<div class="card-actions">${parts.join('')}</div>`;
+  return parts.length ? `<div class="card-actions">${parts.join('')}</div>` : '';
 }
 
 function cardHtml(reward, view) {
@@ -456,6 +479,7 @@ function bind(root, view) {
       },
       { label: 'Открыть журнал', icon: icons.folder, onClick: () => navigate('log') },
       { label: 'Настройки', icon: icons.edit, onClick: () => navigate('settings') },
+      exitMenuItem(),
     ]);
   });
 
@@ -507,6 +531,33 @@ function bind(root, view) {
       }
     })
   );
+
+  $('#rewards-filters', root)?.addEventListener('click', (event) => {
+    const order = ['all', 'sound', 'nosound', 'playing', 'disabled'];
+    const sortOrder = ['default', 'expensive', 'cheap', 'title'];
+    const sortLabels = {
+      default: 'Все награды',
+      expensive: 'Сначала дорогие',
+      cheap: 'Сначала дешёвые',
+      title: 'По названию',
+    };
+    menu(event.currentTarget, [
+      ...order.map((key) => ({
+        label: `${filters.filter === key ? '✓ ' : ''}${FILTER_LABELS[key]}`,
+        onClick: () => {
+          filters.filter = key;
+          renderCards(root, state.view || {});
+        },
+      })),
+      ...sortOrder.map((key) => ({
+        label: `${filters.sort === key ? '✓ ' : ''}${sortLabels[key]}`,
+        onClick: () => {
+          filters.sort = key;
+          renderCards(root, state.view || {});
+        },
+      })),
+    ]);
+  });
 
   $('#reward-refresh', root)?.addEventListener('click', async () => {
     try {
@@ -584,32 +635,11 @@ function bindCardActions(container, view) {
         return;
       }
       if (action === 'remove') {
-        const ok = await confirmDialog({
-          title: `Убрать звук у «${reward.title}»?`,
-          text: 'Файл останется на диске — отвяжется только от награды.',
-          confirmLabel: 'Убрать',
-          danger: true,
-        });
-        if (!ok) return;
-        try {
-          const result = await invoke('clear_sound', { rewardId: reward.id });
-          if (result) {
-            state.view = result;
-            toast('Звук отвязан');
-            requestRefresh();
-          }
-        } catch {}
+        await removeSound(reward);
         return;
       }
       if (action === 'replace' || action === 'choose') {
-        try {
-          const result = await invoke('choose_sound', { rewardId: reward.id, title: reward.title });
-          if (result) {
-            state.view = result;
-            toast('Файл сохранён');
-            requestRefresh();
-          }
-        } catch {}
+        await chooseSound(reward);
         return;
       }
     });
@@ -626,6 +656,29 @@ function bindCardActions(container, view) {
       if (!reward) return;
       menu(button, [
         { label: 'Изменить награду', icon: icons.edit, onClick: () => openRewardModal(reward) },
+        ...(reward.file
+          ? [
+              {
+                label: 'Заменить звук',
+                icon: icons.refresh,
+                onClick: () => chooseSound(reward),
+              },
+              {
+                label: 'Убрать звук',
+                icon: icons.trash,
+                onClick: () => removeSound(reward),
+              },
+            ]
+          : [
+              {
+                label: 'Выбрать звук',
+                icon: icons.plus,
+                onClick: () => chooseSound(reward),
+              },
+            ]),
+        ...(isMusicReward(reward, state.view)
+          ? [{ label: 'Открыть в «Музыке»', icon: icons.external, onClick: () => navigate('music') }]
+          : []),
         {
           label: 'Удалить награду',
           icon: icons.trash,
@@ -905,6 +958,37 @@ async function saveReward(modal) {
       saveButton.textContent = editorState?.editing ? 'Сохранить' : 'Создать';
     }
   }
+}
+
+async function chooseSound(reward) {
+  if (!reward) return;
+  try {
+    const result = await invoke('choose_sound', { rewardId: reward.id, title: reward.title });
+    if (result) {
+      state.view = result;
+      toast('Файл сохранён');
+      requestRefresh();
+    }
+  } catch {}
+}
+
+async function removeSound(reward) {
+  if (!reward) return;
+  const ok = await confirmDialog({
+    title: `Убрать звук у «${reward.title}»?`,
+    text: 'Файл останется на диске — отвяжется только от награды.',
+    confirmLabel: 'Убрать',
+    danger: true,
+  });
+  if (!ok) return;
+  try {
+    const result = await invoke('clear_sound', { rewardId: reward.id });
+    if (result) {
+      state.view = result;
+      toast('Звук отвязан');
+      requestRefresh();
+    }
+  } catch {}
 }
 
 async function deleteReward(reward) {

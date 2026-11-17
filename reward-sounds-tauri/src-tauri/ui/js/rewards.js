@@ -428,7 +428,7 @@ function rowHtml(reward, view) {
       </div>
       <div class="rr-sound">${file ? `<button class="play sound-play" title="${file.exists ? 'Прослушать' : 'Файл не найден'}"${file.exists ? '' : ' disabled'}>${icons.play}</button><span class="rr-fname" title="${escapeHtml(file.path)}">${escapeHtml(file.name)}</span><span class="rr-fmt">${file.exists ? escapeHtml(file.meta) : 'файл не найден'}</span>` : '<span class="rr-muted">Звук не выбран</span>'}</div>
       <div class="rr-volume">${file ? `<div class="slider sm" data-reward-volume="${escapeHtml(reward.id)}"><div class="track"></div><div class="fill" style="width:${(volume / 2) * 100}%"></div><div class="knob" style="left:${(volume / 2) * 100}%"></div></div><span class="local-value">${Math.round(volume * 100)}%</span>` : '<span class="rr-muted">—</span>'}</div>
-      <div class="rr-status">${playing ? `<span class="rr-playing" title="играет ×${playing}">играет${playing > 1 ? ` ×${playing}` : ''}</span>` : '<span class="rr-muted">—</span>'}</div>
+      <div class="rr-status">${playing ? `<span class="rr-playing" title="играет ×${playing}">играет${playing > 1 ? ` ×${playing}` : ''}</span>` : ''}</div>
       <div class="rr-actions">${actionsHtml(reward, view)}</div>
       <button class="dots" data-dots title="Действия с наградой">•••</button>
     </div>`;

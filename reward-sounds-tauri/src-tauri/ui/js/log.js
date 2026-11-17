@@ -43,7 +43,7 @@ function logPageHtml() {
       </div>
       <div class="head-actions">
         <button class="btn btn-secondary" id="log-open-folder">${icons.folder} Папка журнала</button>
-        <button class="btn btn-secondary" id="log-clear">Очистить</button>
+        <button class="btn btn-ghost btn-danger-ghost" id="log-clear">${icons.trash} Очистить</button>
         <button class="btn btn-secondary" id="log-refresh">Обновить</button>
         <button class="btn btn-icon btn-ghost" id="log-menu" title="Действия">•••</button>
       </div>

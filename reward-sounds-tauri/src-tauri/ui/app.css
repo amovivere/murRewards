@@ -282,7 +282,7 @@ select.select:focus-visible {
 .log-level { font-size: 10.2px; letter-spacing: .3px; text-transform: uppercase; color: #8B8B8B; }
 .log-level-error { color: #EF4444; }
 .log-level-warn { color: #F59E0B; }
-.log-level-info { color: var(--accent-text); }
+.log-level-info { color: var(--info); }
 .log-message { font-size: 12.4px; color: #D6D6D6; line-height: 17px; overflow-wrap: anywhere; }
 .log-empty { padding: 28px; text-align: center; color: #8B8B8B; font-size: 12.6px; }
 

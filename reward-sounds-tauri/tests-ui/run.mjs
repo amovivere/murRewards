@@ -412,8 +412,10 @@ async function run() {
     css: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
     view: window.RS.state.view?.accent || '',
     hex: document.querySelector('#accent-hex')?.value || '',
+    exampleInk: document.querySelector('#appearance-example') ? getComputedStyle(document.querySelector('#appearance-example')).color : '',
   })`);
   assert('акцент применяется и сохраняется', accentApplied.css.toUpperCase() === '#3B82F6' && accentApplied.view.toUpperCase() === '#3B82F6', JSON.stringify(accentApplied));
+  assert('текст на акцентной кнопке читаемый', accentApplied.exampleInk === 'rgb(10, 10, 10)', accentApplied.exampleInk);
   await evaluate(`document.querySelector('#accent-reset')?.click()`);
   await sleep(800);
   const accentReset = await evaluate(`({ css: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(), view: window.RS.state.view?.accent || '' })`);

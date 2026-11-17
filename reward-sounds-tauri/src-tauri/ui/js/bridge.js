@@ -362,7 +362,7 @@ export function normalizeAccent(input) {
 /** Текст поверх акцентной заливки: тёмный на светлом, белый на тёмном. */
 export function accentInk(color) {
   const normalized = normalizeAccent(color) || normalizeAccent(DEFAULT_ACCENT);
-  return relativeLuminance(normalized.hex) > 0.42 ? '#0A0A0A' : '#FFFFFF';
+  return contrastRatio(normalized.hex, '#0A0A0A') >= contrastRatio(normalized.hex, '#FFFFFF') ? '#0A0A0A' : '#FFFFFF';
 }
 
 /** Немедленно применяет акцент ко всему интерфейсу и кэширует его. */

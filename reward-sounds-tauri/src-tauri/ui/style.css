@@ -2,7 +2,9 @@
   /* Акцент интерфейса: меняется настройкой «Внешний вид» (--accent-rgb — для rgba). */
   --accent: #8B00FF;
   --accent-rgb: 139, 0, 255;
+  --accent-text: #C9A7FF;
   --accent-text: color-mix(in srgb, var(--accent) 45%, #FFFFFF);
+  --info: #7DD3FC;
   --ok: #22C55E;
   --warn: #F59E0B;
   --danger: #EF4444;

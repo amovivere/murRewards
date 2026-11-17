@@ -1,0 +1,227 @@
+/* Общие стили HTML-макетов для UX-аудита Reward Sounds.
+   Компоненты (.btn, .card, .pill, .search, .seg, .slider, .toggle и т.д.)
+   берутся из style.css/app.css приложения — макеты выглядят «родными». */
+
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0A0A0A; }
+body {
+  color: #F5F5F5; font-family: 'InterMock', sans-serif; font-size: 13px;
+  padding: 22px 24px; box-sizing: border-box; -webkit-font-smoothing: antialiased;
+}
+.wrap { display: flex; flex-direction: column; gap: 13px; height: 100%; box-sizing: border-box; }
+.kicker { font-weight: 600; font-size: 9.5px; letter-spacing: .9px; color: #C9A7FF; text-transform: uppercase; }
+.title { font-weight: 600; font-size: 20px; letter-spacing: -.2px; }
+.sub { font-size: 12.5px; color: #8B8B8B; line-height: 17px; }
+.row { display: flex; gap: 13px; min-height: 0; }
+.row.grow { flex: 1 1 auto; }
+.col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+
+.frame {
+  background: #0D0D0D; border: 1px solid rgba(255,255,255,.09); border-radius: 16px;
+  padding: 15px 16px; display: flex; flex-direction: column; gap: 10px; min-height: 0;
+}
+.frame-head { display: flex; align-items: center; gap: 8px; }
+.frame-title { font-weight: 600; font-size: 13.5px; }
+.tag {
+  font-weight: 600; font-size: 9px; letter-spacing: .7px; padding: 3px 8px; border-radius: 7px;
+  background: rgba(139,0,255,.14); color: #C9A7FF; border: 1px solid rgba(139,0,255,.32); white-space: nowrap;
+}
+.tag-now { background: rgba(239,68,68,.12); color: #FCA5A5; border-color: rgba(239,68,68,.32); }
+.tag-a { background: rgba(139,0,255,.14); color: #C9A7FF; border-color: rgba(139,0,255,.32); }
+.tag-b { background: rgba(74,222,128,.1); color: #86EFAC; border-color: rgba(74,222,128,.26); }
+.stage {
+  background: #0A0A0A; border: 1px solid rgba(255,255,255,.06); border-radius: 12px;
+  padding: 13px; position: relative; min-height: 0;
+}
+.stage.dim { opacity: .92; }
+.caption { font-size: 11.5px; color: #8B8B8B; line-height: 16px; }
+.notes { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; font-size: 11.5px; line-height: 16px; color: #9A9A9A; }
+.notes li { display: flex; gap: 7px; }
+.notes li:before { content: "·"; color: #6E6E6E; }
+.pos { color: #86EFAC; }
+.neg { color: #FCA5A5; }
+
+/* ---------- мини-шапка приложения ---------- */
+.mini-head { display: flex; align-items: center; gap: 10px; }
+.mini-title { font-weight: 600; font-size: 15px; }
+.mini-sub { font-size: 11.5px; color: #8B8B8B; }
+
+/* ---------- тулбар ---------- */
+.tb { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.tb .search { width: 226px; }
+.tb .seg-item { font-size: 12.8px; }
+.count { font-size: 11.5px; color: #8B8B8B; }
+.filter-btn { position: relative; }
+.filter-btn .badge {
+  position: absolute; top: -6px; right: -6px; min-width: 16px; height: 16px; border-radius: 8px;
+  background: #8B00FF; color: #fff; font-size: 9.5px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; padding: 0 4px;
+}
+.playbar {
+  display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 12px;
+  border-radius: 11px; background: rgba(139,0,255,.09); border: 1px solid rgba(139,0,255,.26);
+  font-size: 12px; color: #DADADA;
+}
+.playbar .stop { margin-left: auto; }
+
+/* ---------- поповер ---------- */
+.pop { background: #141414; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 12px; box-shadow: 0 18px 48px rgba(0,0,0,.55); }
+.pop-title { font-size: 10px; letter-spacing: .7px; color: #8B8B8B; font-weight: 600; margin-bottom: 8px; }
+.pop-row { display: flex; align-items: center; gap: 9px; height: 30px; font-size: 12.5px; color: #DADADA; }
+.pop-row .c { margin-left: auto; font-size: 11.5px; color: #8B8B8B; }
+.chk { width: 15px; height: 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,.3); flex: 0 0 15px; }
+.chk.on { background: #8B00FF; border-color: #8B00FF; }
+.pop-sep { height: 1px; background: rgba(255,255,255,.09); margin: 8px 0; }
+
+/* ---------- тосты ---------- */
+.toasts { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+.toast {
+  display: flex; gap: 10px; align-items: flex-start; background: #151515;
+  border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 10px 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.45);
+}
+.toast.ok { border-color: rgba(74,222,128,.3); }
+.toast.err { border-color: rgba(239,68,68,.4); background: #1A1213; }
+.toast.warn { border-color: rgba(245,158,11,.35); }
+.toast-title { font-weight: 600; font-size: 12.5px; }
+.toast-sub { font-size: 11.5px; color: #9A9A9A; margin-top: 2px; line-height: 15px; }
+.toast-act { margin-left: auto; font-size: 11.5px; font-weight: 600; color: #C9A7FF; white-space: nowrap; padding-left: 8px; }
+.toast-ico { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: 0 0 20px; font-size: 11px; font-weight: 600; }
+.toast-ico.ok { background: rgba(74,222,128,.16); color: #86EFAC; }
+.toast-ico.err { background: rgba(239,68,68,.18); color: #FCA5A5; }
+.toast-ico.warn { background: rgba(245,158,11,.18); color: #FCD34D; }
+
+/* ---------- диалог ---------- */
+.scrim { position: absolute; inset: 0; background: rgba(4,4,4,.62); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.dlg { width: 420px; background: #111; border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 20px 22px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+.dlg-title { font-weight: 600; font-size: 17px; }
+.dlg-sub { font-size: 12px; color: #9A9A9A; line-height: 17px; margin-top: 6px; }
+.dlg-actions { display: flex; gap: 8px; margin-top: 18px; align-items: center; }
+.dlg-actions .right { margin-left: auto; display: flex; gap: 8px; }
+.danger-note { margin-top: 12px; font-size: 11.5px; color: #FCA5A5; background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.2); border-radius: 9px; padding: 8px 10px; line-height: 15px; }
+
+/* ---------- пустые состояния ---------- */
+.empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  padding: 18px 16px; border: 1px dashed rgba(255,255,255,.14); border-radius: 14px; text-align: center;
+}
+.empty-ico { width: 40px; height: 40px; border-radius: 12px; background: rgba(139,0,255,.12); display: flex; align-items: center; justify-content: center; color: #C9A7FF; font-size: 18px; }
+.empty-title { font-weight: 600; font-size: 14px; }
+.empty-sub { font-size: 11.5px; color: #8B8B8B; line-height: 16px; max-width: 340px; }
+
+/* ---------- список ---------- */
+.lhead, .lrow {
+  display: grid; grid-template-columns: 34px minmax(0,1fr) 88px 138px 104px 92px 70px;
+  gap: 10px; align-items: center; padding: 0 10px;
+}
+.lhead { height: 30px; font-size: 9.5px; letter-spacing: .7px; color: #6E6E6E; font-weight: 600; }
+.lrow { height: 52px; border-radius: 10px; border-top: 1px solid rgba(255,255,255,.055); }
+.lrow.off { opacity: .5; }
+.lname { font-weight: 600; font-size: 12.8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lmeta { font-size: 10.8px; color: #8B8B8B; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lcell { font-size: 11.5px; color: #B9B9B9; white-space: nowrap; }
+.grp { display: flex; align-items: center; gap: 8px; padding: 10px 10px 2px; font-size: 11px; letter-spacing: .5px; color: #6E6E6E; font-weight: 600; }
+
+/* ---------- плотные карточки (вариант B) ---------- */
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; }
+.ccard { border-radius: 12px; padding: 10px 11px; border: 1px solid rgba(255,255,255,.08); background: #141414; }
+.ccard-top { display: flex; align-items: center; gap: 8px; }
+.ctile { width: 24px; height: 24px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex: 0 0 24px; }
+.cname { font-weight: 600; font-size: 12.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cmeta { font-size: 10.2px; color: #8B8B8B; margin-top: 1px; }
+.crow { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.cfile { font-size: 10.8px; color: #DADADA; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1 1 auto; }
+
+/* ---------- прочие мелочи ---------- */
+.hstack { display: flex; align-items: center; gap: 9px; }
+.spacer { flex: 1 1 auto; }
+.mono { font-family: Consolas, monospace; }
+.chip-line { display: flex; gap: 7px; flex-wrap: wrap; }
+.kv { display: flex; gap: 8px; font-size: 11.5px; color: #B9B9B9; align-items: center; }
+.mini-toggle { width: 34px; height: 20px; border-radius: 10px; background: rgba(255,255,255,.16); position: relative; flex: 0 0 34px; }
+.mini-toggle.on { background: #8B00FF; }
+.mini-toggle:after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #F5F5F5; }
+.mini-toggle.on:after { left: 17px; background: #0A0A0A; }
+.banner { display: flex; align-items: center; gap: 10px; border-radius: 11px; padding: 10px 12px; font-size: 12px; }
+.banner.err { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.28); color: #FCA5A5; }
+.banner.warn { background: rgba(245,158,11,.09); border: 1px solid rgba(245,158,11,.26); color: #FCD34D; }
+.banner.ok { background: rgba(74,222,128,.08); border: 1px solid rgba(74,222,128,.24); color: #86EFAC; }
+.banner .btn { margin-left: auto; }
+.legend-row { display: flex; gap: 16px; font-size: 11px; color: #6E6E6E; }
+
+/* компактные чипы для узких макетных колонок */
+.pills.compact { flex-wrap: wrap; gap: 6px; }
+.pills.compact .pill { height: 26px; padding: 0 8px; font-size: 11px; }
+
+
+/* ===== v2: новые компоненты предлагаемых изменений ===== */
+.hub-chip {
+  display: inline-flex; align-items: center; gap: 9px; height: 30px; padding: 0 12px;
+  border-radius: 15px; border: 1px solid rgba(139,0,255,.35); background: rgba(139,0,255,.12);
+  color: #E6E6E6; font-size: 12.6px; cursor: pointer;
+}
+.hub-chip .dot { background: #8B00FF; }
+.hub-chip .chev { color: #9A9A9A; }
+.hub-pop {
+  position: absolute; top: 44px; left: 24px; width: 336px; z-index: 5;
+  background: #141414; border: 1px solid rgba(255,255,255,.12); border-radius: 14px;
+  padding: 12px; box-shadow: 0 24px 60px rgba(0,0,0,.6);
+}
+.hub-row { display: flex; align-items: center; gap: 9px; height: 28px; font-size: 12.3px; color: #DADADA; }
+.hub-row .c { margin-left: auto; font-size: 11.4px; color: #9A9A9A; }
+.hub-sep { height: 1px; background: rgba(255,255,255,.09); margin: 7px 0; }
+.hub-link { font-size: 12.2px; color: #C9A7FF; padding: 4px 0; }
+
+.toast-stack { display: flex; flex-direction: column; gap: 9px; width: 380px; }
+.toast2 {
+  display: flex; gap: 10px; align-items: flex-start; background: #151515;
+  border: 1px solid rgba(255,255,255,.12); border-radius: 13px; padding: 11px 12px;
+  box-shadow: 0 16px 36px rgba(0,0,0,.5); position: relative; overflow: hidden;
+}
+.toast2.ok { border-color: rgba(74,222,128,.3); }
+.toast2.err { border-color: rgba(239,68,68,.4); background: #1A1213; }
+.toast2.warn { border-color: rgba(245,158,11,.35); }
+.toast2 .ico { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: 0 0 22px; font-size: 11px; font-weight: 600; }
+.toast2.ok .ico { background: rgba(74,222,128,.16); color: #86EFAC; }
+.toast2.err .ico { background: rgba(239,68,68,.18); color: #FCA5A5; }
+.toast2.warn .ico { background: rgba(245,158,11,.18); color: #FCD34D; }
+.toast2 .t { font-weight: 600; font-size: 12.6px; }
+.toast2 .s { font-size: 11.6px; color: #9A9A9A; margin-top: 2px; line-height: 15px; }
+.toast2 .acts { display: flex; gap: 10px; margin-top: 8px; font-size: 11.6px; font-weight: 600; color: #C9A7FF; }
+.toast2 .x { margin-left: auto; color: #7A7A7A; font-size: 13px; line-height: 1; }
+.toast2 .bar { position: absolute; left: 0; bottom: 0; height: 2px; background: rgba(139,0,255,.6); width: 62%; }
+
+.compact-card {
+  border-radius: 13px; padding: 11px 12px; border: 1px solid rgba(255,255,255,.08);
+  background: #141414; display: flex; flex-direction: column; gap: 7px; position: relative;
+}
+.cc-head { display: flex; align-items: center; gap: 9px; }
+.cc-tile { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11.5px; font-weight: 600; flex: 0 0 26px; }
+.cc-name { font-weight: 600; font-size: 12.8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cc-meta { font-size: 10.4px; color: #9A9A9A; margin-top: 1px; }
+.cc-row { display: flex; align-items: center; gap: 8px; }
+.cc-file { font-size: 11px; color: #DADADA; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1 1 auto; }
+.cc-actions { display: flex; gap: 6px; opacity: .0; }
+.compact-card:hover .cc-actions { opacity: 1; }
+.cc-actions .mini { font-size: 10.8px; color: #C9A7FF; border: 1px solid rgba(201,167,255,.35); border-radius: 7px; padding: 2px 7px; }
+.dense-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 9px; }
+
+.lrow2 { display: grid; grid-template-columns: 26px minmax(0,1fr) 78px 120px 84px 30px; gap: 10px; align-items: center;
+  height: 44px; padding: 0 10px; border-radius: 9px; border-top: 1px solid rgba(255,255,255,.055); }
+.lrow2 .nm { font-size: 12.6px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lrow2 .mt { font-size: 10.6px; color: #8B8B8B; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lhead2 { display: grid; grid-template-columns: 26px minmax(0,1fr) 78px 120px 84px 30px; gap: 10px; align-items: center;
+  padding: 0 10px; height: 26px; font-size: 9px; letter-spacing: .8px; color: #6E6E6E; font-weight: 600; }
+
+.frame-label { display: flex; align-items: center; gap: 8px; }
+.rail { width: 64px; flex: 0 0 64px; background: #0E0E0E; border-right: 1px solid rgba(255,255,255,.06);
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 0; }
+.rail-item { width: 40px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #8B8B8B; }
+.rail-item.active { background: #222; color: #F5F5F5; }
+.win980 { width: 980px; height: 680px; border: 1px solid rgba(255,255,255,.12); border-radius: 14px; overflow: hidden; background: #0A0A0A; display: flex; flex-direction: column; }
+.win980 .mini-titlebar { height: 34px; display: flex; align-items: center; justify-content: flex-end; gap: 2px; padding-right: 8px; }
+.win980 .mini-top { height: 48px; display: flex; align-items: center; padding: 0 20px; gap: 12px; }
+.win980 .mini-content { flex: 1 1 auto; padding: 6px 20px 0; display: flex; flex-direction: column; overflow: hidden; }
+.win980 .mini-footer { height: 32px; display: flex; align-items: center; padding: 0 20px; color: #8B8B8B; font-size: 11.6px; }
+.zone-danger { border: 1px solid rgba(239,68,68,.25); border-radius: 12px; padding: 10px 12px; background: rgba(239,68,68,.04); }
+.zone-danger .zt { font-size: 10px; letter-spacing: .8px; color: #FCA5A5; font-weight: 600; margin-bottom: 8px; }
+.hint-ok { font-size: 11.4px; color: #86EFAC; }

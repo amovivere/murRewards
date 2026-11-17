@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../../reward-sounds-tauri/src-tauri/ui/style.css">
+<link rel="stylesheet" href="../../../../reward-sounds-tauri/src-tauri/ui/app.css">
+<link rel="stylesheet" href="../../../../reward-sounds-tauri/src-tauri/ui/screens.css">
+<link rel="stylesheet" href="mock.css">
+<title>Макет: тосты и выход</title>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Следующая итерация · пункт 2 · макет</div>
+    <div class="title" style="margin-top:3px">Тосты как события, футер — только подсказки</div>
+    <div class="sub">Ошибки переводятся в человеческий язык, у каждого тоста есть действие и закрытие; «Завершить» переезжает из футера в меню и спрашивает подтверждение.</div>
+  </div>
+
+  <div class="row grow">
+    <div class="col" style="flex:1 1 42%">
+      <div class="frame" style="height:100%">
+        <div class="frame-head"><span class="tag tag-now">СЕЙЧАС</span><span class="frame-title">Одна строка на всё</span></div>
+        <div class="stage" style="min-height:150px">
+          <div style="height:120px"></div>
+          <div style="display:flex;align-items:center;height:36px;border-top:1px solid rgba(255,255,255,.06);padding:0 10px;background:rgba(255,255,255,.02)">
+            <span style="font-size:12.6px;color:#EF4444">Command this_command_does_not_exist not found</span>
+            <span class="spacer"></span>
+            <span style="font-size:11.6px;color:rgba(139,139,139,.8)">Завершить</span>
+          </div>
+          <div class="caption" style="margin-top:10px">Сырой ответ ядра по-английски; выход — в одном клике от тоста о том, что всё сломалось.</div>
+        </div>
+        <ul class="notes">
+          <li class="neg">Нет перевода, иконки, действия, кнопки закрытия</li>
+          <li class="neg">Исчезает через 4.5–9 с: можно не увидеть</li>
+          <li class="neg">Выход из приложения без подтверждения — в футере</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col" style="flex:1 1 58%">
+      <div class="frame" style="height:100%">
+        <div class="frame-head"><span class="tag tag-a">ПРЕДЛОЖЕНИЕ</span><span class="frame-title">Стек тостов справа снизу + меню выхода</span></div>
+        <div class="stage" style="min-height:420px;display:flex;flex-direction:column">
+          <div class="hstack">
+            <span class="caption">Контент окна</span>
+            <div class="spacer"></div>
+            <button class="btn btn-icon btn-ghost dots-button" title="Действия">•••</button>
+          </div>
+          <div class="hstack" style="margin-top:10px;gap:8px;align-items:flex-start">
+            <div class="popmenu" style="position:relative;border-radius:12px;padding:6px;background:#161616;border:1px solid rgba(255,255,255,.1);width:216px">
+              <div class="popmenu-item" style="display:flex;gap:9px;padding:8px 10px;border-radius:8px;font-size:12.6px;color:#DADADA">Открыть панель наград Twitch</div>
+              <div class="popmenu-item" style="display:flex;gap:9px;padding:8px 10px;border-radius:8px;font-size:12.6px;color:#DADADA">Открыть журнал</div>
+              <div class="popmenu-item" style="display:flex;gap:9px;padding:8px 10px;border-radius:8px;font-size:12.6px;color:#DADADA">Настройки</div>
+              <div class="popmenu-item" style="display:flex;gap:9px;padding:8px 10px;border-radius:8px;font-size:12.6px;color:#EF4444">Завершить работу…</div>
+            </div>
+            <div class="caption" style="margin-top:6px">«Завершить» → «Выйти из Reward Sounds?» с подтверждением, как в настройках.</div>
+          </div>
+
+          <div class="spacer"></div>
+          <div class="toast-stack" style="align-self:flex-end">
+            <div class="toast2 warn">
+              <div class="ico">!</div>
+              <div><div class="t">Twitch переподключается…</div><div class="s">Попытка 3 из 5 · награды не сработают до восстановления</div>
+                <div class="acts"><span>Журнал</span><span style="color:#9A9A9A;font-weight:400">Скрыть</span></div></div>
+              <div class="x">✕</div>
+              <div class="bar"></div>
+            </div>
+            <div class="toast2 ok">
+              <div class="ico">✓</div>
+              <div><div class="t">Звук «Шиза» привязан</div><div class="s">Kanye - Vulvas.mp3 · 3:14 · громкость 46%</div>
+                <div class="acts"><span>Отменить</span><span style="color:#9A9A9A;font-weight:400">Прослушать</span></div></div>
+              <div class="x">✕</div>
+            </div>
+            <div class="toast2 err">
+              <div class="ico">✕</div>
+              <div><div class="t">Не удалось создать награду</div><div class="s">Twitch отклонил название: больше 45 символов. Сократите название.</div>
+                <div class="acts"><span>Исправить</span><span style="color:#9A9A9A;font-weight:400">Журнал</span></div></div>
+              <div class="x">✕</div>
+            </div>
+          </div>
+          <div class="caption" style="margin-top:10px;text-align:right">Ошибка не скрывается сама. Максимум 3 тоста, дубли схлопываются в «ещё 2».</div>
+        </div>
+        <div class="caption" style="margin-top:2px;color:#86EFAC">Человеческий текст + действие; ошибка не исчезает сама; клик по тосту открывает «Журнал».</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="tag tag-b">ПРАВИЛА СЛОЯ</span><span class="frame-title">Чтобы тосты не превратились в спам</span></div>
+    <div class="row">
+      <div class="stage" style="flex:1 1 0">
+        <div class="caption" style="color:#C9A7FF;margin-bottom:6px">КАНАЛЫ</div>
+        <div class="caption">Футер — контекстные подсказки («Готово», «Загружаем…»), тосты — события, журнал — история.</div>
+      </div>
+      <div class="stage" style="flex:1 1 0">
+        <div class="caption" style="color:#C9A7FF;margin-bottom:6px">ПРИОРИТЕТЫ</div>
+        <div class="caption">error &gt; warn &gt; success. Одинаковые события склеиваются, лимит 3, тихий режим для игровых сцен (пункт «Сцены»).</div>
+      </div>
+      <div class="stage" style="flex:1 1 0">
+        <div class="caption" style="color:#C9A7FF;margin-bottom:6px">ВЫХОД</div>
+        <div class="caption">Выход и «Свернуть в трей» — только из меню и «Настроек», всегда с подтверждением. В футере выхода нет.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

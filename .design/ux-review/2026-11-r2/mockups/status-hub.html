@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../../reward-sounds-tauri/src-tauri/ui/style.css">
+<link rel="stylesheet" href="../../../../reward-sounds-tauri/src-tauri/ui/app.css">
+<link rel="stylesheet" href="../../../../reward-sounds-tauri/src-tauri/ui/screens.css">
+<link rel="stylesheet" href="mock.css">
+<title>Макет: статус-хаб</title>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Следующая итерация · пункт 2 · макет</div>
+    <div class="title" style="margin-top:3px">Статус-хаб: один чип вместо трёх индикаторов</div>
+    <div class="sub">В шапке — «Все системы работают» с деталями; в «Настройках» — карточка «Здоровье системы». Проблемы меняют чип на «Нет yt-dlp — заявки не принимаются».</div>
+  </div>
+
+  <div class="row grow">
+    <div class="col" style="flex:1 1 46%">
+      <div class="frame" style="height:100%">
+        <div class="frame-head"><span class="tag tag-now">СЕЙЧАС</span><span class="frame-title">3 индикатора без входа и обещаний</span></div>
+        <div class="stage">
+          <div class="hstack" style="height:34px">
+            <span class="dot" style="background:#8B00FF"></span>
+            <span style="font-size:12.6px;color:#8B8B8B">Подключено · goshanmur</span>
+            <span style="width:1px;height:12px;background:rgba(255,255,255,.12);margin:0 4px"></span>
+            <span class="dot" style="background:#8B00FF"></span>
+            <span style="font-size:12.4px;color:#C9A7FF">Слушаем награды</span>
+          </div>
+          <div class="caption" style="margin-top:8px">Выглядит как текст: клик по статусу ведёт в настройки, но об этом не говорит ни форма, ни шеврон, ни hover.</div>
+          <div class="hstack" style="margin-top:14px;gap:10px">
+            <span class="dot" style="background:#8B00FF"></span>
+            <span style="font-size:11.6px;color:#8B8B8B">Звук: Analogue 1/2 (Audien…</span>
+          </div>
+          <div class="caption" style="margin-top:6px">Устройство обрезано на 22 символах — нужен короткий алиас («Audient iD4») и полный в tooltip.</div>
+        </div>
+        <ul class="notes">
+          <li class="neg">Три статуса в шапке + устройство в сайдбаре + тосты в футере</li>
+          <li class="neg">Нет единого ответа на вопрос «всё готово к эфиру?»</li>
+          <li class="neg">Ошибки подсистем не поднимаются наверх — их видно только в журнале</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col" style="flex:1 1 54%">
+      <div class="frame" style="height:100%">
+        <div class="frame-head"><span class="tag tag-a">ПРЕДЛОЖЕНИЕ</span><span class="frame-title">Чип со всеми подсистемами и поповер</span></div>
+        <div class="stage" style="position:relative">
+          <div class="hstack">
+            <button class="hub-chip" style="position:relative;z-index:6">
+              <span class="dot"></span>Все системы работают<span class="chev">▾</span>
+            </button>
+            <button class="playing-indicator" style="margin-left:4px">■ 2 звучит</button>
+            <div class="spacer"></div>
+            <button class="icon-button" aria-label="Без звука"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M11 5l-5 4H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M19 6a8 8 0 0 1 0 12"/></svg></button>
+            <span class="vol-label">ЗВУК</span>
+            <div class="slider" style="width:104px"><div class="track"></div><div class="fill" style="width:29%"></div><div class="knob" style="left:29%"></div></div>
+            <span class="vol-value">29%</span>
+          </div>
+
+          <div class="hub-pop" style="position:static;margin-top:12px;width:auto">
+            <div class="caption" style="font-size:9.5px;letter-spacing:.8px;color:#9A9A9A;font-weight:600">СОСТОЯНИЕ СИСТЕМ</div>
+            <div class="hub-row" style="margin-top:6px"><span class="dot" style="background:#8B00FF"></span>Twitch · goshanmur<span class="c">подключено</span></div>
+            <div class="hub-row"><span class="dot" style="background:#8B00FF"></span>EventSub · награды<span class="c">слушаем</span></div>
+            <div class="hub-row"><span class="dot" style="background:#8B00FF"></span>Чат · команда !трек<span class="c">работает</span></div>
+            <div class="hub-row"><span class="dot" style="background:#8B00FF"></span>Звук · Audient iD4<span class="c">готов</span></div>
+            <div class="hub-row"><span class="dot" style="background:#F59E0B"></span>yt-dlp<span class="c">версия 14 дней назад</span></div>
+            <div class="hub-row"><span class="dot" style="background:#8B00FF"></span>Оверлей · порт 8770<span class="c">свободен</span></div>
+            <div class="hub-sep"></div>
+            <div class="hub-link">Открыть «Здоровье системы» →</div>
+            <div class="hub-link" style="color:#9A9A9A">Скопировать диагностику</div>
+          </div>
+
+          <div class="caption" style="margin-top:10px">Поповер закрывается по Esc/клику вне, статусы кликабельны: «yt-dlp» ведёт в модалку музыки, «Чат» — во вкладку чата.</div>
+        </div>
+        <ul class="notes">
+          <li class="pos">Один ответ на «всё готово?»: зелёный чип или конкретная проблема</li>
+          <li class="pos">Проблема сама выходит наверх: чип становится жёлтым/красным и меняет текст</li>
+          <li class="pos">Освобождает сайдбар и футер от статусов, а «Завершить» уезжает в меню</li>
+          <li class="neg">Нужен единый источник состояния подсистем (backend `health`)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="frame">
+    <div class="frame-head"><span class="tag tag-b">ПЛЮС</span><span class="frame-title">«Здоровье системы» в «Настройках» — куда ведёт чип</span></div>
+    <div class="row">
+      <div class="stage" style="flex:1 1 auto">
+        <div class="hstack">
+          <span class="section-title" style="font-size:13.5px">Здоровье системы</span>
+          <span class="pill pill-accent pill-sm" style="margin-left:6px">4 из 5</span>
+          <div class="spacer"></div>
+          <button class="btn btn-sm btn-secondary">Скопировать диагностику</button>
+        </div>
+        <div class="state-list" style="margin-top:9px">
+          <div class="state-row"><span class="state-icon" style="color:#8B00FF">✓</span><span class="state-text">Twitch: goshanmur · токен обновлён 12 мин назад</span><span class="state-action">Открыть</span></div>
+          <div class="state-row"><span class="state-icon" style="color:#8B00FF">✓</span><span class="state-text">Награды: слушаем активации · 11 наград</span><span class="state-action">Проверить</span></div>
+          <div class="state-row"><span class="state-icon" style="color:#8B00FF">✓</span><span class="state-text">Звук: Audient iD4 · тест пройден</span><span class="state-action">Тест</span></div>
+          <div class="state-row"><span class="state-icon" style="color:#F59E0B">!</span><span class="state-text">yt-dlp: 2026.10.26, обновлений нет 14 дней</span><span class="state-action">Проверить</span></div>
+          <div class="state-row"><span class="state-icon" style="color:#8B00FF">✓</span><span class="state-text">Оверлей: порт 8770 свободен</span><span class="state-action">Открыть</span></div>
+        </div>
+      </div>
+      <div style="flex:0 0 300px">
+        <ul class="notes">
+          <li class="pos">Одна карточка вместо трёх статусов на разных экранах</li>
+          <li class="pos">«Скопировать диагностику» — для поддержки и журнала</li>
+          <li class="neg">Требует от бэкенда отдавать health одной структурой</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

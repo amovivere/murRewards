@@ -334,6 +334,7 @@ fn main() {
             core::set_app_setting,
             core::open_url,
             core::get_logs,
+            core::clear_log,
             core::create_reward,
             core::update_reward,
             core::delete_reward,

@@ -1854,8 +1854,17 @@ pub fn get_logs(limit: Option<usize>) -> Vec<LogEntryView> {
             })
         })
         .collect();
-    entries.reverse();
+    // Новые записи — первыми: пользователь их и хочет видеть в журнале.
     entries
+}
+
+/// Полностью очищает файл журнала (с подтверждением в интерфейсе).
+#[tauri::command]
+pub fn clear_log() -> Result<(), String> {
+    let paths = AppPaths::resolve();
+    std::fs::write(&paths.log_file, "")
+        .map_err(|error| format!("Не удалось очистить журнал: {error}"))?;
+    Ok(())
 }
 
 #[tauri::command]

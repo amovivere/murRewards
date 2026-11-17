@@ -11,29 +11,33 @@
 <body>
 <div class="app" id="app">
   <aside class="sidebar" id="sidebar">
-    <div class="nav-label">ОСНОВНОЕ</div>
-    <button class="nav-item active" data-tab="rewards" title="Награды">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2" fill="currentColor" stroke="none"/><rect x="14" y="3" width="7" height="7" rx="2" fill="currentColor" stroke="none"/><rect x="3" y="14" width="7" height="7" rx="2" fill="currentColor" stroke="none"/><rect x="14" y="14" width="7" height="7" rx="2" fill="currentColor" stroke="none"/></svg>
-      <span>Награды</span>
-    </button>
-    <button class="nav-item" data-tab="music" title="Музыка">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
-      <span>Музыка</span>
-    </button>
-    <div class="nav-label">ЧАТ</div>
-    <button class="nav-item" data-tab="chat" title="Чат">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H5l-2 2V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>
-      <span>Чат</span>
-    </button>
-    <div class="nav-label">СИСТЕМА</div>
-    <button class="nav-item" data-tab="settings" title="Настройки">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2" fill="#0E0E0E"/><circle cx="15" cy="12" r="2" fill="#0E0E0E"/><circle cx="10" cy="18" r="2" fill="#0E0E0E"/></svg>
-      <span>Настройки</span>
-    </button>
-    <button class="nav-item" data-tab="log" title="Журнал">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="18" r="1.4" fill="currentColor" stroke="none"/><path d="M10 6h10M10 12h10M10 18h10"/></svg>
-      <span>Журнал</span>
-    </button>
+    <div class="sidebar-main">
+      <div class="nav-label">ОСНОВНОЕ</div>
+      <button class="nav-item active" data-tab="rewards" title="Награды">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2" fill="currentColor" stroke="none"/><rect x="14" y="3" width="7" height="7" rx="2" fill="currentColor" stroke="none"/><rect x="3" y="14" width="7" height="7" rx="2" fill="currentColor" stroke="none"/><rect x="14" y="14" width="7" height="7" rx="2" fill="currentColor" stroke="none"/></svg>
+        <span>Награды</span>
+      </button>
+      <button class="nav-item" data-tab="music" title="Музыка">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+        <span>Музыка</span>
+      </button>
+      <div class="nav-label">ЧАТ</div>
+      <button class="nav-item" data-tab="chat" title="Чат">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H5l-2 2V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>
+        <span>Чат</span>
+      </button>
+    </div>
+    <div class="sidebar-system">
+      <div class="nav-label">СИСТЕМА</div>
+      <button class="nav-item" data-tab="settings" title="Настройки">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2" fill="#0E0E0E"/><circle cx="15" cy="12" r="2" fill="#0E0E0E"/><circle cx="10" cy="18" r="2" fill="#0E0E0E"/></svg>
+        <span>Настройки</span>
+      </button>
+      <button class="nav-item" data-tab="log" title="Журнал">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="18" r="1.4" fill="currentColor" stroke="none"/><path d="M10 6h10M10 12h10M10 18h10"/></svg>
+        <span>Журнал</span>
+      </button>
+    </div>
     <div class="sidebar-bottom"></div>
   </aside>
 

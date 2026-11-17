@@ -465,12 +465,8 @@ function startLogTimer() {
   logTimer = setInterval(() => {
     if (state.tab !== 'log') return;
     if (document.activeElement?.id === 'log-search') return;
-    const card = $('#log-card');
-    const atBottom = card ? card.scrollHeight - card.scrollTop - card.clientHeight < 40 : true;
-    refreshLog({ silent: true }).then(() => {
-      const nextCard = $('#log-card');
-      if (atBottom && nextCard) nextCard.scrollTop = nextCard.scrollHeight;
-    });
+    // Порядок «новые сверху» сохраняет позицию прокрутки внутри refreshLog.
+    refreshLog({ silent: true });
   }, 2500);
 }
 

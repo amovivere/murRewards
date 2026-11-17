@@ -369,13 +369,24 @@ function isMusicReward(reward, view) {
 }
 
 function actionsHtml(reward, view) {
-  const playing = rewardPlayingCount(reward, view);
   const parts = [];
   if (!reward.file) {
     parts.push(`<button class="btn btn-sm btn-primary" data-act="choose">Выбрать звук</button>`);
   }
-  if (playing) parts.push(`<span class="playing-badge">играет ×${playing}</span>`);
-  return parts.length ? `<div class="card-actions">${parts.join('')}</div>` : '';
+  return `<div class="card-actions">${parts.join('')}</div>`;
+}
+
+function cardFlags(reward, view) {
+  const flags = [];
+  if (isMusicReward(reward, view)) flags.push('<span class="tile-flag" title="Награда музыки">♪</span>');
+  if (reward.requires_input) flags.push('<span class="tile-flag" title="Нужен ввод текста">Aa</span>');
+  return flags.length ? `<span class="tile-flags">${flags.join('')}</span>` : '';
+}
+
+function playingMarkup(reward, view) {
+  const playing = rewardPlayingCount(reward, view);
+  if (!playing) return '';
+  return `<span class="tile-playing" title="играет ×${playing}">${playing > 1 ? `×${playing}` : ''}♪</span>`;
 }
 
 function cardHtml(reward, view) {
@@ -389,10 +400,10 @@ function cardHtml(reward, view) {
       data-title="${escapeHtml(reward.title)}"
       style="background:${bg};border-color:${border}">
       <div class="card-top">
-        <div class="tile" style="background:${color};color:${contrastTextColor(color)}">${escapeHtml(firstLetter(reward.title))}</div>
+        <div class="tile" style="background:${color};color:${contrastTextColor(color)}">${escapeHtml(firstLetter(reward.title))}${playingMarkup(reward, view)}${cardFlags(reward, view)}</div>
         <div class="card-top-text">
           <div class="card-title">${escapeHtml(reward.title)}</div>
-          <div class="card-meta">${Number(reward.cost) || 0} БАЛЛОВ · ${status}${isMusicReward(reward, view) ? '<span class="music-badge">МУЗЫКА</span>' : ''}${reward.requires_input ? '<span class="input-badge">ВВОД ТЕКСТА</span>' : ''}</div>
+          <div class="card-meta"><span class="meta-text">${Number(reward.cost) || 0} БАЛЛОВ · ${status}</span></div>
         </div>
         <button class="dots" data-dots title="Действия с наградой">•••</button>
       </div>
@@ -407,15 +418,14 @@ function rowHtml(reward, view) {
   const status = reward.available ? 'АКТИВНА' : 'ВЫКЛЮЧЕНА';
   const file = reward.file;
   const volume = Math.max(0, Math.min(2, Number(file?.volume) || 0));
-  const playing = rewardPlayingCount(reward, view);
   return `
     <div class="reward-row${reward.available ? '' : ' is-disabled'}" data-id="${escapeHtml(reward.id)}" data-title="${escapeHtml(reward.title)}">
-      <div class="tile tile-sm" style="background:${color};color:${contrastTextColor(color)}">${escapeHtml(firstLetter(reward.title))}</div>
+      <div class="tile tile-sm" style="background:${color};color:${contrastTextColor(color)}">${escapeHtml(firstLetter(reward.title))}${playingMarkup(reward, view)}</div>
       <div class="rr-main">
         <div class="rr-title">${escapeHtml(reward.title)}${isMusicReward(reward, view) ? '<span class="music-badge">МУЗЫКА</span>' : ''}</div>
-        <div class="rr-meta">${Number(reward.cost) || 0} БАЛЛОВ · ${status}${playing ? ` · играет ×${playing}` : ''}</div>
+        <div class="rr-meta">${Number(reward.cost) || 0} БАЛЛОВ · ${status}</div>
       </div>
-      <div class="rr-sound">${file ? `${escapeHtml(file.name)} <span class="rr-fmt">${file.exists ? escapeHtml(file.meta) : 'файл не найден'}</span>` : '<span class="rr-muted">Звук не выбран</span>'}</div>
+      <div class="rr-sound">${file ? `<button class="play sound-play" title="${file.exists ? 'Прослушать' : 'Файл не найден'}"${file.exists ? '' : ' disabled'}>${icons.play}</button><span class="rr-fname" title="${escapeHtml(file.path)}">${escapeHtml(file.name)}</span><span class="rr-fmt">${file.exists ? escapeHtml(file.meta) : 'файл не найден'}</span>` : '<span class="rr-muted">Звук не выбран</span>'}</div>
       <div class="rr-volume">${file ? `<div class="slider sm" data-reward-volume="${escapeHtml(reward.id)}"><div class="track"></div><div class="fill" style="width:${(volume / 2) * 100}%"></div><div class="knob" style="left:${(volume / 2) * 100}%"></div></div><span class="local-value">${Math.round(volume * 100)}%</span>` : '<span class="rr-muted">—</span>'}</div>
       <div class="rr-actions">${actionsHtml(reward, view)}</div>
       <button class="dots" data-dots title="Действия с наградой">•••</button>
@@ -800,6 +810,8 @@ function openRewardModal(reward) {
   };
   editorState = { reward, editing, sound, saving: false };
 
+  const initialColor = /^#[0-9a-f]{6}$/i.test(reward?.color || '') ? reward.color : '#8B00FF';
+  const colorPresets = ['#8B00FF', '#FF5A5F', '#FF7A00', '#F5C97B', '#22C55E', '#00C8FF', '#3B82F6', '#EC4899', '#A3A3A3'];
   const modal = createModal({
     html: `
       <div class="modal-head">
@@ -811,7 +823,18 @@ function openRewardModal(reward) {
       <input class="input reward-input" id="reward-title" maxlength="45" value="${escapeHtml(reward?.title || '')}" placeholder="Например, «Сказать слово»" data-autofocus>
       <div class="reward-form-row">
         <div><div class="modal-label">ЦЕНА, БАЛЛОВ</div><input class="input reward-input" id="reward-cost" type="number" min="1" max="1000000" value="${reward?.cost ?? 100}"></div>
-        <div><div class="modal-label">ЦВЕТ</div><input class="input reward-input" id="reward-color" maxlength="7" value="${escapeHtml(reward?.color || '#8B00FF')}" placeholder="#8B00FF"></div>
+        <div>
+          <div class="modal-label">ЦВЕТ</div>
+          <div class="color-controls">
+            <label class="color-swatch" id="reward-color-swatch" title="Выбрать цвет" style="background:${initialColor}">
+              <input type="color" id="reward-color-native" value="${initialColor}" aria-label="Выбрать цвет награды">
+            </label>
+            <input class="input reward-input color-hex" id="reward-color" maxlength="7" value="${escapeHtml(initialColor)}" placeholder="#8B00FF" aria-label="Цвет награды в формате HEX">
+          </div>
+        </div>
+      </div>
+      <div class="color-palette" id="reward-color-palette">
+        ${colorPresets.map((color) => `<button type="button" class="color-preset${color.toLowerCase() === initialColor.toLowerCase() ? ' active' : ''}" data-color="${color}" style="background:${color}" title="${color}" aria-label="Цвет ${color}"></button>`).join('')}
       </div>
       <label class="reward-check"><input type="checkbox" id="reward-input-required" ${reward?.requires_input ? 'checked' : ''}> Нужен ввод текста от зрителя</label>
       <div class="modal-label">ЗВУК НАГРАДЫ</div>
@@ -829,6 +852,7 @@ function openRewardModal(reward) {
     },
   });
 
+  bindColorPicker(modal.root, initialColor);
   renderEditorSound(modal.root, sound);
   modal.root.querySelectorAll('[data-act="close"]').forEach((button) =>
     button.addEventListener('click', () => modal.close())
@@ -837,14 +861,42 @@ function openRewardModal(reward) {
   $('#reward-title', modal.root).addEventListener('keydown', (event) => {
     if (event.key === 'Enter') saveReward(modal);
   });
-  modal.root.querySelector('#reward-title')?.addEventListener('input', () => {
-    const swatch = modal.root.querySelector('.color-swatch');
-    if (swatch) swatch.style.background = $('#reward-color', modal.root).value;
-  });
   $('#reward-delete', modal.root)?.addEventListener('click', () => {
     modal.close();
     deleteReward(reward);
   });
+}
+
+function bindColorPicker(root, initialColor) {
+  const hex = $('#reward-color', root);
+  const native = $('#reward-color-native', root);
+  const swatch = $('#reward-color-swatch', root);
+  const palette = $('#reward-color-palette', root);
+  if (!hex || !native || !swatch) return;
+
+  const markActive = (value) =>
+    palette?.querySelectorAll('[data-color]').forEach((button) =>
+      button.classList.toggle('active', button.dataset.color.toLowerCase() === value.toLowerCase())
+    );
+  const apply = (value) => {
+    const color = value.startsWith('#') ? value : `#${value}`;
+    hex.value = color.toUpperCase();
+    native.value = color;
+    swatch.style.background = color;
+    markActive(color);
+  };
+
+  hex.addEventListener('input', () => {
+    const value = hex.value.trim();
+    if (!/^#[0-9a-f]{6}$/i.test(value)) return;
+    native.value = value;
+    swatch.style.background = value;
+    markActive(value);
+  });
+  native.addEventListener('input', () => apply(native.value));
+  palette?.querySelectorAll('[data-color]').forEach((button) =>
+    button.addEventListener('click', () => apply(button.dataset.color))
+  );
 }
 
 function renderEditorSound(root, sound) {

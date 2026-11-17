@@ -1,6 +1,6 @@
 /* Вкладка «Журнал»: поиск, уровни, «показывать отладку», автообновление. */
 
-import { state, $, $$, invoke, tryInvoke, toast, icons, escapeHtml, requestRefresh, navigate, menu, exitMenuItem } from './bridge.js';
+import { state, $, $$, invoke, tryInvoke, toast, icons, escapeHtml, requestRefresh, navigate, menu, exitMenuItem, confirmDialog } from './bridge.js';
 
 const filters = { search: '', level: 'all', debug: false };
 let boundRoot = null;
@@ -43,6 +43,7 @@ function logPageHtml() {
       </div>
       <div class="head-actions">
         <button class="btn btn-secondary" id="log-open-folder">${icons.folder} Папка журнала</button>
+        <button class="btn btn-secondary" id="log-clear">Очистить</button>
         <button class="btn btn-secondary" id="log-refresh">Обновить</button>
         <button class="btn btn-icon btn-ghost" id="log-menu" title="Действия">•••</button>
       </div>
@@ -78,8 +79,10 @@ function bind(root) {
   $('#log-open-folder', root)?.addEventListener('click', () =>
     invoke('open_folder', { kind: 'logs' }).catch(() => {})
   );
+  $('#log-clear', root)?.addEventListener('click', () => clearLog());
   $('#log-menu', root)?.addEventListener('click', (event) => {
     menu(event.currentTarget, [
+      { label: 'Очистить журнал', icon: icons.trash, onClick: () => clearLog() },
       { label: 'Открыть настройки', icon: icons.edit, onClick: () => navigate('settings') },
       exitMenuItem(),
     ]);
@@ -108,10 +111,31 @@ function bind(root) {
 function renderRows() {
   const list = $('#log-list');
   if (!list) return;
+  const card = $('#log-card');
+  const wasTop = !card || card.scrollTop < 40;
+  const previous = card?.scrollTop || 0;
   list.innerHTML = lastRows.length
     ? lastRows.map(rowHtml).join('')
     : '<div class="log-empty">Пока записей нет</div>';
   applyFilters();
+  if (card) card.scrollTop = wasTop ? 0 : previous;
+}
+
+async function clearLog() {
+  const ok = await confirmDialog({
+    title: 'Очистить журнал?',
+    text: 'Файл журнала будет очищен. Записи о прошлых запусках и ошибках удалятся без возможности отмены.',
+    confirmLabel: 'Очистить',
+    danger: true,
+  });
+  if (!ok) return;
+  try {
+    await invoke('clear_log');
+    lastRows = [];
+    renderRows();
+    await refreshLog({ silent: true });
+    toast('Журнал очищен');
+  } catch {}
 }
 
 function rowHtml(entry) {

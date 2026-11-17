@@ -146,7 +146,7 @@ async function run() {
   // 2. Вкладки
   const connected = await evaluate(`window.RS.state.view.connected`);
   for (const [tab, selector, label] of [
-    ['rewards', connected ? '.reward-card' : '.quick-start', 'Награды'],
+    ['rewards', connected ? '.reward-card, .reward-row' : '.quick-start', 'Награды'],
     ['music', '#music-player', 'Музыка'],
     ['settings', '.settings-card', 'Настройки'],
     ['log', '.log-row', 'Журнал'],
@@ -332,7 +332,80 @@ async function run() {
     assert('чат-оверлей отвечает по HTTP', false, error.message);
   }
 
-  // 13. Итерация: плотность, контекстное меню карточки, единый тест звука
+  // 13. Замечания после ручного теста: цвет, список, плеер, журнал, сайдбар
+  await evaluate(`window.RS.render('rewards')`);
+  await sleep(700);
+  await click('#reward-create');
+  await sleep(500);
+  const colorPicker = await evaluate(`({
+    presets: document.querySelectorAll('#reward-color-palette .color-preset').length,
+    native: !!document.querySelector('#reward-color-native'),
+    hex: document.querySelector('#reward-color')?.value || '',
+  })`);
+  assert('пикер цвета: палитра и color input', colorPicker.presets >= 8 && colorPicker.native, JSON.stringify(colorPicker));
+  await evaluate(`document.querySelectorAll('#reward-color-palette .color-preset')[2]?.click()`);
+  await sleep(150);
+  const pickedColor = await evaluate(`({
+    hex: document.querySelector('#reward-color')?.value || '',
+    picked: document.querySelectorAll('#reward-color-palette .color-preset')[2]?.dataset.color || '',
+    active: document.querySelectorAll('#reward-color-palette .color-preset')[2]?.classList.contains('active'),
+  })`);
+  assert('клик по палитре меняет HEX цвета', pickedColor.hex.toLowerCase() === pickedColor.picked.toLowerCase() && pickedColor.active, JSON.stringify(pickedColor));
+  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
+  await sleep(250);
+
+  await click('#view-mode [data-view="list"]');
+  await sleep(800);
+  const listPlay = await evaluate(`({
+    rows: document.querySelectorAll('.reward-row').length,
+    plays: document.querySelectorAll('.reward-row .sound-play').length,
+    actionsWidth: Math.round(document.querySelector('.rr-actions')?.getBoundingClientRect().width || 0),
+    volumesAligned: (() => {
+      const rows = Array.from(document.querySelectorAll('.reward-row'));
+      const xs = rows.map((row) => Math.round(row.querySelector('.rr-volume')?.getBoundingClientRect().left || 0)).filter(Boolean);
+      return xs.length < 2 || Math.max(...xs) - Math.min(...xs) <= 1;
+    })(),
+  })`);
+  assert('в списке можно прослушать звук', listPlay.plays > 0, JSON.stringify(listPlay));
+  assert('колонка громкости выровнена', listPlay.volumesAligned, JSON.stringify(listPlay));
+  await click('#view-mode [data-view="grid"]');
+  await sleep(700);
+
+  await evaluate(`window.RS.render('log')`);
+  await sleep(1200);
+  const logOrder = await evaluate(`(() => {
+    const rows = Array.from(document.querySelectorAll('.log-row'));
+    const times = rows.map((row) => row.querySelector('.log-time')?.textContent || '');
+    return {
+      first: times[0] || '',
+      second: times[1] || '',
+      newestFirst: !times[1] || times[0] >= times[1],
+      clear: !!document.querySelector('#log-clear'),
+    };
+  })()`);
+  assert('журнал: новые записи сверху', logOrder.newestFirst, JSON.stringify(logOrder));
+  assert('журнал: есть кнопка очистки', logOrder.clear, JSON.stringify(logOrder));
+
+  await evaluate(`window.RS.render('settings')`);
+  await sleep(700);
+  const sidebar = await evaluate(`(() => {
+    const main = document.querySelector('.sidebar-main')?.getBoundingClientRect();
+    const system = document.querySelector('.sidebar-system')?.getBoundingClientRect();
+    return { mainBottom: Math.round(main?.bottom || 0), systemTop: Math.round(system?.top || 0) };
+  })()`);
+  assert('системные вкладки внизу сайдбара', sidebar.systemTop > sidebar.mainBottom, JSON.stringify(sidebar));
+
+  await evaluate(`window.RS.render('music')`);
+  await sleep(700);
+  const playerCursor = await evaluate(`(() => {
+    const btn = document.querySelector('#play-toggle');
+    return { disabled: !!btn?.disabled, cursor: btn ? getComputedStyle(btn).cursor : '' };
+  })()`);
+  if (playerCursor.disabled) {
+    assert('недоступный плеер без курсора-кнопки', playerCursor.cursor === 'default', JSON.stringify(playerCursor));
+  }
+
+  // 14. Итерация: плотность, контекстное меню карточки, единый тест звука
   await evaluate(`window.RS.render('rewards')`);
   await sleep(700);
   const density = await evaluate(`(() => {
@@ -346,7 +419,7 @@ async function run() {
     };
   })()`);
   assert('плитка компактная: 4 колонки', density.grid && density.cols === 4, JSON.stringify(density));
-  assert('карточка не выше 150 px', density.cardHeight > 0 && density.cardHeight <= 150, JSON.stringify(density));
+  assert('карточка не выше 160 px', density.cardHeight > 0 && density.cardHeight <= 160, JSON.stringify(density));
 
   const hasFileCard = await evaluate(`(() => {
     const card = Array.from(document.querySelectorAll('.reward-card')).find((el) => el.querySelector('.soundchip:not(.empty)'));

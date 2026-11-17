@@ -740,3 +740,93 @@ button.dots { min-width: 30px; min-height: 28px; display: inline-flex; align-ite
   .chat-card { padding: 12px 14px; }
   .chat-feed { height: 240px; }
 }
+/* ===== выбор цвета награды (палитра + color input) ===== */
+.color-controls { display: flex; align-items: center; gap: 8px; }
+.color-swatch {
+  position: relative; width: 34px; height: 34px; flex: 0 0 34px; border-radius: 9px;
+  border: 1px solid rgba(255,255,255,.18); cursor: pointer; overflow: hidden;
+}
+.color-swatch input[type="color"] {
+  position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
+  border: 0; padding: 0;
+}
+.color-swatch:focus-within { outline: 2px solid rgba(139,0,255,.72); outline-offset: 2px; }
+.color-hex { flex: 1 1 auto; min-width: 0; text-transform: uppercase; }
+.color-palette { display: flex; align-items: center; gap: 7px; margin: 8px 0 2px; flex-wrap: wrap; }
+.color-preset {
+  width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,.18);
+  padding: 0; cursor: pointer; transition: transform .12s ease, box-shadow .12s ease;
+}
+.color-preset:hover { transform: scale(1.12); }
+.color-preset.active { box-shadow: 0 0 0 2px #0A0A0A, 0 0 0 4px #F5F5F5; }
+.color-preset:focus-visible { outline: 2px solid rgba(139,0,255,.72); outline-offset: 2px; }
+/* ===== стабильные карточки: индикатор «играет» не сдвигает ряд ===== */
+.content .grid { align-items: stretch; }
+.content .grid > .card { height: 100%; }
+.reward-card .tile, .reward-row .tile-sm { position: relative; overflow: visible; }
+.tile-playing {
+  position: absolute; right: -5px; bottom: -5px; min-width: 17px; height: 17px; padding: 0 3px;
+  border-radius: 9px; background: #0A0A0A; border: 1px solid rgba(255,255,255,.28);
+  color: #C9A7FF; font-size: 9px; line-height: 15px; text-align: center; font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,.45);
+}
+.reward-card .card-meta { display: flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden; }
+.reward-card .card-meta .meta-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.reward-card .music-badge, .reward-card .input-badge { flex: 0 0 auto; }
+.card-top-text { min-width: 0; flex: 1 1 auto; }
+
+/* список: ровные колонки и кнопка прослушивания */
+.reward-row { grid-template-columns: 26px minmax(0, 1.4fr) minmax(0, 1fr) 128px 132px 24px; }
+.rr-sound { display: flex; align-items: center; gap: 7px; min-width: 0; }
+.rr-sound .play {
+  width: 20px; height: 20px; flex: 0 0 20px; border: 0; border-radius: 50%;
+  background: rgba(255,255,255,.10); color: #EDEDED; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; padding: 0;
+}
+.rr-sound .play:hover { background: rgba(255,255,255,.20); }
+.rr-sound .play:disabled { opacity: .4; cursor: default; }
+.rr-fname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.rr-actions { width: 132px; justify-content: flex-start; }
+.rr-volume { min-width: 0; }
+@media (max-width: 980px) {
+  .reward-row { grid-template-columns: 24px minmax(0, 1.2fr) minmax(0, .8fr) 74px 110px 22px; }
+  .rr-actions { width: 110px; }
+}
+/* ===== недоступные контролы плеера: не притворяются кнопками ===== */
+button:disabled, .player-round:disabled, .player-play:disabled, .player-text:disabled {
+  cursor: default;
+}
+.player-round:disabled:hover, .player-play:disabled:hover, .player-text:disabled:hover {
+  background: initial; filter: none;
+}
+.player-text:disabled { color: rgba(139,139,139,.65); }
+#track-progress[aria-valuemax="0"] { cursor: default; }
+#track-progress[aria-valuemax="0"] .knob { opacity: .5; }
+/* ===== сайдбар: системные вкладки внизу ===== */
+.sidebar-main { display: flex; flex-direction: column; min-height: 0; }
+.sidebar-system { display: flex; flex-direction: column; margin-top: auto; padding-top: 10px; }
+.sidebar-system .nav-label { margin-top: 0; }
+.sidebar-main .nav-label:first-child { margin-top: 16px; }
+@media (max-width: 1120px) {
+  .sidebar-system { margin-top: auto; padding-top: 0; }
+}
+/* одинаковая высота карточек: место под действия и флаги фиксировано */
+.reward-card { min-height: 144px; }
+.reward-card .card-actions { min-height: 26px; margin-top: 8px; align-items: flex-start; }
+.tile-flags { position: absolute; left: -4px; top: -4px; display: flex; gap: 2px; }
+.tile-flag {
+  min-width: 16px; height: 16px; padding: 0 3px; border-radius: 8px; background: #0A0A0A;
+  border: 1px solid rgba(255,255,255,.24); color: #DADADA; font-size: 8.6px; line-height: 14px;
+  text-align: center; font-weight: 600;
+}
+/* одинаковая высота: в компактной карточке пустой звук не переносится */
+.reward-card .soundchip.empty { gap: 6px; }
+.reward-card .soundchip.empty .fname { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reward-card .soundchip.empty .fmt { display: none; }
+/* «играет»: мягкая пульсация и разделитель системной группы */
+.tile-playing { animation: playing-pulse 2.4s ease-in-out infinite; }
+@keyframes playing-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(139,0,255,.0); } 50% { box-shadow: 0 0 0 3px rgba(139,0,255,.18); } }
+.sidebar-system { border-top: 1px solid rgba(255,255,255,.06); }
+@media (max-width: 1120px) {
+  .sidebar-system { border-top: 0; }
+}

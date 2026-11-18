@@ -190,6 +190,9 @@ export default function MusicPage({ backend }) {
     }
     try {
       await backend.call(command, args);
+      if (command === 'music_toggle_pause') notify(player.paused ? 'Воспроизведение продолжено' : 'Пауза');
+      if (command === 'music_skip') notify('Трек пропущен');
+      if (command === 'music_show_overlay') notify('Оверлей показан');
     } catch (error) {
       notify(String(error));
     }

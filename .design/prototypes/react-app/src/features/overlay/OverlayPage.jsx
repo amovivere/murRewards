@@ -548,7 +548,18 @@ export default function OverlayPage() {
             Это настоящий оверлей, а не картинка. Настройки применяются к превью сразу, в OBS — через ~2 секунды.
           </div>
 
-          <Button variant="secondary" full icon={<Icon name="external" />} onClick={() => window.open(PREVIEW_URL, '_blank')}>
+          <Button
+            variant="secondary"
+            full
+            icon={<Icon name="external" />}
+            onClick={() => {
+              if (inTauri) {
+                invoke('open_url', { url: PREVIEW_URL }).catch((error) => notify(String(error)));
+                return;
+              }
+              window.open(PREVIEW_URL, '_blank', 'noopener');
+            }}
+          >
             Открыть превью в браузере
           </Button>
         </aside>

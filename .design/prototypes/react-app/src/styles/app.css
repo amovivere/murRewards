@@ -2664,3 +2664,11 @@ a:focus-visible {
 .sound-row {
   min-height: 30px;
 }
+
+.three-col {
+  align-items: stretch;
+}
+
+.three-col > .ui-panel {
+  height: 100%;
+}

@@ -1,0 +1,37 @@
+{
+  "first": {
+    "t": 24442,
+    "loading": null,
+    "label": "388 × 565",
+    "iframe": {
+      "w": 388,
+      "h": 565
+    }
+  },
+  "earlyLoading": [],
+  "lastEarly": {
+    "t": 26551,
+    "loading": null,
+    "label": "388 × 565",
+    "iframe": {
+      "w": 388,
+      "h": 565
+    }
+  },
+  "after": {
+    "label": "388 × 565",
+    "loading": false,
+    "iframe": {
+      "w": 388,
+      "h": 565
+    }
+  },
+  "afterReload": {
+    "label": "388 × 565",
+    "loading": false,
+    "iframe": {
+      "w": 388,
+      "h": 565
+    }
+  }
+}

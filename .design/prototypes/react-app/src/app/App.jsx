@@ -300,7 +300,7 @@ export default function App() {
         </main>
 
         <footer className="footer">
-          <span>{healthText}</span>
+          <span>Готово</span>
           <span>версия {view?.version || '1.7.0'}</span>
         </footer>
       </div>

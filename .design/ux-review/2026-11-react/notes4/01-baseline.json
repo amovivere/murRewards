@@ -1,0 +1,110 @@
+{
+  "state": {
+    "rewards": 20,
+    "musicCurrent": null,
+    "items": 0,
+    "enabled": true,
+    "accent": "#8B00FF",
+    "volume": 0.287
+  },
+  "listMenu": {
+    "bottomMenu": {
+      "menu": true,
+      "rect": {
+        "w": 399,
+        "h": 132
+      },
+      "items": [
+        {
+          "text": "Редактировать",
+          "inViewport": true,
+          "clickable": true
+        },
+        {
+          "text": "Заменить звук",
+          "inViewport": true,
+          "clickable": true
+        },
+        {
+          "text": "Убрать звук",
+          "inViewport": true,
+          "clickable": true
+        },
+        {
+          "text": "Удалить награду",
+          "inViewport": true,
+          "clickable": true
+        }
+      ]
+    },
+    "delOpen": {
+      "modal": true,
+      "title": "Удалить «Переименовать ченить»?"
+    },
+    "midMenu": {
+      "menu": true,
+      "rect": {
+        "w": 399,
+        "h": 132
+      },
+      "items": [
+        {
+          "text": "Редактировать",
+          "clickable": true
+        },
+        {
+          "text": "Заменить звук",
+          "clickable": true
+        },
+        {
+          "text": "Убрать звук",
+          "clickable": true
+        },
+        {
+          "text": "Удалить награду",
+          "clickable": true
+        }
+      ]
+    },
+    "editOpen": {
+      "modal": true,
+      "values": [
+        "А где донаты",
+        "100",
+        "#00f593"
+      ]
+    }
+  },
+  "focus": {
+    "create": {
+      "active": {
+        "tag": "BUTTON",
+        "cls": "ui-button ui-button--primary ui-button--md",
+        "text": "Создать награду",
+        "aria": null,
+        "placeholder": ""
+      },
+      "modal": false
+    },
+    "edit": {
+      "active": {
+        "tag": "BUTTON",
+        "cls": "icon-ghost",
+        "text": "",
+        "aria": "Действия с наградой Ты новичок?",
+        "placeholder": ""
+      },
+      "modal": false
+    },
+    "delete": {
+      "active": {
+        "tag": "BUTTON",
+        "cls": "icon-ghost",
+        "text": "",
+        "aria": "Действия с наградой Ты новичок?",
+        "placeholder": ""
+      },
+      "modal": false
+    }
+  }
+}

@@ -215,8 +215,34 @@ export default function RewardsPage({ backend }) {
 
   useEffect(() => {
     if (!menuFor) return undefined;
+    const menu = document.querySelector('.reward-menu');
+    const items = menu ? Array.from(menu.querySelectorAll('button')) : [];
+    requestAnimationFrame(() => items[0]?.focus());
+
+    function closeAndReturnFocus() {
+      setMenuFor(null);
+      menuTriggerRef.current?.focus();
+    }
     function onKeyDown(event) {
-      if (event.key === 'Escape') setMenuFor(null);
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeAndReturnFocus();
+        return;
+      }
+      if (!['ArrowDown', 'ArrowUp', 'Home', 'End', 'Tab'].includes(event.key)) return;
+      if (!items.length) return;
+      if (event.key === 'Tab') {
+        setMenuFor(null);
+        return;
+      }
+      event.preventDefault();
+      const index = items.indexOf(document.activeElement);
+      let next = index;
+      if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = items.length - 1;
+      else if (event.key === 'ArrowDown') next = (index + 1) % items.length;
+      else if (event.key === 'ArrowUp') next = (index - 1 + items.length) % items.length;
+      items[next]?.focus();
     }
     function onPointerDown(event) {
       if (!event.target.closest('.reward-menu, .icon-ghost')) setMenuFor(null);
@@ -494,10 +520,10 @@ export default function RewardsPage({ backend }) {
 
             {menuFor === reward.id ? (
               <div className={`reward-menu${menuAbove ? ' is-above' : ''}`} role="menu">
-                <button role="menuitem" onClick={() => { setMenuFor(null); setEditTarget(reward); }}>Редактировать</button>
-                <button role="menuitem" onClick={() => { setMenuFor(null); chooseSound(reward); }}>Заменить звук</button>
-                <button role="menuitem" onClick={() => { setMenuFor(null); removeSound(reward); }}>Убрать звук</button>
-                <button role="menuitem" className="is-danger" onClick={() => { setMenuFor(null); setDeleteTarget(reward); }}>
+                <button role="menuitem" tabIndex={-1} onClick={() => { setMenuFor(null); setEditTarget(reward); }}>Редактировать</button>
+                <button role="menuitem" tabIndex={-1} onClick={() => { setMenuFor(null); chooseSound(reward); }}>Заменить звук</button>
+                <button role="menuitem" tabIndex={-1} onClick={() => { setMenuFor(null); removeSound(reward); }}>Убрать звук</button>
+                <button role="menuitem" tabIndex={-1} className="is-danger" onClick={() => { setMenuFor(null); setDeleteTarget(reward); }}>
                   Удалить награду
                 </button>
               </div>

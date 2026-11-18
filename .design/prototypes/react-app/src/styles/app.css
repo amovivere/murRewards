@@ -2672,3 +2672,26 @@ a:focus-visible {
 .three-col > .ui-panel {
   height: 100%;
 }
+
+.ui-range {
+  height: 24px;
+}
+
+.ui-range::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+}
+
+.accent-swatch {
+  width: 24px;
+  height: 24px;
+}
+
+.overlay-preview__hint {
+  color: #9d9da8;
+}
+
+.ui-toggle-row__hint {
+  color: #9797a1;
+}

@@ -41,7 +41,7 @@ export default function OverlayPage() {
   const [previewMode, setPreviewMode] = useState('static');
   const [showOssUrl, setShowOssUrl] = useState(false);
   const [previewLoaded, setPreviewLoaded] = useState(false);
-  const [previewSize, setPreviewSize] = useState('420 × 900');
+  const [previewSize, setPreviewSize] = useState('');
   const [presetDialog, setPresetDialog] = useState(null);
   const frameRef = useRef(null);
   const toastTimer = useRef(null);
@@ -500,7 +500,7 @@ export default function OverlayPage() {
               <div className="eyebrow">ПРЕВЬЮ</div>
               <div className="overlay-preview__title">Демо-сообщения</div>
             </div>
-            <span className="overlay-preview__size">{previewSize}</span>
+            <span className="overlay-preview__size">{previewSize || 'превью'}</span>
           </div>
 
           <div className="overlay-preview__frame-wrap">

@@ -1,0 +1,127 @@
+{
+  "tag": "maxdirect",
+  "base": {
+    "innerW": 2560,
+    "innerH": 1392,
+    "shell": {
+      "w": 2560,
+      "h": 1392,
+      "x": 0,
+      "y": 0
+    },
+    "margins": {
+      "l": 0,
+      "r": 0,
+      "t": 0,
+      "b": 0
+    },
+    "content": {
+      "clientW": 2320,
+      "clientH": 1294
+    },
+    "gridCols": "342.391px 342.406px 342.391px 342.406px 342.391px",
+    "pageMaxW": "1760px",
+    "pageW": 1760,
+    "docScrollW": 2560
+  },
+  "toast": {
+    "text": "Все звуки остановлены",
+    "role": "status",
+    "inside": true
+  },
+  "targets": {
+    "play": {
+      "sel": ".play-button",
+      "w": 24,
+      "h": 24,
+      "aria": "Прослушать Ты новичок?",
+      "focusVisibleCSS": "none 3px"
+    },
+    "cardVolume": {
+      "sel": ".card-volume",
+      "w": 282,
+      "h": 18,
+      "aria": "Громкость Ты новичок?",
+      "focusVisibleCSS": "none 3px"
+    },
+    "filter": {
+      "sel": ".filter-pill",
+      "w": 64,
+      "h": 29,
+      "aria": null,
+      "focusVisibleCSS": "none 3px"
+    },
+    "dots": {
+      "sel": ".icon-ghost",
+      "w": 24,
+      "h": 24,
+      "aria": "Действия с наградой Ты новичок?",
+      "focusVisibleCSS": "none 3px"
+    },
+    "volumeHeader": {
+      "sel": ".volume-range",
+      "w": 96,
+      "h": 18,
+      "aria": "Общая громкость",
+      "focusVisibleCSS": "none 3px"
+    }
+  },
+  "preview": {
+    "preview": {
+      "top": 280,
+      "bottom": 1124,
+      "h": 844
+    },
+    "content": {
+      "top": 64,
+      "bottom": 1358,
+      "clientH": 1294
+    },
+    "iframe": {
+      "w": 388,
+      "h": 638
+    },
+    "sizeLabel": "388 × 638",
+    "clipped": false,
+    "wrapOverflow": "hidden"
+  },
+  "ovTargets": {
+    "swatch": {
+      "sel": ".ui-toggle-row .ui-switch",
+      "w": 44,
+      "h": 24
+    },
+    "range": {
+      "sel": ".ui-range",
+      "w": 96,
+      "h": 18
+    },
+    "color": {
+      "sel": ".ui-color-field input[type=color]",
+      "w": 30,
+      "h": 30
+    }
+  },
+  "stTargets": {
+    "switch": {
+      "sel": ".ui-switch",
+      "w": 44,
+      "h": 24
+    },
+    "range": {
+      "sel": ".ui-range",
+      "w": 96,
+      "h": 18
+    },
+    "link": {
+      "sel": ".link-button",
+      "w": 58,
+      "h": 24
+    },
+    "accent": {
+      "sel": ".accent-swatch",
+      "w": 22,
+      "h": 22
+    }
+  }
+}

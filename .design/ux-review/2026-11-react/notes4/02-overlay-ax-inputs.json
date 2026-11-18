@@ -1,0 +1,56 @@
+{
+  "ax": {
+    "overlay": {
+      "total": 36,
+      "named": 36,
+      "unnamed": []
+    },
+    "settings": {
+      "total": 7,
+      "named": 7,
+      "unnamed": []
+    },
+    "log": {
+      "total": 2,
+      "named": 2,
+      "unnamed": []
+    }
+  },
+  "preview": {
+    "preview": {
+      "top": 280,
+      "bottom": 1007,
+      "h": 727
+    },
+    "content": {
+      "top": 64,
+      "bottom": 1029,
+      "clientH": 965
+    },
+    "iframe": {
+      "w": 388,
+      "h": 521
+    },
+    "sizeLabel": "388 × 521",
+    "clipped": false,
+    "loading": null
+  },
+  "loadingSeen": null,
+  "hex": [
+    "#",
+    "#1",
+    "#12",
+    "#12a",
+    "#12ab",
+    "#12abc",
+    "#12ABC0"
+  ],
+  "tags": [
+    "a",
+    "a,",
+    "a,b",
+    "a,b,",
+    "a,b,c",
+    "blur:a, b, c"
+  ]
+}

@@ -328,6 +328,8 @@ fn main() {
             core::open_url,
             core::open_react_preview,
             core::close_react_preview,
+            core::get_chat_overlay_settings,
+            core::save_chat_overlay_settings,
             core::get_logs,
             core::clear_log,
             core::create_reward,

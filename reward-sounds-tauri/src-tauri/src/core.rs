@@ -1560,6 +1560,48 @@ pub fn clear_log() -> Result<Option<String>, String> {
 }
 
 #[tauri::command]
+pub fn get_chat_overlay_settings(core: State<'_, Arc<AppCore>>) -> Result<String, String> {
+    let path = core.paths.data_dir.join("chat_overlay_settings.js");
+    match std::fs::read_to_string(path) {
+        Ok(text) => {
+            // Страница оверлея ждёт `window.OVERLAY_SETTINGS = {...};`.
+            let json = text
+                .split_once("window.OVERLAY_SETTINGS")
+                .and_then(|(_, rest)| rest.split_once('=').map(|(_, rest)| rest))
+                .map(|rest| rest.trim().trim_end_matches(';').trim().to_string())
+                .unwrap_or_default();
+            Ok(json)
+        }
+        Err(_) => Ok(String::new()),
+    }
+}
+
+#[tauri::command]
+pub fn save_chat_overlay_settings(
+    core: State<'_, Arc<AppCore>>,
+    payload: String,
+) -> Result<(), String> {
+    let value: serde_json::Value =
+        serde_json::from_str(&payload).map_err(|error| format!("Некорректные настройки: {error}"))?;
+    let valid = value
+        .get("presets")
+        .and_then(|presets| presets.as_array())
+        .map(|presets| !presets.is_empty())
+        .unwrap_or(false);
+    if !valid {
+        return Err("В настройках нет пресетов".into());
+    }
+    let path = core.paths.data_dir.join("chat_overlay_settings.js");
+    std::fs::create_dir_all(&core.paths.data_dir)
+        .map_err(|error| format!("Не удалось создать папку настроек: {error}"))?;
+    let file = format!(
+        "// Twitch Chat Overlay — настройки.\n// Файл создаётся приложением Reward Sounds.\nwindow.OVERLAY_SETTINGS = {payload};\n"
+    );
+    std::fs::write(path, file).map_err(|error| format!("Не удалось сохранить настройки: {error}"))?;
+    Ok(())
+}
+
+#[tauri::command]
 pub fn open_url(url: String) -> Result<(), String> {
     let allowed = url.starts_with("https://twitch.tv/activate")
         || url.starts_with("https://www.twitch.tv/activate")

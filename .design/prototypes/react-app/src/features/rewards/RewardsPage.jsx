@@ -195,7 +195,7 @@ function DeleteRewardModal({ reward, onClose, onConfirm }) {
   );
 }
 
-export default function RewardsPage() {
+export default function RewardsPage({ backend }) {
   const [rewards, setRewards] = useState(INITIAL_REWARDS);
   const [filter, setFilter] = useState('all');
   const [createOpen, setCreateOpen] = useState(false);
@@ -204,11 +204,38 @@ export default function RewardsPage() {
   const [menuFor, setMenuFor] = useState(null);
   const [toast, setToast] = useState('');
 
-  const visible = rewards.filter((reward) => {
+  const realView = backend?.view;
+  const real = Boolean(backend?.available && realView?.connected);
+  const displayRewards = real
+    ? (realView.rewards || []).map((reward) => ({
+        id: reward.id,
+        name: reward.title,
+        cost: reward.cost,
+        color: /^#[0-9a-f]{6}$/i.test(reward.color || '') ? reward.color : '#A3A3A3',
+        letter: (reward.title || '?').trim().charAt(0).toUpperCase(),
+        file: reward.file?.name || '',
+        meta: reward.file?.meta || '',
+        volume: reward.file ? Math.round((reward.file.volume ?? 1) * 100) : 0,
+        active: reward.available !== false,
+        playing: Boolean(reward.playing),
+        requiresInput: Boolean(reward.requires_input),
+        hasSound: Boolean(reward.has_sound),
+      }))
+    : rewards;
+
+  const counts = {
+    all: displayRewards.length,
+    sound: displayRewards.filter((reward) => reward.file).length,
+    silent: displayRewards.filter((reward) => !reward.file).length,
+    playing: displayRewards.filter((reward) => reward.playing).length,
+    off: displayRewards.filter((reward) => !reward.active).length,
+  };
+
+  const visible = displayRewards.filter((reward) => {
     if (filter === 'sound') return Boolean(reward.file);
     if (filter === 'silent') return !reward.file;
     if (filter === 'off') return !reward.active;
-    if (filter === 'playing') return false;
+    if (filter === 'playing') return Boolean(reward.playing);
     return true;
   });
 
@@ -217,7 +244,23 @@ export default function RewardsPage() {
     window.setTimeout(() => setToast(''), 2200);
   }
 
-  function createReward(data) {
+  async function createReward(data) {
+    if (real) {
+      try {
+        await backend.call('create_reward', {
+          title: data.name,
+          cost: data.cost,
+          color: data.color,
+          requiresInput: data.needText,
+          soundPath: null,
+        });
+        notify(`Награда «${data.name}» создана в Twitch`);
+        return;
+      } catch (error) {
+        notify(`Не удалось создать: ${error}`);
+        return;
+      }
+    }
     const letter = data.name.trim().charAt(0).toUpperCase() || 'Н';
     setRewards((current) => [
       ...current,
@@ -235,11 +278,86 @@ export default function RewardsPage() {
     notify(`Награда «${data.name}» создана`);
   }
 
-  function confirmDelete() {
+  async function saveReward(updated) {
+    if (real) {
+      try {
+        await backend.call('update_reward', {
+          rewardId: updated.id,
+          title: updated.name,
+          cost: updated.cost,
+          color: updated.color,
+          requiresInput: Boolean(updated.requiresInput),
+          soundPath: null,
+          clearSound: false,
+        });
+        notify(`Награда «${updated.name}» обновлена`);
+        return;
+      } catch (error) {
+        notify(`Не удалось обновить: ${error}`);
+        return;
+      }
+    }
+    setRewards((current) => current.map((reward) => (reward.id === updated.id ? updated : reward)));
+    notify(`Награда «${updated.name}» обновлена`);
+  }
+
+  async function confirmDelete() {
     if (!deleteTarget) return;
+    if (real) {
+      try {
+        await backend.call('delete_reward', { rewardId: deleteTarget.id, title: deleteTarget.name });
+        notify(`Награда «${deleteTarget.name}» удалена`);
+      } catch (error) {
+        notify(`Не удалось удалить: ${error}`);
+      }
+      setDeleteTarget(null);
+      return;
+    }
     setRewards((current) => current.filter((reward) => reward.id !== deleteTarget.id));
     notify(`Награда «${deleteTarget.name}» удалена`);
     setDeleteTarget(null);
+  }
+
+  async function chooseSound(reward) {
+    if (real) {
+      try {
+        await backend.call('choose_sound', { rewardId: reward.id, title: reward.name });
+        notify('Звук выбран');
+      } catch (error) {
+        notify(`Не удалось выбрать звук: ${error}`);
+      }
+      return;
+    }
+    notify('Открыт выбор звука');
+  }
+
+  async function removeSound(reward) {
+    if (real) {
+      try {
+        await backend.call('clear_sound', { rewardId: reward.id });
+        notify('Звук убран');
+      } catch (error) {
+        notify(`Не удалось убрать звук: ${error}`);
+      }
+      return;
+    }
+    setRewards((current) =>
+      current.map((item) => (item.id === reward.id ? { ...item, file: '', volume: 0 } : item))
+    );
+    notify('Звук убран');
+  }
+
+  async function previewSound(reward) {
+    if (real) {
+      try {
+        await backend.invoke('preview_sound', { rewardId: reward.id });
+        notify(`Звук: ${reward.file || reward.name}`);
+      } catch (error) {
+        notify(`Не удалось проиграть: ${error}`);
+      }
+      return;
+    }
+    notify(`Тест: ${reward.file}`);
   }
 
   return (
@@ -248,7 +366,7 @@ export default function RewardsPage() {
         <div>
           <div className="eyebrow">TWITCH · CHANNEL POINTS</div>
           <h1 className="page-title">Награды</h1>
-          <p className="page-subtitle">@goshanmurz · {rewards.length + 3} наград · 9 со звуком · 2 без звука</p>
+          <p className="page-subtitle">@goshanmurz · {counts.all} наград · {counts.sound} со звуком · {counts.silent} без звука</p>
         </div>
         <div className="page-actions">
           <Button variant="ghost" icon={<Icon name="dots" />} />
@@ -282,7 +400,7 @@ export default function RewardsPage() {
             className={`filter-pill${filter === item.id ? ' is-active' : ''}`}
             onClick={() => setFilter(item.id)}
           >
-            {item.label} <span>{item.count}</span>
+            {item.label} <span>{counts[item.id] ?? 0}</span>
           </button>
         ))}
       </div>
@@ -298,7 +416,10 @@ export default function RewardsPage() {
               <div className="reward-letter">{reward.letter}</div>
               <div className="reward-name-wrap">
                 <h3>{reward.name}</h3>
-                <div className="reward-meta">{reward.cost} баллов · АКТИВНА</div>
+                <div className="reward-meta">
+                  {reward.cost} баллов · {reward.active ? 'АКТИВНА' : 'ВЫКЛЮЧЕНА'}
+                  {reward.playing ? ' · играет' : ''}
+                </div>
               </div>
               <button className="icon-ghost" title="Действия" onClick={() => setMenuFor(menuFor === reward.id ? null : reward.id)}>
                 <Icon name="dots" />
@@ -310,8 +431,8 @@ export default function RewardsPage() {
             {menuFor === reward.id ? (
               <div className="reward-menu">
                 <button onClick={() => { setMenuFor(null); setEditTarget(reward); }}>Редактировать</button>
-                <button onClick={() => { setMenuFor(null); notify('Открыт выбор звука'); }}>Заменить звук</button>
-                <button onClick={() => { setMenuFor(null); notify('Звук убран'); }}>Убрать звук</button>
+                <button onClick={() => { setMenuFor(null); chooseSound(reward); }}>Заменить звук</button>
+                <button onClick={() => { setMenuFor(null); removeSound(reward); }}>Убрать звук</button>
                 <button className="is-danger" onClick={() => { setMenuFor(null); setDeleteTarget(reward); }}>
                   Удалить награду
                 </button>
@@ -321,11 +442,11 @@ export default function RewardsPage() {
             <div className="sound-row">
               {reward.file ? (
                 <>
-                  <button className="play-button" onClick={() => notify(`Тест: ${reward.file}`)}>
+                  <button className="play-button" onClick={() => previewSound(reward)}>
                     <Icon name="play" size={12} />
                   </button>
                   <span className="sound-name">{reward.file}</span>
-                  <span className="sound-format">MP3</span>
+                  <span className="sound-format">{reward.meta?.split('·')[0]?.trim() || 'MP3'}</span>
                 </>
               ) : (
                 <span className="sound-empty">Звук не выбран</span>
@@ -341,7 +462,7 @@ export default function RewardsPage() {
                 <span>{reward.volume}%</span>
               </div>
             ) : (
-              <Button variant="secondary" size="sm" full onClick={() => notify('Открыт выбор звука')}>
+              <Button variant="secondary" size="sm" full onClick={() => chooseSound(reward)}>
                 Выбрать звук
               </Button>
             )}
@@ -375,10 +496,7 @@ export default function RewardsPage() {
       <EditRewardModal
         reward={editTarget}
         onClose={() => setEditTarget(null)}
-        onSave={(updated) => {
-          setRewards((current) => current.map((reward) => (reward.id === updated.id ? updated : reward)));
-          notify(`Награда «${updated.name}» обновлена`);
-        }}
+        onSave={saveReward}
       />
       <DeleteRewardModal reward={deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={confirmDelete} />
       {toast ? <div className="ui-toast">{toast}</div> : null}

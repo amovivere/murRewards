@@ -35,8 +35,10 @@ http://127.0.0.1:8782/
 Собранный прототип лежит в `reward-sounds-tauri/src-tauri/ui/next/` и открывается
 из рабочего приложения: **Настройки → Приложение → «Открыть React-прототип»**.
 Окно увеличивается до 1600×1000; кнопка **«← Вернуться к приложению»** возвращает
-vanilla-UI и прежний размер окна. Прототип пока работает на мок-данных и не
-меняет настройки приложения.
+vanilla-UI и прежний размер окна. В режиме Tauri уже работают на реальных данных:
+**награды** (список, создание/редактирование/удаление, выбор и прослушивание
+звука) и **настройки чат-оверлея** (чтение/запись в AppData + живой iframe
+реального `/chat-overlay`). Остальные экраны пока на мок-данных.
 
 Пересобрать и встроить после правок:
 
@@ -77,3 +79,5 @@ node tests/shots.mjs
 - [music-settings-modal.png](shots/music-settings-modal.png)
 - [obs-modal.png](shots/obs-modal.png)
 - [react-inside-tauri.png](../../overlay-port/react-inside-tauri-2.png) — прототип внутри Tauri
+- [react-rewards-real.png](../../overlay-port/react-rewards-real.png) — реальные награды в Tauri
+- [react-overlay-real.png](../../overlay-port/react-overlay-real.png) — реальные настройки оверлея

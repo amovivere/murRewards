@@ -8,6 +8,7 @@ import OnboardingPage from '../features/onboarding/OnboardingPage.jsx';
 import OverlayPage from '../features/overlay/OverlayPage.jsx';
 import RewardsPage from '../features/rewards/RewardsPage.jsx';
 import SettingsPage from '../features/settings/SettingsPage.jsx';
+import { useBackend } from '../lib/backend.js';
 
 const NAV = [
   { id: 'rewards', label: 'Награды', icon: 'rewards' },
@@ -35,6 +36,7 @@ const PAGES = {
 export default function App() {
   const [tab, setTab] = useState('overlay');
   const [healthOpen, setHealthOpen] = useState(false);
+  const backend = useBackend();
   const inTauriPreview = window.location.pathname.includes('/next/');
   const Page = PAGES[tab] || RewardsPage;
 
@@ -180,7 +182,7 @@ export default function App() {
         </header>
 
         <main className="content">
-          <Page />
+          <Page backend={backend} />
         </main>
 
         <footer className="footer">

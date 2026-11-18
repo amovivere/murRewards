@@ -12,9 +12,12 @@ import {
   ToggleRow,
 } from '../../components/ui/Field.jsx';
 import { clone, DEFAULT_STATE, normalizeState } from './overlayData.js';
+import { inTauri, invoke } from '../../lib/backend.js';
 
 const STORAGE_KEY = 'rs-react-overlay-settings';
-const PREVIEW_URL = './overlay.html?preview=1&bg=1&demo=1';
+const PREVIEW_URL = inTauri
+  ? 'http://127.0.0.1:8770/chat-overlay?preview=1&bg=1&demo=1'
+  : './overlay.html?preview=1&bg=1&demo=1';
 
 function loadState() {
   try {
@@ -42,6 +45,22 @@ export default function OverlayPage() {
   const active = state.presets.find((preset) => preset.id === state.activePreset) || state.presets[0];
   const cfg = active.cfg;
   const dirty = JSON.stringify(state) !== JSON.stringify(savedState);
+
+  useEffect(() => {
+    if (!inTauri) return undefined;
+    let alive = true;
+    invoke('get_chat_overlay_settings')
+      .then((payload) => {
+        if (!alive || !payload) return;
+        const next = normalizeState(JSON.parse(payload));
+        setState(next);
+        setSavedState(clone(next));
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     return () => window.clearTimeout(toastTimer.current);
@@ -147,8 +166,18 @@ export default function OverlayPage() {
     });
   }
 
-  function save() {
+  async function save() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if (inTauri) {
+      try {
+        await invoke('save_chat_overlay_settings', { payload: JSON.stringify(state) });
+        setSavedState(clone(state));
+        notify('Сохранено · OBS подхватит через ~2 секунды');
+      } catch (error) {
+        notify(`Не удалось сохранить: ${error}`);
+      }
+      return;
+    }
     setSavedState(clone(state));
     notify('Сохранено · OBS подхватит через ~2 секунды');
   }

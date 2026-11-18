@@ -42,44 +42,57 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 await send('Runtime.enable');
 await send('Page.enable');
 for (let attempt = 0; attempt < 30; attempt += 1) {
-  const ready = await evaluate(`document.querySelectorAll('.nav-item').length`);
-  if (ready > 0) break;
+  if (await evaluate(`document.querySelectorAll('.nav-item').length`)) break;
   await sleep(300);
 }
-const probe = await evaluate(`({ url: location.href, title: document.title, html: document.body.innerText.slice(0, 200) })`);
-console.log('probe:', JSON.stringify(probe));
 
-const tabs = await evaluate(`Array.from(document.querySelectorAll('.nav-item')).map((b) => b.textContent.trim())`);
-console.log('tabs:', JSON.stringify(tabs));
+const tabs = [
+  ['Награды', 'Награды'],
+  ['Музыка', 'Музыка'],
+  ['Оверлей', 'Оверлей чата'],
+  ['Настройки', 'Настройки'],
+  ['Журнал', 'Журнал'],
+  ['Онбординг', 'Добро пожаловать'],
+  ['Дизайн-система', 'Дизайн-система'],
+];
 
-for (const [tab, expected] of [
-  ['music', 'Музыка'],
-  ['rewards', 'Награды'],
-  ['overlay', 'Оверлей'],
-  ['design', 'Дизайн-система'],
-]) {
-  await evaluate(`Array.from(document.querySelectorAll('.nav-item')).find((b) => b.textContent.trim().startsWith('${expected}')).click(); true`);
-  await sleep(350);
+for (const [label, expected] of tabs) {
+  await evaluate(`Array.from(document.querySelectorAll('.nav-item')).find((b) => b.textContent.trim().startsWith('${label}')).click(); true`);
+  await sleep(320);
   const title = await evaluate(`document.querySelector('.page-title')?.textContent || ''`);
-  console.log(tab, '->', title);
+  if (title !== expected) throw new Error(`tab ${label}: expected ${expected}, got ${title}`);
+  console.log(label, '->', title);
 }
 
-// overlay page live preview + slider update
+// Overlay preview
 await evaluate(`Array.from(document.querySelectorAll('.nav-item')).find((b) => b.textContent.trim().startsWith('Оверлей')).click(); true`);
-await sleep(800);
-const before = await evaluate(`document.querySelector('.overlay-preview__frame')?.src || ''`);
+await sleep(1000);
+const preview = await evaluate(`({ src: document.querySelector('.overlay-preview__frame')?.src || '', title: document.querySelector('.overlay-preview__frame')?.title || '' })`);
+if (!preview.src.includes('/overlay.html?preview=1')) throw new Error('preview missing');
+console.log('preview:', preview.title);
+
+// Slider update
 const range = await evaluate(`(() => {
   const input = document.querySelector('.overlay-controls input[type=range]');
   if (!input) return null;
   const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+  const before = input.value;
   setter.call(input, String(Number(input.value) + 2));
   input.dispatchEvent(new Event('input', { bubbles: true }));
-  return input.value;
+  return { before, after: input.value };
 })()`);
-await sleep(500);
-const frameTitle = await evaluate(`document.querySelector('.overlay-preview__frame')?.title || ''`);
-console.log('preview src:', before);
-console.log('range after:', range, 'frame title:', frameTitle);
+console.log('range:', JSON.stringify(range));
+
+// Create reward modal
+await evaluate(`Array.from(document.querySelectorAll('.nav-item')).find((b) => b.textContent.trim().startsWith('Награды')).click(); true`);
+await sleep(300);
+await evaluate(`Array.from(document.querySelectorAll('.ui-button')).find((b) => b.textContent.includes('Создать награду')).click(); true`);
+await sleep(400);
+const modal = await evaluate(`({ open: !!document.querySelector('.ui-modal'), title: document.querySelector('.ui-modal__title')?.textContent || '' })`);
+if (!modal.open || !modal.title.includes('Новая награда')) throw new Error('create modal missing');
+console.log('modal:', JSON.stringify(modal));
+await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
+
 console.log('errors:', JSON.stringify(errors));
 ws.close();
 if (errors.length) process.exit(1);

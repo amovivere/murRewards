@@ -4,6 +4,7 @@ import Icon from '../components/ui/Icon.jsx';
 import DesignPage from '../features/design/DesignPage.jsx';
 import LogPage from '../features/log/LogPage.jsx';
 import MusicPage from '../features/music/MusicPage.jsx';
+import OnboardingPage from '../features/onboarding/OnboardingPage.jsx';
 import OverlayPage from '../features/overlay/OverlayPage.jsx';
 import RewardsPage from '../features/rewards/RewardsPage.jsx';
 import SettingsPage from '../features/settings/SettingsPage.jsx';
@@ -17,6 +18,7 @@ const NAV = [
 const SYSTEM_NAV = [
   { id: 'settings', label: 'Настройки', icon: 'settings' },
   { id: 'log', label: 'Журнал', icon: 'log' },
+  { id: 'onboarding', label: 'Онбординг', icon: 'play', prototype: true },
   { id: 'design', label: 'Дизайн-система', icon: 'design', prototype: true },
 ];
 
@@ -26,6 +28,7 @@ const PAGES = {
   overlay: OverlayPage,
   settings: SettingsPage,
   log: LogPage,
+  onboarding: OnboardingPage,
   design: DesignPage,
 };
 

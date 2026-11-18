@@ -49,6 +49,7 @@ const tabs = [
   ['overlay', 'Оверлей', 'overlay-1600.png'],
   ['settings', 'Настройки', 'settings-1600.png'],
   ['log', 'Журнал', 'log-1600.png'],
+  ['onboarding', 'Онбординг', 'onboarding-1600.png'],
   ['design', 'Дизайн-система', 'design-1600.png'],
 ];
 
@@ -60,4 +61,16 @@ for (const [id, label, file] of tabs) {
   const size = fs.statSync(`${outDir}/${file}`).size;
   console.log(file, Math.round(size / 1024) + ' KB');
 }
+
+// Модалка создания награды
+await evaluate(`Array.from(document.querySelectorAll('.nav-item')).find((b) => b.textContent.trim().startsWith('Награды')).click(); true`);
+await sleep(400);
+await evaluate(`Array.from(document.querySelectorAll('.ui-button')).find((b) => b.textContent.includes('Создать награду')).click(); true`);
+await sleep(500);
+{
+  const { data } = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+  fs.writeFileSync(`${outDir}/rewards-create-modal.png`, Buffer.from(data, 'base64'));
+  console.log('rewards-create-modal.png', Math.round(fs.statSync(`${outDir}/rewards-create-modal.png`).size / 1024) + ' KB');
+}
+await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
 ws.close();

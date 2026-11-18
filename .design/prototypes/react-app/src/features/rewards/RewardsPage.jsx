@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import Button from '../../components/ui/Button.jsx';
+import ColorPalette from '../../components/ui/ColorPalette.jsx';
 import Icon from '../../components/ui/Icon.jsx';
+import Modal from '../../components/ui/Modal.jsx';
 import { Panel } from '../../components/ui/Panel.jsx';
 
-const REWARDS = [
+const INITIAL_REWARDS = [
   { id: 1, name: 'Ты новичок?', cost: 200, color: '#F55A5F', file: 'newbie.mp3', volume: 200, active: true, letter: 'Т' },
   { id: 2, name: 'Мне нравится как он', cost: 150, color: '#4E7CFF', file: 'ilikehowhesm...', volume: 168, active: true, letter: 'М' },
   { id: 3, name: 'МУЗЫКА JOTUB', cost: 50, color: '#A970FF', file: '', volume: 0, active: true, letter: 'М', music: true },
@@ -13,18 +16,192 @@ const REWARDS = [
   { id: 8, name: 'Беги', cost: 200, color: '#A3A3A3', file: 'run.mp3', volume: 133, active: true, letter: 'Б' },
 ];
 
+const FILTERS = [
+  { id: 'all', label: 'Все', count: 11 },
+  { id: 'sound', label: 'Со звуком', count: 9 },
+  { id: 'silent', label: 'Без звука', count: 2 },
+  { id: 'playing', label: 'Играет', count: 0 },
+  { id: 'off', label: 'Выключенные', count: 9 },
+];
+
+function CreateRewardModal({ open, onClose, onCreate }) {
+  const [name, setName] = useState('');
+  const [cost, setCost] = useState('100');
+  const [description, setDescription] = useState('');
+  const [color, setColor] = useState('#A970FF');
+  const [needText, setNeedText] = useState(true);
+  const [needLink, setNeedLink] = useState(false);
+
+  function submit() {
+    if (!name.trim()) return;
+    onCreate({
+      name: name.trim(),
+      cost: Number(cost) || 0,
+      color,
+      description: description.trim(),
+      needText,
+      needLink,
+    });
+    setName('');
+    setCost('100');
+    setDescription('');
+    setColor('#A970FF');
+    setNeedText(true);
+    setNeedLink(false);
+    onClose();
+  }
+
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Новая награда"
+      subtitle="Награда создастся в канале через Twitch API и сразу появится в списке."
+      width={600}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>
+            Отмена
+          </Button>
+          <Button variant="primary" onClick={submit} disabled={!name.trim()}>
+            Создать награду
+          </Button>
+        </>
+      }
+    >
+      <div className="modal-form">
+        <label className="modal-field">
+          <span>НАЗВАНИЕ</span>
+          <input
+            className="ui-input"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Например, «Сказать слово»"
+            autoFocus
+          />
+        </label>
+        <label className="modal-field">
+          <span>ЦЕНА, БАЛЛОВ</span>
+          <input className="ui-input" value={cost} onChange={(event) => setCost(event.target.value.replace(/\D/g, ''))} inputMode="numeric" />
+        </label>
+        <label className="modal-field">
+          <span>ОПИСАНИЕ</span>
+          <textarea
+            className="ui-input modal-textarea"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Что получит зритель и как это работает"
+          />
+        </label>
+        <div className="modal-field">
+          <span>ЦВЕТ КАРТОЧКИ</span>
+          <ColorPalette value={color} onChange={setColor} />
+          <div className="modal-color-line">
+            <span className="modal-color-preview" style={{ background: color }} />
+            <code>{color.toUpperCase()}</code>
+            <span className="muted-line">Цвет хранится в Twitch; на фон карточки влияет как 13 %-й тинт.</span>
+          </div>
+        </div>
+        <div className="modal-checks">
+          <div className="modal-field-label">ЧТО НУЖНО ОТ ЗРИТЕЛЯ</div>
+          <label className="modal-check">
+            <input type="checkbox" checked={needText} onChange={(event) => setNeedText(event.target.checked)} />
+            <span>Текст сообщения (до 280 символов)</span>
+          </label>
+          <label className="modal-check">
+            <input type="checkbox" checked={needLink} onChange={(event) => setNeedLink(event.target.checked)} />
+            <span>Ссылка YouTube — для музыки</span>
+          </label>
+        </div>
+        <div className="modal-hint">Награду можно создать и в Twitch — приложение подхватит её при обновлении.</div>
+      </div>
+    </Modal>
+  );
+}
+
+function DeleteRewardModal({ reward, onClose, onConfirm }) {
+  return (
+    <Modal
+      open={!!reward}
+      onClose={onClose}
+      title={`Удалить «${reward?.name || ''}»?`}
+      subtitle="Награда будет удалена в Twitch. Привязка звука и настройки громкости тоже исчезнут."
+      width={460}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>
+            Отмена
+          </Button>
+          <Button variant="danger" onClick={onConfirm}>
+            Удалить награду
+          </Button>
+        </>
+      }
+    >
+      <div className="modal-danger-note">
+        Это действие нельзя отменить. Баллы, потраченные зрителями, не возвращаются.
+      </div>
+    </Modal>
+  );
+}
+
 export default function RewardsPage() {
+  const [rewards, setRewards] = useState(INITIAL_REWARDS);
+  const [filter, setFilter] = useState('all');
+  const [createOpen, setCreateOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [menuFor, setMenuFor] = useState(null);
+  const [toast, setToast] = useState('');
+
+  const visible = rewards.filter((reward) => {
+    if (filter === 'sound') return Boolean(reward.file);
+    if (filter === 'silent') return !reward.file;
+    if (filter === 'off') return !reward.active;
+    if (filter === 'playing') return false;
+    return true;
+  });
+
+  function notify(message) {
+    setToast(message);
+    window.setTimeout(() => setToast(''), 2200);
+  }
+
+  function createReward(data) {
+    const letter = data.name.trim().charAt(0).toUpperCase() || 'Н';
+    setRewards((current) => [
+      ...current,
+      {
+        id: Date.now(),
+        name: data.name,
+        cost: data.cost,
+        color: data.color,
+        file: '',
+        volume: 0,
+        active: true,
+        letter,
+      },
+    ]);
+    notify(`Награда «${data.name}» создана`);
+  }
+
+  function confirmDelete() {
+    if (!deleteTarget) return;
+    setRewards((current) => current.filter((reward) => reward.id !== deleteTarget.id));
+    notify(`Награда «${deleteTarget.name}» удалена`);
+    setDeleteTarget(null);
+  }
+
   return (
     <div className="page">
       <div className="page-head">
         <div>
           <div className="eyebrow">TWITCH · CHANNEL POINTS</div>
           <h1 className="page-title">Награды</h1>
-          <p className="page-subtitle">@goshanmurz · 11 наград · 9 со звуком · 2 без звука</p>
+          <p className="page-subtitle">@goshanmurz · {rewards.length + 3} наград · 9 со звуком · 2 без звука</p>
         </div>
         <div className="page-actions">
           <Button variant="ghost" icon={<Icon name="dots" />} />
-          <Button variant="primary" icon={<Icon name="plus" />}>
+          <Button variant="primary" icon={<Icon name="plus" />} onClick={() => setCreateOpen(true)}>
             Создать награду
           </Button>
         </div>
@@ -48,25 +225,19 @@ export default function RewardsPage() {
       </div>
 
       <div className="reward-filters">
-        <button className="filter-pill is-active">
-          Все <span>11</span>
-        </button>
-        <button className="filter-pill">
-          Со звуком <span>9</span>
-        </button>
-        <button className="filter-pill">
-          Без звука <span>2</span>
-        </button>
-        <button className="filter-pill">
-          Играет <span>0</span>
-        </button>
-        <button className="filter-pill">
-          Выключенные <span>9</span>
-        </button>
+        {FILTERS.map((item) => (
+          <button
+            key={item.id}
+            className={`filter-pill${filter === item.id ? ' is-active' : ''}`}
+            onClick={() => setFilter(item.id)}
+          >
+            {item.label} <span>{item.count}</span>
+          </button>
+        ))}
       </div>
 
       <div className="reward-grid">
-        {REWARDS.map((reward) => (
+        {visible.map((reward) => (
           <article
             className={`reward-card${reward.music ? ' is-music' : ''}`}
             key={reward.id}
@@ -76,23 +247,29 @@ export default function RewardsPage() {
               <div className="reward-letter">{reward.letter}</div>
               <div className="reward-name-wrap">
                 <h3>{reward.name}</h3>
-                <div className="reward-meta">
-                  {reward.cost} баллов · АКТИВНА
-                </div>
+                <div className="reward-meta">{reward.cost} баллов · АКТИВНА</div>
               </div>
-              <button className="icon-ghost" title="Действия">
+              <button className="icon-ghost" title="Действия" onClick={() => setMenuFor(menuFor === reward.id ? null : reward.id)}>
                 <Icon name="dots" />
               </button>
             </div>
 
-            {reward.music ? (
-              <div className="music-flag">♪ ★</div>
+            {reward.music ? <div className="music-flag">♪ ★</div> : null}
+
+            {menuFor === reward.id ? (
+              <div className="reward-menu">
+                <button onClick={() => { setMenuFor(null); notify('Открыт выбор звука'); }}>Заменить звук</button>
+                <button onClick={() => { setMenuFor(null); notify('Звук убран'); }}>Убрать звук</button>
+                <button className="is-danger" onClick={() => { setMenuFor(null); setDeleteTarget(reward); }}>
+                  Удалить награду
+                </button>
+              </div>
             ) : null}
 
             <div className="sound-row">
               {reward.file ? (
                 <>
-                  <button className="play-button">
+                  <button className="play-button" onClick={() => notify(`Тест: ${reward.file}`)}>
                     <Icon name="play" size={12} />
                   </button>
                   <span className="sound-name">{reward.file}</span>
@@ -112,7 +289,7 @@ export default function RewardsPage() {
                 <span>{reward.volume}%</span>
               </div>
             ) : (
-              <Button variant="secondary" size="sm" full>
+              <Button variant="secondary" size="sm" full onClick={() => notify('Открыт выбор звука')}>
                 Выбрать звук
               </Button>
             )}
@@ -120,9 +297,18 @@ export default function RewardsPage() {
         ))}
       </div>
 
-      <Panel title="Состояния" description="Прототип показывает только рабочую плитку; ниже — проверка компонентов.">
+      {visible.length === 0 ? (
+        <div className="reward-empty">
+          <div className="empty-state__title">Ничего не найдено</div>
+          <div className="empty-state__hint">Сбросьте фильтр или создайте новую награду.</div>
+        </div>
+      ) : null}
+
+      <Panel title="Состояния" description="Прототип показывает рабочую плитку; кнопки ниже проверяют варианты.">
         <div className="inline-demo">
-          <Button variant="primary">Создать награду</Button>
+          <Button variant="primary" onClick={() => setCreateOpen(true)}>
+            Создать награду
+          </Button>
           <Button variant="secondary">Отмена</Button>
           <Button variant="ghost">Проверить звук</Button>
           <Button variant="danger">Удалить</Button>
@@ -132,6 +318,10 @@ export default function RewardsPage() {
           </Button>
         </div>
       </Panel>
+
+      <CreateRewardModal open={createOpen} onClose={() => setCreateOpen(false)} onCreate={createReward} />
+      <DeleteRewardModal reward={deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={confirmDelete} />
+      {toast ? <div className="ui-toast">{toast}</div> : null}
     </div>
   );
 }

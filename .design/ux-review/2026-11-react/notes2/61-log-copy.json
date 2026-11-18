@@ -1,0 +1,12 @@
+{
+  "text": "Журнал скопирован",
+  "role": "status",
+  "live": "polite",
+  "inside": true,
+  "rect": {
+    "x": 826,
+    "y": 973,
+    "w": 150,
+    "h": 38
+  }
+}

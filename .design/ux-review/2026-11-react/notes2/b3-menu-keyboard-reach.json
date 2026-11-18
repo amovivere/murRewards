@@ -1,0 +1,17 @@
+{
+  "tab1": {
+    "tag": "BUTTON",
+    "text": "Редактировать",
+    "insideMenu": true,
+    "rect": {
+      "x": 273,
+      "y": 341,
+      "w": 341,
+      "h": 30
+    }
+  },
+  "escMenu": {
+    "menu": false,
+    "active": ""
+  }
+}

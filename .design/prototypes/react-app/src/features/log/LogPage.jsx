@@ -13,7 +13,7 @@ const MOCK_ROWS = [
   { time: '20:55:02', level: 'INFO', message: 'Награда «Ты новичок?»: newbie.mp3 воспроизведён' },
 ];
 
-const FILTERS = ['Все', 'INFO', 'WARN', 'ERROR'];
+const FILTERS = ['Все', 'INFO', 'WARN', 'ERROR', 'DEBUG'];
 
 export default function LogPage({ backend }) {
   const real = Boolean(backend?.available);
@@ -100,10 +100,10 @@ export default function LogPage({ backend }) {
         </div>
       </div>
 
-      <div className="toolbar-row">
+      <div className="toolbar-row log-toolbar">
         <label className="search-field">
           <Icon name="search" />
-          <input placeholder="Поиск по журналу" value={query} onChange={(event) => setQuery(event.target.value)} />
+          <input placeholder="Поиск по журналу" aria-label="Поиск по журналу" value={query} onChange={(event) => setQuery(event.target.value)} />
         </label>
         <div className="filter-row">
           {FILTERS.map((item) => (
@@ -111,12 +111,13 @@ export default function LogPage({ backend }) {
               key={item}
               className={`filter-pill${filter === item ? ' is-active' : ''}`}
               onClick={() => setFilter(item)}
+              aria-pressed={filter === item}
             >
               {item}
             </button>
           ))}
         </div>
-        <span className="muted-line">{real ? `${rows.length} записей · обновление каждые 2 с` : 'прототип'}</span>
+        <span className="muted-line">{real ? `${visible.length} из ${rows.length} записей` : 'прототип'}</span>
       </div>
 
       {error ? <div className="log-error">{error}</div> : null}

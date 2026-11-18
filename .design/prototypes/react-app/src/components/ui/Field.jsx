@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 export function Field({ label, hint, children, wide = false }) {
   return (
     <label className={`ui-field${wide ? ' is-wide' : ''}`}>
@@ -8,7 +10,7 @@ export function Field({ label, hint, children, wide = false }) {
   );
 }
 
-export function TextInput({ value, onChange, placeholder, type = 'text', mono = false }) {
+export function TextInput({ value, onChange, placeholder, type = 'text', mono = false, ...rest }) {
   return (
     <input
       className={`ui-input${mono ? ' is-mono' : ''}`}
@@ -16,13 +18,14 @@ export function TextInput({ value, onChange, placeholder, type = 'text', mono = 
       value={value}
       placeholder={placeholder}
       onChange={(event) => onChange?.(event.target.value)}
+      {...rest}
     />
   );
 }
 
-export function Select({ value, onChange, children }) {
+export function Select({ value, onChange, children, ...rest }) {
   return (
-    <select className="ui-select" value={value} onChange={(event) => onChange?.(event.target.value)}>
+    <select className="ui-select" value={value} onChange={(event) => onChange?.(event.target.value)} {...rest}>
       {children}
     </select>
   );
@@ -40,6 +43,7 @@ export function ToggleRow({ label, hint, checked, onChange, trailing }) {
         <button
           type="button"
           role="switch"
+          aria-label={label}
           aria-checked={checked}
           className={`ui-switch${checked ? ' is-on' : ''}`}
           onClick={() => onChange(!checked)}
@@ -63,6 +67,7 @@ export function SliderRow({ label, value, min, max, step = 1, unit = '', onChang
         max={max}
         step={step}
         value={value}
+        aria-label={label}
         onChange={(event) => onChange(Number(event.target.value))}
       />
       <span className="ui-slider-row__value">{shown}</span>
@@ -70,21 +75,41 @@ export function SliderRow({ label, value, min, max, step = 1, unit = '', onChang
   );
 }
 
-export function ColorField({ label, value, onChange, opacity, onOpacity, opacityLabel = 'Прозрачность' }) {
+export function ColorField({ label, value, onChange, opacity, onOpacity }) {
+  const [draft, setDraft] = useState(value.toUpperCase());
+
+  useEffect(() => {
+    if (/^#[0-9A-F]{6}$/i.test(value)) setDraft(value.toUpperCase());
+  }, [value]);
+
+  function commit(next) {
+    const text = next.trim();
+    if (/^#[0-9a-f]{6}$/i.test(text)) onChange(text.toLowerCase());
+    else setDraft(value.toUpperCase());
+  }
+
   return (
     <div className="ui-color-field">
       <span className="ui-color-field__label">{label}</span>
       <div className="ui-color-field__row">
         <label className="ui-color-swatch" style={{ background: value }}>
-          <input type="color" value={value} onChange={(event) => onChange(event.target.value)} />
+          <input
+            type="color"
+            value={value}
+            aria-label={`${label}: выбрать цвет`}
+            onChange={(event) => onChange(event.target.value)}
+          />
         </label>
         <input
           className="ui-input is-mono ui-color-field__hex"
-          value={value.toUpperCase()}
+          value={draft}
+          aria-label={`${label}: HEX`}
           onChange={(event) => {
+            setDraft(event.target.value);
             const next = event.target.value.trim();
             if (/^#[0-9a-f]{6}$/i.test(next)) onChange(next.toLowerCase());
           }}
+          onBlur={() => commit(draft)}
         />
         {onOpacity ? (
           <span className="ui-color-field__opacity">
@@ -95,6 +120,7 @@ export function ColorField({ label, value, onChange, opacity, onOpacity, opacity
               max={1}
               step={0.01}
               value={opacity}
+              aria-label={`${label}: прозрачность`}
               onChange={(event) => onOpacity(Number(event.target.value))}
             />
             <span>{Math.round(opacity * 100)}%</span>
@@ -105,20 +131,36 @@ export function ColorField({ label, value, onChange, opacity, onOpacity, opacity
   );
 }
 
-export function TagInput({ value, onChange, placeholder }) {
+export function TagInput({ value, onChange, placeholder, ariaLabel }) {
+  const [draft, setDraft] = useState(value.join(', '));
+
+  useEffect(() => {
+    setDraft(value.join(', '));
+  }, [value]);
+
+  function commit() {
+    onChange(
+      draft
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    );
+  }
+
   return (
     <input
       className="ui-input is-mono"
-      value={value.join(', ')}
+      value={draft}
       placeholder={placeholder}
-      onChange={(event) =>
-        onChange(
-          event.target.value
-            .split(',')
-            .map((item) => item.trim())
-            .filter(Boolean)
-        )
-      }
+      aria-label={ariaLabel || placeholder}
+      onChange={(event) => setDraft(event.target.value)}
+      onBlur={commit}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter') {
+          commit();
+          event.currentTarget.blur();
+        }
+      }}
     />
   );
 }

@@ -1,0 +1,27 @@
+[
+  {
+    "label": "Все 20",
+    "cards": 20,
+    "active": true
+  },
+  {
+    "label": "Со звуком 9",
+    "cards": 9,
+    "active": true
+  },
+  {
+    "label": "Без звука 11",
+    "cards": 11,
+    "active": true
+  },
+  {
+    "label": "Играет 0",
+    "cards": 0,
+    "active": true
+  },
+  {
+    "label": "Выключенные 9",
+    "cards": 9,
+    "active": true
+  }
+]

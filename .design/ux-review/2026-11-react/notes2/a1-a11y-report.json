@@ -1,0 +1,668 @@
+{
+  "rewards": {
+    "axInteractive": 69,
+    "unnamed": [],
+    "focusStops": 69,
+    "noRing": 9,
+    "uniqueNoRing": [
+      "BUTTON.play-button"
+    ],
+    "targets": [
+      {
+        "tag": "INPUT",
+        "cls": "ui-range volume-range",
+        "text": "",
+        "aria": "Общая громкость",
+        "rect": {
+          "x": 1528,
+          "y": 23,
+          "w": 96,
+          "h": 18
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "",
+        "text": "",
+        "aria": "Поиск награды",
+        "rect": {
+          "x": 304,
+          "y": 202,
+          "w": 309,
+          "h": 19
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "play-button",
+        "text": "",
+        "aria": "Прослушать Ты новичок?",
+        "rect": {
+          "x": 287,
+          "y": 355,
+          "w": 19,
+          "h": 19
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "ui-range card-volume",
+        "text": "",
+        "aria": "Громкость Ты новичок?",
+        "rect": {
+          "x": 279,
+          "y": 389,
+          "w": 304,
+          "h": 18
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "ui-range card-volume",
+        "text": "",
+        "aria": "Громкость Мне нравится как он",
+        "rect": {
+          "x": 656,
+          "y": 389,
+          "w": 306,
+          "h": 18
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "ui-range card-volume",
+        "text": "",
+        "aria": "Громкость Шиза",
+        "rect": {
+          "x": 1033,
+          "y": 833,
+          "w": 310,
+          "h": 18
+        }
+      }
+    ],
+    "contrast": {
+      "checked": 25,
+      "skipped": 78,
+      "violations": [
+        {
+          "ratio": 4.22,
+          "need": 4.5,
+          "text": "11",
+          "cls": "",
+          "tag": "SPAN",
+          "fontSize": "12px",
+          "weight": "400",
+          "color": "rgb(119, 119, 129)"
+        }
+      ]
+    }
+  },
+  "music": {
+    "axInteractive": 17,
+    "unnamed": [],
+    "focusStops": 17,
+    "noRing": 0,
+    "uniqueNoRing": [],
+    "targets": [
+      {
+        "tag": "INPUT",
+        "cls": "ui-range volume-range",
+        "text": "",
+        "aria": "Общая громкость",
+        "rect": {
+          "x": 1528,
+          "y": 23,
+          "w": 96,
+          "h": 18
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 323,
+          "y": 549,
+          "w": 684,
+          "h": 18
+        }
+      }
+    ],
+    "contrast": {
+      "checked": 25,
+      "skipped": 0,
+      "violations": [
+        {
+          "ratio": 4.14,
+          "need": 4.5,
+          "text": "Активируй награду-музыку или добавь ссылку вр",
+          "cls": "empty-state__hint",
+          "tag": "DIV",
+          "fontSize": "12px",
+          "weight": "400",
+          "color": "rgb(117, 117, 127)"
+        },
+        {
+          "ratio": 4.14,
+          "need": 4.5,
+          "text": "Ссылка из активации награды появится здесь.",
+          "cls": "empty-state__hint",
+          "tag": "DIV",
+          "fontSize": "12px",
+          "weight": "400",
+          "color": "rgb(117, 117, 127)"
+        }
+      ]
+    }
+  },
+  "overlay": {
+    "axInteractive": 55,
+    "unnamed": [
+      {
+        "role": "combobox",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      },
+      {
+        "role": "textbox",
+        "desc": ""
+      },
+      {
+        "role": "textbox",
+        "desc": ""
+      },
+      {
+        "role": "textbox",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "textbox",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "textbox",
+        "desc": ""
+      },
+      {
+        "role": "textbox",
+        "desc": ""
+      },
+      {
+        "role": "textbox",
+        "desc": ""
+      },
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "textbox",
+        "desc": ""
+      }
+    ],
+    "focusStops": 64,
+    "noRing": 5,
+    "uniqueNoRing": [
+      "BUTTON.ui-switch is-on",
+      "BUTTON.ui-switch"
+    ],
+    "targets": [
+      {
+        "tag": "INPUT",
+        "cls": "ui-range volume-range",
+        "text": "",
+        "aria": "Общая громкость",
+        "rect": {
+          "x": 1528,
+          "y": 23,
+          "w": 96,
+          "h": 18
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "ui-switch is-on",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 1267,
+          "y": -710,
+          "w": 40,
+          "h": 22
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "ui-switch",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 1267,
+          "y": -536,
+          "w": 40,
+          "h": 22
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "ui-range",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 415,
+          "y": -73,
+          "w": 822,
+          "h": 18
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "ui-range",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 1189,
+          "y": 757,
+          "w": 90,
+          "h": 18
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "ui-range",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 1189,
+          "y": 891,
+          "w": 96,
+          "h": 18
+        }
+      }
+    ],
+    "contrast": {
+      "checked": 83,
+      "skipped": 0,
+      "violations": [
+        {
+          "ratio": 3.88,
+          "need": 4.5,
+          "text": "Это настоящий оверлей, а не картинка. Настрой",
+          "cls": "overlay-preview__hint",
+          "tag": "DIV",
+          "fontSize": "11px",
+          "weight": "400",
+          "color": "rgb(112, 112, 122)"
+        },
+        {
+          "ratio": 3.91,
+          "need": 4.5,
+          "text": "Модератор, подписчик, VIP",
+          "cls": "ui-toggle-row__hint",
+          "tag": "DIV",
+          "fontSize": "11.5px",
+          "weight": "400",
+          "color": "rgb(113, 113, 123)"
+        },
+        {
+          "ratio": 3.91,
+          "need": 4.5,
+          "text": "Стандартные и BetterTTV",
+          "cls": "ui-toggle-row__hint",
+          "tag": "DIV",
+          "fontSize": "11.5px",
+          "weight": "400",
+          "color": "rgb(113, 113, 123)"
+        },
+        {
+          "ratio": 3.91,
+          "need": 4.5,
+          "text": "Эмодзи канала из 7TV",
+          "cls": "ui-toggle-row__hint",
+          "tag": "DIV",
+          "fontSize": "11.5px",
+          "weight": "400",
+          "color": "rgb(113, 113, 123)"
+        },
+        {
+          "ratio": 3.91,
+          "need": 4.5,
+          "text": "Сообщения, начинающиеся с «!»",
+          "cls": "ui-toggle-row__hint",
+          "tag": "DIV",
+          "fontSize": "11.5px",
+          "weight": "400",
+          "color": "rgb(113, 113, 123)"
+        },
+        {
+          "ratio": 3.91,
+          "need": 4.5,
+          "text": "Время сообщения перед ником",
+          "cls": "ui-toggle-row__hint",
+          "tag": "DIV",
+          "fontSize": "11.5px",
+          "weight": "400",
+          "color": "rgb(113, 113, 123)"
+        },
+        {
+          "ratio": 4.11,
+          "need": 4.5,
+          "text": "420 × 900",
+          "cls": "overlay-preview__size",
+          "tag": "SPAN",
+          "fontSize": "11px",
+          "weight": "400",
+          "color": "rgb(116, 116, 126)"
+        },
+        {
+          "ratio": 4.45,
+          "need": 4.5,
+          "text": "вкл",
+          "cls": "ui-toggle-row__state",
+          "tag": "SPAN",
+          "fontSize": "11px",
+          "weight": "400",
+          "color": "rgb(122, 122, 132)"
+        },
+        {
+          "ratio": 4.45,
+          "need": 4.5,
+          "text": "вкл",
+          "cls": "ui-toggle-row__state",
+          "tag": "SPAN",
+          "fontSize": "11px",
+          "weight": "400",
+          "color": "rgb(122, 122, 132)"
+        },
+        {
+          "ratio": 4.45,
+          "need": 4.5,
+          "text": "вкл",
+          "cls": "ui-toggle-row__state",
+          "tag": "SPAN",
+          "fontSize": "11px",
+          "weight": "400",
+          "color": "rgb(122, 122, 132)"
+        },
+        {
+          "ratio": 4.45,
+          "need": 4.5,
+          "text": "выкл",
+          "cls": "ui-toggle-row__state",
+          "tag": "SPAN",
+          "fontSize": "11px",
+          "weight": "400",
+          "color": "rgb(122, 122, 132)"
+        },
+        {
+          "ratio": 4.45,
+          "need": 4.5,
+          "text": "выкл",
+          "cls": "ui-toggle-row__state",
+          "tag": "SPAN",
+          "fontSize": "11px",
+          "weight": "400",
+          "color": "rgb(122, 122, 132)"
+        }
+      ]
+    }
+  },
+  "settings": {
+    "axInteractive": 42,
+    "unnamed": [
+      {
+        "role": "slider",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      },
+      {
+        "role": "switch",
+        "desc": ""
+      }
+    ],
+    "focusStops": 42,
+    "noRing": 10,
+    "uniqueNoRing": [
+      "BUTTON.link-button",
+      "BUTTON.ui-switch",
+      "BUTTON.ui-switch is-on"
+    ],
+    "targets": [
+      {
+        "tag": "INPUT",
+        "cls": "ui-range volume-range",
+        "text": "",
+        "aria": "Общая громкость",
+        "rect": {
+          "x": 1528,
+          "y": 23,
+          "w": 96,
+          "h": 18
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "link-button",
+        "text": "Открыть",
+        "aria": null,
+        "rect": {
+          "x": 1689,
+          "y": 107,
+          "w": 54,
+          "h": 20
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "ui-range",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 918,
+          "y": 391,
+          "w": 251,
+          "h": 18
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "ui-switch",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 1200,
+          "y": 443,
+          "w": 40,
+          "h": 22
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "ui-switch is-on",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 1200,
+          "y": 511,
+          "w": 40,
+          "h": 22
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "accent-swatch is-active",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 285,
+          "y": 766,
+          "w": 22,
+          "h": 22
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "accent-swatch",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 313,
+          "y": 766,
+          "w": 22,
+          "h": 22
+        }
+      }
+    ],
+    "contrast": {
+      "checked": 67,
+      "skipped": 0,
+      "violations": [
+        {
+          "ratio": 3.91,
+          "need": 4.5,
+          "text": "Заглушить все звуки наград",
+          "cls": "ui-toggle-row__hint",
+          "tag": "DIV",
+          "fontSize": "11.5px",
+          "weight": "400",
+          "color": "rgb(113, 113, 123)"
+        },
+        {
+          "ratio": 3.91,
+          "need": 4.5,
+          "text": "Активации будут игнорироваться, пока выключен",
+          "cls": "ui-toggle-row__hint",
+          "tag": "DIV",
+          "fontSize": "11.5px",
+          "weight": "400",
+          "color": "rgb(113, 113, 123)"
+        },
+        {
+          "ratio": 3.91,
+          "need": 4.5,
+          "text": "Крестик прячет окно",
+          "cls": "ui-toggle-row__hint",
+          "tag": "DIV",
+          "fontSize": "11.5px",
+          "weight": "400",
+          "color": "rgb(113, 113, 123)"
+        }
+      ]
+    }
+  },
+  "log": {
+    "axInteractive": 18,
+    "unnamed": [
+      {
+        "role": "textbox",
+        "desc": ""
+      }
+    ],
+    "focusStops": 18,
+    "noRing": 0,
+    "uniqueNoRing": [],
+    "targets": [
+      {
+        "tag": "INPUT",
+        "cls": "ui-range volume-range",
+        "text": "",
+        "aria": "Общая громкость",
+        "rect": {
+          "x": 1528,
+          "y": 23,
+          "w": 96,
+          "h": 18
+        }
+      },
+      {
+        "tag": "INPUT",
+        "cls": "",
+        "text": "",
+        "aria": null,
+        "rect": {
+          "x": 304,
+          "y": -6123,
+          "w": 309,
+          "h": 19
+        }
+      }
+    ],
+    "contrast": {
+      "checked": 566,
+      "skipped": 0,
+      "violations": []
+    }
+  }
+}

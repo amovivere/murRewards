@@ -1,0 +1,25 @@
+{
+  "chip": {
+    "expanded": "true",
+    "controls": "health-popover",
+    "text": "Все системы работают ›"
+  },
+  "popover": {
+    "role": "dialog",
+    "aria": "Состояние систем",
+    "text": "СОСТОЯНИЕ СИСТЕМ Всё готово к эфиру 5/5 Twitch Подключено · @goshanmur Открыть EventSub Слушаем активации наград Открыть Звук Analogue 1/2 (Audient iD4) Открыть yt-dlp yt-dlp 2026.10.26 Открыть Оверлей http://127.0.0.1:8770/overlay · чат-оверлей: /chat-overlay Открыть Открыть «Здоровье системы» →",
+    "rect": {
+      "x": 262,
+      "y": 61,
+      "w": 388,
+      "h": 277
+    },
+    "rows": [
+      "Twitch · Подключено · @goshanmur · Открыть",
+      "EventSub · Слушаем активации наград · Открыть",
+      "Звук · Analogue 1/2 (Audient iD4) · Открыть",
+      "yt-dlp · yt-dlp 2026.10.26 · Открыть",
+      "Оверлей · http://127.0.0.1:8770/overlay · чат-оверлей: /chat-overlay · Открыть"
+    ]
+  }
+}

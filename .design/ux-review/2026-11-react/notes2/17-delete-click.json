@@ -1,0 +1,11 @@
+{
+  "delTarget": {
+    "x": 444,
+    "y": 446
+  },
+  "afterDel": {
+    "modal": true,
+    "modalTitle": "Удалить «Ты новичок?»?",
+    "menu": false
+  }
+}

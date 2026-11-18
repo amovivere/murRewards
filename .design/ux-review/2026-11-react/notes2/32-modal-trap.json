@@ -1,0 +1,117 @@
+{
+  "openState": {
+    "modal": true,
+    "active": {
+      "tag": "INPUT",
+      "cls": "ui-input",
+      "text": "",
+      "placeholder": "Например, «Сказать слово»"
+    }
+  },
+  "tabStops": [
+    {
+      "tag": "INPUT",
+      "cls": "ui-input",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "TEXTAREA",
+      "cls": "ui-input modal-textarea",
+      "text": "",
+      "placeholder": "Что получит зритель и как это работает",
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "INPUT",
+      "cls": "ui-input",
+      "text": "",
+      "placeholder": "Например, «Сказать слово»",
+      "inside": true
+    },
+    {
+      "tag": "INPUT",
+      "cls": "ui-input",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "TEXTAREA",
+      "cls": "ui-input modal-textarea",
+      "text": "",
+      "placeholder": "Что получит зритель и как это работает",
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color is-active",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inside": true
+    }
+  ],
+  "allInside": true,
+  "shiftTab": {
+    "tag": "BUTTON",
+    "text": "",
+    "inside": true
+  }
+}

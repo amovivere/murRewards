@@ -1,0 +1,33 @@
+{
+  "preview": {
+    "rect": {
+      "x": 1342,
+      "y": 280,
+      "w": 420,
+      "h": 814
+    },
+    "top": 280,
+    "bottom": 1094,
+    "sticky": "sticky"
+  },
+  "iframe": {
+    "rect": {
+      "x": 1358,
+      "y": 345,
+      "w": 388,
+      "h": 608
+    },
+    "src": "http://127.0.0.1:8770/chat-overlay?preview=1&bg=1&demo=1"
+  },
+  "sizeLabel": "420 × 900",
+  "content": {
+    "clientH": 965,
+    "scrollH": 2110
+  },
+  "apply": {
+    "text": "Применить",
+    "disabled": true
+  },
+  "status": "Сохранено",
+  "toastRole": "n/a"
+}

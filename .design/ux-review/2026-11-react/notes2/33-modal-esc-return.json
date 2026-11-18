@@ -1,0 +1,9 @@
+{
+  "modal": true,
+  "active": {
+    "tag": "INPUT",
+    "cls": "ui-input",
+    "text": "",
+    "placeholder": "Например, «Сказать слово»"
+  }
+}

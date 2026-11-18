@@ -1,0 +1,15 @@
+{
+  "before": "#8B00FF",
+  "accentChanged": {
+    "accentVar": "#4E7CFF",
+    "accentTextVar": "color-mix(in srgb, #4E7CFF 48%, white)",
+    "activeSwatch": "#4E7CFF",
+    "navBg": "none"
+  },
+  "stateChanged": "#4E7CFF",
+  "accentRestored": {
+    "accentVar": "#8B00FF",
+    "activeSwatch": "#8B00FF"
+  },
+  "stateRestored": "#8B00FF"
+}

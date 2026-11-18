@@ -1,0 +1,10 @@
+{
+  "beforeSwitch": {
+    "filter": "Со звуком 9",
+    "list": true
+  },
+  "afterSwitch": {
+    "filter": "Со звуком 9",
+    "list": true
+  }
+}

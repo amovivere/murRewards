@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import ConfirmModal from '../components/ui/ConfirmModal.jsx';
 import Icon from '../components/ui/Icon.jsx';
 import DesignPage from '../features/design/DesignPage.jsx';
 import LogPage from '../features/log/LogPage.jsx';
@@ -46,7 +47,10 @@ export default function App() {
   const backend = useBackend();
   const [started, setStarted] = useState(false);
   const [maximized, setMaximized] = useState(false);
+  const [overlayDirty, setOverlayDirty] = useState(false);
+  const [pendingTab, setPendingTab] = useState(null);
   const healthWrap = useRef(null);
+  const dragTimer = useRef(null);
   const view = backend.view;
   const health = view?.health || [];
   const problems = health.filter((item) => item.state === 'error' || item.state === 'warn');
@@ -93,6 +97,14 @@ export default function App() {
     };
   }, [healthOpen]);
 
+  useEffect(() => {
+    function onDirty(event) {
+      setOverlayDirty(Boolean(event.detail));
+    }
+    window.addEventListener('rs-overlay-dirty', onDirty);
+    return () => window.removeEventListener('rs-overlay-dirty', onDirty);
+  }, []);
+
   function windowAction(command) {
     if (!inTauri) return;
     invoke(command).catch(() => {});
@@ -103,10 +115,21 @@ export default function App() {
     setMaximized((value) => !value);
   }
 
+  useEffect(() => {
+    return () => window.clearTimeout(dragTimer.current);
+  }, []);
+
   function startDrag(event) {
     if (!inTauri || event.button !== 0) return;
     if (event.target.closest('button, input, label, .health-wrap')) return;
-    windowAction('win_start_drag');
+    window.clearTimeout(dragTimer.current);
+    if (event.detail >= 2) return;
+    dragTimer.current = window.setTimeout(() => windowAction('win_start_drag'), 220);
+  }
+
+  function handleTopbarDoubleClick() {
+    window.clearTimeout(dragTimer.current);
+    toggleMaximize();
   }
 
   async function changeVolume(percent) {
@@ -119,6 +142,11 @@ export default function App() {
   }
 
   function navigate(next) {
+    if (next === tab) return;
+    if (tab === 'overlay' && overlayDirty) {
+      setPendingTab(next);
+      return;
+    }
     setTab(next);
   }
 
@@ -149,7 +177,7 @@ export default function App() {
               <button
                 key={item.id}
                 className={`nav-item${tab === item.id ? ' is-active' : ''}`}
-                onClick={() => setTab(item.id)}
+                onClick={() => navigate(item.id)}
                 aria-current={tab === item.id ? 'page' : undefined}
               >
                 <Icon name={item.icon} />
@@ -166,7 +194,7 @@ export default function App() {
               <button
                 key={item.id}
                 className={`nav-item${tab === item.id ? ' is-active' : ''}`}
-                onClick={() => setTab(item.id)}
+                onClick={() => navigate(item.id)}
                 aria-current={tab === item.id ? 'page' : undefined}
               >
                 <Icon name={item.icon} />
@@ -179,7 +207,7 @@ export default function App() {
       </aside>
 
       <div className="main">
-        <header className="topbar" onMouseDown={startDrag} onDoubleClick={toggleMaximize}>
+        <header className="topbar" onMouseDown={startDrag} onDoubleClick={handleTopbarDoubleClick}>
           <div className="health-wrap" ref={healthWrap}>
             <button
               className={`health-chip${healthOpen ? ' is-open' : ''}`}
@@ -276,6 +304,18 @@ export default function App() {
           <span>версия {view?.version || '1.7.0'}</span>
         </footer>
       </div>
+      <ConfirmModal
+        open={Boolean(pendingTab)}
+        title="Выйти без сохранения?"
+        text="В настройках оверлея есть несохранённые изменения. Если уйти сейчас, они будут потеряны."
+        confirmLabel="Выйти без сохранения"
+        danger
+        onClose={() => setPendingTab(null)}
+        onConfirm={() => {
+          setTab(pendingTab);
+          setPendingTab(null);
+        }}
+      />
     </div>
   );
 }

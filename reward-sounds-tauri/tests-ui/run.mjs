@@ -245,7 +245,31 @@ async function run() {
   await evaluate(`Array.from(document.querySelectorAll('.view-switch button')).find((b) => b.textContent.includes('Список')).click(); true`);
   await sleep(250);
   assert('переключатель «Список» работает', await evaluate(`!!document.querySelector('.reward-grid.is-list')`));
+  await evaluate(`(() => {
+    const cards = document.querySelectorAll('.reward-card');
+    const last = cards[cards.length - 1];
+    last.scrollIntoView({ block: 'center' });
+    last.querySelector('.icon-ghost').click();
+    return true;
+  })()`);
+  await sleep(350);
+  const listMenu = await evaluate(`(() => {
+    const menu = document.querySelector('.reward-menu');
+    if (!menu) return null;
+    const r = menu.getBoundingClientRect();
+    return { items: Array.from(menu.querySelectorAll('button')).map((b) => b.textContent.trim()), bottom: r.bottom, innerHeight };
+  })()`);
+  assert('меню нижней карточки в списке не схлопнуто', Boolean(listMenu) && listMenu.items.length === 4 && listMenu.bottom <= listMenu.innerHeight, JSON.stringify(listMenu));
+  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); true`);
   await evaluate(`Array.from(document.querySelectorAll('.view-switch button')).find((b) => b.textContent.includes('Плитка')).click(); true`);
+  await sleep(200);
+
+  // Возврат фокуса после модалки.
+  await evaluate(`(() => { const b = Array.from(document.querySelectorAll('.ui-button')).find((x) => x.textContent.includes('Создать награду')); b.focus(); b.click(); return true; })()`);
+  await sleep(350);
+  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); true`);
+  await sleep(350);
+  assert('фокус возвращается на кнопку после Esc', await evaluate(`document.activeElement?.textContent?.includes('Создать награду')`));
 
   // Health popover: Esc.
   await evaluate(`document.querySelector('.health-chip').click(); true`);

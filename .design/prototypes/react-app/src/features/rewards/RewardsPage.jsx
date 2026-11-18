@@ -26,19 +26,15 @@ const FILTERS = [
 function CreateRewardModal({ open, onClose, onCreate }) {
   const [name, setName] = useState('');
   const [cost, setCost] = useState('100');
-  const [description, setDescription] = useState('');
   const [color, setColor] = useState('#A970FF');
   const [needText, setNeedText] = useState(true);
-  const [needLink, setNeedLink] = useState(false);
 
   useEffect(() => {
     if (!open) return;
     setName('');
     setCost('100');
-    setDescription('');
     setColor('#A970FF');
     setNeedText(true);
-    setNeedLink(false);
   }, [open]);
 
   function submit() {
@@ -47,9 +43,7 @@ function CreateRewardModal({ open, onClose, onCreate }) {
       name: name.trim(),
       cost: Number(cost) || 0,
       color,
-      description: description.trim(),
       needText,
-      needLink,
     });
     onClose();
   }
@@ -87,15 +81,6 @@ function CreateRewardModal({ open, onClose, onCreate }) {
           <span>ЦЕНА, БАЛЛОВ</span>
           <input className="ui-input" value={cost} onChange={(event) => setCost(event.target.value.replace(/\D/g, ''))} inputMode="numeric" />
         </label>
-        <label className="modal-field">
-          <span>ОПИСАНИЕ</span>
-          <textarea
-            className="ui-input modal-textarea"
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            placeholder="Что получит зритель и как это работает"
-          />
-        </label>
         <div className="modal-field">
           <span>ЦВЕТ КАРТОЧКИ</span>
           <ColorPalette value={color} onChange={setColor} />
@@ -110,10 +95,6 @@ function CreateRewardModal({ open, onClose, onCreate }) {
           <label className="modal-check">
             <input type="checkbox" checked={needText} onChange={(event) => setNeedText(event.target.checked)} />
             <span>Текст сообщения (до 280 символов)</span>
-          </label>
-          <label className="modal-check">
-            <input type="checkbox" checked={needLink} onChange={(event) => setNeedLink(event.target.checked)} />
-            <span>Ссылка YouTube — для музыки</span>
           </label>
         </div>
         <div className="modal-hint">Награду можно создать и в Twitch — приложение подхватит её при обновлении.</div>

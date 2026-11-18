@@ -1,0 +1,26 @@
+{
+  "menuA11y": {
+    "menuRole": "menu",
+    "itemRoles": [
+      "menuitem",
+      "menuitem",
+      "menuitem",
+      "menuitem"
+    ],
+    "activeBefore": "",
+    "menuTabIndex": [
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "arrowAfter": {
+    "active": "",
+    "text": "Reward SoundsChannel"
+  },
+  "tabAfter": {
+    "active": "nav-item is-active",
+    "text": "Награды"
+  }
+}

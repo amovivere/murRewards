@@ -1,0 +1,324 @@
+{
+  "s0": {
+    "modal": true,
+    "title": "Новая награда",
+    "active": {
+      "tag": "INPUT",
+      "cls": "ui-input",
+      "text": "",
+      "placeholder": "Например, «Сказать слово»"
+    },
+    "keys": []
+  },
+  "s1": {
+    "modal": false,
+    "title": null,
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel Poin",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      }
+    ]
+  },
+  "s2": {
+    "modal": true,
+    "title": "Новая награда",
+    "active": {
+      "tag": "INPUT",
+      "cls": "ui-input",
+      "text": "",
+      "placeholder": "Например, «Сказать слово»"
+    },
+    "keys": [
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      }
+    ]
+  },
+  "s3": {
+    "modal": false,
+    "title": null,
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel Poin",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      }
+    ]
+  },
+  "wrapBack": {
+    "modal": true,
+    "title": "Новая награда",
+    "active": {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--md",
+      "text": "Отмена",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      }
+    ]
+  },
+  "wrapFwd": {
+    "modal": true,
+    "title": "Новая награда",
+    "active": {
+      "tag": "BUTTON",
+      "cls": "ui-modal__close",
+      "text": "×",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-button ui-button--secondary",
+        "prevented": false
+      }
+    ]
+  },
+  "afterTrapEsc": {
+    "modal": false,
+    "title": null,
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel Poin",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-button ui-button--secondary",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      }
+    ]
+  },
+  "editOpen": {
+    "modal": true,
+    "title": "Редактировать награду",
+    "active": {
+      "tag": "BUTTON",
+      "cls": "ui-modal__close",
+      "text": "×",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Escape",
+        "target": "INPUT.ui-input",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-button ui-button--secondary",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      }
+    ]
+  },
+  "editClosed": {
+    "modal": false,
+    "title": null,
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel Poin",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-button ui-button--secondary",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      }
+    ]
+  },
+  "kbMenu": {
+    "modal": false,
+    "title": null,
+    "active": {
+      "tag": "BUTTON",
+      "cls": "icon-ghost",
+      "text": "",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Tab",
+        "target": "BUTTON.ui-button ui-button--secondary",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Enter",
+        "target": "BUTTON.icon-ghost",
+        "prevented": false
+      }
+    ]
+  },
+  "kbFlag": {
+    "menu": false,
+    "items": 0
+  },
+  "kbTab": {
+    "modal": false,
+    "title": null,
+    "active": {
+      "tag": "BUTTON",
+      "cls": "play-button",
+      "text": "",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Escape",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Enter",
+        "target": "BUTTON.icon-ghost",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.icon-ghost",
+        "prevented": false
+      }
+    ]
+  },
+  "kbEsc": {
+    "modal": false,
+    "title": null,
+    "active": {
+      "tag": "BUTTON",
+      "cls": "play-button",
+      "text": "",
+      "placeholder": ""
+    },
+    "keys": [
+      {
+        "key": "Escape",
+        "target": "BUTTON.ui-modal__close",
+        "prevented": false
+      },
+      {
+        "key": "Enter",
+        "target": "BUTTON.icon-ghost",
+        "prevented": false
+      },
+      {
+        "key": "Tab",
+        "target": "BUTTON.icon-ghost",
+        "prevented": false
+      },
+      {
+        "key": "Escape",
+        "target": "BUTTON.play-button",
+        "prevented": false
+      }
+    ]
+  }
+}

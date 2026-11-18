@@ -1824,6 +1824,7 @@ pub fn music_set_enabled(core: State<'_, Arc<AppCore>>, enabled: bool) -> CoreVi
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MusicSettingsPatch {
+    pub enabled: Option<bool>,
     pub max_queue: Option<usize>,
     pub max_duration_sec: Option<u64>,
     pub pause_yandex: Option<bool>,
@@ -1838,6 +1839,9 @@ pub struct MusicSettingsPatch {
 
 /// Применяет патч настроек музыки с ограничениями диапазонов.
 fn apply_music_patch(music: &mut reward_sounds::config::MusicSettings, patch: &MusicSettingsPatch) {
+    if let Some(value) = patch.enabled {
+        music.enabled = value;
+    }
     if let Some(value) = patch.max_queue {
         music.max_queue = value.clamp(1, 50);
     }

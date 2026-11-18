@@ -46,6 +46,7 @@ function MusicSettingsModal({ open, music, onClose, onSave }) {
         prefetch,
         pauseYandex,
         restoreQueue,
+        enabled: autoplay,
       });
       onClose();
     } finally {
@@ -306,7 +307,7 @@ export default function MusicPage({ backend }) {
         <Panel
           title="Очередь"
           description={`${items.length} из ${music?.max_queue || 10}`}
-          actions={<Button variant="danger-ghost" size="sm" onClick={() => setClearOpen(true)}>Очистить</Button>}
+          actions={<Button variant="danger-ghost" size="sm" disabled={items.length === 0} onClick={() => setClearOpen(true)}>Очистить</Button>}
         >
           {items.length === 0 ? (
             <div className="empty-state">

@@ -6,6 +6,8 @@ const FOCUSABLE =
 export default function Modal({ open, title, subtitle, onClose, children, footer, width = 620 }) {
   const panelRef = useRef(null);
   const previousFocus = useRef(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return undefined;
@@ -19,7 +21,7 @@ export default function Modal({ open, title, subtitle, onClose, children, footer
     function onKeyDown(event) {
       if (event.key === 'Escape') {
         event.preventDefault();
-        onClose?.();
+        onCloseRef.current?.();
         return;
       }
       if (event.key !== 'Tab' || !panel) return;
@@ -40,9 +42,10 @@ export default function Modal({ open, title, subtitle, onClose, children, footer
     return () => {
       document.removeEventListener('keydown', onKeyDown);
       const target = previousFocus.current;
-      if (target && typeof target.focus === 'function') target.focus();
+      if (target && target.isConnected && typeof target.focus === 'function') target.focus();
     };
-  }, [open, onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   if (!open) return null;
 

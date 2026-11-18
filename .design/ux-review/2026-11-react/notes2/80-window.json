@@ -1,0 +1,110 @@
+{
+  "before": {
+    "tag": "before",
+    "innerW": 1803,
+    "innerH": 1063,
+    "shell": {
+      "x": 0,
+      "y": 0,
+      "w": 1803,
+      "h": 1063
+    },
+    "margins": {
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "bottom": 0
+    },
+    "content": {
+      "clientH": 965,
+      "clientW": 1548
+    },
+    "gridCols": "365px 365px 365px 365px",
+    "gridCards": 20,
+    "winBtnTitles": [
+      {
+        "title": "Свернуть",
+        "aria": "Свернуть окно"
+      },
+      {
+        "title": "Развернуть",
+        "aria": "Развернуть окно"
+      },
+      {
+        "title": "Закрыть",
+        "aria": "Закрыть окно"
+      }
+    ],
+    "overlayPreview": null
+  },
+  "max": {
+    "tag": "maximized",
+    "innerW": 2560,
+    "innerH": 1392,
+    "shell": {
+      "x": 0,
+      "y": 0,
+      "w": 2560,
+      "h": 1392
+    },
+    "margins": {
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "bottom": 0
+    },
+    "content": {
+      "clientH": 1294,
+      "clientW": 2320
+    },
+    "gridCols": "558px 558px 558px 558px",
+    "gridCards": 20,
+    "winBtnTitles": [
+      {
+        "title": "Свернуть",
+        "aria": "Свернуть окно"
+      },
+      {
+        "title": "Восстановить",
+        "aria": "Восстановить окно"
+      },
+      {
+        "title": "Закрыть",
+        "aria": "Закрыть окно"
+      }
+    ],
+    "overlayPreview": null
+  },
+  "maxBtn": [
+    {
+      "title": "Свернуть",
+      "aria": "Свернуть окно"
+    },
+    {
+      "title": "Восстановить",
+      "aria": "Восстановить окно"
+    },
+    {
+      "title": "Закрыть",
+      "aria": "Закрыть окно"
+    }
+  ],
+  "ovMax": {
+    "preview": {
+      "x": 2099,
+      "y": 280,
+      "w": 420,
+      "h": 814
+    },
+    "iframe": {
+      "x": 2115,
+      "y": 345,
+      "w": 388,
+      "h": 608
+    },
+    "content": {
+      "clientH": 1294,
+      "scrollH": 2110
+    }
+  }
+}

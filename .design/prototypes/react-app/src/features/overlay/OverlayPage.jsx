@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Button from '../../components/ui/Button.jsx';
 import Icon from '../../components/ui/Icon.jsx';
+import Modal from '../../components/ui/Modal.jsx';
 import { Panel, Pill } from '../../components/ui/Panel.jsx';
 import {
   ColorField,
@@ -39,6 +40,9 @@ export default function OverlayPage() {
   const [toast, setToast] = useState('');
   const [previewMode, setPreviewMode] = useState('static');
   const [showOssUrl, setShowOssUrl] = useState(false);
+  const [previewLoaded, setPreviewLoaded] = useState(false);
+  const [previewSize, setPreviewSize] = useState('420 × 900');
+  const [presetDialog, setPresetDialog] = useState(null);
   const frameRef = useRef(null);
   const toastTimer = useRef(null);
 
@@ -59,6 +63,16 @@ export default function OverlayPage() {
       .catch(() => {});
     return () => {
       alive = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('rs-overlay-dirty', { detail: dirty }));
+  }, [dirty]);
+
+  useEffect(() => {
+    return () => {
+      window.dispatchEvent(new CustomEvent('rs-overlay-dirty', { detail: false }));
     };
   }, []);
 
@@ -107,6 +121,9 @@ export default function OverlayPage() {
   function onFrameLoad() {
     postCfg();
     frameRef.current?.contentWindow?.postMessage({ tco: 'mode', mode: previewMode }, '*');
+    setPreviewLoaded(true);
+    const frame = frameRef.current;
+    if (frame) setPreviewSize(`${frame.clientWidth} × ${frame.clientHeight}`);
   }
 
   function setMode(mode) {
@@ -144,14 +161,19 @@ export default function OverlayPage() {
   }
 
   function renamePreset() {
-    const name = window.prompt('Новое название пресета:', active.name);
-    if (!name?.trim()) return;
+    setPresetDialog({ type: 'rename', value: active.name });
+  }
+
+  function confirmRename() {
+    const name = presetDialog?.value?.trim();
+    if (!name) return;
     setState((current) => ({
       ...current,
       presets: current.presets.map((preset) =>
-        preset.id === current.activePreset ? { ...preset, name: name.trim() } : preset
+        preset.id === current.activePreset ? { ...preset, name } : preset
       ),
     }));
+    setPresetDialog(null);
   }
 
   function deletePreset() {
@@ -159,11 +181,15 @@ export default function OverlayPage() {
       notify('Нельзя удалить единственный пресет');
       return;
     }
-    if (!window.confirm(`Удалить пресет «${active.name}»?`)) return;
+    setPresetDialog({ type: 'delete' });
+  }
+
+  function confirmDelete() {
     setState((current) => {
       const presets = current.presets.filter((preset) => preset.id !== current.activePreset);
       return { ...current, activePreset: presets[0].id, presets };
     });
+    setPresetDialog(null);
   }
 
   async function save() {
@@ -238,7 +264,7 @@ export default function OverlayPage() {
       <div className="preset-bar">
         <div className="preset-bar__select">
           <span>{active.name}</span>
-          <select value={state.activePreset} onChange={(event) => selectPreset(event.target.value)}>
+          <select value={state.activePreset} aria-label="Пресет оверлея" onChange={(event) => selectPreset(event.target.value)}>
             {presets}
           </select>
           <Icon name="dots" size={16} />
@@ -474,10 +500,11 @@ export default function OverlayPage() {
               <div className="eyebrow">ПРЕВЬЮ</div>
               <div className="overlay-preview__title">Демо-сообщения</div>
             </div>
-            <span className="overlay-preview__size">420 × 900</span>
+            <span className="overlay-preview__size">{previewSize}</span>
           </div>
 
           <div className="overlay-preview__frame-wrap">
+            {!previewLoaded ? <div className="overlay-preview__loading">Загружаем превью…</div> : null}
             <iframe
               ref={frameRef}
               className="overlay-preview__frame"
@@ -523,6 +550,41 @@ export default function OverlayPage() {
         </aside>
       </div>
 
+      <Modal
+        open={Boolean(presetDialog)}
+        onClose={() => setPresetDialog(null)}
+        title={presetDialog?.type === 'delete' ? 'Удалить пресет?' : 'Переименовать пресет'}
+        subtitle={presetDialog?.type === 'delete' ? `Пресет «${active.name}» будет удалён.` : 'Название видно только в приложении.'}
+        width={440}
+        footer={
+          presetDialog?.type === 'delete' ? (
+            <>
+              <Button variant="secondary" onClick={() => setPresetDialog(null)}>Отмена</Button>
+              <Button variant="danger" onClick={confirmDelete}>Удалить</Button>
+            </>
+          ) : (
+            <>
+              <Button variant="secondary" onClick={() => setPresetDialog(null)}>Отмена</Button>
+              <Button variant="primary" onClick={confirmRename}>Сохранить</Button>
+            </>
+          )
+        }
+      >
+        {presetDialog?.type === 'delete' ? (
+          <div className="modal-danger-note">Это действие нельзя отменить.</div>
+        ) : (
+          <label className="modal-field">
+            <span>НАЗВАНИЕ ПРЕСЕТА</span>
+            <input
+              className="ui-input"
+              autoFocus
+              value={presetDialog?.value || ''}
+              onChange={(event) => setPresetDialog((current) => ({ ...current, value: event.target.value }))}
+              onKeyDown={(event) => event.key === 'Enter' && confirmRename()}
+            />
+          </label>
+        )}
+      </Modal>
       {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}
     </div>
   );

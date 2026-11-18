@@ -1,0 +1,73 @@
+{
+  "name": "МУЗЫКА ЮТУБ",
+  "card": {
+    "x": 266,
+    "y": 427,
+    "w": 1496,
+    "h": 60
+  },
+  "children": [
+    {
+      "tag": "DIV",
+      "cls": "reward-card__top",
+      "text": "МУЗЫКА ЮТУБ 50 баллов · АКТИВН",
+      "rect": {
+        "x": 281,
+        "y": 440,
+        "w": 734,
+        "h": 34
+      },
+      "display": "flex",
+      "visible": true
+    },
+    {
+      "tag": "DIV",
+      "cls": "sound-row",
+      "text": "Звук не выбран",
+      "rect": {
+        "x": 1029,
+        "y": 443,
+        "w": 524,
+        "h": 27
+      },
+      "display": "flex",
+      "visible": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm is-fu",
+      "text": "Выбрать звук",
+      "rect": {
+        "x": 1567,
+        "y": 443,
+        "w": 180,
+        "h": 28
+      },
+      "display": "flex",
+      "visible": true
+    }
+  ],
+  "buttons": [
+    {
+      "text": "",
+      "rect": {
+        "x": 991,
+        "y": 445,
+        "w": 24,
+        "h": 24
+      },
+      "visible": true
+    },
+    {
+      "text": "Выбрать звук",
+      "rect": {
+        "x": 1567,
+        "y": 443,
+        "w": 180,
+        "h": 28
+      },
+      "visible": true
+    }
+  ],
+  "cols": "1496px"
+}

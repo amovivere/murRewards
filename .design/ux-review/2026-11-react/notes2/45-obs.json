@@ -1,0 +1,14 @@
+{
+  "obsBefore": [
+    {
+      "type": "number",
+      "value": "18"
+    },
+    {
+      "type": "range",
+      "value": "0"
+    }
+  ],
+  "obsImmediate": "25",
+  "obsAfter": "25"
+}

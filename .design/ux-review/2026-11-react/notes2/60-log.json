@@ -1,0 +1,38 @@
+{
+  "rows": 185,
+  "countLabel": "185 записей · обновление каждые 2 с",
+  "filters": [
+    {
+      "text": "Все",
+      "active": true,
+      "pressed": null
+    },
+    {
+      "text": "INFO",
+      "active": false,
+      "pressed": null
+    },
+    {
+      "text": "WARN",
+      "active": false,
+      "pressed": null
+    },
+    {
+      "text": "ERROR",
+      "active": false,
+      "pressed": null
+    }
+  ],
+  "searchAria": null,
+  "copyHandler": true,
+  "clearHandler": true,
+  "timeStyle": {
+    "fontSize": "11px",
+    "color": "rgb(156, 156, 167)"
+  },
+  "levels": {
+    "INFO": 181,
+    "DEBUG": 3,
+    "WARN": 1
+  }
+}

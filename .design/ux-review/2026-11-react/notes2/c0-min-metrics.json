@@ -1,0 +1,23 @@
+{
+  "innerW": 1600,
+  "innerH": 1000,
+  "shell": {
+    "w": 1600,
+    "h": 1000,
+    "x": 0,
+    "y": 0
+  },
+  "margins": {
+    "l": 0,
+    "r": 0,
+    "t": 0,
+    "b": 0
+  },
+  "content": {
+    "w": 1345,
+    "h": 902,
+    "scrollH": 2110
+  },
+  "gridCols": null,
+  "cards": 0
+}

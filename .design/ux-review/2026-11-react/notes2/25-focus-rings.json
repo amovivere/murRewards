@@ -1,0 +1,41 @@
+{
+  "filter": {
+    "cls": "filter-pill is-active",
+    "tag": "BUTTON",
+    "text": "Все 20",
+    "outline": "solid 2px color(srgb 0.781647 0.52 1)",
+    "shadow": "none",
+    "rect": {
+      "x": 266,
+      "y": 245,
+      "w": 64,
+      "h": 29
+    }
+  },
+  "dots": {
+    "cls": "icon-ghost",
+    "tag": "BUTTON",
+    "text": "",
+    "outline": "solid 2px color(srgb 0.781647 0.52 1)",
+    "shadow": "none",
+    "rect": {
+      "x": 594,
+      "y": 305,
+      "w": 24,
+      "h": 24
+    }
+  },
+  "play": {
+    "cls": "play-button",
+    "tag": "BUTTON",
+    "text": "",
+    "outline": "auto 1px rgb(16, 16, 16)",
+    "shadow": "none",
+    "rect": {
+      "x": 287,
+      "y": 355,
+      "w": 19,
+      "h": 19
+    }
+  }
+}

@@ -10,6 +10,7 @@ export default function ColorPalette({ value, onChange }) {
           style={{ background: color }}
           onClick={() => onChange(color)}
           title={color}
+          aria-label={`Цвет ${color}`}
           type="button"
         />
       ))}

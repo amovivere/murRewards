@@ -1,0 +1,24 @@
+{
+  "menuKb": {
+    "menu": false,
+    "active": {
+      "tag": "BUTTON",
+      "cls": "icon-ghost",
+      "text": ""
+    },
+    "items": []
+  },
+  "afterTab": {
+    "tag": "INPUT",
+    "text": "",
+    "insideMenu": false
+  },
+  "afterMenuEsc": {
+    "menu": false,
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel"
+    }
+  }
+}

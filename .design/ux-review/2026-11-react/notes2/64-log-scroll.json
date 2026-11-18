@@ -1,0 +1,12 @@
+{
+  "logScroll": {
+    "top": 1500,
+    "toolbarY": -1307,
+    "first": "2026-11-18 23:00:56.100 INFO Музыка: «VILLIAN, madk1d - ДИНА"
+  },
+  "logScroll2": {
+    "top": 1500,
+    "rows": 185,
+    "first": "2026-11-18 23:03:08.854 INFO Играет звук: D:\\Stream\\sounds\\newbie.mp3 "
+  }
+}

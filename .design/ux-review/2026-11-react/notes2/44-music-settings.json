@@ -1,0 +1,35 @@
+{
+  "msBefore": {
+    "switches": [
+      "true",
+      "true",
+      "true",
+      "true"
+    ],
+    "ranges": [
+      "10",
+      "8",
+      "0"
+    ],
+    "modalTitle": "Настройки музыки"
+  },
+  "msImmediate": [
+    "false",
+    "true",
+    "true",
+    "true"
+  ],
+  "msAfter": {
+    "switches": [
+      "false",
+      "true",
+      "true",
+      "true"
+    ],
+    "ranges": [
+      "10",
+      "8",
+      "0"
+    ]
+  }
+}

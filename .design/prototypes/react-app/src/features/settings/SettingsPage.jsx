@@ -225,6 +225,7 @@ export default function SettingsPage({ backend, onNavigate }) {
                 style={{ background: color }}
                 onClick={() => changeAccent(color)}
                 title={color}
+                aria-label={`Акцент ${color}`}
               />
             ))}
           </div>

@@ -1,0 +1,28 @@
+{
+  "head": [
+    {
+      "text": "Открыть YouTube",
+      "cls": "ui-button ui-button--secondary ui-button--md",
+      "rect": {
+        "x": 1459,
+        "y": 88,
+        "w": 163,
+        "h": 34
+      }
+    },
+    {
+      "text": "Настроить музыку",
+      "cls": "ui-button ui-button--secondary ui-button--md",
+      "rect": {
+        "x": 1632,
+        "y": 88,
+        "w": 145,
+        "h": 34
+      }
+    }
+  ],
+  "controls": [],
+  "progress": null,
+  "queueButtons": [],
+  "searchPlaceholder": "n/a"
+}

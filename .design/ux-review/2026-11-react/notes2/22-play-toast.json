@@ -1,0 +1,12 @@
+{
+  "text": "Звук: newbie.mp3",
+  "role": "status",
+  "live": "polite",
+  "rect": {
+    "x": 835,
+    "y": 973,
+    "w": 133,
+    "h": 38
+  },
+  "insideViewport": true
+}

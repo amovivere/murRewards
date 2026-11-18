@@ -1,0 +1,10 @@
+{
+  "title": "Оверлей чата",
+  "scroll": {
+    "h": 2110,
+    "client": 965,
+    "top": 0
+  },
+  "buttons": 24,
+  "inputs": 33
+}

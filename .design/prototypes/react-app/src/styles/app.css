@@ -2554,3 +2554,64 @@ a:focus-visible {
   outline: 2px solid var(--accent-text, #c9a7ff);
   outline-offset: 5px;
 }
+
+.reward-grid.is-list .reward-menu:not(.is-above) {
+  top: 46px;
+}
+
+.reward-grid.is-list .reward-menu.is-above {
+  top: auto;
+  bottom: 44px;
+}
+
+.page {
+  width: 100%;
+  max-width: 1760px;
+  margin: 0 auto;
+}
+
+.reward-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.footer {
+  color: #9a9aa5;
+}
+
+.log-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 8px 0;
+  background: var(--page);
+}
+
+.log-level--debug {
+  color: #a9a9b4;
+}
+
+.overlay-preview__frame-wrap {
+  height: auto;
+  aspect-ratio: 420 / 900;
+  position: relative;
+}
+
+.overlay-preview__loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #8f8f9b;
+  font-size: 12px;
+  background: #0b0b0f;
+  z-index: 2;
+}
+
+.ui-switch:focus-visible,
+.play-button:focus-visible,
+.link-button:focus-visible,
+.queue-input button:focus-visible,
+.overlay-preview__modes .ui-button:focus-visible {
+  outline: 2px solid var(--accent-text, #c9a7ff);
+  outline-offset: 2px;
+}

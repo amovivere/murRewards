@@ -1,0 +1,33 @@
+{
+  "count": 3,
+  "sizes": [
+    "369x136"
+  ],
+  "letters": 0,
+  "stripe": {
+    "content": "\"\"",
+    "height": "2px",
+    "bg": "rgb(227, 146, 76)",
+    "top": "0px"
+  },
+  "cardOverflow": "visible",
+  "cardRect": {
+    "x": 266,
+    "y": 290,
+    "w": 369,
+    "h": 136
+  },
+  "grid": {
+    "cols": "368.75px 368.75px 368.75px 368.75px",
+    "isList": false,
+    "rect": {
+      "x": 266,
+      "y": 290,
+      "w": 1511,
+      "h": 136
+    }
+  },
+  "firstCardHtml": "<div class=\"reward-card__top\"><div class=\"reward-name-wrap\"><h3>Ставка 2000</h3><div class=\"reward-meta\">2000 баллов · ВЫКЛЮЧЕНА</div></div><button class=\"icon-ghost\" title=\"Действия\" aria-label=\"Действия с наградой Ставка 2000\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"cur",
+  "volumeInputs": [],
+  "playButtons": []
+}

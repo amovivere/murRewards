@@ -1,0 +1,18 @@
+{
+  "load250": {
+    "cards": 20,
+    "subtitle": "@goshanmur · 20 наград · 9 со звуком · 11 без звука",
+    "empty": null,
+    "banner": false,
+    "footer": "Все системы работают версия 1.7.0"
+  },
+  "load850": {
+    "cards": 20,
+    "subtitle": "@goshanmur · 20 наград · 9 со звуком · 11 без звука",
+    "empty": null
+  },
+  "loadDone": {
+    "cards": 20,
+    "subtitle": "@goshanmur · 20 наград · 9 со звуком · 11 без звука"
+  }
+}

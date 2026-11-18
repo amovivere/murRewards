@@ -1,0 +1,366 @@
+{
+  "healthRows": [
+    {
+      "text": "Twitch Подключено · @goshanmur Открыть",
+      "button": {
+        "text": "Открыть",
+        "cls": "link-button",
+        "aria": null,
+        "rect": {
+          "x": 1689,
+          "y": 245,
+          "w": 54,
+          "h": 20
+        }
+      }
+    },
+    {
+      "text": "EventSub Слушаем активации наград Открыть",
+      "button": {
+        "text": "Открыть",
+        "cls": "link-button",
+        "aria": null,
+        "rect": {
+          "x": 1689,
+          "y": 274,
+          "w": 54,
+          "h": 20
+        }
+      }
+    },
+    {
+      "text": "Звук Analogue 1/2 (Audient iD4) Открыть",
+      "button": {
+        "text": "Открыть",
+        "cls": "link-button",
+        "aria": null,
+        "rect": {
+          "x": 1689,
+          "y": 303,
+          "w": 54,
+          "h": 20
+        }
+      }
+    },
+    {
+      "text": "yt-dlp yt-dlp 2026.10.26 Открыть",
+      "button": {
+        "text": "Открыть",
+        "cls": "link-button",
+        "aria": null,
+        "rect": {
+          "x": 1689,
+          "y": 332,
+          "w": 54,
+          "h": 20
+        }
+      }
+    },
+    {
+      "text": "Оверлей http://127.0.0.1:8770/overlay · чат-оверлей: /chat-overlay Открыть",
+      "button": {
+        "text": "Открыть",
+        "cls": "link-button",
+        "aria": null,
+        "rect": {
+          "x": 1689,
+          "y": 361,
+          "w": 54,
+          "h": 20
+        }
+      }
+    }
+  ],
+  "buttons": [
+    {
+      "text": "Скопировать диагностику",
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "rect": {
+        "x": 285,
+        "y": 391,
+        "w": 171,
+        "h": 28
+      }
+    },
+    {
+      "text": "Открыть журнал",
+      "cls": "ui-button ui-button--ghost ui-button--sm",
+      "rect": {
+        "x": 465,
+        "y": 391,
+        "w": 119,
+        "h": 28
+      }
+    },
+    {
+      "text": "Обновить данные",
+      "cls": "ui-button ui-button--secondary ui-button--md is-full",
+      "rect": {
+        "x": 285,
+        "y": 576,
+        "w": 451,
+        "h": 34
+      }
+    },
+    {
+      "text": "Переподключить события",
+      "cls": "ui-button ui-button--secondary ui-button--md is-full",
+      "rect": {
+        "x": 285,
+        "y": 620,
+        "w": 451,
+        "h": 34
+      }
+    },
+    {
+      "text": "Отключить Twitch…",
+      "cls": "ui-button ui-button--danger-ghost ui-button--sm",
+      "rect": {
+        "x": 296,
+        "y": 725,
+        "w": 429,
+        "h": 28
+      }
+    },
+    {
+      "text": "Перезапустить аудио",
+      "cls": "ui-button ui-button--secondary ui-button--md is-full",
+      "rect": {
+        "x": 1292,
+        "y": 549,
+        "w": 451,
+        "h": 34
+      }
+    },
+    {
+      "text": "Остановить все звуки",
+      "cls": "ui-button ui-button--secondary ui-button--md is-full",
+      "rect": {
+        "x": 1292,
+        "y": 593,
+        "w": 451,
+        "h": 34
+      }
+    },
+    {
+      "text": "Выровнять громкость",
+      "cls": "ui-button ui-button--secondary ui-button--md is-full",
+      "rect": {
+        "x": 1292,
+        "y": 637,
+        "w": 451,
+        "h": 34
+      }
+    },
+    {
+      "text": "Пример кнопки",
+      "cls": "ui-button ui-button--primary ui-button--sm",
+      "rect": {
+        "x": 285,
+        "y": 866,
+        "w": 114,
+        "h": 28
+      }
+    },
+    {
+      "text": "Сбросить",
+      "cls": "ui-button ui-button--ghost ui-button--sm",
+      "rect": {
+        "x": 659,
+        "y": 937,
+        "w": 77,
+        "h": 28
+      }
+    },
+    {
+      "text": "Пройти знакомство заново",
+      "cls": "ui-button ui-button--ghost ui-button--sm",
+      "rect": {
+        "x": 788,
+        "y": 1044,
+        "w": 451,
+        "h": 28
+      }
+    },
+    {
+      "text": "Настроить музыку",
+      "cls": "ui-button ui-button--secondary ui-button--md is-full",
+      "rect": {
+        "x": 1292,
+        "y": 947,
+        "w": 451,
+        "h": 34
+      }
+    },
+    {
+      "text": "Открыть вкладку «Музыка» →",
+      "cls": "ui-button ui-button--ghost ui-button--md is-full",
+      "rect": {
+        "x": 1292,
+        "y": 991,
+        "w": 451,
+        "h": 34
+      }
+    },
+    {
+      "text": "Открыть папку данных",
+      "cls": "ui-button ui-button--ghost ui-button--md",
+      "rect": {
+        "x": 266,
+        "y": 1105,
+        "w": 197,
+        "h": 34
+      }
+    }
+  ],
+  "sampleButtonTag": "SPAN",
+  "accent": {
+    "accentVar": "#8B00FF",
+    "accentTextVar": "color-mix(in srgb, #8B00FF 48%, white)",
+    "swatches": [
+      {
+        "title": "#8B00FF",
+        "active": true,
+        "rect": {
+          "x": 285,
+          "y": 904,
+          "w": 22,
+          "h": 22
+        }
+      },
+      {
+        "title": "#4E7CFF",
+        "active": false,
+        "rect": {
+          "x": 313,
+          "y": 904,
+          "w": 22,
+          "h": 22
+        }
+      },
+      {
+        "title": "#2DD4BF",
+        "active": false,
+        "rect": {
+          "x": 341,
+          "y": 904,
+          "w": 22,
+          "h": 22
+        }
+      },
+      {
+        "title": "#EC4899",
+        "active": false,
+        "rect": {
+          "x": 369,
+          "y": 904,
+          "w": 22,
+          "h": 22
+        }
+      },
+      {
+        "title": "#F5C97B",
+        "active": false,
+        "rect": {
+          "x": 397,
+          "y": 904,
+          "w": 22,
+          "h": 22
+        }
+      },
+      {
+        "title": "#F55A5F",
+        "active": false,
+        "rect": {
+          "x": 425,
+          "y": 904,
+          "w": 22,
+          "h": 22
+        }
+      },
+      {
+        "title": "#22C55E",
+        "active": false,
+        "rect": {
+          "x": 453,
+          "y": 904,
+          "w": 22,
+          "h": 22
+        }
+      },
+      {
+        "title": "#A3A3A3",
+        "active": false,
+        "rect": {
+          "x": 481,
+          "y": 904,
+          "w": 22,
+          "h": 22
+        }
+      }
+    ]
+  },
+  "volumeSlider": {
+    "aria": null,
+    "value": "29",
+    "rect": {
+      "x": 918,
+      "y": 529,
+      "w": 251,
+      "h": 18
+    },
+    "labelTag": null
+  },
+  "switches": [
+    {
+      "aria": null,
+      "checked": "false",
+      "rect": {
+        "x": 1200,
+        "y": 581,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "aria": null,
+      "checked": "true",
+      "rect": {
+        "x": 1200,
+        "y": 649,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "aria": null,
+      "checked": "false",
+      "rect": {
+        "x": 1200,
+        "y": 877,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "aria": null,
+      "checked": "true",
+      "rect": {
+        "x": 1200,
+        "y": 939,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "aria": null,
+      "checked": "false",
+      "rect": {
+        "x": 1200,
+        "y": 1000,
+        "w": 40,
+        "h": 22
+      }
+    }
+  ]
+}

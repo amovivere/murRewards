@@ -1,0 +1,517 @@
+{
+  "version": "1.7.0",
+  "login": "goshanmur",
+  "display_name": "goshanmur",
+  "connected": true,
+  "volume": 0.287,
+  "muted": false,
+  "audio_ready": true,
+  "audio_device": "Analogue 1/2 (Audient iD4)",
+  "audio_error": null,
+  "rewards": [
+    {
+      "id": "13468a28-2ca8-4b4b-a897-f2ef8ac22625",
+      "title": "Ты новичок?",
+      "cost": 200,
+      "color": "#FB5959",
+      "available": true,
+      "requires_input": false,
+      "has_sound": true,
+      "file": {
+        "name": "newbie.mp3",
+        "path": "D:\\Stream\\sounds\\newbie.mp3",
+        "exists": true,
+        "meta": "MP3",
+        "volume": 2
+      },
+      "playing": false
+    },
+    {
+      "id": "174be6fd-4182-41ad-8091-aac601c6c7ff",
+      "title": "Мне нравится как он",
+      "cost": 150,
+      "color": "#1345AA",
+      "available": true,
+      "requires_input": false,
+      "has_sound": true,
+      "file": {
+        "name": "ilikehowhesmoving.mp3",
+        "path": "D:\\Stream\\ilikehowhesmoving.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:05",
+        "volume": 1.6793870192307692
+      },
+      "playing": false
+    },
+    {
+      "id": "1ab2c800-9506-41c4-ac1f-f4cd3c314c51",
+      "title": "МУЗЫКА ЮТУБ",
+      "cost": 50,
+      "color": "#A970FF",
+      "available": true,
+      "requires_input": true,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "2d2ff5b8-74c3-4f35-bdd6-5132f1a18795",
+      "title": "СКАЗАНУТЬ ЧЕТО",
+      "cost": 250,
+      "color": "#56BDE6",
+      "available": true,
+      "requires_input": true,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "408ef4d9-f060-4b8b-8896-ce91417aeeb4",
+      "title": "Ставка 2000",
+      "cost": 2000,
+      "color": "#E3924C",
+      "available": false,
+      "requires_input": true,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "55830641-4620-4825-93e6-1f4290acdcb0",
+      "title": "Chimp",
+      "cost": 750,
+      "color": "#AE1392",
+      "available": false,
+      "requires_input": false,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "6343a1a4-9169-4098-ac8c-270ff3622ae6",
+      "title": "Ставка 1000",
+      "cost": 1000,
+      "color": "#F57D07",
+      "available": false,
+      "requires_input": true,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "6e9ffa97-7ba1-46c6-b873-8b21d641b989",
+      "title": "Ставка 500",
+      "cost": 500,
+      "color": "#E3924C",
+      "available": false,
+      "requires_input": true,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "8d500d1c-c282-4241-b9eb-7bf95d6ef5e8",
+      "title": "А где донаты",
+      "cost": 100,
+      "color": "#00F593",
+      "available": true,
+      "requires_input": false,
+      "has_sound": true,
+      "file": {
+        "name": "wheredonats.mp3",
+        "path": "D:\\Stream\\sounds\\wheredonats.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:05",
+        "volume": 1.8485788106918335
+      },
+      "playing": false
+    },
+    {
+      "id": "8f063ab9-f327-4aaf-88e6-140c90d09f0b",
+      "title": "Вода",
+      "cost": 350,
+      "color": "#FFD37A",
+      "available": false,
+      "requires_input": false,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "94e7a1ef-30be-428d-b0ea-a0fad0e54d35",
+      "title": "Сказануть",
+      "cost": 250,
+      "color": "#F40139",
+      "available": false,
+      "requires_input": true,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "a7ee7ae7-8532-47a4-89f0-cd334bf78a84",
+      "title": "Смешок",
+      "cost": 200,
+      "color": "#3860FF",
+      "available": true,
+      "requires_input": false,
+      "has_sound": true,
+      "file": {
+        "name": "shtpost-laugh.mp3",
+        "path": "D:\\Stream\\sounds\\shtpost-laugh.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:02",
+        "volume": 1.0938819646835327
+      },
+      "playing": false
+    },
+    {
+      "id": "a8cb7871-b10b-44a8-b727-588426f40190",
+      "title": "Быть фолловером",
+      "cost": 300,
+      "color": "#9147FF",
+      "available": false,
+      "requires_input": false,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "c015056e-33be-4d99-82a2-b3892a86e755",
+      "title": "Нужно больше фолловеров",
+      "cost": 300,
+      "color": "#FF8280",
+      "available": false,
+      "requires_input": false,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    },
+    {
+      "id": "cb8ad30e-36a8-4ee0-bb55-c72e8117e987",
+      "title": "Шиза",
+      "cost": 250,
+      "color": "#AE1392",
+      "available": true,
+      "requires_input": false,
+      "has_sound": true,
+      "file": {
+        "name": "Kanye - Vulvas.mp3",
+        "path": "D:\\Stream\\Kanye - Vulvas.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:11",
+        "volume": 0.46056756377220154
+      },
+      "playing": false
+    },
+    {
+      "id": "cbeabc89-a385-47e9-a592-5577474e8e10",
+      "title": "Беги",
+      "cost": 200,
+      "color": "#00F593",
+      "available": true,
+      "requires_input": false,
+      "has_sound": true,
+      "file": {
+        "name": "run.mp3",
+        "path": "D:\\Stream\\run.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:02",
+        "volume": 1.3308285474777222
+      },
+      "playing": false
+    },
+    {
+      "id": "d2835aa0-7352-4a74-88cb-5ca71b594037",
+      "title": "Выстрел",
+      "cost": 50,
+      "color": "#451093",
+      "available": true,
+      "requires_input": false,
+      "has_sound": true,
+      "file": {
+        "name": "shot.mp3",
+        "path": "D:\\Stream\\shot.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:01",
+        "volume": 2
+      },
+      "playing": false
+    },
+    {
+      "id": "e8b27074-43fb-4bcb-b886-854761445a25",
+      "title": "Звук доната...",
+      "cost": 300,
+      "color": "#A970FF",
+      "available": true,
+      "requires_input": false,
+      "has_sound": true,
+      "file": {
+        "name": "donate100webm.mp3",
+        "path": "D:\\Stream\\donate100webm.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:05",
+        "volume": 1.2840015888214111
+      },
+      "playing": false
+    },
+    {
+      "id": "eeb93f13-4965-402c-bbe9-fb19cca1db91",
+      "title": "Доброе утро",
+      "cost": 150,
+      "color": "#FFD491",
+      "available": true,
+      "requires_input": false,
+      "has_sound": true,
+      "file": {
+        "name": "dobroeUTRO.mp3",
+        "path": "D:\\Stream\\sounds\\dobroeUTRO.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:02",
+        "volume": 0.9800000190734863
+      },
+      "playing": false
+    },
+    {
+      "id": "f21ce12d-a1c2-475a-af47-f7b0dd3323de",
+      "title": "Переименовать ченить",
+      "cost": 1000,
+      "color": "#1F69FF",
+      "available": false,
+      "requires_input": true,
+      "has_sound": false,
+      "file": null,
+      "playing": false
+    }
+  ],
+  "rewards_loading": false,
+  "rewards_error": null,
+  "bindings": 9,
+  "local_bindings": [
+    {
+      "reward_id": "13468a28-2ca8-4b4b-a897-f2ef8ac22625",
+      "title": "Ты новичок?",
+      "file": {
+        "name": "newbie.mp3",
+        "path": "D:\\Stream\\sounds\\newbie.mp3",
+        "exists": true,
+        "meta": "MP3",
+        "volume": 2
+      },
+      "music": false
+    },
+    {
+      "reward_id": "174be6fd-4182-41ad-8091-aac601c6c7ff",
+      "title": "Мне нравится как он",
+      "file": {
+        "name": "ilikehowhesmoving.mp3",
+        "path": "D:\\Stream\\ilikehowhesmoving.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:05",
+        "volume": 1.6793870192307692
+      },
+      "music": false
+    },
+    {
+      "reward_id": "8d500d1c-c282-4241-b9eb-7bf95d6ef5e8",
+      "title": "А где донаты",
+      "file": {
+        "name": "wheredonats.mp3",
+        "path": "D:\\Stream\\sounds\\wheredonats.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:05",
+        "volume": 1.8485788106918335
+      },
+      "music": false
+    },
+    {
+      "reward_id": "a7ee7ae7-8532-47a4-89f0-cd334bf78a84",
+      "title": "Смешок",
+      "file": {
+        "name": "shtpost-laugh.mp3",
+        "path": "D:\\Stream\\sounds\\shtpost-laugh.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:02",
+        "volume": 1.0938819646835327
+      },
+      "music": false
+    },
+    {
+      "reward_id": "cb8ad30e-36a8-4ee0-bb55-c72e8117e987",
+      "title": "Шиза",
+      "file": {
+        "name": "Kanye - Vulvas.mp3",
+        "path": "D:\\Stream\\Kanye - Vulvas.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:11",
+        "volume": 0.46056756377220154
+      },
+      "music": false
+    },
+    {
+      "reward_id": "cbeabc89-a385-47e9-a592-5577474e8e10",
+      "title": "Беги",
+      "file": {
+        "name": "run.mp3",
+        "path": "D:\\Stream\\run.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:02",
+        "volume": 1.3308285474777222
+      },
+      "music": false
+    },
+    {
+      "reward_id": "d2835aa0-7352-4a74-88cb-5ca71b594037",
+      "title": "Выстрел",
+      "file": {
+        "name": "shot.mp3",
+        "path": "D:\\Stream\\shot.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:01",
+        "volume": 2
+      },
+      "music": false
+    },
+    {
+      "reward_id": "eeb93f13-4965-402c-bbe9-fb19cca1db91",
+      "title": "Доброе утро",
+      "file": {
+        "name": "dobroeUTRO.mp3",
+        "path": "D:\\Stream\\sounds\\dobroeUTRO.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:02",
+        "volume": 0.9800000190734863
+      },
+      "music": false
+    },
+    {
+      "reward_id": "e8b27074-43fb-4bcb-b886-854761445a25",
+      "title": "Звук доната...",
+      "file": {
+        "name": "donate100webm.mp3",
+        "path": "D:\\Stream\\donate100webm.mp3",
+        "exists": true,
+        "meta": "MP3 · 0:05",
+        "volume": 1.2840015888214111
+      },
+      "music": false
+    }
+  ],
+  "playing": [],
+  "music_enabled": true,
+  "music_reward_title": "МУЗЫКА ЮТУБ",
+  "music_reward_cost": 50,
+  "music": {
+    "enabled": true,
+    "ready": true,
+    "ytdlp_version": "2026.10.26",
+    "ytdlp_path": "F:\\WorkSpaces\\Mur rewards\\reward-sounds-tauri\\dist\\yt-dlp.exe",
+    "ytdlp_path_setting": "auto",
+    "ytdlp_update_days": 7,
+    "error": null,
+    "current": {
+      "id": "manual-1795004403519",
+      "video_id": "J7NFL-eOxiQ",
+      "title": "VILLIAN, madk1d - ДИНАСТИЯ (official music video)",
+      "user_login": "manual",
+      "channel": "VILLIAN",
+      "duration_sec": 165,
+      "state": "playing",
+      "prefetched": false
+    },
+    "player": {
+      "loaded": true,
+      "paused": false,
+      "position_sec": 20,
+      "duration_sec": 165,
+      "error": null
+    },
+    "items": [
+      {
+        "id": "manual-1795004403519",
+        "video_id": "J7NFL-eOxiQ",
+        "title": "VILLIAN, madk1d - ДИНАСТИЯ (official music video)",
+        "user_login": "manual",
+        "channel": "VILLIAN",
+        "duration_sec": 165,
+        "state": "playing",
+        "prefetched": false
+      }
+    ],
+    "prefetched": null,
+    "prefetched_title": null,
+    "overlay_ms": 18446744073709552000,
+    "overlay_seconds": 0,
+    "overlay_position": "top",
+    "overlay_font": 18,
+    "reward_title": "МУЗЫКА ЮТУБ",
+    "reward_cost": 50,
+    "reward_id": "1ab2c800-9506-41c4-ac1f-f4cd3c314c51",
+    "max_queue": 10,
+    "max_duration_sec": 480,
+    "pause_yandex": true,
+    "restore_queue": true,
+    "prefetch": true,
+    "volume": 0.05,
+    "chat_online": true,
+    "overlay_ready": true
+  },
+  "eventsub": "listening",
+  "eventsub_error": null,
+  "client_id": "9ko4vobgen9onnxa5hx9cykovwst2z",
+  "autostart": false,
+  "close_to_tray": true,
+  "start_minimized": false,
+  "playback_enabled": true,
+  "grid_view": true,
+  "accent": "#8B00FF",
+  "normalizing": false,
+  "normalize_message": null,
+  "data_dir": "C:\\Users\\mur\\AppData\\Roaming\\RewardSounds",
+  "log_file": "C:\\Users\\mur\\AppData\\Roaming\\RewardSounds\\logs\\reward-sounds.log",
+  "health": [
+    {
+      "key": "twitch",
+      "title": "Twitch",
+      "state": "ok",
+      "detail": "Подключено · @goshanmur",
+      "action": "settings"
+    },
+    {
+      "key": "eventsub",
+      "title": "EventSub",
+      "state": "ok",
+      "detail": "Слушаем активации наград",
+      "action": "settings"
+    },
+    {
+      "key": "audio",
+      "title": "Звук",
+      "state": "ok",
+      "detail": "Analogue 1/2 (Audient iD4)",
+      "action": "settings"
+    },
+    {
+      "key": "ytdlp",
+      "title": "yt-dlp",
+      "state": "ok",
+      "detail": "yt-dlp 2026.10.26",
+      "action": "music"
+    },
+    {
+      "key": "overlay",
+      "title": "Оверлей",
+      "state": "ok",
+      "detail": "http://127.0.0.1:8770/overlay · чат-оверлей: /chat-overlay",
+      "action": "music"
+    }
+  ],
+  "auth": {
+    "state": "idle",
+    "user_code": null,
+    "verification_uri": null,
+    "expires_in": 0,
+    "progress": null,
+    "error": null
+  }
+}

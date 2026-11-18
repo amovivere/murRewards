@@ -1,0 +1,14 @@
+{
+  "dots": {
+    "x": 606,
+    "y": 317
+  },
+  "menuOpen": {
+    "menu": false,
+    "active": "icon-ghost"
+  },
+  "menuAfterOutside": {
+    "menu": false,
+    "active": "ui-button ui-button--secondary ui-button--sm is-fu"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "isList": true,
+  "cols": "1496px",
+  "sizes": [
+    "1496x60"
+  ],
+  "first": {
+    "x": 266,
+    "y": 290,
+    "w": 1496,
+    "h": 60
+  },
+  "viewPressed": [
+    {
+      "text": "Плитка",
+      "pressed": "false"
+    },
+    {
+      "text": "Список",
+      "pressed": "true"
+    }
+  ]
+}

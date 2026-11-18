@@ -1,0 +1,10 @@
+{
+  "title": "Редактировать награду",
+  "values": [
+    "Ты новичок?",
+    "200",
+    "#fb5959"
+  ],
+  "saveDisabled": false,
+  "active": "ui-modal__close"
+}

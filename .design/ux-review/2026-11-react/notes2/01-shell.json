@@ -1,0 +1,110 @@
+{
+  "innerW": 1803,
+  "innerH": 1063,
+  "dpr": 1,
+  "shell": {
+    "x": 0,
+    "y": 0,
+    "w": 1803,
+    "h": 1063
+  },
+  "shellStyle": {
+    "width": "1803px",
+    "height": "1063px",
+    "margin": "0px",
+    "border": "0px",
+    "radius": "0px"
+  },
+  "margins": {
+    "left": 0,
+    "right": 0,
+    "top": 0,
+    "bottom": 0
+  },
+  "bodyBg": "rgb(10, 10, 10)",
+  "content": {
+    "clientH": 965,
+    "scrollH": 984,
+    "clientW": 1548
+  },
+  "nav": [
+    {
+      "text": "Награды",
+      "active": true,
+      "ariaCurrent": "page"
+    },
+    {
+      "text": "Музыка",
+      "active": false,
+      "ariaCurrent": null
+    },
+    {
+      "text": "Оверлей",
+      "active": false,
+      "ariaCurrent": null
+    },
+    {
+      "text": "Настройки",
+      "active": false,
+      "ariaCurrent": null
+    },
+    {
+      "text": "Журнал",
+      "active": false,
+      "ariaCurrent": null
+    }
+  ],
+  "footer": "Все системы работают | версия 1.7.0",
+  "healthChip": {
+    "text": "Все системы работают ›",
+    "ariaExpanded": "false",
+    "dot": "dot dot--ok"
+  },
+  "volume": {
+    "text": "ЗВУК 29%",
+    "input": {
+      "type": "range",
+      "value": "29",
+      "aria": "Общая громкость",
+      "rect": {
+        "x": 1528,
+        "y": 23,
+        "w": 96,
+        "h": 18
+      }
+    },
+    "cursor": "default"
+  },
+  "winButtons": [
+    {
+      "title": "Свернуть",
+      "aria": "Свернуть окно",
+      "rect": {
+        "x": 1689,
+        "y": 18,
+        "w": 30,
+        "h": 28
+      }
+    },
+    {
+      "title": "Развернуть",
+      "aria": "Развернуть окно",
+      "rect": {
+        "x": 1721,
+        "y": 18,
+        "w": 30,
+        "h": 28
+      }
+    },
+    {
+      "title": "Закрыть",
+      "aria": "Закрыть окно",
+      "rect": {
+        "x": 1753,
+        "y": 18,
+        "w": 30,
+        "h": 28
+      }
+    }
+  ]
+}

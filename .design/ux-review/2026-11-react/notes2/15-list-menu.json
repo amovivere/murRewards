@@ -1,0 +1,63 @@
+{
+  "card": {
+    "x": 266,
+    "y": 941,
+    "w": 1496,
+    "h": 60,
+    "bottom": 1001
+  },
+  "menuRect": {
+    "x": 1352,
+    "y": 988,
+    "w": 399,
+    "h": 12
+  },
+  "overflow": "visible",
+  "above": true,
+  "items": [
+    {
+      "text": "Редактировать",
+      "rect": {
+        "x": 1358,
+        "y": 994,
+        "w": 387,
+        "h": 30
+      },
+      "topEl": "BUTTON.",
+      "insideCard": false
+    },
+    {
+      "text": "Заменить звук",
+      "rect": {
+        "x": 1358,
+        "y": 1024,
+        "w": 387,
+        "h": 30
+      },
+      "topEl": "FOOTER.footer",
+      "insideCard": false
+    },
+    {
+      "text": "Убрать звук",
+      "rect": {
+        "x": 1358,
+        "y": 1054,
+        "w": 387,
+        "h": 30
+      },
+      "topEl": null,
+      "insideCard": false
+    },
+    {
+      "text": "Удалить награду",
+      "rect": {
+        "x": 1358,
+        "y": 1084,
+        "w": 387,
+        "h": 30
+      },
+      "topEl": null,
+      "insideCard": false
+    }
+  ]
+}

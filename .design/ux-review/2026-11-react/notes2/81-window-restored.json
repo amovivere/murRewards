@@ -1,0 +1,38 @@
+{
+  "tag": "restored",
+  "innerW": 1803,
+  "innerH": 1063,
+  "shell": {
+    "x": 0,
+    "y": 0,
+    "w": 1803,
+    "h": 1063
+  },
+  "margins": {
+    "left": 0,
+    "right": 0,
+    "top": 0,
+    "bottom": 0
+  },
+  "content": {
+    "clientH": 965,
+    "clientW": 1548
+  },
+  "gridCols": null,
+  "gridCards": 0,
+  "winBtnTitles": [
+    {
+      "title": "Свернуть",
+      "aria": "Свернуть окно"
+    },
+    {
+      "title": "Развернуть",
+      "aria": "Развернуть окно"
+    },
+    {
+      "title": "Закрыть",
+      "aria": "Закрыть окно"
+    }
+  ],
+  "overlayPreview": null
+}

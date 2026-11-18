@@ -1,0 +1,477 @@
+{
+ "format": "figcraft",
+ "version": 1,
+ "imageIndex": [],
+ "name": "probe",
+ "pages": [
+  1
+ ],
+ "nodes": {
+  "1": {
+   "id": 1,
+   "name": "Page 1",
+   "type": "page",
+   "background": {
+    "r": 0.9607843,
+    "g": 0.9607843,
+    "b": 0.9607843,
+    "a": 1.0
+   },
+   "flows": [],
+   "prototype": {
+    "device": "None",
+    "background": {
+     "r": 0.11764706,
+     "g": 0.11764706,
+     "b": 0.11764706,
+     "a": 1.0
+    },
+    "rotation": "portrait"
+   },
+   "children": [
+    2,
+    4
+   ],
+   "width": 0.0,
+   "height": 0.0
+  },
+  "2": {
+   "id": 2,
+   "name": "Btn/Primary/MD",
+   "type": "component",
+   "description": "",
+   "props": {},
+   "parent": 1,
+   "children": [
+    3
+   ],
+   "transform": [
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    100.0,
+    100.0
+   ],
+   "width": 132.0,
+   "height": 40.0,
+   "fills": [
+    {
+     "type": "solid",
+     "color": {
+      "r": 0.54509807,
+      "g": 0.0,
+      "b": 1.0,
+      "a": 1.0
+     },
+     "opacity": 1.0,
+     "visible": true,
+     "blend": "normal"
+    }
+   ],
+   "effects": [
+    {
+     "type": "dropShadow",
+     "color": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.4
+     },
+     "offset": [
+      0.0,
+      8.0
+     ],
+     "radius": 16.0,
+     "spread": 0.0,
+     "blend": "normal",
+     "show_behind": false,
+     "visible": true
+    }
+   ],
+   "corners": {
+    "radii": [
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    "smoothing": 0.0
+   },
+   "layout": {
+    "mode": "horizontal",
+    "wrap": false,
+    "gap": 8.0,
+    "cross_gap": 10.0,
+    "padding": [
+     0.0,
+     16.0,
+     0.0,
+     16.0
+    ],
+    "main_align": "center",
+    "cross_align": "center",
+    "content_align": "auto",
+    "grid_columns": 2,
+    "grid_rows": 2,
+    "column_tracks": [],
+    "row_tracks": [],
+    "strokes_included": true,
+    "reverse_z": false
+   },
+   "clip": true,
+   "styles": {
+    "fill": "S:1",
+    "stroke": null,
+    "effect": null,
+    "grid": null,
+    "text": null
+   }
+  },
+  "3": {
+   "id": 3,
+   "name": "Label",
+   "type": "text",
+   "characters": "Создать награду",
+   "style": {
+    "font_family": "Inter",
+    "font_style": "SemiBold",
+    "font_size": 14.0,
+    "line_height": {
+     "unit": "auto"
+    },
+    "letter_spacing": {
+     "unit": "percent",
+     "value": 0.0
+    },
+    "decoration": "none",
+    "case": "original",
+    "fills": null,
+    "link": null,
+    "style_id": "S:2"
+   },
+   "parent": 2,
+   "blend": "normal",
+   "transform": [
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    6.5,
+    11.5
+   ],
+   "width": 119.0,
+   "height": 17.0,
+   "fills": [
+    {
+     "type": "solid",
+     "color": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+     },
+     "opacity": 1.0,
+     "visible": true,
+     "blend": "normal"
+    }
+   ],
+   "child_layout": {
+    "sizing_h": "hug",
+    "sizing_v": "hug",
+    "absolute": false,
+    "min_w": null,
+    "max_w": null,
+    "min_h": null,
+    "max_h": null,
+    "grid_column": null,
+    "grid_row": null,
+    "grid_column_span": 0,
+    "grid_row_span": 0
+   },
+   "styles": {
+    "fill": null,
+    "stroke": null,
+    "effect": null,
+    "grid": null,
+    "text": "S:2"
+   }
+  },
+  "4": {
+   "id": 4,
+   "name": "Btn/Primary/MD",
+   "type": "instance",
+   "component": 2,
+   "props": {},
+   "parent": 1,
+   "children": [
+    5
+   ],
+   "transform": [
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    300.0,
+    100.0
+   ],
+   "width": 132.0,
+   "height": 40.0,
+   "fills": [
+    {
+     "type": "solid",
+     "color": {
+      "r": 0.54509807,
+      "g": 0.0,
+      "b": 1.0,
+      "a": 1.0
+     },
+     "opacity": 1.0,
+     "visible": true,
+     "blend": "normal"
+    }
+   ],
+   "effects": [
+    {
+     "type": "dropShadow",
+     "color": {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 0.4
+     },
+     "offset": [
+      0.0,
+      8.0
+     ],
+     "radius": 16.0,
+     "spread": 0.0,
+     "blend": "normal",
+     "show_behind": false,
+     "visible": true
+    }
+   ],
+   "corners": {
+    "radii": [
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    "smoothing": 0.0
+   },
+   "layout": {
+    "mode": "horizontal",
+    "wrap": false,
+    "gap": 8.0,
+    "cross_gap": 10.0,
+    "padding": [
+     0.0,
+     16.0,
+     0.0,
+     16.0
+    ],
+    "main_align": "center",
+    "cross_align": "center",
+    "content_align": "auto",
+    "grid_columns": 2,
+    "grid_rows": 2,
+    "column_tracks": [],
+    "row_tracks": [],
+    "strokes_included": true,
+    "reverse_z": false
+   },
+   "clip": true,
+   "styles": {
+    "fill": "S:1",
+    "stroke": null,
+    "effect": null,
+    "grid": null,
+    "text": null
+   },
+   "source": 2
+  },
+  "5": {
+   "id": 5,
+   "name": "Label",
+   "type": "text",
+   "characters": "Создать награду",
+   "style": {
+    "font_family": "Inter",
+    "font_style": "SemiBold",
+    "font_size": 14.0,
+    "line_height": {
+     "unit": "auto"
+    },
+    "letter_spacing": {
+     "unit": "percent",
+     "value": 0.0
+    },
+    "decoration": "none",
+    "case": "original",
+    "fills": null,
+    "link": null,
+    "style_id": "S:2"
+   },
+   "parent": 4,
+   "blend": "normal",
+   "transform": [
+    1.0,
+    0.0,
+    0.0,
+    1.0,
+    6.5,
+    11.5
+   ],
+   "width": 119.0,
+   "height": 17.0,
+   "fills": [
+    {
+     "type": "solid",
+     "color": {
+      "r": 1.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+     },
+     "opacity": 1.0,
+     "visible": true,
+     "blend": "normal"
+    }
+   ],
+   "child_layout": {
+    "sizing_h": "hug",
+    "sizing_v": "hug",
+    "absolute": false,
+    "min_w": null,
+    "max_w": null,
+    "min_h": null,
+    "max_h": null,
+    "grid_column": null,
+    "grid_row": null,
+    "grid_column_span": 0,
+    "grid_row_span": 0
+   },
+   "styles": {
+    "fill": null,
+    "stroke": null,
+    "effect": null,
+    "grid": null,
+    "text": "S:2"
+   },
+   "source": 3
+  }
+ },
+ "next_id": 6,
+ "styles": [
+  {
+   "id": "S:1",
+   "name": "Accent/Primary",
+   "description": "",
+   "type": "paint",
+   "paints": [
+    {
+     "type": "solid",
+     "color": {
+      "r": 0.54509807,
+      "g": 0.0,
+      "b": 1.0,
+      "a": 1.0
+     },
+     "opacity": 1.0,
+     "visible": true,
+     "blend": "normal"
+    }
+   ]
+  },
+  {
+   "id": "S:2",
+   "name": "Button/MD",
+   "description": "",
+   "type": "text",
+   "style": {
+    "font_family": "Inter",
+    "font_style": "SemiBold",
+    "font_size": 14.0,
+    "line_height": {
+     "unit": "auto"
+    },
+    "letter_spacing": {
+     "unit": "percent",
+     "value": 0.0
+    },
+    "decoration": "none",
+    "case": "original",
+    "fills": null,
+    "link": null
+   }
+  }
+ ],
+ "variables": {
+  "collections": [
+   {
+    "id": "VariableCollectionId:1",
+    "name": "Theme",
+    "modes": [
+     {
+      "id": "VariableCollectionId:1/mode1",
+      "name": "Dark"
+     },
+     {
+      "id": "VariableCollectionId:1/mode2",
+      "name": "Light"
+     }
+    ]
+   }
+  ],
+  "variables": [
+   {
+    "id": "VariableID:1",
+    "name": "accent/primary",
+    "collection": "VariableCollectionId:1",
+    "resolvedType": "color",
+    "values": {
+     "VariableCollectionId:1/mode1": {
+      "type": "color",
+      "value": {
+       "r": 0.54509807,
+       "g": 0.0,
+       "b": 1.0,
+       "a": 1.0
+      }
+     },
+     "VariableCollectionId:1/mode2": {
+      "type": "color",
+      "value": {
+       "r": 0.54509807,
+       "g": 0.0,
+       "b": 1.0,
+       "a": 1.0
+      }
+     }
+    },
+    "description": ""
+   },
+   {
+    "id": "VariableID:2",
+    "name": "radius/md",
+    "collection": "VariableCollectionId:1",
+    "resolvedType": "number",
+    "values": {
+     "VariableCollectionId:1/mode1": {
+      "type": "number",
+      "value": 10.0
+     },
+     "VariableCollectionId:1/mode2": {
+      "type": "number",
+      "value": 10.0
+     }
+    },
+    "description": ""
+   }
+  ]
+ },
+ "current_page": 1,
+ "document_colors": [],
+ "comments": []
+}

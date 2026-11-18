@@ -1,0 +1,17 @@
+- insert:
+    - id: figcraft-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: figcraft
+        transport: stdio
+        command: 'F:\ARTCRAFT\FigCraft\figcraft-cli.exe'
+        args:
+          - mcp
+          - --automation-read-root
+          - 'F:\WorkSpaces\Mur rewards'
+          - --automation-write-root
+          - 'F:\WorkSpaces\Mur rewards\.design\figcraft'
+        cwd: 'F:\WorkSpaces\Mur rewards'
+        failOnStartupError: true
+        startupTimeoutMs: 120000
+        toolCallTimeoutMs: 120000

@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "FigCraft design workspace",
+    "description": "Connects the FigCraft design app over MCP so the agent can create, edit, inspect and export design files in this project.",
+    "detail": "docs/DETAIL.md"
+  }
+}

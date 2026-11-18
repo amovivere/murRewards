@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="dark">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Настройки чата — Twitch Overlay</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{
+    --bg:#0b0d14;
+    --panel:#12151f;
+    --panel2:#161a26;
+    --line:#242a3a;
+    --text:#e8ecf8;
+    --muted:#8b96b3;
+    --accent:#7aaaff;
+    --accent2:#ffc857;
+    --ok:#4ade80;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:radial-gradient(90% 60% at 15% 0%, #161d33 0%, var(--bg) 60%);
+    color:var(--text);
+    font:14px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  }
+
+  header{
+    position:sticky; top:0; z-index:10;
+    display:flex; align-items:center; gap:16px;
+    padding:12px 20px;
+    background:rgba(11,13,20,.86);
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(8px);
+  }
+  .brand{ font-weight:700; letter-spacing:.2px; }
+  .brand span{ color:var(--accent); }
+  .status{
+    margin-left:auto; font-size:12.5px; color:var(--muted);
+    display:flex; align-items:center; gap:8px;
+  }
+  .dot{ width:8px; height:8px; border-radius:50%; background:var(--muted); }
+  .dot.dirty{ background:var(--accent2); }
+  .dot.saved{ background:var(--ok); }
+
+  main{
+    display:grid;
+    grid-template-columns:minmax(420px, 1fr) 440px;
+    gap:20px;
+    align-items:start;
+    padding:20px;
+    max-width:1500px;
+    margin:0 auto;
+  }
+
+  .panel{ min-width:0; }
+
+  .presets{
+    display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:12px; margin-bottom:14px;
+  }
+  .presets select{
+    flex:1 1 180px; min-width:150px;
+  }
+
+  fieldset, details{
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--panel);
+    margin:0 0 12px;
+    padding:0;
+  }
+  summary{
+    cursor:pointer; user-select:none;
+    padding:12px 14px;
+    font-weight:600;
+    list-style:none;
+    display:flex; align-items:center; gap:8px;
+  }
+  summary::-webkit-details-marker{ display:none; }
+  summary::before{
+    content:"";
+    width:7px; height:7px;
+    border-right:2px solid var(--muted);
+    border-bottom:2px solid var(--muted);
+    transform:rotate(-45deg);
+    transition:transform .15s;
+  }
+  details[open] summary::before{ transform:rotate(45deg); }
+
+  .group-body{ padding:4px 14px 14px; }
+
+  .row{
+    display:grid;
+    grid-template-columns:170px 1fr 74px;
+    gap:10px;
+    align-items:center;
+    padding:6px 0;
+    border-top:1px solid rgba(255,255,255,.03);
+  }
+  .row:first-child{ border-top:0; }
+  .row > label{ color:var(--muted); font-size:13px; }
+  .row .out{
+    text-align:right; font-variant-numeric:tabular-nums;
+    color:var(--text); font-size:12.5px;
+  }
+
+  input[type="text"], input[type="number"], select{
+    width:100%;
+    background:var(--panel2);
+    border:1px solid var(--line);
+    color:var(--text);
+    border-radius:8px;
+    padding:7px 10px;
+    font:inherit;
+    outline:none;
+  }
+  input[type="text"]:focus, select:focus{ border-color:var(--accent); }
+
+  input[type="range"]{
+    width:100%;
+    accent-color:var(--accent);
+    background:transparent;
+  }
+
+  input[type="color"]{
+    width:44px; height:28px; padding:0;
+    border:1px solid var(--line);
+    border-radius:6px;
+    background:var(--panel2);
+    cursor:pointer;
+  }
+
+  .color-cell{ display:flex; align-items:center; gap:10px; }
+
+  .switch{ display:flex; align-items:center; gap:8px; cursor:pointer; }
+  .switch input{ display:none; }
+  .switch .track{
+    width:38px; height:22px; border-radius:11px;
+    background:#2a3145; position:relative; transition:background .15s;
+    flex:none;
+  }
+  .switch .track::after{
+    content:""; position:absolute; top:3px; left:3px;
+    width:16px; height:16px; border-radius:50%;
+    background:#c9d3ea; transition:transform .15s;
+  }
+  .switch input:checked + .track{ background:var(--accent); }
+  .switch input:checked + .track::after{ transform:translateX(16px); background:#0b0d14; }
+
+  .list{
+    display:flex; flex-wrap:wrap; gap:6px;
+    background:var(--panel2);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:6px;
+    min-height:38px;
+    align-items:center;
+  }
+  .chip{
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(122,170,255,.14);
+    border:1px solid rgba(122,170,255,.3);
+    color:#cfe0ff;
+    border-radius:999px;
+    padding:2px 8px 2px 10px;
+    font-size:12.5px;
+  }
+  .chip button{
+    border:0; background:transparent; color:#9fb6e6;
+    cursor:pointer; font-size:14px; line-height:1; padding:0 2px;
+  }
+  .chip button:hover{ color:#fff; }
+  .list input{
+    flex:1 1 110px; min-width:90px;
+    background:transparent; border:0; outline:none;
+    color:var(--text); font:inherit; padding:3px 4px;
+  }
+
+  button{
+    background:var(--panel2);
+    border:1px solid var(--line);
+    color:var(--text);
+    border-radius:8px;
+    padding:8px 12px;
+    font:inherit;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  button:hover{ border-color:#3a4560; background:#1b2130; }
+  button:disabled{ opacity:.45; cursor:default; }
+  button.primary{
+    background:linear-gradient(180deg, #5f8fe8, #4272c9);
+    border-color:#6f9df0;
+    font-weight:600;
+  }
+  button.primary:hover{ background:linear-gradient(180deg, #6c9af0, #4b7bd4); }
+  button.danger:hover{ border-color:#a34040; color:#ff9b9b; }
+
+  .preview{ position:sticky; top:76px; }
+  .preview-frame{
+    position:relative;
+    margin:0 auto;
+    width:100%;
+    max-width:360px;
+    aspect-ratio:420 / 900;
+    max-height:74vh;
+    border-radius:14px;
+    border:1px solid var(--line);
+    overflow:hidden;
+    background:
+      linear-gradient(45deg, #10131c 25%, transparent 25%) 0 0/22px 22px,
+      linear-gradient(-45deg, #10131c 25%, transparent 25%) 0 11px/22px 22px,
+      linear-gradient(45deg, transparent 75%, #10131c 75%) 11px -11px/22px 22px,
+      linear-gradient(-45deg, transparent 75%, #10131c 75%) -11px 0/22px 22px,
+      #161a24;
+    box-shadow:0 18px 60px rgba(0,0,0,.45);
+  }
+  .preview-frame iframe{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    border:0; background:transparent;
+  }
+  .preview-note{
+    text-align:center; color:var(--muted); font-size:12px;
+    margin:10px 0 10px;
+  }
+  .modebar{
+    display:flex; gap:8px; align-items:center;
+    max-width:360px; margin:0 auto 12px;
+  }
+  .seg{
+    display:flex; flex:1;
+    background:var(--panel2);
+    border:1px solid var(--line);
+    border-radius:9px;
+    padding:2px;
+  }
+  .seg button{
+    flex:1; border:0; background:transparent;
+    color:var(--muted); font:inherit; font-size:12.5px;
+    padding:6px 8px; border-radius:7px; cursor:pointer;
+  }
+  .seg button.on{
+    background:#222a3d; color:var(--text);
+    box-shadow:0 1px 0 rgba(255,255,255,.04);
+  }
+  #batchBtn{ padding:8px 12px; flex:none; }
+  .actions{ display:flex; flex-direction:column; gap:8px; max-width:360px; margin:0 auto; }
+  .actions .row2{ display:flex; gap:8px; }
+  .actions .row2 button{ flex:1; }
+  .hintline{
+    font-size:12px; color:var(--muted); text-align:center; margin-top:8px;
+  }
+  .hintline code{ color:#cfe0ff; background:rgba(255,255,255,.06); padding:1px 5px; border-radius:4px; }
+
+  .banner{
+    margin:0 20px 0;
+    max-width:1500px;
+    border:1px solid rgba(255,200,87,.4);
+    background:rgba(255,200,87,.08);
+    color:#ffe0a0;
+    border-radius:10px;
+    padding:10px 14px;
+    font-size:13px;
+  }
+  .banner[hidden]{ display:none; }
+
+  @media (max-width:980px){
+    main{ grid-template-columns:1fr; }
+    .preview{ position:static; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Twitch Chat <span>Overlay</span></div>
+  <div class="status">
+    <span class="dot" id="dot"></span>
+    <span id="status">загрузка…</span>
+  </div>
+</header>
+
+<div class="banner" id="banner" hidden></div>
+
+<main>
+  <section class="panel">
+    <div class="presets">
+      <select id="presetSel" title="Пресет"></select>
+      <button id="presetNew" title="Новый пресет">+ Пресет</button>
+      <button id="presetDup" title="Дублировать">Дублировать</button>
+      <button id="presetRen" title="Переименовать">Переименовать</button>
+      <button id="presetDel" class="danger" title="Удалить">Удалить</button>
+    </div>
+    <div id="controls"></div>
+  </section>
+
+  <aside class="preview">
+    <div class="preview-frame">
+      <iframe id="frame" src="/chat-overlay?preview=1&demo=1&bg=1" title="Превью чата"></iframe>
+    </div>
+    <div class="preview-note">Демо-сообщения · область 420×900</div>
+
+    <div class="modebar">
+      <div class="seg" id="modeSeg">
+        <button type="button" data-mode="static" class="on">Стационарный</button>
+        <button type="button" data-mode="live">Активный чат</button>
+      </div>
+      <button type="button" id="batchBtn" disabled title="Добавить 3 сообщения">+3</button>
+    </div>
+
+    <div class="actions">
+      <button id="apply" class="primary">Применить</button>
+      <div class="row2">
+        <button id="reset">Сброс</button>
+        <button id="reseed" title="Перегенерировать демо-сообщения">Демо заново</button>
+      </div>
+      <div class="row2">
+        <button id="exportBtn">Экспорт</button>
+        <button id="importBtn">Импорт</button>
+      </div>
+      
+      <div class="hintline" id="fileline"></div>
+    </div>
+  </aside>
+</main>
+
+<datalist id="fonts">
+  <option>Segoe UI Variable Text</option>
+  <option>Segoe UI</option>
+  <option>Inter</option>
+  <option>Roboto</option>
+  <option>Arial</option>
+  <option>Verdana</option>
+  <option>Tahoma</option>
+  <option>Trebuchet MS</option>
+  <option>Georgia</option>
+  <option>Impact</option>
+  <option>Consolas</option>
+  <option>Cascadia Code</option>
+  <option>Cascadia Mono</option>
+</datalist>
+
+<input type="file" id="importFile" accept=".json,.js,application/json,text/javascript" hidden>
+
+<script src="/chat-overlay/settings.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  // ==================== запасной конфиг (если settings.js нет) ====================
+  const FALLBACK = {
+    channel: '',
+    theme: 'neon',
+    fontFamily: 'Segoe UI Variable Text',
+    fontSize: 24,
+    lineHeight: 1.38,
+    paddingX: 28,
+    paddingY: 24,
+    gap: 10,
+    radius: 14,
+    emoteScale: 1.5,
+    align: 'left',
+    direction: 'up',
+    max: 40,
+    ttl: 15,
+    badges: true,
+    emotes: true,
+    sevenTv: true,
+    hideCommands: false,
+    ignoreBots: [],
+    ignoreWords: [],
+    timestamps: false,
+    maxTextLength: 600,
+    animation: 'slide',
+    readability: 'soft',
+    highlight: ['arstotsky'],
+    colors: {
+      text: '#ffffff',
+      nickMode: 'twitch',
+      nick: '#ffc857',
+      bubble: '#141a2e',
+      bubbleOpacity: 0.82,
+      border: '#7aaaff',
+      borderOpacity: 0.24,
+      highlight: '#ffc857',
+      shadow: '#000000',
+      area: '#000000',
+      areaOpacity: 0,
+      time: '#9fb0d0',
+    },
+  };
+
+  // ==================== схема настроек ====================
+  const SCHEMA = [
+    {
+      title: 'Канал и данные', open: true, items: [
+        { path: 'channel', type: 'text', label: 'Канал Twitch', placeholder: 'например, arstotsky' },
+        { path: 'badges', type: 'bool', label: 'Бейджи' },
+        { path: 'emotes', type: 'bool', label: 'Эмодзи Twitch / BTTV' },
+        { path: 'sevenTv', type: 'bool', label: 'Эмодзи 7TV' },
+        { path: 'hideCommands', type: 'bool', label: 'Скрывать !команды' },
+        { path: 'ignoreBots', type: 'list', label: 'Игнор-боты', placeholder: 'логин + Enter' },
+        { path: 'ignoreWords', type: 'list', label: 'Игнор-слова', placeholder: 'слово + Enter' },
+      ]
+    },
+    {
+      title: 'Вид', open: true, items: [
+        { path: 'theme', type: 'select', label: 'Тема', options: [['neon', 'Neon'], ['minimal', 'Minimal']] },
+        { path: 'fontFamily', type: 'text', label: 'Шрифт', list: 'fonts' },
+        { path: 'fontSize', type: 'range', label: 'Размер шрифта', min: 12, max: 60, step: 1, unit: 'px' },
+        { path: 'lineHeight', type: 'range', label: 'Межстрочный', min: 1, max: 2, step: 0.02 },
+        { path: 'paddingX', type: 'range', label: 'Отступ по X', min: 0, max: 80, step: 1, unit: 'px' },
+        { path: 'paddingY', type: 'range', label: 'Отступ по Y', min: 0, max: 80, step: 1, unit: 'px' },
+        { path: 'gap', type: 'range', label: 'Промежуток', min: 0, max: 30, step: 1, unit: 'px' },
+        { path: 'radius', type: 'range', label: 'Скругление', min: 0, max: 40, step: 1, unit: 'px' },
+        { path: 'emoteScale', type: 'range', label: 'Размер эмодзи', min: 1, max: 2.6, step: 0.05 },
+        { path: 'align', type: 'select', label: 'Выравнивание', options: [['left', 'Слева'], ['right', 'Справа']] },
+        { path: 'direction', type: 'select', label: 'Рост', options: [['up', 'Снизу вверх'], ['down', 'Сверху вниз']] },
+      ]
+    },
+    {
+      title: 'Цвета', open: true, items: [
+        { path: 'colors.text', type: 'color', label: 'Текст' },
+        { path: 'colors.nickMode', type: 'select', label: 'Ник', options: [['twitch', 'Как в Twitch'], ['fixed', 'Свой цвет'], ['white', 'Белый']] },
+        { path: 'colors.nick', type: 'color', label: 'Цвет ника' },
+        { path: 'colors.bubble', type: 'color', label: 'Фон плашки' },
+        { path: 'colors.bubbleOpacity', type: 'range', label: 'Прозрачность плашки', min: 0, max: 1, step: 0.01 },
+        { path: 'colors.border', type: 'color', label: 'Рамка плашки' },
+        { path: 'colors.borderOpacity', type: 'range', label: 'Прозрачность рамки', min: 0, max: 1, step: 0.01 },
+        { path: 'colors.highlight', type: 'color', label: 'Подсветка' },
+        { path: 'colors.shadow', type: 'color', label: 'Тень / обводка' },
+        { path: 'readability', type: 'select', label: 'Читаемость', options: [['none', 'Нет'], ['soft', 'Мягкая тень'], ['hard', 'Жёсткая тень'], ['outline', 'Обводка']] },
+        { path: 'colors.area', type: 'color', label: 'Фон области' },
+        { path: 'colors.areaOpacity', type: 'range', label: 'Прозрачность области', min: 0, max: 1, step: 0.01 },
+        { path: 'colors.time', type: 'color', label: 'Цвет времени' },
+      ]
+    },
+    {
+      title: 'Поведение', open: true, items: [
+        { path: 'ttl', type: 'range', label: 'Жизнь сообщения', min: 0, max: 120, step: 1, unit: 'с' },
+        { path: 'max', type: 'range', label: 'Макс. сообщений', min: 5, max: 100, step: 1 },
+        { path: 'timestamps', type: 'bool', label: 'Показывать время' },
+        { path: 'animation', type: 'select', label: 'Анимация', options: [['slide', 'Slide'], ['fade', 'Fade'], ['none', 'Нет']] },
+        { path: 'maxTextLength', type: 'range', label: 'Лимит длины', min: 50, max: 600, step: 10, unit: 'симв.' },
+      ]
+    },
+    {
+      title: 'Хайлайты', open: true, items: [
+        { path: 'highlight', type: 'list', label: 'Кого подсвечивать', placeholder: 'логин + Enter' },
+      ]
+    },
+  ];
+
+  // ==================== состояние ====================
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+
+  function loadState() {
+    const s = window.OVERLAY_SETTINGS;
+    if (s && Array.isArray(s.presets) && s.presets.length) {
+      return {
+        version: 1,
+        activePreset: s.activePreset || s.presets[0].id,
+        presets: clone(s.presets),
+      };
+    }
+    return {
+      version: 1,
+      activePreset: 'default',
+      presets: [{ id: 'default', name: 'Обычный', cfg: clone(FALLBACK) }],
+    };
+  }
+
+  let state = loadState();
+  let activeId = state.presets.some(p => p.id === state.activePreset)
+    ? state.activePreset
+    : state.presets[0].id;
+  state.activePreset = activeId;
+
+  let savedState = clone(state);
+
+  // Если settings.js не загрузился (нет файла или синтаксическая ошибка) —
+  // честно предупреждаем, иначе сохранение молча затрёт старый конфиг.
+  const settingsLoaded = !!(window.OVERLAY_SETTINGS &&
+    Array.isArray(window.OVERLAY_SETTINGS.presets) &&
+    window.OVERLAY_SETTINGS.presets.length);
+
+  if (!settingsLoaded) {
+    const b = document.getElementById('banner');
+    b.hidden = false;
+    b.textContent = 'settings.js не найден или повреждён — используются настройки по умолчанию. ' +
+      'При сохранении файл будет создан заново.';
+  }
+
+  const $ = id => document.getElementById(id);
+  const frame = $('frame');
+
+  function preset() {
+    return state.presets.filter(p => p.id === activeId)[0] || state.presets[0];
+  }
+  function cfg() { return preset().cfg; }
+
+  function getPath(obj, path) {
+    return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
+  }
+  function setPath(obj, path, value) {
+    const parts = path.split('.');
+    const last = parts.pop();
+    let o = obj;
+    for (const k of parts) {
+      if (!o[k] || typeof o[k] !== 'object') o[k] = {};
+      o = o[k];
+    }
+    o[last] = value;
+  }
+
+  // ==================== контролы ====================
+  function div(cls) {
+    const d = document.createElement('div');
+    if (cls) d.className = cls;
+    return d;
+  }
+
+  function buildControls() {
+    const root = $('controls');
+    root.textContent = '';
+
+    for (const group of SCHEMA) {
+      const det = document.createElement('details');
+      det.className = 'group';
+      det.open = !!group.open;
+
+      const sum = document.createElement('summary');
+      sum.textContent = group.title;
+      det.appendChild(sum);
+
+      const body = div('group-body');
+      for (const item of group.items) body.appendChild(makeRow(item));
+      det.appendChild(body);
+      root.appendChild(det);
+    }
+  }
+
+  function makeRow(item) {
+    const row = div('row');
+    const label = document.createElement('label');
+    label.textContent = item.label;
+    row.appendChild(label);
+
+    const cell = div('cell');
+    row.appendChild(cell);
+
+    const out = div('out');
+    row.appendChild(out);
+
+    const value = getPath(cfg(), item.path);
+
+    if (item.type === 'bool') {
+      const sw = document.createElement('label');
+      sw.className = 'switch';
+      const input = document.createElement('input');
+      input.type = 'checkbox';
+      input.checked = value !== false;
+      input.dataset.path = item.path;
+      input.dataset.type = 'bool';
+      const track = document.createElement('span');
+      track.className = 'track';
+      sw.appendChild(input);
+      sw.appendChild(track);
+      cell.appendChild(sw);
+      out.textContent = input.checked ? 'вкл' : 'выкл';
+      input.addEventListener('change', () => { out.textContent = input.checked ? 'вкл' : 'выкл'; });
+      return row;
+    }
+
+    if (item.type === 'text') {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = value == null ? '' : String(value);
+      input.placeholder = item.placeholder || '';
+      input.dataset.path = item.path;
+      input.dataset.type = 'text';
+      if (item.list) input.setAttribute('list', item.list);
+      cell.appendChild(input);
+      return row;
+    }
+
+    if (item.type === 'select') {
+      const sel = document.createElement('select');
+      sel.dataset.path = item.path;
+      sel.dataset.type = 'select';
+      for (const opt of item.options) {
+        const o = document.createElement('option');
+        o.value = opt[0];
+        o.textContent = opt[1];
+        if (String(value) === opt[0]) o.selected = true;
+        sel.appendChild(o);
+      }
+      cell.appendChild(sel);
+      return row;
+    }
+
+    if (item.type === 'range') {
+      const input = document.createElement('input');
+      input.type = 'range';
+      input.min = item.min;
+      input.max = item.max;
+      input.step = item.step;
+      input.value = Number(value);
+      input.dataset.path = item.path;
+      input.dataset.type = 'range';
+      if (item.unit) input.dataset.unit = item.unit;
+      cell.appendChild(input);
+      out.textContent = formatNum(value, item);
+      return row;
+    }
+
+    if (item.type === 'color') {
+      const wrap = div('color-cell');
+      const input = document.createElement('input');
+      input.type = 'color';
+      input.value = String(value || '#000000').slice(0, 7);
+      input.dataset.path = item.path;
+      input.dataset.type = 'color';
+      const code = document.createElement('span');
+      code.className = 'code';
+      code.textContent = input.value;
+      input.addEventListener('input', () => { code.textContent = input.value; });
+      wrap.appendChild(input);
+      wrap.appendChild(code);
+      cell.appendChild(wrap);
+      return row;
+    }
+
+    if (item.type === 'list') {
+      const input = document.createElement('div');
+      input.className = 'list';
+      input.dataset.path = item.path;
+      input.dataset.type = 'list';
+
+      const arr = Array.isArray(value) ? value : [];
+      const chips = div('chips');
+      chips.style.display = 'contents';
+
+      const entry = document.createElement('input');
+      entry.type = 'text';
+      entry.placeholder = item.placeholder || '';
+
+      function refresh() {
+        Array.from(chips.children).forEach(c => c.remove());
+        arr.forEach((v, idx) => {
+          const chip = document.createElement('span');
+          chip.className = 'chip';
+          const text = document.createElement('span');
+          text.textContent = v;
+          const x = document.createElement('button');
+          x.type = 'button';
+          x.textContent = '×';
+          x.title = 'Удалить';
+          x.addEventListener('click', () => {
+            arr.splice(idx, 1);
+            refresh();
+            touch();
+          });
+          chip.appendChild(text);
+          chip.appendChild(x);
+          chips.appendChild(chip);
+        });
+      }
+
+      function add(raw) {
+        const v = String(raw).trim().replace(/^@/, '').toLowerCase();
+        if (!v) return;
+        if (arr.indexOf(v) < 0) arr.push(v);
+        refresh();
+        touch();
+      }
+
+      entry.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ',') {
+          e.preventDefault();
+          add(entry.value);
+          entry.value = '';
+        } else if (e.key === 'Backspace' && !entry.value && arr.length) {
+          arr.pop();
+          refresh();
+          touch();
+        }
+      });
+      entry.addEventListener('blur', () => {
+        if (entry.value.trim()) { add(entry.value); entry.value = ''; }
+      });
+
+      refresh();
+      input.appendChild(chips);
+      input.appendChild(entry);
+      cell.appendChild(input);
+      return row;
+    }
+
+    return row;
+  }
+
+  function formatNum(v, item) {
+    const n = Number(v);
+    const fixed = (item.step && item.step < 1) ? 2 : 0;
+    return (fixed ? n.toFixed(fixed) : String(Math.round(n))) + (item.unit ? ' ' + item.unit : '');
+  }
+
+  // ==================== обработка ввода ====================
+  let rafSync = 0;
+
+  function touch() {
+    state.activePreset = activeId;
+    updateStatus();
+    schedulePreview();
+  }
+
+  function schedulePreview() {
+    if (rafSync) return;
+    rafSync = requestAnimationFrame(() => {
+      rafSync = 0;
+      sendConfig();
+    });
+  }
+
+  function sendConfig() {
+    if (!frame.contentWindow) return;
+    try {
+      frame.contentWindow.postMessage({ tco: 'config', cfg: cfg() }, '*');
+    } catch (e) {}
+  }
+
+  $('controls').addEventListener('input', e => {
+    const t = e.target;
+    if (!t.dataset || !t.dataset.path) return;
+
+    let v;
+    if (t.dataset.type === 'bool') v = t.checked;
+    else if (t.dataset.type === 'range') v = parseFloat(t.value);
+    else v = t.value;
+
+    setPath(cfg(), t.dataset.path, v);
+
+    if (t.dataset.type === 'range') {
+      const out = t.closest('.row').querySelector('.out');
+      if (out) out.textContent = formatNum(v, { step: parseFloat(t.step), unit: t.dataset.unit });
+    }
+
+    touch();
+  });
+
+  // переключатели не всегда шлют input в старых движках
+  $('controls').addEventListener('change', e => {
+    const t = e.target;
+    if (t.dataset && t.dataset.type === 'bool') {
+      const out = t.closest('.row').querySelector('.out');
+      if (out) out.textContent = t.checked ? 'вкл' : 'выкл';
+      setPath(cfg(), t.dataset.path, t.checked);
+      touch();
+    }
+  });
+
+  // ==================== пресеты ====================
+  function renderPresets() {
+    const sel = $('presetSel');
+    sel.textContent = '';
+    for (const p of state.presets) {
+      const o = document.createElement('option');
+      o.value = p.id;
+      o.textContent = p.name;
+      if (p.id === activeId) o.selected = true;
+      sel.appendChild(o);
+    }
+  }
+
+  function rebuild() {
+    renderPresets();
+    buildControls();
+    updateStatus();
+    schedulePreview();
+  }
+
+  function switchPreset(id) {
+    if (!state.presets.some(p => p.id === id)) return;
+    activeId = id;
+    state.activePreset = id;
+    rebuild();
+  }
+
+  $('presetSel').addEventListener('change', e => switchPreset(e.target.value));
+
+  $('presetNew').addEventListener('click', () => {
+    const name = prompt('Название нового пресета:', 'Новый пресет');
+    if (!name) return;
+    const id = 'p' + Date.now().toString(36);
+    state.presets.push({ id, name, cfg: clone(cfg()) });
+    activeId = id;
+    state.activePreset = id;
+    rebuild();
+  });
+
+  $('presetDup').addEventListener('click', () => {
+    const id = 'p' + Date.now().toString(36);
+    state.presets.push({ id, name: preset().name + ' копия', cfg: clone(cfg()) });
+    activeId = id;
+    state.activePreset = id;
+    rebuild();
+  });
+
+  $('presetRen').addEventListener('click', () => {
+    const name = prompt('Новое название пресета:', preset().name);
+    if (!name) return;
+    preset().name = name;
+    rebuild();
+  });
+
+  $('presetDel').addEventListener('click', () => {
+    if (state.presets.length < 2) { alert('Нельзя удалить единственный пресет'); return; }
+    if (!confirm('Удалить пресет «' + preset().name + '»?')) return;
+    state.presets = state.presets.filter(p => p.id !== activeId);
+    activeId = state.presets[0].id;
+    state.activePreset = activeId;
+    rebuild();
+  });
+
+  // ==================== сохранение ====================
+  function serialize(s) {
+    return '// Twitch Chat Overlay — настройки.\n' +
+      '// Файл перезаписывается из config.html, руками править можно.\n' +
+      'window.OVERLAY_SETTINGS = ' + JSON.stringify(s, null, 2) + ';\n';
+  }
+
+  function download(text, name) {
+    const blob = new Blob([text], { type: 'text/javascript;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  function idbOpen() {
+    return new Promise((resolve, reject) => {
+      const r = indexedDB.open('tco-config', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('kv');
+      r.onsuccess = () => resolve(r.result);
+      r.onerror = () => reject(r.error);
+    });
+  }
+
+  async function idbGet(key) {
+    try {
+      const db = await idbOpen();
+      return await new Promise(resolve => {
+        const t = db.transaction('kv', 'readonly').objectStore('kv').get(key);
+        t.onsuccess = () => resolve(t.result || null);
+        t.onerror = () => resolve(null);
+      });
+    } catch (e) { return null; }
+  }
+
+  async function idbSet(key, value) {
+    try {
+      const db = await idbOpen();
+      await new Promise(resolve => {
+        const t = db.transaction('kv', 'readwrite').objectStore('kv').put(value, key);
+        t.onsuccess = () => resolve();
+        t.onerror = () => resolve();
+      });
+    } catch (e) {}
+  }
+
+  async function getFileHandle() {
+    if (!('showSaveFilePicker' in window)) return null;
+
+    let handle = await idbGet('settingsFile');
+    if (!handle) {
+      handle = await window.showSaveFilePicker({
+        id: 'tco-settings',
+        suggestedName: 'settings.js',
+        types: [{ description: 'settings.js', accept: { 'text/javascript': ['.js'] } }],
+      });
+      await idbSet('settingsFile', handle);
+    }
+
+    let perm = await handle.queryPermission({ mode: 'readwrite' });
+    if (perm !== 'granted') perm = await handle.requestPermission({ mode: 'readwrite' });
+    if (perm !== 'granted') throw new Error('нет доступа к файлу');
+    return handle;
+  }
+
+  async function save() {
+    state.activePreset = activeId;
+    const payload = JSON.stringify(state);
+
+    try {
+      const response = await fetch('/chat-overlay/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+      });
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      savedState = clone(state);
+      updateStatus();
+      setStatus('Сохранено · OBS подхватит через ~2 секунды', 'saved');
+      const fileline = $('fileline');
+      if (fileline) fileline.textContent = 'Настройки хранятся в приложении Reward Sounds';
+    } catch (e) {
+      setStatus('Не удалось сохранить (' + (e && e.message ? e.message : e) + ')', 'dirty');
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[c]);
+  }
+
+  // ==================== статус ====================
+  function isDirty() {
+    return JSON.stringify(state) !== JSON.stringify(savedState);
+  }
+
+  function updateStatus() {
+    const dot = $('dot');
+    dot.className = 'dot ' + (isDirty() ? 'dirty' : 'saved');
+    if (!isDirty()) return;
+    setStatus('Есть несохранённые изменения — нажмите «Применить»', 'dirty');
+  }
+
+  function setStatus(text, kind) {
+    $('status').textContent = text;
+    if (kind) $('dot').className = 'dot ' + kind;
+  }
+
+  // ==================== применение/сброс/экспорт ====================
+  $('apply').addEventListener('click', save);
+
+  $('reset').addEventListener('click', () => {
+    if (isDirty() && !confirm('Отменить несохранённые изменения?')) return;
+    state = clone(savedState);
+    activeId = state.presets.some(p => p.id === state.activePreset)
+      ? state.activePreset
+      : state.presets[0].id;
+    rebuild();
+    setStatus('Изменения отменены', 'saved');
+  });
+
+  $('reseed').addEventListener('click', () => {
+    try { frame.contentWindow.postMessage({ tco: 'demo' }, '*'); } catch (e) {}
+  });
+
+  $('exportBtn').addEventListener('click', () => {
+    const data = JSON.stringify(state, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'twitch-overlay-presets.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setStatus('Пресеты экспортированы', 'saved');
+  });
+
+  $('importBtn').addEventListener('click', () => $('importFile').click());
+
+  $('importFile').addEventListener('change', e => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const text = String(reader.result);
+        const start = text.indexOf('{');
+        const end = text.lastIndexOf('}');
+        if (start < 0 || end < 0) throw new Error('не найден JSON');
+        const data = JSON.parse(text.slice(start, end + 1));
+        if (!data || !Array.isArray(data.presets) || !data.presets.length) {
+          throw new Error('нет массива presets');
+        }
+        state = {
+          version: 1,
+          activePreset: data.activePreset || data.presets[0].id,
+          presets: data.presets.map(p => ({
+            id: String(p.id || ('p' + Math.random().toString(36).slice(2))),
+            name: String(p.name || 'Пресет'),
+            cfg: p.cfg || clone(FALLBACK),
+          })),
+        };
+        if (!state.presets.some(p => p.id === state.activePreset)) {
+          state.activePreset = state.presets[0].id;
+        }
+        activeId = state.activePreset;
+        savedState = clone(state);
+        rebuild();
+        setStatus('Пресеты импортированы — проверьте и нажмите «Применить»', 'dirty');
+      } catch (err) {
+        alert('Не удалось импортировать: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      save();
+    }
+  });
+
+  // ==================== превью ====================
+  // Режим превью: стационарный (демо-сообщения не исчезают) или активный чат
+  // (по кнопке добавляются 3 сообщения и живут по ttl).
+  let previewMode = 'static';
+  try {
+    if (localStorage.getItem('tco:previewMode') === 'live') previewMode = 'live';
+  } catch (e) {}
+
+  function post(msg) {
+    if (!frame.contentWindow) return;
+    try { frame.contentWindow.postMessage(msg, '*'); } catch (e) {}
+  }
+
+  function applyModeUI() {
+    const buttons = document.querySelectorAll('#modeSeg button');
+    for (const b of buttons) b.classList.toggle('on', b.dataset.mode === previewMode);
+    $('batchBtn').disabled = previewMode !== 'live';
+  }
+
+  function setMode(mode) {
+    previewMode = mode === 'live' ? 'live' : 'static';
+    try { localStorage.setItem('tco:previewMode', previewMode); } catch (e) {}
+    applyModeUI();
+    post({ tco: 'mode', mode: previewMode });
+  }
+
+  $('modeSeg').addEventListener('click', e => {
+    const b = e.target.closest('button[data-mode]');
+    if (b) setMode(b.dataset.mode);
+  });
+
+  $('batchBtn').addEventListener('click', () => post({ tco: 'batch' }));
+
+  function sendAll() {
+    sendConfig();
+    post({ tco: 'mode', mode: previewMode });
+  }
+
+  frame.addEventListener('load', () => {
+    setTimeout(sendAll, 60);
+  });
+
+  window.addEventListener('message', e => {
+    if (e.data && e.data.tco === 'ready') sendAll();
+  });
+
+  if (!('showSaveFilePicker' in window)) {
+    $('fileline').textContent = 'Настройки сохраняются в приложении Reward Sounds';
+  } else if (location.protocol === 'file:') {
+    const localDir = decodeURIComponent(location.pathname)
+      .replace(/\/[^/]*$/, '')
+      .replace(/^\//, '')
+      .replace(/\//g, '\\');
+    $('fileline').textContent = 'Настройки сохраняются в приложении Reward Sounds';
+  }
+
+  // старт
+  applyModeUI();
+  rebuild();
+  updateStatus();
+  setStatus(isDirty() ? 'Есть изменения' : 'Готово', isDirty() ? 'dirty' : 'saved');
+})();
+</script>
+</body>
+</html>

@@ -12,6 +12,7 @@ use std::thread;
 
 use serde::Serialize;
 
+use crate::config::AppPaths;
 use super::service::Snapshot;
 
 /// Порт оверлея.
@@ -20,7 +21,17 @@ pub const PORT: u16 = 8770;
 /// Готовая страница (вшита в бинарник).
 const PAGE: &str = include_str!("../../assets/overlay.html");
 
-/// Страница чат-оверлея.
+/// Страница чат-оверлея (перенесена из reference-проекта twitch-chat-overlay).
+const CHAT_OVERLAY_PAGE: &str = include_str!("../../assets/chat-overlay.html");
+
+/// Настройки чат-оверлея по умолчанию (файл в AppData может их переопределить).
+const CHAT_OVERLAY_SETTINGS_DEFAULT: &str =
+    include_str!("../../assets/chat-overlay-settings.js");
+
+/// Страница настроек чат-оверлея (адаптированный config.html reference-проекта).
+const CHAT_CONFIG_PAGE: &str = include_str!("../../assets/chat-overlay-config.html");
+
+/// Страница старого минимального чат-оверлея.
 const CHAT_PAGE: &str = include_str!("../../assets/chat.html");
 
 /// Сообщение чата для оверлея: только то, что нужно странице.
@@ -95,15 +106,52 @@ pub fn spawn(state: Arc<Mutex<Snapshot>>, port: u16) {
 
 /// Обрабатывает один запрос браузера.
 fn handle(mut stream: TcpStream, state: &Arc<Mutex<Snapshot>>) {
-    let mut buffer = [0u8; 1024];
-    let _ = stream.read(&mut buffer);
+    let mut buffer = Vec::new();
+    let mut chunk = [0u8; 4096];
+    loop {
+        let read = stream.read(&mut chunk).unwrap_or(0);
+        if read == 0 {
+            break;
+        }
+        buffer.extend_from_slice(&chunk[..read]);
+        if buffer.len() > 512 * 1024 {
+            break;
+        }
+        if let Some(header_end) = find_header_end(&buffer) {
+            if let Some(length) = content_length(&buffer[..header_end]) {
+                if buffer.len() >= header_end + 4 + length {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
     let request = String::from_utf8_lossy(&buffer);
-    let path = request.split_whitespace().nth(1).unwrap_or("/");
+    let mut parts = request.split_whitespace();
+    let method = parts.next().unwrap_or("GET");
+    let path = parts.next().unwrap_or("/");
+    let body_start = find_header_end(&buffer)
+        .map(|index| index + 4)
+        .unwrap_or(buffer.len());
+    let body = &buffer[body_start.min(buffer.len())..];
 
-    let (content_type, body) = response_for(path, state);
+    let (status, content_type, body) = if method == "POST" && path.starts_with("/chat-overlay/save") {
+        save_chat_overlay(body)
+    } else {
+        let (content_type, body) = response_for(path, state);
+        (200, content_type, body)
+    };
 
+    let reason = match status {
+        200 => "OK",
+        400 => "Bad Request",
+        500 => "Internal Server Error",
+        _ => "OK",
+    };
     let header = format!(
-        "HTTP/1.1 200 OK\r\nContent-Type: {content_type}\r\nCache-Control: no-store\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+        "HTTP/1.1 {status} {reason}\r\nContent-Type: {content_type}\r\nCache-Control: no-store\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
         body.len()
     );
 
@@ -112,12 +160,72 @@ fn handle(mut stream: TcpStream, state: &Arc<Mutex<Snapshot>>) {
     let _ = stream.flush();
 }
 
+/// Ищет конец заголовков HTTP-запроса.
+fn find_header_end(buffer: &[u8]) -> Option<usize> {
+    buffer.windows(4).position(|window| window == b"\r\n\r\n")
+}
+
+/// Длина тела запроса из `Content-Length`.
+fn content_length(headers: &[u8]) -> Option<usize> {
+    String::from_utf8_lossy(headers).lines().find_map(|line| {
+        let (name, value) = line.split_once(':')?;
+        if name.eq_ignore_ascii_case("content-length") {
+            value.trim().parse::<usize>().ok()
+        } else {
+            None
+        }
+    })
+}
+
+/// Сохраняет настройки, присланные страницей настроек.
+fn save_chat_overlay(body: &[u8]) -> (u16, &'static str, String) {
+    let text = String::from_utf8_lossy(body);
+    let Ok(value) = serde_json::from_str::<serde_json::Value>(&text) else {
+        return (400, "application/json; charset=utf-8", "{\"ok\":false,\"error\":\"invalid json\"}".to_string());
+    };
+    let valid = value
+        .get("presets")
+        .and_then(|presets| presets.as_array())
+        .map(|presets| !presets.is_empty())
+        .unwrap_or(false);
+    if !valid {
+        return (400, "application/json; charset=utf-8", "{\"ok\":false,\"error\":\"no presets\"}".to_string());
+    }
+    let path = AppPaths::resolve()
+        .data_dir
+        .join("chat_overlay_settings.js");
+    let file = format!(
+        "// Twitch Chat Overlay — настройки.\n// Файл создаётся приложением Reward Sounds.\nwindow.OVERLAY_SETTINGS = {text};\n"
+    );
+    match std::fs::write(&path, file) {
+        Ok(()) => (
+            200,
+            "application/json; charset=utf-8",
+            "{\"ok\":true}".to_string(),
+        ),
+        Err(error) => {
+            log::warn!("Чат-оверлей: не удалось сохранить настройки: {error}");
+            (
+                500,
+                "application/json; charset=utf-8",
+                "{\"ok\":false,\"error\":\"write failed\"}".to_string(),
+            )
+        }
+    }
+}
+
 /// Выбирает ответ на путь запроса: страница или JSON состояния.
 ///
 /// `/overlay` и `/state` — оверлей музыки (как раньше), `/chat` и
 /// `/chat/state` — новый чат-оверлей.
 fn response_for(path: &str, state: &Arc<Mutex<Snapshot>>) -> (&'static str, String) {
-    if path.starts_with("/chat/state") {
+    if path.starts_with("/chat-overlay/settings.js") {
+        ("application/javascript; charset=utf-8", chat_overlay_settings())
+    } else if path.starts_with("/chat-overlay/config") {
+        ("text/html; charset=utf-8", CHAT_CONFIG_PAGE.to_string())
+    } else if path.starts_with("/chat-overlay") {
+        ("text/html; charset=utf-8", CHAT_OVERLAY_PAGE.to_string())
+    } else if path.starts_with("/chat/state") {
         ("application/json; charset=utf-8", chat_state_json())
     } else if path.starts_with("/chat") {
         ("text/html; charset=utf-8", CHAT_PAGE.to_string())
@@ -126,6 +234,14 @@ fn response_for(path: &str, state: &Arc<Mutex<Snapshot>>) -> (&'static str, Stri
     } else {
         ("text/html; charset=utf-8", PAGE.to_string())
     }
+}
+
+/// Отдаёт настройки чат-оверлея из AppData, иначе встроенные по умолчанию.
+fn chat_overlay_settings() -> String {
+    let path = AppPaths::resolve()
+        .data_dir
+        .join("chat_overlay_settings.js");
+    std::fs::read_to_string(path).unwrap_or_else(|_| CHAT_OVERLAY_SETTINGS_DEFAULT.to_string())
 }
 
 /// Состояние для страницы оверлея.

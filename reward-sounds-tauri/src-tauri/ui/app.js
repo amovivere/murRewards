@@ -109,6 +109,8 @@ function applyView(view) {
     syncMusic(root, view);
   } else if (tab === 'chat') {
     syncChat(root, view);
+  } else if (tab === 'overlay') {
+    // Страница настроек оверлея живёт на локальном сервере и открывается как iframe.
   } else if (tab === 'settings') {
     syncSettings(root, view);
   } else if (tab === 'log') {
@@ -119,7 +121,7 @@ function applyView(view) {
 function initialTab() {
   const params = new URLSearchParams(location.search);
   const screen = params.get('screen');
-  if (screen && ['rewards', 'music', 'chat', 'settings', 'log', 'onboarding'].includes(screen)) return screen;
+  if (screen && ['rewards', 'music', 'chat', 'overlay', 'settings', 'log', 'onboarding'].includes(screen)) return screen;
   return 'rewards';
 }
 
@@ -144,8 +146,7 @@ function switchTab(tab) {
   renderTab(tab);
 }
 
-function renderTab(tab) {
-  const root = content();
+function renderTab(tab) {  const root = content();
   if (!root) return;
   root.dataset.rendered = tab;
   updateNav(tab);
@@ -157,6 +158,8 @@ function renderTab(tab) {
     renderMusic(root, view);
   } else if (tab === 'chat') {
     renderChat(root, view);
+  } else if (tab === 'overlay') {
+    renderOverlay(root);
   } else if (tab === 'settings') {
     renderSettings(root, view);
   } else if (tab === 'log') {
@@ -223,8 +226,14 @@ function emptyView() {
   };
 }
 
-function renderDisconnected() {
-  const root = content();
+function renderOverlay(root) {
+  root.innerHTML = `
+    <div class="overlay-settings-wrap">
+      <iframe class="overlay-settings-frame" src="http://127.0.0.1:8770/chat-overlay/config" title="Настройки оверлея чата"></iframe>
+    </div>`;
+}
+
+function renderDisconnected() {  const root = content();
   if (!root) return;
   root.dataset.rendered = 'error';
   root.innerHTML = `

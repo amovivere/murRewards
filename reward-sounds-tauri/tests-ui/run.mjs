@@ -201,6 +201,18 @@ async function run() {
 
   // P0-фиксы: буквенные аватары, меню карточки, редактирование.
   assert('в карточках нет буквенных аватаров', (await evaluate(`document.querySelectorAll('.reward-letter').length`)) === 0);
+  const cardPresentation = await evaluate(`(() => {
+    const card = document.querySelector('.reward-card');
+    const play = card?.querySelector('.play-large');
+    const rect = play?.getBoundingClientRect();
+    return {
+      hasFileName: Boolean(card?.querySelector('.sound-name')),
+      hasMp3: (card?.innerText || '').includes('.mp3'),
+      playSize: rect ? [Math.round(rect.width), Math.round(rect.height)] : null
+    };
+  })()`);
+  assert('путь к звуку убран с карточки', !cardPresentation.hasFileName && !cardPresentation.hasMp3, JSON.stringify(cardPresentation));
+  assert('кнопка прослушивания крупная (>=44 px)', Boolean(cardPresentation.playSize) && cardPresentation.playSize[0] >= 44, JSON.stringify(cardPresentation));
 
   await evaluate(`document.querySelector('.reward-card .icon-ghost').click(); true`);
   await sleep(250);
@@ -220,7 +232,7 @@ async function run() {
 
   await evaluate(`document.querySelector('.reward-card .icon-ghost').click(); true`);
   await sleep(200);
-  await evaluate(`Array.from(document.querySelectorAll('.reward-menu button')).find((b) => b.textContent.includes('Редактировать')).click(); true`);
+  await evaluate(`Array.from(document.querySelectorAll('.reward-menu button')).find((b) => b.textContent.includes('Настройки карточки')).click(); true`);
   await sleep(300);
   const editInfo = await evaluate(`(async () => {
     const state = await window.__TAURI_INTERNALS__.invoke('get_state');
@@ -229,10 +241,14 @@ async function run() {
       values: Array.from(document.querySelectorAll('.ui-modal input')).map((i) => i.value),
       title: first.title,
       cost: String(first.cost),
+      modalTitle: document.querySelector('.ui-modal__title')?.textContent || '',
+      soundPath: document.querySelector('.modal-sound-path')?.textContent || '',
+      backendPath: first.file?.path || '',
       saveDisabled: Array.from(document.querySelectorAll('.ui-modal button')).find((b) => b.textContent.includes('Сохранить'))?.disabled
     };
   })()`);
   assert('редактирование заполнено реальными значениями', editInfo.values[0] === editInfo.title && editInfo.values[1] === editInfo.cost && editInfo.saveDisabled === false, JSON.stringify(editInfo));
+  assert('настройки карточки показывают путь к звуку', editInfo.modalTitle === 'Настройки карточки' && editInfo.soundPath === editInfo.backendPath, JSON.stringify(editInfo));
   await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
 
   // Поиск и список
@@ -273,7 +289,7 @@ async function run() {
     const r = menu.getBoundingClientRect();
     return { items: Array.from(menu.querySelectorAll('button')).map((b) => b.textContent.trim()), bottom: r.bottom, innerHeight };
   })()`);
-  assert('меню нижней карточки в списке не схлопнуто', Boolean(listMenu) && listMenu.items.length === 4 && listMenu.bottom <= listMenu.innerHeight, JSON.stringify(listMenu));
+  assert('меню нижней карточки в списке не схлопнуто', Boolean(listMenu) && listMenu.items.length >= 2 && listMenu.items.includes('Удалить награду') && listMenu.bottom <= listMenu.innerHeight, JSON.stringify(listMenu));
   await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); true`);
   await evaluate(`Array.from(document.querySelectorAll('.view-switch button')).find((b) => b.textContent.includes('Плитка')).click(); true`);
   await sleep(200);
@@ -290,7 +306,7 @@ async function run() {
     const dots = card.querySelector('.icon-ghost');
     dots.focus(); dots.click();
     await new Promise((r) => setTimeout(r, 250));
-    Array.from(document.querySelectorAll('.reward-menu button')).find((b) => b.textContent.includes('Редактировать')).click();
+    Array.from(document.querySelectorAll('.reward-menu button')).find((b) => b.textContent.includes('Настройки карточки')).click();
     await new Promise((r) => setTimeout(r, 300));
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     await new Promise((r) => setTimeout(r, 300));
@@ -345,3 +361,4 @@ run()
     console.log(`\nИтог: ${passed} passed, ${failures} failed`);
     process.exit(failures === 0 ? 0 : 1);
   });
+

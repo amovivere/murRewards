@@ -2695,3 +2695,251 @@ a:focus-visible {
 .ui-toggle-row__hint {
   color: #9797a1;
 }
+
+/* ==== карточка награды: крупный play, звук без пути ==== */
+.reward-card__right {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.reward-status {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  border: 1px solid #303038;
+  color: #a1a1ac;
+  background: #17171b;
+  white-space: nowrap;
+}
+
+.reward-status.is-active {
+  color: #82dfa6;
+  border-color: rgba(34, 197, 94, 0.24);
+  background: rgba(34, 197, 94, 0.07);
+}
+
+.reward-status.is-playing {
+  color: var(--accent-text, #c9a7ff);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.reward-status.is-off {
+  color: #8c8c96;
+}
+
+.card-sound {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--reward-color) 22%, #26262d);
+  background: color-mix(in srgb, var(--reward-color) 5%, #101012);
+}
+
+.play-large {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--reward-color) 45%, #3a3a44);
+  background: color-mix(in srgb, var(--reward-color) 16%, #17171c);
+  color: #f2f2f6;
+  display: grid;
+  place-items: center;
+  transition: background 130ms ease, border-color 130ms ease, transform 80ms ease;
+}
+
+.play-large:hover {
+  background: color-mix(in srgb, var(--reward-color) 28%, #1b1b21);
+  border-color: color-mix(in srgb, var(--reward-color) 70%, #4a4a55);
+}
+
+.play-large:active {
+  transform: scale(0.96);
+}
+
+.play-large:focus-visible {
+  outline: 2px solid var(--accent-text, #c9a7ff);
+  outline-offset: 3px;
+}
+
+.card-sound-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.card-sound-title {
+  color: #ececf2;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.card-sound-meta {
+  margin-top: 3px;
+  color: #9a9aa5;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-flag {
+  flex: 0 0 auto;
+  color: var(--accent-text, #c9a7ff);
+  font-size: 15px;
+}
+
+.card-volume-row {
+  margin-top: 2px;
+}
+
+.card-sound-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 62px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px dashed #303038;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.reward-card .sound-row,
+.reward-card .music-flag {
+  display: none;
+}
+
+.reward-card .reward-menu {
+  top: 42px;
+}
+
+.reward-grid.is-list .reward-card {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.25fr) minmax(240px, 1fr) minmax(170px, 0.8fr);
+  align-items: center;
+  gap: 14px;
+}
+
+.reward-grid.is-list .reward-card__top {
+  grid-column: 1;
+}
+
+.reward-grid.is-list .card-sound {
+  grid-column: 2;
+  padding: 6px 8px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.reward-grid.is-list .card-volume-row {
+  grid-column: 3;
+  margin: 0;
+}
+
+.reward-grid.is-list .card-sound-empty {
+  grid-column: 2 / span 2;
+  min-height: 48px;
+}
+
+.reward-grid.is-list .card-sound-info {
+  min-width: 0;
+}
+
+.reward-grid.is-list .play-large {
+  width: 40px;
+  height: 40px;
+  flex-basis: 40px;
+}
+
+.modal-divider {
+  height: 1px;
+  background: #26262d;
+  margin: 2px 0;
+}
+
+.modal-sound-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #2d2d35;
+  background: #131316;
+}
+
+.modal-sound-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.modal-sound-icon {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #202027;
+  color: #d7d7df;
+}
+
+.modal-sound-info {
+  min-width: 0;
+}
+
+.modal-sound-name {
+  color: #eeeeF3;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-sound-path {
+  margin-top: 2px;
+  color: #85858f;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-sound-meta {
+  margin-top: 2px;
+  color: #8f8f99;
+  font-size: 11px;
+}
+
+.modal-sound-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.modal-sound-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 50px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px dashed #303038;
+  color: #9a9aa5;
+  font-size: 12px;
+}

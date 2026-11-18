@@ -3,6 +3,7 @@ import Button from '../../components/ui/Button.jsx';
 import ColorPalette from '../../components/ui/ColorPalette.jsx';
 import Icon from '../../components/ui/Icon.jsx';
 import Modal from '../../components/ui/Modal.jsx';
+import { SliderRow } from '../../components/ui/Field.jsx';
 
 const INITIAL_REWARDS = [
   { id: 1, name: 'Ты новичок?', cost: 200, color: '#F55A5F', file: 'newbie.mp3', volume: 200, active: true },
@@ -22,6 +23,23 @@ const FILTERS = [
   { id: 'playing', label: 'Играет' },
   { id: 'off', label: 'Выключенные' },
 ];
+
+function mapReward(reward) {
+  return {
+    id: reward.id,
+    name: reward.title,
+    cost: reward.cost,
+    color: /^#[0-9a-f]{6}$/i.test(reward.color || '') ? reward.color : '#A3A3A3',
+    file: reward.file?.name || '',
+    path: reward.file?.path || '',
+    meta: reward.file?.meta || '',
+    volume: reward.file ? Math.round((reward.file.volume ?? 1) * 100) : 0,
+    active: reward.available !== false,
+    playing: Boolean(reward.playing),
+    requiresInput: Boolean(reward.requires_input),
+    hasSound: Boolean(reward.has_sound),
+  };
+}
 
 function CreateRewardModal({ open, onClose, onCreate, returnFocus }) {
   const [name, setName] = useState('');
@@ -104,16 +122,27 @@ function CreateRewardModal({ open, onClose, onCreate, returnFocus }) {
   );
 }
 
-function EditRewardModal({ reward, onClose, onSave, returnFocus }) {
+function EditRewardModal({
+  reward,
+  onClose,
+  onSave,
+  returnFocus,
+  onChooseSound,
+  onRemoveSound,
+  onPreviewSound,
+  onVolumeChange,
+}) {
   const [name, setName] = useState('');
   const [cost, setCost] = useState('100');
   const [color, setColor] = useState('#A970FF');
+  const [volume, setVolume] = useState(100);
 
   useEffect(() => {
     if (!reward) return;
     setName(reward.name || '');
     setCost(String(reward.cost ?? 100));
     setColor(reward.color || '#A970FF');
+    setVolume(reward.volume ?? 100);
   }, [reward]);
 
   if (!reward) return null;
@@ -122,9 +151,9 @@ function EditRewardModal({ reward, onClose, onSave, returnFocus }) {
     <Modal
       open={!!reward}
       onClose={onClose}
-      title="Редактировать награду"
-      subtitle="Изменения уйдут в Twitch и сразу появятся в списке."
-      width={560}
+      title="Настройки карточки"
+      subtitle="Основные поля уйдут в Twitch, звук применяется сразу."
+      width={620}
       returnFocus={returnFocus}
       footer={
         <>
@@ -145,17 +174,68 @@ function EditRewardModal({ reward, onClose, onSave, returnFocus }) {
       }
     >
       <div className="modal-form">
-        <label className="modal-field">
-          <span>НАЗВАНИЕ</span>
-          <input className="ui-input" value={name} onChange={(event) => setName(event.target.value)} />
-        </label>
-        <label className="modal-field">
-          <span>ЦЕНА, БАЛЛОВ</span>
-          <input className="ui-input" value={cost} onChange={(event) => setCost(event.target.value.replace(/\D/g, ''))} inputMode="numeric" />
-        </label>
+        <div className="control-grid">
+          <label className="modal-field">
+            <span>НАЗВАНИЕ</span>
+            <input className="ui-input" value={name} onChange={(event) => setName(event.target.value)} />
+          </label>
+          <label className="modal-field">
+            <span>ЦЕНА, БАЛЛОВ</span>
+            <input className="ui-input" value={cost} onChange={(event) => setCost(event.target.value.replace(/\D/g, ''))} inputMode="numeric" />
+          </label>
+        </div>
         <div className="modal-field">
           <span>ЦВЕТ КАРТОЧКИ</span>
           <ColorPalette value={color} onChange={setColor} />
+        </div>
+
+        <div className="modal-divider" />
+        <div className="modal-field">
+          <span>ЗВУК</span>
+          {reward.file ? (
+            <div className="modal-sound-card">
+              <div className="modal-sound-head">
+                <div className="modal-sound-icon"><Icon name="play" size={14} /></div>
+                <div className="modal-sound-info">
+                  <div className="modal-sound-name">{reward.file}</div>
+                  <div className="modal-sound-path" title={reward.path}>{reward.path || 'Файл привязан к награде'}</div>
+                  <div className="modal-sound-meta">{reward.meta || 'аудиофайл'}</div>
+                </div>
+              </div>
+              <div className="modal-sound-actions">
+                <Button variant="secondary" size="sm" icon={<Icon name="play" size={12} />} onClick={() => onPreviewSound?.(reward)}>
+                  Прослушать
+                </Button>
+                <Button variant="secondary" size="sm" onClick={() => onChooseSound?.(reward)}>
+                  Заменить
+                </Button>
+                <Button variant="danger-ghost" size="sm" onClick={() => onRemoveSound?.(reward)}>
+                  Убрать
+                </Button>
+              </div>
+              <div className="modal-volume">
+                <SliderRow
+                  label="Громкость"
+                  value={volume}
+                  min={0}
+                  max={200}
+                  unit="%"
+                  onChange={(next) => {
+                    setVolume(next);
+                    onVolumeChange?.(reward, next);
+                  }}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="modal-sound-empty">
+              <span>Звук не выбран — награда будет беззвучной.</span>
+              <Button variant="secondary" size="sm" onClick={() => onChooseSound?.(reward)}>
+                Выбрать звук
+              </Button>
+            </div>
+          )}
+          <div className="modal-hint">Файл и громкость сохраняются отдельно, сразу после изменения.</div>
         </div>
       </div>
     </Modal>
@@ -254,21 +334,7 @@ export default function RewardsPage({ backend }) {
       document.removeEventListener('mousedown', onPointerDown);
     };
   }, [menuFor]);
-  const displayRewards = real
-    ? (realView?.rewards || []).map((reward) => ({
-        id: reward.id,
-        name: reward.title,
-        cost: reward.cost,
-        color: /^#[0-9a-f]{6}$/i.test(reward.color || '') ? reward.color : '#A3A3A3',
-        file: reward.file?.name || '',
-        meta: reward.file?.meta || '',
-        volume: reward.file ? Math.round((reward.file.volume ?? 1) * 100) : 0,
-        active: reward.available !== false,
-        playing: Boolean(reward.playing),
-        requiresInput: Boolean(reward.requires_input),
-        hasSound: Boolean(reward.has_sound),
-      }))
-    : rewards;
+  const displayRewards = real ? (realView?.rewards || []).map(mapReward) : rewards;
 
   const counts = {
     all: displayRewards.length,
@@ -371,7 +437,9 @@ export default function RewardsPage({ backend }) {
   async function chooseSound(reward) {
     if (real) {
       try {
-        await backend.call('choose_sound', { rewardId: reward.id, title: reward.name });
+        const next = await backend.call('choose_sound', { rewardId: reward.id, title: reward.name });
+        const updated = next?.rewards?.find((item) => item.id === reward.id);
+        if (updated && editTarget?.id === reward.id) setEditTarget(mapReward(updated));
         notify('Звук выбран');
       } catch (error) {
         notify(`Не удалось выбрать звук: ${error}`);
@@ -384,7 +452,9 @@ export default function RewardsPage({ backend }) {
   async function removeSound(reward) {
     if (real) {
       try {
-        await backend.call('clear_sound', { rewardId: reward.id });
+        const next = await backend.call('clear_sound', { rewardId: reward.id });
+        const updated = next?.rewards?.find((item) => item.id === reward.id);
+        if (updated && editTarget?.id === reward.id) setEditTarget(mapReward(updated));
         notify('Звук убран');
       } catch (error) {
         notify(`Не удалось убрать звук: ${error}`);
@@ -413,7 +483,9 @@ export default function RewardsPage({ backend }) {
   async function changeVolume(reward, percent) {
     if (!real) return;
     try {
-      await backend.call('set_sound_volume', { rewardId: reward.id, volume: percent / 100 });
+      const next = await backend.call('set_sound_volume', { rewardId: reward.id, volume: percent / 100 });
+      const updated = next?.rewards?.find((item) => item.id === reward.id);
+      if (updated && editTarget?.id === reward.id) setEditTarget(mapReward(updated));
     } catch (error) {
       notify(String(error));
     }
@@ -492,75 +564,90 @@ export default function RewardsPage({ backend }) {
               <div className="reward-name-wrap">
                 <h3>{reward.name}</h3>
                 <div className="reward-meta">
-                  {reward.cost} баллов · {reward.active ? 'АКТИВНА' : 'ВЫКЛЮЧЕНА'}
-                  {reward.playing ? ' · играет' : ''}
+                  {reward.cost} баллов
+                  {reward.requiresInput ? ' · нужен текст' : ''}
                 </div>
               </div>
-              <button
-                className="icon-ghost"
-                title="Действия"
-                aria-label={`Действия с наградой ${reward.name}`}
-                onClick={(event) => {
-                  if (menuFor === reward.id) {
-                    setMenuFor(null);
-                    return;
-                  }
-                  menuTriggerRef.current = event.currentTarget;
-                  const card = event.currentTarget.closest('.reward-card');
-                  const rect = card?.getBoundingClientRect();
-                  setMenuAbove(Boolean(rect && rect.bottom + 150 > window.innerHeight));
-                  setMenuFor(reward.id);
-                }}
-              >
-                <Icon name="dots" />
-              </button>
+              <div className="reward-card__right">
+                <span className={`reward-status${reward.playing ? ' is-playing' : reward.active ? ' is-active' : ' is-off'}`}>
+                  {reward.playing ? 'играет' : reward.active ? 'активна' : 'выключена'}
+                </span>
+                <button
+                  className="icon-ghost"
+                  title="Настройки карточки"
+                  aria-label={`Настройки карточки ${reward.name}`}
+                  onClick={(event) => {
+                    if (menuFor === reward.id) {
+                      setMenuFor(null);
+                      return;
+                    }
+                    menuTriggerRef.current = event.currentTarget;
+                    const card = event.currentTarget.closest('.reward-card');
+                    const rect = card?.getBoundingClientRect();
+                    setMenuAbove(Boolean(rect && rect.bottom + 150 > window.innerHeight));
+                    setMenuFor(reward.id);
+                  }}
+                >
+                  <Icon name="dots" />
+                </button>
+              </div>
             </div>
-
-            {reward.music ? <div className="music-flag">♪ ★</div> : null}
 
             {menuFor === reward.id ? (
               <div className={`reward-menu${menuAbove ? ' is-above' : ''}`} role="menu">
-                <button role="menuitem" tabIndex={-1} onClick={() => { setMenuFor(null); setEditTarget(reward); }}>Редактировать</button>
-                <button role="menuitem" tabIndex={-1} onClick={() => { setMenuFor(null); chooseSound(reward); }}>Заменить звук</button>
-                <button role="menuitem" tabIndex={-1} onClick={() => { setMenuFor(null); removeSound(reward); }}>Убрать звук</button>
+                <button role="menuitem" tabIndex={-1} onClick={() => { setMenuFor(null); setEditTarget(reward); }}>Настройки карточки</button>
+                {reward.file ? (
+                  <button role="menuitem" tabIndex={-1} onClick={() => { setMenuFor(null); previewSound(reward); }}>Прослушать</button>
+                ) : null}
                 <button role="menuitem" tabIndex={-1} className="is-danger" onClick={() => { setMenuFor(null); setDeleteTarget(reward); }}>
                   Удалить награду
                 </button>
               </div>
             ) : null}
 
-            <div className="sound-row">
-              {reward.file ? (
-                <>
-                  <button className="play-button" onClick={() => previewSound(reward)} aria-label={`Прослушать ${reward.name}`}>
-                    <Icon name="play" size={12} />
-                  </button>
-                  <span className="sound-name">{reward.file}</span>
-                  <span className="sound-format">{reward.meta?.split('·')[0]?.trim() || 'MP3'}</span>
-                </>
-              ) : (
-                <span className="sound-empty">Звук не выбран</span>
-              )}
-            </div>
-
             {reward.file ? (
-              <div className="volume-row">
-                <input
-                  className="ui-range card-volume"
-                  type="range"
-                  min={0}
-                  max={200}
-                  step={1}
-                  value={reward.volume}
-                  aria-label={`Громкость ${reward.name}`}
-                  onChange={(event) => changeVolume(reward, Number(event.target.value))}
-                />
-                <span>{reward.volume}%</span>
-              </div>
+              <>
+                <div className="card-sound">
+                  <button
+                    className="play-large"
+                    onClick={() => previewSound(reward)}
+                    aria-label={`Прослушать ${reward.name}`}
+                    title="Прослушать"
+                  >
+                    <Icon name="play" size={20} />
+                  </button>
+                  <div className="card-sound-info">
+                    <div className="card-sound-title">Звук привязан</div>
+                    <div className="card-sound-meta">
+                      {reward.meta || 'аудиофайл'} · нажмите, чтобы прослушать
+                    </div>
+                  </div>
+                  {reward.music ? <span className="card-flag">♪</span> : null}
+                </div>
+                <div className="volume-row card-volume-row">
+                  <input
+                    className="ui-range card-volume"
+                    type="range"
+                    min={0}
+                    max={200}
+                    step={1}
+                    value={reward.volume}
+                    aria-label={`Громкость ${reward.name}`}
+                    onChange={(event) => changeVolume(reward, Number(event.target.value))}
+                  />
+                  <span>{reward.volume}%</span>
+                </div>
+              </>
             ) : (
-              <Button variant="secondary" size="sm" full onClick={() => chooseSound(reward)}>
-                Выбрать звук
-              </Button>
+              <div className="card-sound-empty">
+                <div>
+                  <div className="card-sound-title">Звук не выбран</div>
+                  <div className="card-sound-meta">Награда будет беззвучной</div>
+                </div>
+                <Button variant="secondary" size="sm" onClick={() => chooseSound(reward)}>
+                  Выбрать звук
+                </Button>
+              </div>
             )}
           </article>
         ))}
@@ -583,6 +670,10 @@ export default function RewardsPage({ backend }) {
         onClose={() => setEditTarget(null)}
         onSave={saveReward}
         returnFocus={menuTriggerRef.current}
+        onChooseSound={chooseSound}
+        onRemoveSound={removeSound}
+        onPreviewSound={previewSound}
+        onVolumeChange={changeVolume}
       />
       <DeleteRewardModal reward={deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={confirmDelete} returnFocus={menuTriggerRef.current} />
       {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}

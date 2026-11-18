@@ -148,12 +148,10 @@ fn main() {
             let close_to_tray = state.close_to_tray();
             app.manage(state);
 
-            let data_dir = app
-                .path()
-                .app_local_data_dir()
-                .map_err(|err| -> Box<dyn std::error::Error> { Box::new(err) })?
-                .join("EBWebView");
-            std::fs::create_dir_all(&data_dir)?;
+            // WebView2 сам создаёт профиль в стандартной папке приложения.
+            // Свой data_directory здесь не задаём: после аварийного завершения
+            // WebView2 иногда не может создать/открыть вложенную папку.
+            let _ = app.path().app_local_data_dir();
 
             let geometry = load_geometry();
             let (monitor_w, monitor_h, monitor_scale) = primary_monitor_logical(app);
@@ -174,8 +172,7 @@ fn main() {
             .resizable(true)
             .maximizable(true)
             .minimizable(true)
-            .decorations(false)
-            .data_directory(data_dir);
+            .decorations(false);
             if let Some(geometry) = &geometry {
                 let width = (geometry.width as f64).clamp(1600.0, max_w);
                 let height = (geometry.height as f64).clamp(1000.0, max_h);

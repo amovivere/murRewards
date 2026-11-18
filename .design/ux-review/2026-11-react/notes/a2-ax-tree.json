@@ -1,0 +1,479 @@
+{
+  "roleCounts": {
+    "button": 66,
+    "textbox": 1
+  },
+  "interactive": [
+    {
+      "role": "button",
+      "name": "—",
+      "ignored": false,
+      "description": "Свернуть"
+    },
+    {
+      "role": "button",
+      "name": "▢",
+      "ignored": false,
+      "description": "Развернуть"
+    },
+    {
+      "role": "button",
+      "name": "×",
+      "ignored": false,
+      "description": "Закрыть"
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Создать награду",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Плитка",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Список",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Все награды",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Остановить всё",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Все 20",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Со звуком 9",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Без звука 11",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Играет 0",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выключенные 9",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Награды",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Музыка",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Оверлей",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Настройки",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Журнал",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Все системы работают ›",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "textbox",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Действия",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Выбрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Создать награду",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Отмена",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Проверить звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Удалить",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Убрать звук",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "Недоступно",
+      "ignored": false,
+      "description": ""
+    }
+  ],
+  "unnamedCount": 11,
+  "unnamed": [
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "textbox",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    },
+    {
+      "role": "button",
+      "name": "",
+      "ignored": false,
+      "description": ""
+    }
+  ]
+}

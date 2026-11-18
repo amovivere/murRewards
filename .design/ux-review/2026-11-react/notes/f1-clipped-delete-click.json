@@ -1,0 +1,18 @@
+{
+  "target": {
+    "text": "Удалить награду",
+    "x": 533,
+    "y": 443,
+    "rect": {
+      "x": 388,
+      "y": 428,
+      "w": 291,
+      "h": 30
+    }
+  },
+  "afterClick": {
+    "modal": false,
+    "menu": true,
+    "elementAtPoint": "ARTICLE.reward-card"
+  }
+}

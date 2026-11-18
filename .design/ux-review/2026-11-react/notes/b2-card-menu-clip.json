@@ -1,0 +1,42 @@
+{
+  "cardBottom": 425,
+  "menuRect": {
+    "x": 382,
+    "y": 332,
+    "w": 303,
+    "h": 132
+  },
+  "items": [
+    {
+      "text": "Редактировать",
+      "top": 338,
+      "bottom": 368,
+      "visibleInCard": true,
+      "clippedByCard": false
+    },
+    {
+      "text": "Заменить звук",
+      "top": 368,
+      "bottom": 398,
+      "visibleInCard": true,
+      "clippedByCard": false
+    },
+    {
+      "text": "Убрать звук",
+      "top": 398,
+      "bottom": 428,
+      "visibleInCard": false,
+      "clippedByCard": true
+    },
+    {
+      "text": "Удалить награду",
+      "top": 428,
+      "bottom": 458,
+      "visibleInCard": false,
+      "clippedByCard": true
+    }
+  ],
+  "cardOverflow": "hidden",
+  "menuOverflow": "visible",
+  "pointerEvents": "auto"
+}

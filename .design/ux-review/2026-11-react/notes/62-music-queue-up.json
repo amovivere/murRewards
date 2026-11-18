@@ -1,0 +1,27 @@
+{
+  "before": [
+    {
+      "id": "manual-1795004403519",
+      "video_id": "J7NFL-eOxiQ",
+      "title": "VILLIAN, madk1d - ДИНАСТИЯ (official music video)",
+      "user_login": "manual",
+      "channel": "VILLIAN",
+      "duration_sec": 165,
+      "state": "playing",
+      "prefetched": false
+    }
+  ],
+  "after": [
+    {
+      "id": "manual-1795004403519",
+      "video_id": "J7NFL-eOxiQ",
+      "title": "VILLIAN, madk1d - ДИНАСТИЯ (official music video)",
+      "user_login": "manual",
+      "channel": "VILLIAN",
+      "duration_sec": 165,
+      "state": "playing",
+      "prefetched": false
+    }
+  ],
+  "toast": null
+}

@@ -1,0 +1,135 @@
+[
+  {
+    "name": "focus-health",
+    "desc": {
+      "tag": "BUTTON",
+      "cls": "health-chip",
+      "text": "Все системы работают ›",
+      "placeholder": "",
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "bg": "rgb(18, 18, 21)",
+      "color": "rgb(217, 217, 223)",
+      "rect": {
+        "x": 377,
+        "y": 16,
+        "w": 187,
+        "h": 34
+      }
+    }
+  },
+  {
+    "name": "focus-pagedots",
+    "desc": {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--ghost ui-button--md",
+      "text": "",
+      "placeholder": "",
+      "outline": "solid 2px rgb(201, 167, 255)",
+      "shadow": "none",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(208, 208, 216)",
+      "rect": {
+        "x": 1457,
+        "y": 89,
+        "w": 48,
+        "h": 34
+      }
+    }
+  },
+  {
+    "name": "focus-search",
+    "desc": {
+      "tag": "INPUT",
+      "cls": "",
+      "text": "",
+      "placeholder": "Поиск награды",
+      "outline": "none 3px rgb(231, 231, 236)",
+      "shadow": "none",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(231, 231, 236)",
+      "rect": {
+        "x": 419,
+        "y": 203,
+        "w": 309,
+        "h": 19
+      }
+    }
+  },
+  {
+    "name": "focus-viewswitch",
+    "desc": {
+      "tag": "BUTTON",
+      "cls": "is-active",
+      "text": "Плитка",
+      "placeholder": "",
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "bg": "rgb(38, 38, 44)",
+      "color": "rgb(255, 255, 255)",
+      "rect": {
+        "x": 755,
+        "y": 198,
+        "w": 81,
+        "h": 28
+      }
+    }
+  },
+  {
+    "name": "focus-filterpill",
+    "desc": {
+      "tag": "BUTTON",
+      "cls": "filter-pill is-active",
+      "text": "Все 20",
+      "placeholder": "",
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "bg": "rgb(242, 242, 245)",
+      "color": "rgb(10, 10, 11)",
+      "rect": {
+        "x": 381,
+        "y": 246,
+        "w": 64,
+        "h": 29
+      }
+    }
+  },
+  {
+    "name": "focus-carddots",
+    "desc": {
+      "tag": "BUTTON",
+      "cls": "icon-ghost",
+      "text": "",
+      "placeholder": "",
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "bg": "rgba(0, 0, 0, 0)",
+      "color": "rgb(116, 116, 127)",
+      "rect": {
+        "x": 657,
+        "y": 304,
+        "w": 24,
+        "h": 24
+      }
+    }
+  },
+  {
+    "name": "focus-play",
+    "desc": {
+      "tag": "BUTTON",
+      "cls": "play-button",
+      "text": "",
+      "placeholder": "",
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "bg": "rgb(32, 32, 38)",
+      "color": "rgb(220, 220, 227)",
+      "rect": {
+        "x": 402,
+        "y": 353,
+        "w": 19,
+        "h": 19
+      }
+    }
+  }
+]

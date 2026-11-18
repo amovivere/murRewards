@@ -1,0 +1,236 @@
+{
+  "rewards": [
+    {
+      "cls": "ui-button ui-button--ghost ui-button--md",
+      "rect": {
+        "x": 1457,
+        "y": 89,
+        "w": 48,
+        "h": 34
+      }
+    },
+    {
+      "cls": "play-button",
+      "rect": {
+        "x": 402,
+        "y": 353,
+        "w": 19,
+        "h": 19
+      }
+    },
+    {
+      "cls": "play-button",
+      "rect": {
+        "x": 727,
+        "y": 353,
+        "w": 19,
+        "h": 19
+      }
+    },
+    {
+      "cls": "play-button",
+      "rect": {
+        "x": 402,
+        "y": 643,
+        "w": 19,
+        "h": 19
+      }
+    },
+    {
+      "cls": "play-button",
+      "rect": {
+        "x": 1379,
+        "y": 643,
+        "w": 19,
+        "h": 19
+      }
+    },
+    {
+      "cls": "play-button",
+      "rect": {
+        "x": 1053,
+        "y": 788,
+        "w": 19,
+        "h": 19
+      }
+    },
+    {
+      "cls": "play-button",
+      "rect": {
+        "x": 1379,
+        "y": 788,
+        "w": 19,
+        "h": 19
+      }
+    },
+    {
+      "cls": "play-button",
+      "rect": {
+        "x": 402,
+        "y": 934,
+        "w": 19,
+        "h": 19
+      }
+    },
+    {
+      "cls": "play-button",
+      "rect": {
+        "x": 727,
+        "y": 934,
+        "w": 19,
+        "h": 19
+      }
+    },
+    {
+      "cls": "play-button",
+      "rect": {
+        "x": 1053,
+        "y": 934,
+        "w": 19,
+        "h": 19
+      }
+    }
+  ],
+  "music": [
+    {
+      "cls": "ui-button ui-button--ghost ui-button--md",
+      "rect": {
+        "x": 1310,
+        "y": 89,
+        "w": 48,
+        "h": 34
+      }
+    },
+    {
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "rect": {
+        "x": 1420,
+        "y": 270,
+        "w": 36,
+        "h": 28
+      }
+    },
+    {
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "rect": {
+        "x": 1463,
+        "y": 270,
+        "w": 36,
+        "h": 28
+      }
+    },
+    {
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "rect": {
+        "x": 1506,
+        "y": 270,
+        "w": 36,
+        "h": 28
+      }
+    }
+  ],
+  "overlay": [
+    {
+      "cls": "ui-switch is-on",
+      "rect": {
+        "x": 1177,
+        "y": 436,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "cls": "ui-switch is-on",
+      "rect": {
+        "x": 1177,
+        "y": 494,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "cls": "ui-switch is-on",
+      "rect": {
+        "x": 1177,
+        "y": 552,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "cls": "ui-switch",
+      "rect": {
+        "x": 1177,
+        "y": 610,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "cls": "ui-switch",
+      "rect": {
+        "x": 1177,
+        "y": 1574,
+        "w": 40,
+        "h": 22
+      }
+    }
+  ],
+  "settings": [
+    {
+      "cls": "ui-switch",
+      "rect": {
+        "x": 1178,
+        "y": 562,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "cls": "ui-switch is-on",
+      "rect": {
+        "x": 1178,
+        "y": 630,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "cls": "ui-switch",
+      "rect": {
+        "x": 1178,
+        "y": 858,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "cls": "ui-switch is-on",
+      "rect": {
+        "x": 1178,
+        "y": 920,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "cls": "ui-switch",
+      "rect": {
+        "x": 1178,
+        "y": 981,
+        "w": 40,
+        "h": 22
+      }
+    },
+    {
+      "cls": "ui-switch is-on",
+      "rect": {
+        "x": 1178,
+        "y": 1036,
+        "w": 40,
+        "h": 22
+      }
+    }
+  ],
+  "log": []
+}

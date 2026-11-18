@@ -1,0 +1,9 @@
+{
+  "activeIsFilter": "filter-pill is-active",
+  "beforeCount": 20,
+  "afterCount": {
+    "cards": 20,
+    "activeFilter": "Все 20",
+    "focus": "filter-pill is-active"
+  }
+}

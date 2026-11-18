@@ -1,0 +1,37 @@
+[
+  {
+    "label": "Все 20",
+    "countText": "20",
+    "visible": 20,
+    "empty": false,
+    "emptyText": null
+  },
+  {
+    "label": "Со звуком 9",
+    "countText": "9",
+    "visible": 9,
+    "empty": false,
+    "emptyText": null
+  },
+  {
+    "label": "Без звука 11",
+    "countText": "11",
+    "visible": 11,
+    "empty": false,
+    "emptyText": null
+  },
+  {
+    "label": "Играет 0",
+    "countText": "0",
+    "visible": 0,
+    "empty": true,
+    "emptyText": "Ничего не найдено Сбросьте фильтр или создайте новую награду."
+  },
+  {
+    "label": "Выключенные 9",
+    "countText": "9",
+    "visible": 9,
+    "empty": false,
+    "emptyText": null
+  }
+]

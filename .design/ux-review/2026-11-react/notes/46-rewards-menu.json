@@ -1,0 +1,71 @@
+{
+  "firstCardRect": {
+    "x": 381,
+    "y": 291,
+    "w": 314,
+    "h": 133
+  },
+  "menu": {
+    "open": true,
+    "cardRect": {
+      "x": 381,
+      "y": 291,
+      "w": 314,
+      "h": 133
+    },
+    "menuRect": {
+      "x": 382,
+      "y": 332,
+      "w": 303,
+      "h": 132
+    },
+    "overflow": {
+      "belowCard": true,
+      "rightOutside": false
+    },
+    "items": [
+      {
+        "text": "Редактировать",
+        "cls": "",
+        "rect": {
+          "x": 388,
+          "y": 338,
+          "w": 291,
+          "h": 30
+        }
+      },
+      {
+        "text": "Заменить звук",
+        "cls": "",
+        "rect": {
+          "x": 388,
+          "y": 368,
+          "w": 291,
+          "h": 30
+        }
+      },
+      {
+        "text": "Убрать звук",
+        "cls": "",
+        "rect": {
+          "x": 388,
+          "y": 398,
+          "w": 291,
+          "h": 30
+        }
+      },
+      {
+        "text": "Удалить награду",
+        "cls": "is-danger",
+        "rect": {
+          "x": 388,
+          "y": 428,
+          "w": 291,
+          "h": 30
+        }
+      }
+    ]
+  },
+  "menuAfterOutside": true,
+  "menuAfterEsc": true
+}

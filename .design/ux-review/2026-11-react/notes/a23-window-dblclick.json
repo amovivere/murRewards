@@ -1,0 +1,26 @@
+{
+  "point": {
+    "x": 1101,
+    "y": 33
+  },
+  "after": {
+    "tag": "after-doubleclick",
+    "innerW": 1827,
+    "innerH": 1107,
+    "shell": {
+      "left": 114,
+      "top": 0,
+      "w": 1600,
+      "h": 1000
+    },
+    "margins": {
+      "left": 114,
+      "right": 114,
+      "top": 0,
+      "bottom": 107
+    },
+    "contentClientH": 900,
+    "sidebarH": 998,
+    "bodyBg": "rgb(5, 5, 6)"
+  }
+}

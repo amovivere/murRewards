@@ -1,0 +1,33 @@
+{
+  "before": {
+    "switches": [
+      "true",
+      "true",
+      "true",
+      "true"
+    ],
+    "ranges": [
+      "10",
+      "8",
+      "0"
+    ]
+  },
+  "immediate": {
+    "switches": [
+      "false",
+      "true",
+      "true",
+      "true"
+    ]
+  },
+  "afterPoll": {
+    "switches": [
+      "true",
+      "true",
+      "true",
+      "true"
+    ]
+  },
+  "sliderImmediate": "25",
+  "sliderAfterPoll": "10"
+}

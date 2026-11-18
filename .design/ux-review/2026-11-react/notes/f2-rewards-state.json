@@ -1,0 +1,12 @@
+{
+  "beforeSwitch": {
+    "filter": "Со звуком 9",
+    "cards": 9,
+    "scrollTop": 0
+  },
+  "afterSwitch": {
+    "filter": "Все 20",
+    "cards": 20,
+    "scrollTop": 0
+  }
+}

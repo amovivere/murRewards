@@ -1,0 +1,16 @@
+{
+  "modes": [
+    {
+      "text": "Стационарный",
+      "cls": "ui-button ui-button--secondary ui-button--sm is-full"
+    },
+    {
+      "text": "Активный чат",
+      "cls": "ui-button ui-button--primary ui-button--sm is-full"
+    },
+    {
+      "text": "+3",
+      "cls": "ui-button ui-button--secondary ui-button--sm"
+    }
+  ]
+}

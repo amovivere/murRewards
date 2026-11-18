@@ -1,0 +1,211 @@
+{
+  "title": "Музыка",
+  "subtitle": "Треки по заявке из чата · команда !трек",
+  "panels": [
+    {
+      "title": "Сейчас играет",
+      "rect": {
+        "x": 381,
+        "y": 194,
+        "w": 1306,
+        "h": 175
+      },
+      "text": "Сейчас играет VILLIAN, madk1d - ДИНАСТИЯ (official music video) · заказал @manual · YouTube готово VILLIAN, madk1d - ДИНАСТИЯ (official music video) @manual · YouTube · 2:45 Пропустить трек 0:10 2:45"
+    },
+    {
+      "title": "Очередь",
+      "rect": {
+        "x": 381,
+        "y": 385,
+        "w": 742,
+        "h": 185
+      },
+      "text": "Очередь 1 из 10 Очистить 1 VILLIAN, madk1d - ДИНАСТИЯ (official music video) @manual · 2:45 · playing ↑ × В очередь"
+    },
+    {
+      "title": "OBS — строка «Сейчас играет»",
+      "rect": {
+        "x": 1137,
+        "y": 385,
+        "w": 550,
+        "h": 130
+      },
+      "text": "OBS — строка «Сейчас играет» Настроить http://127.0.0.1:8770/overlay Показать сейчас Строка играет"
+    },
+    {
+      "title": "Состояние",
+      "rect": {
+        "x": 1137,
+        "y": 529,
+        "w": 550,
+        "h": 133
+      },
+      "text": "Состояние yt-dlp 2026.10.26 — готов !трек: команда включена Оверлей: готов"
+    }
+  ],
+  "player": {
+    "rect": {
+      "x": 400,
+      "y": 264,
+      "w": 1268,
+      "h": 88
+    },
+    "cover": {
+      "x": 400,
+      "y": 264,
+      "w": 88,
+      "h": 88
+    },
+    "title": "VILLIAN, madk1d - ДИНАСТИЯ (official music video)",
+    "meta": "@manual · YouTube · 2:45",
+    "controls": [
+      {
+        "title": "",
+        "text": "",
+        "rect": {
+          "x": 1420,
+          "y": 270,
+          "w": 36,
+          "h": 28
+        },
+        "cls": "ui-button ui-button--secondary ui-button--sm",
+        "disabled": false
+      },
+      {
+        "title": "",
+        "text": "",
+        "rect": {
+          "x": 1463,
+          "y": 270,
+          "w": 36,
+          "h": 28
+        },
+        "cls": "ui-button ui-button--secondary ui-button--sm",
+        "disabled": false
+      },
+      {
+        "title": "",
+        "text": "",
+        "rect": {
+          "x": 1506,
+          "y": 270,
+          "w": 36,
+          "h": 28
+        },
+        "cls": "ui-button ui-button--secondary ui-button--sm",
+        "disabled": false
+      },
+      {
+        "title": "",
+        "text": "Пропустить трек",
+        "rect": {
+          "x": 1549,
+          "y": 270,
+          "w": 118,
+          "h": 28
+        },
+        "cls": "ui-button ui-button--ghost ui-button--sm",
+        "disabled": false
+      }
+    ],
+    "progress": {
+      "rect": {
+        "x": 504,
+        "y": 330,
+        "w": 1164,
+        "h": 15
+      },
+      "track": {
+        "x": 534,
+        "y": 336,
+        "w": 1104,
+        "h": 4
+      },
+      "fill": "6.06061%",
+      "knob": "6.06061%",
+      "label": "0:10 2:45"
+    }
+  },
+  "queue": {
+    "count": 1,
+    "rows": [
+      {
+        "rect": {
+          "x": 400,
+          "y": 454,
+          "w": 704,
+          "h": 50
+        },
+        "text": "1 VILLIAN, madk1d - ДИНАСТИЯ (official music video) @manual · 2:45 · playing ↑ ×",
+        "buttons": [
+          {
+            "title": "Выше",
+            "text": "↑",
+            "rect": {
+              "x": 1037,
+              "y": 467,
+              "w": 24,
+              "h": 24
+            }
+          },
+          {
+            "title": "Убрать",
+            "text": "×",
+            "rect": {
+              "x": 1071,
+              "y": 467,
+              "w": 24,
+              "h": 24
+            }
+          }
+        ]
+      }
+    ],
+    "inputPlaceholder": "Вставьте ссылку YouTube и нажмите Enter — трек встанет в очередь",
+    "inputRect": {
+      "x": 438,
+      "y": 524,
+      "w": 566,
+      "h": 18
+    }
+  },
+  "obsPanel": "http://127.0.0.1:8770/overlay",
+  "status": [
+    "yt-dlp 2026.10.26 — готов",
+    "!трек: команда включена",
+    "Оверлей: готов"
+  ],
+  "pageButtons": [
+    {
+      "text": "",
+      "rect": {
+        "x": 1310,
+        "y": 89,
+        "w": 48,
+        "h": 34
+      }
+    },
+    {
+      "text": "Открыть YouTube",
+      "rect": {
+        "x": 1368,
+        "y": 89,
+        "w": 163,
+        "h": 34
+      }
+    },
+    {
+      "text": "Настроить музыку",
+      "rect": {
+        "x": 1542,
+        "y": 89,
+        "w": 145,
+        "h": 34
+      }
+    }
+  ],
+  "scroll": {
+    "h": 900,
+    "client": 900
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "origChannel": "",
+  "dirtyState": {
+    "channel": "unsaved-test",
+    "status": "Есть несохранённые изменения"
+  },
+  "afterReturn": {
+    "channel": "",
+    "status": "Сохранено"
+  }
+}

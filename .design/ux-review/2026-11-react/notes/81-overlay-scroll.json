@@ -1,0 +1,26 @@
+{
+  "contentInfo": {
+    "scrollH": 2106,
+    "clientH": 900
+  },
+  "sticky": {
+    "top": 89,
+    "rect": {
+      "x": 1252,
+      "y": 89,
+      "w": 420,
+      "h": 814
+    },
+    "sticky": "sticky"
+  },
+  "stickyBottom": {
+    "top": 89,
+    "rect": {
+      "x": 1252,
+      "y": 89,
+      "w": 420,
+      "h": 814
+    },
+    "scrollTop": 1206
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "beforeSearch": 20,
+  "search": {
+    "inputValue": "ставка",
+    "cards": 20,
+    "filtered": 20
+  }
+}

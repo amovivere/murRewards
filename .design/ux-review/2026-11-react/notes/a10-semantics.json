@@ -1,0 +1,21 @@
+{
+  "activeNav": {
+    "text": "Награды",
+    "ariaCurrent": null,
+    "ariaSelected": null,
+    "role": null
+  },
+  "navRole": null,
+  "healthChip": {
+    "ariaExpanded": null,
+    "ariaHaspopup": null,
+    "controls": null
+  },
+  "modalBackdropRole": null,
+  "htmlLang": "ru",
+  "buttonsInSidebar": 5,
+  "headings": {
+    "h1": 1,
+    "h2": 1
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "player0": {
+    "loaded": true,
+    "paused": true,
+    "position_sec": 10,
+    "duration_sec": 165,
+    "error": null
+  },
+  "after1": {
+    "loaded": true,
+    "paused": false,
+    "position_sec": 11,
+    "duration_sec": 165,
+    "error": null
+  },
+  "after2": {
+    "loaded": true,
+    "paused": true,
+    "position_sec": 11,
+    "duration_sec": 165,
+    "error": null
+  },
+  "uiAfter": {
+    "toast": null,
+    "playLabel": null
+  }
+}

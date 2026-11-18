@@ -1,0 +1,28 @@
+{
+  "playInfo": {
+    "rect": {
+      "x": 402,
+      "y": 353,
+      "w": 19,
+      "h": 19
+    },
+    "title": "",
+    "aria": null,
+    "name": "Ты новичок?"
+  },
+  "toast": {
+    "text": "Звук: newbie.mp3",
+    "rect": {
+      "x": 847,
+      "y": 1039,
+      "w": 133,
+      "h": 38
+    },
+    "z": "50",
+    "ariaLive": null,
+    "role": null,
+    "bg": "rgb(28, 28, 33)",
+    "color": "rgb(236, 236, 242)",
+    "fontSize": "12.5px"
+  }
+}

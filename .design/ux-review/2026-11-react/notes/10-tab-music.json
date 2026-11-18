@@ -1,0 +1,22 @@
+{
+  "tab": "music",
+  "pageTitle": "Музыка",
+  "pageSub": "Треки по заявке из чата · команда !трек",
+  "contentScroll": {
+    "scrollH": 900,
+    "clientH": 900,
+    "scrollTop": 0
+  },
+  "pageRect": {
+    "x": 380.5,
+    "y": 89,
+    "w": 1306,
+    "h": 600.3125
+  },
+  "text": "МУЗЫКА · YOUTUBE\nМузыка\nТреки по заявке из чата · команда !трек\nОткрыть YouTube\nНастроить музыку\nСейчас играет\nVILLIAN, madk1d - ДИНАСТИЯ (official music video) · заказал @manual · YouTube\nготово\nVILLIAN, madk1d - ДИНАСТИЯ (official music video)\n@manual · YouTube · 2:45\nПропустить трек\n0:10\n2:45\nОчередь\n1 из 10\nОчистить\n1\nVILLIAN, madk1d - ДИНАСТИЯ (official music video)\n@manual · 2:45 · playing\n↑\n×\nВ очередь\nOBS — строка «Сейчас играет»\nНастроить\nhttp://127.0.0.1:8770/overlay\nПоказать сейчас\nСтрока играет\nСостояние\nyt-dlp 2026.10.26 — готов\n!трек: команда включена\nОверлей: готов",
+  "counts": {
+    "buttons": 22,
+    "inputs": 1,
+    "panels": 4
+  }
+}

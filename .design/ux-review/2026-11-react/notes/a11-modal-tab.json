@@ -1,0 +1,306 @@
+{
+  "focusStart": {
+    "tag": "INPUT",
+    "cls": "ui-input",
+    "id": "",
+    "text": "",
+    "role": null,
+    "aria": null,
+    "title": null,
+    "placeholder": "Например, «Сказать слово»",
+    "rect": {
+      "x": 635,
+      "y": 353,
+      "w": 558,
+      "h": 34
+    },
+    "outline": "none 3px rgb(232, 232, 237)",
+    "shadow": "rgba(139, 0, 255, 0.16) 0px 0px 0px 3px",
+    "tabIndex": 0
+  },
+  "modalTab": [
+    {
+      "tag": "INPUT",
+      "cls": "ui-input",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": null,
+      "placeholder": "",
+      "rect": {
+        "x": 635,
+        "y": 421,
+        "w": 558,
+        "h": 34
+      },
+      "outline": "none 3px rgb(232, 232, 237)",
+      "shadow": "rgba(139, 0, 255, 0.15) 0px 0px 0px 2.7587px",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "TEXTAREA",
+      "cls": "ui-input modal-textarea",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": null,
+      "placeholder": "Что получит зритель и как это работает",
+      "rect": {
+        "x": 635,
+        "y": 489,
+        "w": 558,
+        "h": 72
+      },
+      "outline": "none 3px rgb(232, 232, 237)",
+      "shadow": "rgba(139, 0, 255, 0.12) 0px 0px 0px 2.25836px",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": "#F55A5F",
+      "placeholder": "",
+      "rect": {
+        "x": 635,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": "#4E7CFF",
+      "placeholder": "",
+      "rect": {
+        "x": 669,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color is-active",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": "#A970FF",
+      "placeholder": "",
+      "rect": {
+        "x": 703,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": "#2DD4BF",
+      "placeholder": "",
+      "rect": {
+        "x": 737,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": "#F5C97B",
+      "placeholder": "",
+      "rect": {
+        "x": 771,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": "#EC4899",
+      "placeholder": "",
+      "rect": {
+        "x": 805,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": "#00C8FF",
+      "placeholder": "",
+      "rect": {
+        "x": 839,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": "#A3A3A3",
+      "placeholder": "",
+      "rect": {
+        "x": 873,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": null,
+      "placeholder": "",
+      "rect": {
+        "x": 908,
+        "y": 596,
+        "w": 24,
+        "h": 24
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": null,
+      "placeholder": "",
+      "rect": {
+        "x": 639,
+        "y": 701,
+        "w": 16,
+        "h": 16
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "id": "",
+      "text": "",
+      "role": null,
+      "aria": null,
+      "title": null,
+      "placeholder": "",
+      "rect": {
+        "x": 639,
+        "y": 732,
+        "w": 16,
+        "h": 16
+      },
+      "outline": "auto 1px rgb(16, 16, 16)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--md",
+      "id": "",
+      "text": "Отмена",
+      "role": null,
+      "aria": null,
+      "title": null,
+      "placeholder": "",
+      "rect": {
+        "x": 973,
+        "y": 812,
+        "w": 78,
+        "h": 34
+      },
+      "outline": "solid 2px rgb(201, 167, 255)",
+      "shadow": "none",
+      "tabIndex": 0,
+      "inside": true
+    },
+    {
+      "tag": "BODY"
+    }
+  ]
+}

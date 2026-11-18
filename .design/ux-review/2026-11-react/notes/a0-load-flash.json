@@ -1,0 +1,21 @@
+{
+  "flash1": {
+    "time": "280ms",
+    "hasMockSubtitle": true,
+    "rewardCards": 20,
+    "subtitle": "@goshanmurz · 20 наград · 9 со звуком · 11 без звука",
+    "bootText": "Reward Sounds\nStudio · 2K\nОСНОВНОЕ\nНаграды\nМузыка\nОверлей\nСИСТЕМА\nНастройки\nЖурнал\nверсия 1.7.0\nВсе системы работают\n›\nЗВУК\n29%\n—\n▢\n×\nTWITCH · CHANNEL POINTS\nНаграды\n\n@goshanmurz · 20 наград · 9 со зв"
+  },
+  "flash2": {
+    "time": "780ms",
+    "hasMockSubtitle": true,
+    "rewardCards": 20,
+    "subtitle": "@goshanmurz · 20 наград · 9 со звуком · 11 без звука"
+  },
+  "flash3": {
+    "time": "3000ms",
+    "hasMockSubtitle": true,
+    "rewardCards": 20,
+    "subtitle": "@goshanmurz · 20 наград · 9 со звуком · 11 без звука"
+  }
+}

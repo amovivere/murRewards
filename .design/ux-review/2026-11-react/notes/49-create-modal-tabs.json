@@ -1,0 +1,178 @@
+{
+  "disabledEmpty": true,
+  "afterType": {
+    "name": "Тест аудита",
+    "disabled": false
+  },
+  "costVal": "100123",
+  "tabOrder": [
+    {
+      "tag": "TEXTAREA",
+      "cls": "ui-input modal-textarea",
+      "text": "",
+      "placeholder": "Что получит зритель и как это работает",
+      "inModal": true,
+      "rect": {
+        "x": 635,
+        "y": 489,
+        "w": 558,
+        "h": 72
+      },
+      "outline": "none 3px rgb(232, 232, 237)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 635,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 669,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color is-active",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 703,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 737,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 771,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 805,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 839,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "modal-color",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 873,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 908,
+        "y": 596,
+        "w": 24,
+        "h": 24
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 639,
+        "y": 701,
+        "w": 16,
+        "h": 16
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "text": "",
+      "placeholder": "",
+      "inModal": true,
+      "rect": {
+        "x": 639,
+        "y": 732,
+        "w": 16,
+        "h": 16
+      },
+      "outline": "auto 1px rgb(16, 16, 16)"
+    }
+  ]
+}

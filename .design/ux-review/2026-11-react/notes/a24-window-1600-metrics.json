@@ -1,0 +1,24 @@
+{
+  "innerW": 1584,
+  "innerH": 991,
+  "shell": {
+    "x": 0,
+    "y": 0,
+    "w": 1600,
+    "h": 1000
+  },
+  "margins": {
+    "left": 0,
+    "right": -16,
+    "top": 0,
+    "bottom": -9
+  },
+  "content": {
+    "clientH": 900,
+    "scrollH": 1105,
+    "clientW": 1343
+  },
+  "bodyOverflow": "hidden",
+  "shellMargin": "0px -16px 0px 0px",
+  "shellRadius": "18px"
+}

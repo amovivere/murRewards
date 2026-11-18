@@ -1,0 +1,615 @@
+[
+  {
+    "i": 0,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Награды",
+    "rect": {
+      "x": 128.5,
+      "y": 111,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 1,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Музыка",
+    "rect": {
+      "x": 128.5,
+      "y": 150,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 2,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Оверлей",
+    "rect": {
+      "x": 128.5,
+      "y": 189,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 3,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Настройки",
+    "rect": {
+      "x": 128.5,
+      "y": 885,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 4,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item is-active",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Журнал",
+    "rect": {
+      "x": 128.5,
+      "y": 924,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 5,
+    "tag": "button",
+    "type": "",
+    "cls": "health-chip",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Все системы работают›",
+    "rect": {
+      "x": 376.5,
+      "y": 15.5,
+      "w": 187.3,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(217, 217, 223)",
+      "bg": "rgb(18, 18, 21)",
+      "font": "12.5px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 6,
+    "tag": "button",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Свернуть",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "—",
+    "rect": {
+      "x": 1598.5,
+      "y": 18.5,
+      "w": 30,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(155, 155, 165)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "15px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 7,
+    "tag": "button",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Развернуть",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "▢",
+    "rect": {
+      "x": 1630.5,
+      "y": 18.5,
+      "w": 30,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(155, 155, 165)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "15px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 8,
+    "tag": "button",
+    "type": "",
+    "cls": "window-close",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Закрыть",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "×",
+    "rect": {
+      "x": 1662.5,
+      "y": 18.5,
+      "w": 30,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(155, 155, 165)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "15px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 9,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Скопировать",
+    "rect": {
+      "x": 1436,
+      "y": 89,
+      "w": 136.2,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 10,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--danger-ghost ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Очистить",
+    "rect": {
+      "x": 1582.3,
+      "y": 89,
+      "w": 89.2,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(242, 139, 139)",
+      "bg": "rgba(239, 68, 68, 0.06)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 11,
+    "tag": "input",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "Поиск по журналу",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "value": "",
+    "rect": {
+      "x": 418.5,
+      "y": 202.8,
+      "w": 309,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(231, 231, 236)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "13px/normal Inter",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 12,
+    "tag": "button",
+    "type": "",
+    "cls": "filter-pill is-active",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Все",
+    "rect": {
+      "x": 750.5,
+      "y": 197.8,
+      "w": 42.7,
+      "h": 29
+    },
+    "css": {
+      "color": "rgb(10, 10, 11)",
+      "bg": "rgb(242, 242, 245)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 13,
+    "tag": "button",
+    "type": "",
+    "cls": "filter-pill",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "INFO",
+    "rect": {
+      "x": 793.2,
+      "y": 197.8,
+      "w": 51.1,
+      "h": 29
+    },
+    "css": {
+      "color": "rgb(164, 164, 173)",
+      "bg": "rgb(18, 18, 20)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 14,
+    "tag": "button",
+    "type": "",
+    "cls": "filter-pill",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "WARN",
+    "rect": {
+      "x": 844.3,
+      "y": 197.8,
+      "w": 58.6,
+      "h": 29
+    },
+    "css": {
+      "color": "rgb(164, 164, 173)",
+      "bg": "rgb(18, 18, 20)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 15,
+    "tag": "button",
+    "type": "",
+    "cls": "filter-pill",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "ERROR",
+    "rect": {
+      "x": 902.9,
+      "y": 197.8,
+      "w": 60.5,
+      "h": 29
+    },
+    "css": {
+      "color": "rgb(164, 164, 173)",
+      "bg": "rgb(18, 18, 20)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 16,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--ghost ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Открыть папку журнала",
+    "rect": {
+      "x": 380.5,
+      "y": 6997.3,
+      "w": 204.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(208, 208, 216)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  }
+]

@@ -1,0 +1,232 @@
+{
+  "rect": {
+    "x": 614,
+    "y": 244,
+    "w": 600,
+    "h": 620
+  },
+  "backdrop": {
+    "bg": "rgba(3, 3, 5, 0.72)",
+    "blur": "blur(6px)"
+  },
+  "activeElement": {
+    "tag": "INPUT",
+    "cls": "ui-input",
+    "placeholder": "Например, «Сказать слово»"
+  },
+  "buttons": [
+    {
+      "text": "×",
+      "disabled": false,
+      "rect": {
+        "x": 1163,
+        "y": 263,
+        "w": 30,
+        "h": 30
+      }
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "rect": {
+        "x": 635,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      }
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "rect": {
+        "x": 669,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      }
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "rect": {
+        "x": 703,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      }
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "rect": {
+        "x": 737,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      }
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "rect": {
+        "x": 771,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      }
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "rect": {
+        "x": 805,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      }
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "rect": {
+        "x": 839,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      }
+    },
+    {
+      "text": "",
+      "disabled": false,
+      "rect": {
+        "x": 873,
+        "y": 595,
+        "w": 26,
+        "h": 26
+      }
+    },
+    {
+      "text": "Отмена",
+      "disabled": false,
+      "rect": {
+        "x": 973,
+        "y": 812,
+        "w": 78,
+        "h": 34
+      }
+    },
+    {
+      "text": "Создать награду",
+      "disabled": true,
+      "rect": {
+        "x": 1060,
+        "y": 812,
+        "w": 133,
+        "h": 34
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "placeholder": "Например, «Сказать слово»",
+      "value": "",
+      "rect": {
+        "x": 635,
+        "y": 353,
+        "w": 558,
+        "h": 34
+      },
+      "font": "13px"
+    },
+    {
+      "tag": "INPUT",
+      "type": "text",
+      "placeholder": "",
+      "value": "100",
+      "rect": {
+        "x": 635,
+        "y": 421,
+        "w": 558,
+        "h": 34
+      },
+      "font": "13px"
+    },
+    {
+      "tag": "TEXTAREA",
+      "type": "textarea",
+      "placeholder": "Что получит зритель и как это работает",
+      "value": "",
+      "rect": {
+        "x": 635,
+        "y": 489,
+        "w": 558,
+        "h": 72
+      },
+      "font": "13px"
+    },
+    {
+      "tag": "INPUT",
+      "type": "color",
+      "placeholder": "",
+      "value": "#a970ff",
+      "rect": {
+        "x": 908,
+        "y": 596,
+        "w": 24,
+        "h": 24
+      },
+      "font": "14px"
+    },
+    {
+      "tag": "INPUT",
+      "type": "checkbox",
+      "placeholder": "",
+      "value": "on",
+      "rect": {
+        "x": 639,
+        "y": 701,
+        "w": 16,
+        "h": 16
+      },
+      "font": "12.5px"
+    },
+    {
+      "tag": "INPUT",
+      "type": "checkbox",
+      "placeholder": "",
+      "value": "on",
+      "rect": {
+        "x": 639,
+        "y": 732,
+        "w": 16,
+        "h": 16
+      },
+      "font": "12.5px"
+    }
+  ],
+  "colorSwatches": [
+    {
+      "cls": "modal-color-preview",
+      "bg": "rgb(169, 112, 255)",
+      "rect": {
+        "x": 635,
+        "y": 635,
+        "w": 24,
+        "h": 24
+      }
+    }
+  ],
+  "dialogRole": {
+    "role": "dialog",
+    "ariaModal": "true",
+    "ariaLabel": "Новая награда"
+  },
+  "title": "Новая награда",
+  "subtitle": "Награда создастся в канале через Twitch API и сразу появится в списке.",
+  "scrollbar": {
+    "bodyScrollH": 483,
+    "bodyClientH": 483
+  }
+}

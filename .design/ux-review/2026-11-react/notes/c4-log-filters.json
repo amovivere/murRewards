@@ -1,0 +1,34 @@
+[
+  {
+    "label": "Все",
+    "rows": 182,
+    "levels": [
+      "INFO",
+      "WARN",
+      "DEBUG"
+    ],
+    "countLabel": "182 записей · обновление каждые 2 с"
+  },
+  {
+    "label": "INFO",
+    "rows": 180,
+    "levels": [
+      "INFO"
+    ],
+    "countLabel": "182 записей · обновление каждые 2 с"
+  },
+  {
+    "label": "WARN",
+    "rows": 1,
+    "levels": [
+      "WARN"
+    ],
+    "countLabel": "182 записей · обновление каждые 2 с"
+  },
+  {
+    "label": "ERROR",
+    "rows": 1,
+    "levels": [],
+    "countLabel": "182 записей · обновление каждые 2 с"
+  }
+]

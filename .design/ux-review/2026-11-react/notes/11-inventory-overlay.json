@@ -1,0 +1,2346 @@
+[
+  {
+    "i": 0,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Награды",
+    "rect": {
+      "x": 128.5,
+      "y": 111,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 1,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Музыка",
+    "rect": {
+      "x": 128.5,
+      "y": 150,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 2,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item is-active",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Оверлей",
+    "rect": {
+      "x": 128.5,
+      "y": 189,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 3,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Настройки",
+    "rect": {
+      "x": 128.5,
+      "y": 885,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 4,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Журнал",
+    "rect": {
+      "x": 128.5,
+      "y": 924,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 5,
+    "tag": "button",
+    "type": "",
+    "cls": "health-chip",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Все системы работают›",
+    "rect": {
+      "x": 376.5,
+      "y": 15.5,
+      "w": 187.3,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(217, 217, 223)",
+      "bg": "rgb(18, 18, 21)",
+      "font": "12.5px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 6,
+    "tag": "button",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Свернуть",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "—",
+    "rect": {
+      "x": 1598.5,
+      "y": 18.5,
+      "w": 30,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(155, 155, 165)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "15px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 7,
+    "tag": "button",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Развернуть",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "▢",
+    "rect": {
+      "x": 1630.5,
+      "y": 18.5,
+      "w": 30,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(155, 155, 165)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "15px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 8,
+    "tag": "button",
+    "type": "",
+    "cls": "window-close",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Закрыть",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "×",
+    "rect": {
+      "x": 1662.5,
+      "y": 18.5,
+      "w": 30,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(155, 155, 165)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "15px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 9,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--ghost ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "URL для OBS",
+    "rect": {
+      "x": 1426.5,
+      "y": 89,
+      "w": 133.3,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(208, 208, 216)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 10,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--primary ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": true,
+    "text": "Применить",
+    "rect": {
+      "x": 1569.8,
+      "y": 89,
+      "w": 101.7,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(10, 10, 11)",
+      "bg": "rgb(244, 244, 247)",
+      "font": "13px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "0.42",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 11,
+    "tag": "select",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "neon",
+    "value": "neon",
+    "rect": {
+      "x": 393.5,
+      "y": 224.2,
+      "w": 248,
+      "h": 32
+    },
+    "css": {
+      "color": "rgb(230, 230, 236)",
+      "bg": "rgb(59, 59, 59)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "0",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 12,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Пресет",
+    "rect": {
+      "x": 654.5,
+      "y": 226.2,
+      "w": 87.6,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 13,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Дублировать",
+    "rect": {
+      "x": 749.1,
+      "y": 226.2,
+      "w": 98.7,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 14,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Переименовать",
+    "rect": {
+      "x": 854.8,
+      "y": 226.2,
+      "w": 113.9,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 15,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--danger-ghost ui-button--sm",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Удалить",
+    "rect": {
+      "x": 975.8,
+      "y": 226.2,
+      "w": 69.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(242, 139, 139)",
+      "bg": "rgba(239, 68, 68, 0.06)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 16,
+    "tag": "input",
+    "type": "text",
+    "cls": "ui-input",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "например, arstotsky",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "value": "",
+    "rect": {
+      "x": 399.5,
+      "y": 371.7,
+      "w": 817,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 17,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-switch is-on",
+    "id": "",
+    "role": "switch",
+    "ariaLabel": "",
+    "ariaChecked": "true",
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1176.5,
+      "y": 436.2,
+      "w": 40,
+      "h": 22
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(139, 0, 255)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 18,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-switch is-on",
+    "id": "",
+    "role": "switch",
+    "ariaLabel": "",
+    "ariaChecked": "true",
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1176.5,
+      "y": 494.2,
+      "w": 40,
+      "h": 22
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(139, 0, 255)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 19,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-switch is-on",
+    "id": "",
+    "role": "switch",
+    "ariaLabel": "",
+    "ariaChecked": "true",
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1176.5,
+      "y": 552.2,
+      "w": 40,
+      "h": 22
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(139, 0, 255)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 20,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-switch",
+    "id": "",
+    "role": "switch",
+    "ariaLabel": "",
+    "ariaChecked": "false",
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1176.5,
+      "y": 610.2,
+      "w": 40,
+      "h": 22
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(43, 43, 49)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 21,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "nightbot, streamelements",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "value": "",
+    "rect": {
+      "x": 399.5,
+      "y": 683.7,
+      "w": 817,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 22,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "спам, реклама",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "value": "",
+    "rect": {
+      "x": 399.5,
+      "y": 771.7,
+      "w": 817,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 23,
+    "tag": "select",
+    "type": "",
+    "cls": "ui-select",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "neon",
+    "value": "neon",
+    "rect": {
+      "x": 399.5,
+      "y": 948.2,
+      "w": 402.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 24,
+    "tag": "select",
+    "type": "",
+    "cls": "ui-select",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Segoe UI Variable Text",
+    "value": "Segoe UI Variable Text",
+    "rect": {
+      "x": 814,
+      "y": 948.2,
+      "w": 402.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 25,
+    "tag": "select",
+    "type": "",
+    "cls": "ui-select",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "left",
+    "value": "left",
+    "rect": {
+      "x": 399.5,
+      "y": 1015.2,
+      "w": 402.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 26,
+    "tag": "select",
+    "type": "",
+    "cls": "ui-select",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "up",
+    "value": "up",
+    "rect": {
+      "x": 814,
+      "y": 1015.2,
+      "w": 402.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 27,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "25",
+    "value": "25",
+    "rect": {
+      "x": 529.5,
+      "y": 1071.2,
+      "w": 617,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 28,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "1.38",
+    "value": "1.38",
+    "rect": {
+      "x": 529.5,
+      "y": 1105.2,
+      "w": 617,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 29,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "28",
+    "value": "28",
+    "rect": {
+      "x": 529.5,
+      "y": 1139.2,
+      "w": 617,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 30,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "24",
+    "value": "24",
+    "rect": {
+      "x": 529.5,
+      "y": 1173.2,
+      "w": 617,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 31,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "10",
+    "value": "10",
+    "rect": {
+      "x": 529.5,
+      "y": 1207.2,
+      "w": 617,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 32,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "14",
+    "value": "14",
+    "rect": {
+      "x": 529.5,
+      "y": 1241.2,
+      "w": 617,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 33,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "1.5",
+    "value": "1.5",
+    "rect": {
+      "x": 529.5,
+      "y": 1275.2,
+      "w": 617,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 34,
+    "tag": "input",
+    "type": "number",
+    "cls": "ui-input",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "40",
+    "value": "40",
+    "rect": {
+      "x": 399.5,
+      "y": 1421.7,
+      "w": 402.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 35,
+    "tag": "input",
+    "type": "number",
+    "cls": "ui-input",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "15",
+    "value": "15",
+    "rect": {
+      "x": 814,
+      "y": 1421.7,
+      "w": 402.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 36,
+    "tag": "select",
+    "type": "",
+    "cls": "ui-select",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "slide",
+    "value": "slide",
+    "rect": {
+      "x": 399.5,
+      "y": 1509.7,
+      "w": 402.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 37,
+    "tag": "select",
+    "type": "",
+    "cls": "ui-select",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "soft",
+    "value": "soft",
+    "rect": {
+      "x": 814,
+      "y": 1509.7,
+      "w": 402.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 38,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-switch",
+    "id": "",
+    "role": "switch",
+    "ariaLabel": "",
+    "ariaChecked": "false",
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1176.5,
+      "y": 1574.2,
+      "w": 40,
+      "h": 22
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(43, 43, 49)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 39,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "arstotsky, mira",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "arstotsky",
+    "value": "arstotsky",
+    "rect": {
+      "x": 399.5,
+      "y": 1647.7,
+      "w": 817,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 40,
+    "tag": "input",
+    "type": "color",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#ffffff",
+    "value": "#ffffff",
+    "rect": {
+      "x": 400.5,
+      "y": 1826.2,
+      "w": 30,
+      "h": 30
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(107, 107, 107)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "0",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 41,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono ui-color-field__hex",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#FFFFFF",
+    "value": "#FFFFFF",
+    "rect": {
+      "x": 439.5,
+      "y": 1824.2,
+      "w": 360.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 42,
+    "tag": "select",
+    "type": "",
+    "cls": "ui-select",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "twitch",
+    "value": "twitch",
+    "rect": {
+      "x": 816,
+      "y": 1824.2,
+      "w": 400.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "13px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 43,
+    "tag": "input",
+    "type": "color",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#ffc857",
+    "value": "#ffc857",
+    "rect": {
+      "x": 400.5,
+      "y": 1893.2,
+      "w": 30,
+      "h": 30
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(107, 107, 107)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "0",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 44,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono ui-color-field__hex",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#FFC857",
+    "value": "#FFC857",
+    "rect": {
+      "x": 439.5,
+      "y": 1891.2,
+      "w": 360.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 45,
+    "tag": "input",
+    "type": "color",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#141a2e",
+    "value": "#141a2e",
+    "rect": {
+      "x": 817,
+      "y": 1893.2,
+      "w": 30,
+      "h": 30
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(107, 107, 107)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "0",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 46,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono ui-color-field__hex",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#141A2E",
+    "value": "#141A2E",
+    "rect": {
+      "x": 856,
+      "y": 1891.2,
+      "w": 234.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 47,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "0.82",
+    "value": "0.82",
+    "rect": {
+      "x": 1098.5,
+      "y": 1899.2,
+      "w": 90.1,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(124, 124, 134)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "11px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 48,
+    "tag": "input",
+    "type": "color",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#7aaaff",
+    "value": "#7aaaff",
+    "rect": {
+      "x": 400.5,
+      "y": 1960.2,
+      "w": 30,
+      "h": 30
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(107, 107, 107)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "0",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 49,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono ui-color-field__hex",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#7AAAFF",
+    "value": "#7AAAFF",
+    "rect": {
+      "x": 439.5,
+      "y": 1958.2,
+      "w": 234.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 50,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "0.24",
+    "value": "0.24",
+    "rect": {
+      "x": 682,
+      "y": 1966.2,
+      "w": 90.1,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(124, 124, 134)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "11px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 51,
+    "tag": "input",
+    "type": "color",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#ffc857",
+    "value": "#ffc857",
+    "rect": {
+      "x": 817,
+      "y": 1960.2,
+      "w": 30,
+      "h": 30
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(107, 107, 107)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "0",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 52,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono ui-color-field__hex",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#FFC857",
+    "value": "#FFC857",
+    "rect": {
+      "x": 856,
+      "y": 1958.2,
+      "w": 360.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 53,
+    "tag": "input",
+    "type": "color",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#000000",
+    "value": "#000000",
+    "rect": {
+      "x": 400.5,
+      "y": 2027.2,
+      "w": 30,
+      "h": 30
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(107, 107, 107)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "0",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 54,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono ui-color-field__hex",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#000000",
+    "value": "#000000",
+    "rect": {
+      "x": 439.5,
+      "y": 2025.2,
+      "w": 360.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 55,
+    "tag": "input",
+    "type": "color",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#000000",
+    "value": "#000000",
+    "rect": {
+      "x": 817,
+      "y": 2027.2,
+      "w": 30,
+      "h": 30
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(107, 107, 107)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "0",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 56,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono ui-color-field__hex",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#000000",
+    "value": "#000000",
+    "rect": {
+      "x": 856,
+      "y": 2025.2,
+      "w": 234.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 57,
+    "tag": "input",
+    "type": "range",
+    "cls": "ui-range",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "0",
+    "value": "0",
+    "rect": {
+      "x": 1098.5,
+      "y": 2033.2,
+      "w": 96,
+      "h": 18
+    },
+    "css": {
+      "color": "rgb(124, 124, 134)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "11px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 58,
+    "tag": "input",
+    "type": "color",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#9fb0d0",
+    "value": "#9fb0d0",
+    "rect": {
+      "x": 400.5,
+      "y": 2094.2,
+      "w": 30,
+      "h": 30
+    },
+    "css": {
+      "color": "rgb(245, 245, 247)",
+      "bg": "rgb(107, 107, 107)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "0",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 59,
+    "tag": "input",
+    "type": "",
+    "cls": "ui-input is-mono ui-color-field__hex",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "#9FB0D0",
+    "value": "#9FB0D0",
+    "rect": {
+      "x": 439.5,
+      "y": 2092.2,
+      "w": 360.5,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(232, 232, 237)",
+      "bg": "rgb(20, 20, 22)",
+      "font": "12px/normal \"Cascadia Mono\"",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": true,
+      "onClick": false
+    }
+  },
+  {
+    "i": 60,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--primary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Стационарный",
+    "rect": {
+      "x": 1266.5,
+      "y": 965.2,
+      "w": 125.3,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(10, 10, 11)",
+      "bg": "rgb(244, 244, 247)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 61,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Активный чат",
+    "rect": {
+      "x": 1398.8,
+      "y": 965.2,
+      "w": 125.3,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 62,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "+3",
+    "rect": {
+      "x": 1531.2,
+      "y": 965.2,
+      "w": 125.3,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 63,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--md is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Открыть превью в браузере",
+    "rect": {
+      "x": 1266.5,
+      "y": 1046.2,
+      "w": 390,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  }
+]

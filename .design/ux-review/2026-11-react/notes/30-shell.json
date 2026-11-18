@@ -1,0 +1,171 @@
+{
+  "healthChip": {
+    "rect": {
+      "x": 377,
+      "y": 16,
+      "w": 187,
+      "h": 34
+    },
+    "text": "Все системы работают›",
+    "cursor": "pointer",
+    "tabIndex": 0,
+    "role": null,
+    "title": null,
+    "handlers": true
+  },
+  "volumeControl": {
+    "rect": {
+      "x": 1385,
+      "y": 25,
+      "w": 191,
+      "h": 16
+    },
+    "text": "ЗВУК29%",
+    "cursor": "auto",
+    "tabIndex": -1,
+    "role": null,
+    "title": null,
+    "handlers": false
+  },
+  "volumeTrack": {
+    "rect": {
+      "x": 1448,
+      "y": 31,
+      "w": 86,
+      "h": 4
+    },
+    "text": "",
+    "cursor": "auto",
+    "tabIndex": -1,
+    "role": null,
+    "title": null,
+    "handlers": false
+  },
+  "volumeValue": {
+    "rect": {
+      "x": 1543,
+      "y": 25,
+      "w": 34,
+      "h": 16
+    },
+    "text": "29%",
+    "cursor": "auto",
+    "tabIndex": -1,
+    "role": null,
+    "title": null,
+    "handlers": false
+  },
+  "windowControls": {
+    "rect": {
+      "x": 1599,
+      "y": 19,
+      "w": 94,
+      "h": 28
+    },
+    "text": "—▢×",
+    "cursor": "auto",
+    "tabIndex": -1,
+    "role": null,
+    "title": null,
+    "handlers": false
+  },
+  "winBtn0": {
+    "rect": {
+      "x": 1599,
+      "y": 19,
+      "w": 30,
+      "h": 28
+    },
+    "title": "Свернуть",
+    "text": "—",
+    "handlers": true
+  },
+  "winBtn1": {
+    "rect": {
+      "x": 1631,
+      "y": 19,
+      "w": 30,
+      "h": 28
+    },
+    "title": "Развернуть",
+    "text": "▢",
+    "handlers": true
+  },
+  "winBtn2": {
+    "rect": {
+      "x": 1663,
+      "y": 19,
+      "w": 30,
+      "h": 28
+    },
+    "title": "Закрыть",
+    "text": "×",
+    "handlers": true
+  },
+  "topbar": {
+    "rect": {
+      "x": 355,
+      "y": 1,
+      "w": 1358,
+      "h": 64
+    },
+    "text": "Все системы работают›ЗВУК29%—▢×",
+    "cursor": "auto",
+    "tabIndex": -1,
+    "role": null,
+    "title": null,
+    "handlers": false
+  },
+  "footer": {
+    "rect": {
+      "x": 355,
+      "y": 965,
+      "w": 1358,
+      "h": 34
+    },
+    "text": "Готововерсия 1.7.0",
+    "cursor": "auto",
+    "tabIndex": -1,
+    "role": null,
+    "title": null,
+    "handlers": false
+  },
+  "brand": {
+    "rect": {
+      "x": 129,
+      "y": 19,
+      "w": 211,
+      "h": 60
+    },
+    "text": "Reward SoundsStudio · 2K",
+    "cursor": "auto",
+    "tabIndex": -1,
+    "role": null,
+    "title": null,
+    "handlers": false
+  },
+  "topbarStyle": {
+    "dragRegion": true,
+    "appRegion": "none"
+  },
+  "scale": {
+    "dpr": 1,
+    "innerW": 1827,
+    "innerH": 1107,
+    "bodyW": 1827,
+    "bodyH": 1107,
+    "shellW": 1600,
+    "shellH": 1000,
+    "shellLeft": 113.5
+  },
+  "pageInfo": {
+    "scrollbars": {
+      "content": {
+        "clientW": 1343,
+        "offsetW": 1358,
+        "scrollH": 1105,
+        "clientH": 900
+      }
+    }
+  }
+}

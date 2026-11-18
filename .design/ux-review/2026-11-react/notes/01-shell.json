@@ -1,0 +1,152 @@
+{
+  "shell": {
+    "x": 113.5,
+    "y": 0,
+    "w": 1600,
+    "h": 1000,
+    "padding": "0px",
+    "gap": "normal",
+    "overflow": "hidden",
+    "scrollH": 998,
+    "clientH": 998
+  },
+  "sidebar": {
+    "x": 114.5,
+    "y": 1,
+    "w": 240,
+    "h": 998,
+    "padding": "18px 14px 12px",
+    "gap": "normal",
+    "overflow": "visible",
+    "scrollH": 998,
+    "clientH": 998
+  },
+  "topbar": {
+    "x": 354.5,
+    "y": 1,
+    "w": 1358,
+    "h": 64,
+    "padding": "0px 20px 0px 22px",
+    "gap": "normal",
+    "overflow": "visible",
+    "scrollH": 63,
+    "clientH": 63
+  },
+  "content": {
+    "x": 354.5,
+    "y": 65,
+    "w": 1358,
+    "h": 900,
+    "padding": "24px 26px 0px",
+    "gap": "normal",
+    "overflow": "auto",
+    "scrollH": 1105,
+    "clientH": 900
+  },
+  "footer": {
+    "x": 354.5,
+    "y": 965,
+    "w": 1358,
+    "h": 34,
+    "padding": "0px 22px",
+    "gap": "normal",
+    "overflow": "visible",
+    "scrollH": 33,
+    "clientH": 33
+  },
+  "main": {
+    "x": 354.5,
+    "y": 1,
+    "w": 1358,
+    "h": 998,
+    "padding": "0px",
+    "gap": "normal",
+    "overflow": "visible",
+    "scrollH": 998,
+    "clientH": 998
+  },
+  "contentScroll": {
+    "scrollTop": 0,
+    "scrollH": 1105,
+    "clientH": 900
+  },
+  "navItems": [
+    {
+      "text": "Награды",
+      "active": true,
+      "rect": {
+        "x": 128.5,
+        "y": 111,
+        "w": 211,
+        "h": 37
+      }
+    },
+    {
+      "text": "Музыка",
+      "active": false,
+      "rect": {
+        "x": 128.5,
+        "y": 150,
+        "w": 211,
+        "h": 37
+      }
+    },
+    {
+      "text": "Оверлей",
+      "active": false,
+      "rect": {
+        "x": 128.5,
+        "y": 189,
+        "w": 211,
+        "h": 37
+      }
+    },
+    {
+      "text": "Настройки",
+      "active": false,
+      "rect": {
+        "x": 128.5,
+        "y": 885,
+        "w": 211,
+        "h": 37
+      }
+    },
+    {
+      "text": "Журнал",
+      "active": false,
+      "rect": {
+        "x": 128.5,
+        "y": 924,
+        "w": 211,
+        "h": 37
+      }
+    }
+  ],
+  "topbarText": "Все системы работают›ЗВУК29%—▢×",
+  "footerText": "Готововерсия 1.7.0",
+  "headings": [
+    "H1:Награды",
+    "H3:Ты новичок?",
+    "H3:Мне нравится как он",
+    "H3:МУЗЫКА ЮТУБ",
+    "H3:СКАЗАНУТЬ ЧЕТО",
+    "H3:Ставка 2000",
+    "H3:Chimp",
+    "H3:Ставка 1000",
+    "H3:Ставка 500",
+    "H3:А где донаты",
+    "H3:Вода",
+    "H3:Сказануть",
+    "H3:Смешок",
+    "H3:Быть фолловером",
+    "H3:Нужно больше фолловеров",
+    "H3:Шиза",
+    "H3:Беги",
+    "H3:Выстрел",
+    "H3:Звук доната...",
+    "H3:Доброе утро",
+    "H3:Переименовать ченить",
+    "H2:Состояния"
+  ],
+  "state": "tauri"
+}

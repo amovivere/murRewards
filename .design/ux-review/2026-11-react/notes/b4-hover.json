@@ -1,0 +1,9 @@
+{
+  "hover": {
+    "borderColor": "rgb(41, 41, 47)",
+    "transform": "none",
+    "bg": "rgb(17, 17, 19)",
+    "boxShadow": "none",
+    "cursor": "auto"
+  }
+}

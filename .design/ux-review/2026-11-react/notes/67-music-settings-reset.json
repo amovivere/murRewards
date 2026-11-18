@@ -1,0 +1,21 @@
+{
+  "before": [
+    "true",
+    "true",
+    "true",
+    "true"
+  ],
+  "afterToggle": [
+    "true",
+    "true",
+    "true",
+    "true"
+  ],
+  "closed": false,
+  "afterReopen": [
+    "true",
+    "true",
+    "true",
+    "true"
+  ]
+}

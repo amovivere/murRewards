@@ -1,0 +1,588 @@
+{
+  "rewards": [
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "—",
+      "aria": null,
+      "title": "Свернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "▢",
+      "aria": null,
+      "title": "Развернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "window-close",
+      "text": "×",
+      "aria": null,
+      "title": "Закрыть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 309,
+      "h": 19
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "is-active",
+      "text": "Плитка",
+      "aria": null,
+      "title": null,
+      "w": 81,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "Список",
+      "aria": null,
+      "title": null,
+      "w": 82,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "filter-pill is-active",
+      "text": "Все 20",
+      "aria": null,
+      "title": null,
+      "w": 64,
+      "h": 29
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "filter-pill",
+      "text": "Со звуком 9",
+      "aria": null,
+      "title": null,
+      "w": 95,
+      "h": 29
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "filter-pill",
+      "text": "Без звука 11",
+      "aria": null,
+      "title": null,
+      "w": 97,
+      "h": 29
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "filter-pill",
+      "text": "Играет 0",
+      "aria": null,
+      "title": null,
+      "w": 77,
+      "h": 29
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "filter-pill",
+      "text": "Выключенные 9",
+      "aria": null,
+      "title": null,
+      "w": 118,
+      "h": 29
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "icon-ghost",
+      "text": "",
+      "aria": null,
+      "title": "Действия",
+      "w": 24,
+      "h": 24
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "play-button",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 19,
+      "h": 19
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+      "text": "Выбрать звук",
+      "aria": null,
+      "title": null,
+      "w": 288,
+      "h": 28
+    }
+  ],
+  "music": [
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "—",
+      "aria": null,
+      "title": "Свернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "▢",
+      "aria": null,
+      "title": "Развернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "window-close",
+      "text": "×",
+      "aria": null,
+      "title": "Закрыть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 36,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--ghost ui-button--sm",
+      "text": "Пропустить трек",
+      "aria": null,
+      "title": null,
+      "w": 118,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--danger-ghost ui-button--sm",
+      "text": "Очистить",
+      "aria": null,
+      "title": null,
+      "w": 77,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "icon-ghost",
+      "text": "↑",
+      "aria": null,
+      "title": "Выше",
+      "w": 24,
+      "h": 24
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "icon-ghost",
+      "text": "×",
+      "aria": null,
+      "title": "Убрать",
+      "w": 24,
+      "h": 24
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 566,
+      "h": 18
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "text": "В очередь",
+      "aria": null,
+      "title": null,
+      "w": 82,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--ghost ui-button--sm",
+      "text": "Настроить",
+      "aria": null,
+      "title": null,
+      "w": 83,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "text": "Показать сейчас",
+      "aria": null,
+      "title": null,
+      "w": 117,
+      "h": 28
+    }
+  ],
+  "overlay": [
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "—",
+      "aria": null,
+      "title": "Свернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "▢",
+      "aria": null,
+      "title": "Развернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "window-close",
+      "text": "×",
+      "aria": null,
+      "title": "Закрыть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "text": "Пресет",
+      "aria": null,
+      "title": null,
+      "w": 88,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "text": "Дублировать",
+      "aria": null,
+      "title": null,
+      "w": 99,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "text": "Переименовать",
+      "aria": null,
+      "title": null,
+      "w": 114,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--danger-ghost ui-button--sm",
+      "text": "Удалить",
+      "aria": null,
+      "title": null,
+      "w": 70,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-switch is-on",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 40,
+      "h": 22
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-switch",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 40,
+      "h": 22
+    },
+    {
+      "tag": "INPUT",
+      "cls": "ui-range",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 617,
+      "h": 18
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 30,
+      "h": 30
+    },
+    {
+      "tag": "INPUT",
+      "cls": "ui-range",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 90,
+      "h": 18
+    },
+    {
+      "tag": "INPUT",
+      "cls": "ui-range",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 96,
+      "h": 18
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--primary ui-button--sm is-full",
+      "text": "Стационарный",
+      "aria": null,
+      "title": null,
+      "w": 125,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+      "text": "Активный чат",
+      "aria": null,
+      "title": null,
+      "w": 125,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "text": "+3",
+      "aria": null,
+      "title": null,
+      "w": 125,
+      "h": 28
+    }
+  ],
+  "settings": [
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "—",
+      "aria": null,
+      "title": "Свернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "▢",
+      "aria": null,
+      "title": "Развернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "window-close",
+      "text": "×",
+      "aria": null,
+      "title": "Закрыть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "A",
+      "cls": "",
+      "text": "Открыть",
+      "aria": null,
+      "title": null,
+      "w": 46,
+      "h": 16
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--secondary ui-button--sm",
+      "text": "Скопировать диагностику",
+      "aria": null,
+      "title": null,
+      "w": 171,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--ghost ui-button--sm",
+      "text": "Открыть журнал",
+      "aria": null,
+      "title": null,
+      "w": 119,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--danger-ghost ui-button--sm",
+      "text": "Сменить…",
+      "aria": null,
+      "title": null,
+      "w": 361,
+      "h": 28
+    },
+    {
+      "tag": "INPUT",
+      "cls": "ui-range",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 183,
+      "h": 18
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-switch",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 40,
+      "h": 22
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-switch is-on",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 40,
+      "h": 22
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--primary ui-button--sm",
+      "text": "Пример кнопки",
+      "aria": null,
+      "title": null,
+      "w": 114,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "accent-swatch is-active",
+      "text": "",
+      "aria": null,
+      "title": "#8B00FF",
+      "w": 22,
+      "h": 22
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "accent-swatch",
+      "text": "",
+      "aria": null,
+      "title": "#4E7CFF",
+      "w": 22,
+      "h": 22
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--ghost ui-button--sm",
+      "text": "Сбросить",
+      "aria": null,
+      "title": null,
+      "w": 77,
+      "h": 28
+    }
+  ],
+  "log": [
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "—",
+      "aria": null,
+      "title": "Свернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "",
+      "text": "▢",
+      "aria": null,
+      "title": "Развернуть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "window-close",
+      "text": "×",
+      "aria": null,
+      "title": "Закрыть",
+      "w": 30,
+      "h": 28
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "text": "",
+      "aria": null,
+      "title": null,
+      "w": 309,
+      "h": 19
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "filter-pill is-active",
+      "text": "Все",
+      "aria": null,
+      "title": null,
+      "w": 43,
+      "h": 29
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "filter-pill",
+      "text": "INFO",
+      "aria": null,
+      "title": null,
+      "w": 51,
+      "h": 29
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "filter-pill",
+      "text": "WARN",
+      "aria": null,
+      "title": null,
+      "w": 59,
+      "h": 29
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "filter-pill",
+      "text": "ERROR",
+      "aria": null,
+      "title": null,
+      "w": 61,
+      "h": 29
+    }
+  ]
+}

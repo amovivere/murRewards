@@ -1,0 +1,2415 @@
+[
+  {
+    "i": 0,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item is-active",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Награды",
+    "rect": {
+      "x": 128.5,
+      "y": 111,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 1,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Музыка",
+    "rect": {
+      "x": 128.5,
+      "y": 150,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 2,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Оверлей",
+    "rect": {
+      "x": 128.5,
+      "y": 189,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 3,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Настройки",
+    "rect": {
+      "x": 128.5,
+      "y": 885,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 4,
+    "tag": "button",
+    "type": "",
+    "cls": "nav-item",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Журнал",
+    "rect": {
+      "x": 128.5,
+      "y": 924,
+      "w": 211,
+      "h": 37
+    },
+    "css": {
+      "color": "rgb(185, 185, 193)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 5,
+    "tag": "button",
+    "type": "",
+    "cls": "health-chip",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Все системы работают›",
+    "rect": {
+      "x": 376.5,
+      "y": 15.5,
+      "w": 187.3,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(217, 217, 223)",
+      "bg": "rgb(18, 18, 21)",
+      "font": "12.5px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 6,
+    "tag": "button",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Свернуть",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "—",
+    "rect": {
+      "x": 1598.5,
+      "y": 18.5,
+      "w": 30,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(155, 155, 165)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "15px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 7,
+    "tag": "button",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Развернуть",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "▢",
+    "rect": {
+      "x": 1630.5,
+      "y": 18.5,
+      "w": 30,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(155, 155, 165)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "15px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 8,
+    "tag": "button",
+    "type": "",
+    "cls": "window-close",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Закрыть",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "×",
+    "rect": {
+      "x": 1662.5,
+      "y": 18.5,
+      "w": 30,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(155, 155, 165)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "15px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 9,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--ghost ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1456.9,
+      "y": 89,
+      "w": 48,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(208, 208, 216)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 10,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--primary ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Создать награду",
+    "rect": {
+      "x": 1514.9,
+      "y": 89,
+      "w": 156.6,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(10, 10, 11)",
+      "bg": "rgb(244, 244, 247)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 11,
+    "tag": "input",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "Поиск награды",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "value": "",
+    "rect": {
+      "x": 418.5,
+      "y": 202.8,
+      "w": 309,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(231, 231, 236)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "13px/normal Inter",
+      "cursor": "text",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "clip"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 12,
+    "tag": "button",
+    "type": "",
+    "cls": "is-active",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Плитка",
+    "rect": {
+      "x": 754.5,
+      "y": 198.3,
+      "w": 80.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgb(38, 38, 44)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 13,
+    "tag": "button",
+    "type": "",
+    "cls": "",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Список",
+    "rect": {
+      "x": 835.3,
+      "y": 198.3,
+      "w": 81.9,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(154, 154, 164)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 14,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Все награды",
+    "rect": {
+      "x": 931.2,
+      "y": 195.3,
+      "w": 108.1,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 15,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--ghost ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Остановить всё",
+    "rect": {
+      "x": 1049.3,
+      "y": 195.3,
+      "w": 127,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(208, 208, 216)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 16,
+    "tag": "button",
+    "type": "",
+    "cls": "filter-pill is-active",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Все 20",
+    "rect": {
+      "x": 380.5,
+      "y": 246.3,
+      "w": 63.9,
+      "h": 29
+    },
+    "css": {
+      "color": "rgb(10, 10, 11)",
+      "bg": "rgb(242, 242, 245)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 17,
+    "tag": "button",
+    "type": "",
+    "cls": "filter-pill",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Со звуком 9",
+    "rect": {
+      "x": 451.4,
+      "y": 246.3,
+      "w": 95.5,
+      "h": 29
+    },
+    "css": {
+      "color": "rgb(164, 164, 173)",
+      "bg": "rgb(18, 18, 20)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 18,
+    "tag": "button",
+    "type": "",
+    "cls": "filter-pill",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Без звука 11",
+    "rect": {
+      "x": 553.9,
+      "y": 246.3,
+      "w": 96.6,
+      "h": 29
+    },
+    "css": {
+      "color": "rgb(164, 164, 173)",
+      "bg": "rgb(18, 18, 20)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 19,
+    "tag": "button",
+    "type": "",
+    "cls": "filter-pill",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Играет 0",
+    "rect": {
+      "x": 657.5,
+      "y": 246.3,
+      "w": 76.7,
+      "h": 29
+    },
+    "css": {
+      "color": "rgb(164, 164, 173)",
+      "bg": "rgb(18, 18, 20)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 20,
+    "tag": "button",
+    "type": "",
+    "cls": "filter-pill",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выключенные 9",
+    "rect": {
+      "x": 741.2,
+      "y": 246.3,
+      "w": 117.9,
+      "h": 29
+    },
+    "css": {
+      "color": "rgb(164, 164, 173)",
+      "bg": "rgb(18, 18, 20)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 21,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 657.3,
+      "y": 304.3,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 22,
+    "tag": "button",
+    "type": "",
+    "cls": "play-button",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 401.5,
+      "y": 352.6,
+      "w": 19,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(220, 220, 227)",
+      "bg": "rgb(32, 32, 38)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 23,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 983,
+      "y": 304.3,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 24,
+    "tag": "button",
+    "type": "",
+    "cls": "play-button",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 727.3,
+      "y": 352.6,
+      "w": 19,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(220, 220, 227)",
+      "bg": "rgb(32, 32, 38)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 25,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1308.8,
+      "y": 304.3,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 26,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 1045,
+      "y": 384.6,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 27,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1634.5,
+      "y": 304.3,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 28,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 1370.8,
+      "y": 384.6,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 29,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 657.3,
+      "y": 449.6,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 30,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 393.5,
+      "y": 529.8,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 31,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 983,
+      "y": 449.6,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 32,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 719.3,
+      "y": 529.8,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 33,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1308.8,
+      "y": 449.6,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 34,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 1045,
+      "y": 529.8,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 35,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1634.5,
+      "y": 449.6,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 36,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 1370.8,
+      "y": 529.8,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 37,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 657.3,
+      "y": 594.8,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 38,
+    "tag": "button",
+    "type": "",
+    "cls": "play-button",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 401.5,
+      "y": 643.1,
+      "w": 19,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(220, 220, 227)",
+      "bg": "rgb(32, 32, 38)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 39,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 983,
+      "y": 594.8,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 40,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 719.3,
+      "y": 675.1,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 41,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1308.8,
+      "y": 594.8,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 42,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 1045,
+      "y": 675.1,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 43,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1634.5,
+      "y": 594.8,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 44,
+    "tag": "button",
+    "type": "",
+    "cls": "play-button",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1378.8,
+      "y": 643.1,
+      "w": 19,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(220, 220, 227)",
+      "bg": "rgb(32, 32, 38)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 45,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 657.3,
+      "y": 740.1,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 46,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 393.5,
+      "y": 820.3,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 47,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 983,
+      "y": 740.1,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 48,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 719.3,
+      "y": 820.3,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 49,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1308.8,
+      "y": 740.1,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 50,
+    "tag": "button",
+    "type": "",
+    "cls": "play-button",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1053,
+      "y": 788.3,
+      "w": 19,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(220, 220, 227)",
+      "bg": "rgb(32, 32, 38)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 51,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1634.5,
+      "y": 740.1,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 52,
+    "tag": "button",
+    "type": "",
+    "cls": "play-button",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1378.8,
+      "y": 788.3,
+      "w": 19,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(220, 220, 227)",
+      "bg": "rgb(32, 32, 38)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 53,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 657.3,
+      "y": 885.3,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 54,
+    "tag": "button",
+    "type": "",
+    "cls": "play-button",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 401.5,
+      "y": 933.6,
+      "w": 19,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(220, 220, 227)",
+      "bg": "rgb(32, 32, 38)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 55,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 983,
+      "y": 885.3,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 56,
+    "tag": "button",
+    "type": "",
+    "cls": "play-button",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 727.3,
+      "y": 933.6,
+      "w": 19,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(220, 220, 227)",
+      "bg": "rgb(32, 32, 38)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 57,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1308.8,
+      "y": 885.3,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 58,
+    "tag": "button",
+    "type": "",
+    "cls": "play-button",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1053,
+      "y": 933.6,
+      "w": 19,
+      "h": 19
+    },
+    "css": {
+      "color": "rgb(220, 220, 227)",
+      "bg": "rgb(32, 32, 38)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 59,
+    "tag": "button",
+    "type": "",
+    "cls": "icon-ghost",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "Действия",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "",
+    "rect": {
+      "x": 1634.5,
+      "y": 885.3,
+      "w": 24,
+      "h": 24
+    },
+    "css": {
+      "color": "rgb(116, 116, 127)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "14px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 60,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--sm is-full",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Выбрать звук",
+    "rect": {
+      "x": 1370.8,
+      "y": 965.6,
+      "w": 287.8,
+      "h": 28
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "12px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 61,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--primary ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Создать награду",
+    "rect": {
+      "x": 399.5,
+      "y": 1091.1,
+      "w": 132.6,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(10, 10, 11)",
+      "bg": "rgb(244, 244, 247)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": true,
+      "hasOnChange": false,
+      "onClick": true
+    }
+  },
+  {
+    "i": 62,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Отмена",
+    "rect": {
+      "x": 542.1,
+      "y": 1091.1,
+      "w": 78.4,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 63,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--ghost ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Проверить звук",
+    "rect": {
+      "x": 630.5,
+      "y": 1091.1,
+      "w": 129.6,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(208, 208, 216)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 64,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--danger ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Удалить",
+    "rect": {
+      "x": 770.1,
+      "y": 1091.1,
+      "w": 81.6,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(255, 255, 255)",
+      "bg": "rgb(239, 68, 68)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 65,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--danger-ghost ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": false,
+    "text": "Убрать звук",
+    "rect": {
+      "x": 861.6,
+      "y": 1091.1,
+      "w": 104.6,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(242, 139, 139)",
+      "bg": "rgba(239, 68, 68, 0.06)",
+      "font": "13px/normal Inter",
+      "cursor": "pointer",
+      "outline": "none 3px",
+      "opacity": "1",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  },
+  {
+    "i": 66,
+    "tag": "button",
+    "type": "button",
+    "cls": "ui-button ui-button--secondary ui-button--md",
+    "id": "",
+    "role": "",
+    "ariaLabel": "",
+    "ariaChecked": null,
+    "ariaExpanded": null,
+    "title": "",
+    "placeholder": "",
+    "tabIndex": 0,
+    "disabled": true,
+    "text": "Недоступно",
+    "rect": {
+      "x": 976.3,
+      "y": 1091.1,
+      "w": 105.3,
+      "h": 34
+    },
+    "css": {
+      "color": "rgb(228, 228, 234)",
+      "bg": "rgb(26, 26, 30)",
+      "font": "13px/normal Inter",
+      "cursor": "default",
+      "outline": "none 3px",
+      "opacity": "0.42",
+      "overflow": "visible"
+    },
+    "react": {
+      "hasOnClick": false,
+      "hasOnChange": false,
+      "onClick": false
+    }
+  }
+]

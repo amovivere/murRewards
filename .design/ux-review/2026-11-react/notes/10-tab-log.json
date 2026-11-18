@@ -1,0 +1,22 @@
+{
+  "tab": "log",
+  "pageTitle": "Журнал",
+  "pageSub": "Новые записи сверху · уровни, поиск и очистка",
+  "contentScroll": {
+    "scrollH": 6994,
+    "clientH": 900,
+    "scrollTop": 0
+  },
+  "pageRect": {
+    "x": 380.5,
+    "y": 89,
+    "w": 1291,
+    "h": 6970.3125
+  },
+  "text": "СИСТЕМА · ДИАГНОСТИКА\nЖурнал\nНовые записи сверху · уровни, поиск и очистка\nСкопировать\nОчистить\nВсеINFOWARNERROR\n182 записей · обновление каждые 2 с\n2026-11-18 22:23:42.418\nINFO\nМузыка: играет «VILLIAN, madk1d - ДИНАСТИЯ (official music video)»\n2026-11-18 22:23:42.262\nINFO\nЧат: подключён к каналу #goshanmur, команда !трек доступна\n2026-11-18 22:23:42.140\nINFO\nМузыка: старт «VILLIAN, madk1d - ДИНАСТИЯ (official music video)» (@manual)\n2026-11-18 22:23:42.068\nINFO\nEventSub: слушаем активации наград\n2026-11-18 22:23:41.928\nINFO\nМузыка: yt-dlp 2026.10.26 (F:\\WorkSpaces\\Mur rewards\\reward-sounds-tauri\\dist\\yt-dlp.exe)\n2026-11-18 22:23:41.923\nINFO\nEventSub: подписка на награды активна (сессия AgoQUEAiENb7SPSay7-ebeYp-RIGY2VsbC1h)\n2026-11-18 22:23:41.923\nINFO\nEventSub: подписка на активации наград создана\n2026-11-18 22:23:41.488\nINFO\nTwitch: получено наград — 20\n2026-11-18 22:23:41.023\nINFO\nТрей создан; start_minimized=false, close_to_tray=true\n2026-11-18 22:23:40.686\nINFO\nАудиовыход открыт: Analogue 1/2 (Audient iD4)\n2026-11-18 22:23:40.666\nINFO\nTauri core: EventSub подключается к Twitch\n2026-11-18 22:23:40.665\nINFO\nМузыка: восстановлена очередь заявок (1)\n2026-11-18 22:23:40.665\nINFO\nОверлей: http://127.0.0.1:8770/overlay\n2026-11-18 22:20:07.225\nINFO\nМузыка: играет «VILLIAN, madk1d - ДИНАСТИЯ (official music video)»\n2026-11-18 22:20:07.225\nINFO\nМузыка: «VILLIAN, madk1d - ДИНАСТИЯ (official music video)» в очереди, позиция 1\n2026-11-18 22:20:06.891\nINFO\nМузыка: старт «VILLIAN, madk1d - ДИНАСТИЯ (official music video)» (@manual)\n2026-11-18 22:20:06.891\nINFO\nМузыка: заявка manual-1795004403519 «VILLIAN, madk1d - ДИНАСТИЯ (official music video)» в очереди, позиция 1\n2026-11-18 22:17:30.469\nINFO\nЧат: подключён к каналу #goshanmur, команда !трек доступна\n2026-11-18 22:17:30.295\nINFO\nEventSub: слушаем активации наград\n2026-11-18 22:17:30.093\nINFO\nEventSub: подписка на награды активна (сессия AgoQwIjzw0faTi6izHDe1fL13hIGY2VsbC1h)\n2026-11-18 22:17:30.093\nINFO\nEventSub: подписка на активации наград создана\n2026-11-18 22:17:30.051\nINFO\nМузыка: yt-dlp 2026.10.26 (F:\\WorkSpaces\\Mur rewards\\reward-sounds-tauri\\dist\\yt-dlp.exe)\n2026-11-18 22:17:29.570\nINFO\nTwitch: получено наград — 20\n2026-11-18 22:17:29.364\nINFO\nТрей создан; start_minimized=false, close_to_tray=true\n2026-11-18 22:17:28.910\nINFO\nАудиовыход открыт: Analogue 1/2 (Audient iD4)\n2026-11-18 22:17:28.892\nINFO\nTauri core: EventSub подключается к Twitch\n2026-11-18 22:17:28.891\nINFO\nОверлей: http://127.0.0.1:8770/overlay\n2026-11-18 22:16:56.300\nINFO\nЧат: подключён к каналу #goshanmur, команда !трек доступна\n2026-11-18 22:16:56.248\nINFO\nEventSub: слушаем активации наград\n2026-11-18 22:16:56.074\nINFO\nEventSub: подписка на награды активна (сессия AgoQlPmCU5sPQAqLrEAa93aSqBIGY2VsbC1h)\n2026-11-18 22:16:56.074\nINFO\nEventSub: подписка на активации наград создана\n2026-11-18 22:16:56.005\nINFO\nМузыка: yt-dlp 2026.10.26 (F:\\WorkSpaces\\Mur rewards\\reward-sounds-tauri\\src-tauri\\target\\release\\yt-dlp.exe)\n2026-11-18 22:16:",
+  "counts": {
+    "buttons": 16,
+    "inputs": 1,
+    "panels": 0
+  }
+}

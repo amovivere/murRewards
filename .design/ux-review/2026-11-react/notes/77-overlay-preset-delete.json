@@ -1,0 +1,29 @@
+{
+  "afterDel": {
+    "options": [
+      "Обычный",
+      "Минимал",
+      "Аудит-пресет"
+    ],
+    "activeName": "Обычный",
+    "toast": "Пресет продублирован"
+  },
+  "dialogs": [
+    {
+      "url": "http://tauri.localhost/",
+      "frameId": "81A457DB0A7496E18763166A4D460CDE",
+      "message": "Новое название пресета:",
+      "type": "prompt",
+      "hasBrowserHandler": true,
+      "defaultPrompt": "Новый пресет"
+    },
+    {
+      "url": "http://tauri.localhost/",
+      "frameId": "81A457DB0A7496E18763166A4D460CDE",
+      "message": "Удалить пресет «Аудит-пресет копия»?",
+      "type": "confirm",
+      "hasBrowserHandler": true,
+      "defaultPrompt": ""
+    }
+  ]
+}

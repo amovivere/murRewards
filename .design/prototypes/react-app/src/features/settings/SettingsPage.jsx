@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import Button from '../../components/ui/Button.jsx';
+import ConfirmModal from '../../components/ui/ConfirmModal.jsx';
 import Icon from '../../components/ui/Icon.jsx';
 import { Panel, Pill } from '../../components/ui/Panel.jsx';
 import { SliderRow, ToggleRow } from '../../components/ui/Field.jsx';
 
 const ACCENTS = ['#8B00FF', '#4E7CFF', '#2DD4BF', '#EC4899', '#F5C97B', '#F55A5F', '#22C55E', '#A3A3A3'];
 
-export default function SettingsPage({ backend }) {
+export default function SettingsPage({ backend, onNavigate }) {
   const real = Boolean(backend?.available && backend.view);
   const view = backend?.view;
   const [accent, setAccent] = useState(view?.accent || '#8B00FF');
-  const [autoUpdate, setAutoUpdate] = useState(true);
   const [closeToTray, setCloseToTray] = useState(view?.close_to_tray ?? true);
   const [volume, setVolume] = useState(Math.round((view?.volume ?? 0.29) * 100));
+  const [confirmDisconnect, setConfirmDisconnect] = useState(false);
+  const [toast, setToast] = useState('');
 
   useEffect(() => {
     if (!view) return;
@@ -55,6 +57,64 @@ export default function SettingsPage({ backend }) {
   const login = real ? view.login : 'goshanmurz';
   const music = real ? view.music : null;
 
+  function notify(message) {
+    setToast(message);
+    window.setTimeout(() => setToast(''), 2400);
+  }
+
+  function goto(tab) {
+    onNavigate?.(tab);
+  }
+
+  async function copyDiagnostics() {
+    const lines = [
+      `Reward Sounds ${view?.version || ''}`,
+      `Twitch: ${view?.login || '—'} (${view?.connected ? 'подключён' : 'нет'})`,
+      `Звук: ${view?.audio_device || '—'}`,
+      ...(view?.health || []).map((item) => `${item.title}: ${item.state} — ${item.detail}`),
+    ];
+    try {
+      await navigator.clipboard.writeText(lines.join('\n'));
+      notify('Диагностика скопирована');
+    } catch {
+      notify('Не удалось скопировать диагностику');
+    }
+  }
+
+  async function refreshTwitch() {
+    if (!real) return;
+    try {
+      await backend.invoke('refresh_twitch_now');
+      await backend.refresh();
+      notify('Данные Twitch обновлены');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function reattachEvents() {
+    if (!real) return;
+    try {
+      await backend.invoke('restart_eventsub');
+      await backend.refresh();
+      notify('EventSub переподключён');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function disconnectTwitch() {
+    if (!real) return;
+    try {
+      await backend.invoke('twitch_disconnect');
+      await backend.refresh();
+      notify('Twitch отключён');
+      setConfirmDisconnect(false);
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
   return (
     <div className="page">
       <div className="page-head">
@@ -84,15 +144,17 @@ export default function SettingsPage({ backend }) {
               <span className={`dot dot--${item.state === 'error' ? 'warn' : item.state === 'warn' ? 'warn' : 'ok'}`} />
               <b>{item.title}</b>
               <span>{item.detail}</span>
-              <a>Открыть</a>
+              <button className="link-button" onClick={() => goto(item.key === 'overlay' ? 'overlay' : item.key === 'audio' || item.key === 'ytdlp' ? 'music' : 'settings')}>
+                Открыть
+              </button>
             </div>
           ))}
         </div>
         <div className="inline-row">
-          <Button variant="secondary" size="sm">
+          <Button variant="secondary" size="sm" onClick={copyDiagnostics}>
             Скопировать диагностику
           </Button>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" onClick={() => goto('log')}>
             Открыть журнал
           </Button>
         </div>
@@ -102,17 +164,17 @@ export default function SettingsPage({ backend }) {
         <Panel title="Twitch" description="Аккаунт канала, с которого читаются награды">
           <div className="strong-line">{real && view.connected ? `Подключено · @${login}` : real ? 'Не подключено' : 'Подключено · @goshanmurz'}</div>
           <div className="muted-line">Активации наград слушаются</div>
-          <Button variant="secondary" full onClick={() => real && backend.call('refresh_rewards').catch(() => {})}>
+          <Button variant="secondary" full onClick={refreshTwitch}>
             Обновить данные
           </Button>
-          <Button variant="secondary" full onClick={() => real && backend.call('restart_eventsub').catch(() => {})}>
+          <Button variant="secondary" full onClick={reattachEvents}>
             Переподключить события
           </Button>
           <div className="danger-zone">
             <div className="danger-zone__label">ОПАСНАЯ ЗОНА</div>
             <div className="muted-line">Отключить Twitch — награды и музыка перестанут работать.</div>
-            <Button variant="danger-ghost" size="sm">
-              Сменить…
+            <Button variant="danger-ghost" size="sm" onClick={() => setConfirmDisconnect(true)}>
+              Отключить Twitch…
             </Button>
           </div>
         </Panel>
@@ -152,9 +214,7 @@ export default function SettingsPage({ backend }) {
       <div className="three-col">
         <Panel title="Внешний вид" description="Акцентный цвет интерфейса. Не меняет награды.">
           <div className="accent-buttons">
-            <Button variant="primary" size="sm">
-              Пример кнопки
-            </Button>
+            <span className="ui-button ui-button--primary ui-button--sm">Пример кнопки</span>
             <span className="accent-chip" style={{ background: accent }} />
           </div>
           <div className="accent-palette">
@@ -197,7 +257,9 @@ export default function SettingsPage({ backend }) {
             checked={real ? Boolean(view.start_minimized) : false}
             onChange={(enabled) => real && setting('start_minimized', enabled ? '1' : '0')}
           />
-          <ToggleRow label="Автообновление" checked={autoUpdate} onChange={setAutoUpdate} />
+          <Button variant="ghost" size="sm" onClick={() => goto('onboarding')}>
+            Пройти знакомство заново
+          </Button>
         </Panel>
 
         <Panel title="Музыка" description="Треки по заявке из чата">
@@ -206,10 +268,10 @@ export default function SettingsPage({ backend }) {
           </div>
           <div className="muted-line">НАГРАДА</div>
           <div className="strong-line">{music?.reward_title || 'МУЗЫКА JOTUB'} · {music?.reward_cost || 50} баллов</div>
-          <Button variant="secondary" full>
+          <Button variant="secondary" full onClick={() => goto('music')}>
             Настроить музыку
           </Button>
-          <Button variant="ghost" full>
+          <Button variant="ghost" full onClick={() => goto('music')}>
             Открыть вкладку «Музыка» →
           </Button>
         </Panel>
@@ -219,8 +281,17 @@ export default function SettingsPage({ backend }) {
         <Button variant="ghost" icon={<Icon name="external" />} onClick={() => real && backend.invoke('open_folder', { kind: 'config' }).catch(() => {})}>
           Открыть папку данных
         </Button>
-        <Button variant="danger-ghost">Сбросить настройки</Button>
       </div>
+      <ConfirmModal
+        open={confirmDisconnect}
+        title="Отключить Twitch?"
+        text="Награды, EventSub и музыка перестанут работать до повторного входа. Локальные привязки звуков сохранятся."
+        confirmLabel="Отключить"
+        danger
+        onClose={() => setConfirmDisconnect(false)}
+        onConfirm={disconnectTwitch}
+      />
+      {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}
     </div>
   );
 }

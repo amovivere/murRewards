@@ -185,7 +185,97 @@ async function run() {
   assert('модалка создания награды открывается', createOpened && (await evaluate(`document.querySelector('.ui-modal__title')?.textContent === 'Новая награда'`)));
   await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
 
+  // P0-фиксы: буквенные аватары, меню карточки, редактирование.
+  assert('в карточках нет буквенных аватаров', (await evaluate(`document.querySelectorAll('.reward-letter').length`)) === 0);
+
+  await evaluate(`document.querySelector('.reward-card .icon-ghost').click(); true`);
+  await sleep(250);
+  const menuInfo = await evaluate(`(() => {
+    const menu = document.querySelector('.reward-menu');
+    if (!menu) return null;
+    const items = Array.from(menu.querySelectorAll('button')).map((b) => b.textContent.trim());
+    const rect = menu.getBoundingClientRect();
+    return { items, insideViewport: rect.bottom <= innerHeight && rect.right <= innerWidth };
+  })()`);
+  assert('меню карточки содержит удаление и не обрезано', Boolean(menuInfo) && menuInfo.items.includes('Удалить награду') && menuInfo.insideViewport, JSON.stringify(menuInfo));
+  await evaluate(`Array.from(document.querySelectorAll('.reward-menu button')).find((b) => b.textContent.includes('Удалить')).click(); true`);
+  await sleep(300);
+  assert('удаление открывает подтверждение', (await evaluate(`document.querySelector('.ui-modal__title')?.textContent || ''`)).includes('Удалить'));
+  await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
+  await sleep(200);
+
+  await evaluate(`document.querySelector('.reward-card .icon-ghost').click(); true`);
+  await sleep(200);
+  await evaluate(`Array.from(document.querySelectorAll('.reward-menu button')).find((b) => b.textContent.includes('Редактировать')).click(); true`);
+  await sleep(300);
+  const editInfo = await evaluate(`(async () => {
+    const state = await window.__TAURI_INTERNALS__.invoke('get_state');
+    const first = state.rewards[0];
+    return {
+      values: Array.from(document.querySelectorAll('.ui-modal input')).map((i) => i.value),
+      title: first.title,
+      cost: String(first.cost),
+      saveDisabled: Array.from(document.querySelectorAll('.ui-modal button')).find((b) => b.textContent.includes('Сохранить'))?.disabled
+    };
+  })()`);
+  assert('редактирование заполнено реальными значениями', editInfo.values[0] === editInfo.title && editInfo.values[1] === editInfo.cost && editInfo.saveDisabled === false, JSON.stringify(editInfo));
+  await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
+
+  // Поиск и список
+  await sleep(250);
+  const searchBefore = await evaluate(`document.querySelectorAll('.reward-card').length`);
+  await evaluate(`(() => {
+    const input = document.querySelector('.search-field input');
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+    setter.call(input, 'ставка');
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    return true;
+  })()`);
+  await sleep(300);
+  const searchAfter = await evaluate(`document.querySelectorAll('.reward-card').length`);
+  assert('поиск наград фильтрует список', searchAfter < searchBefore && searchAfter > 0, `${searchBefore} -> ${searchAfter}`);
+  await evaluate(`(() => {
+    const input = document.querySelector('.search-field input');
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+    setter.call(input, '');
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    return true;
+  })()`);
+  await sleep(200);
+  await evaluate(`Array.from(document.querySelectorAll('.view-switch button')).find((b) => b.textContent.includes('Список')).click(); true`);
+  await sleep(250);
+  assert('переключатель «Список» работает', await evaluate(`!!document.querySelector('.reward-grid.is-list')`));
+  await evaluate(`Array.from(document.querySelectorAll('.view-switch button')).find((b) => b.textContent.includes('Плитка')).click(); true`);
+
+  // Health popover: Esc.
+  await evaluate(`document.querySelector('.health-chip').click(); true`);
+  await sleep(250);
+  const healthRows = await evaluate(`document.querySelectorAll('.health-popover__rows button').length`);
+  assert('health-поповер показывает реальные подсистемы', healthRows >= 5, `${healthRows}`);
+  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); true`);
+  await sleep(200);
+  assert('health-поповер закрывается по Esc', await evaluate(`!document.querySelector('.health-popover')`));
+
+  // Music settings: поллинг не перетирает форму.
+  await clickTab('Музыка');
+  await sleep(400);
+  await evaluate(`Array.from(document.querySelectorAll('.ui-button')).find((b) => b.textContent.includes('Настроить музыку')).click(); true`);
+  await sleep(300);
+  const switchBefore = await evaluate(`(() => { const sw = document.querySelector('.ui-modal .ui-switch'); const before = sw.classList.contains('is-on'); sw.click(); return { before, after: sw.classList.contains('is-on') }; })()`);
+  await sleep(1300);
+  const switchAfter = await evaluate(`document.querySelector('.ui-modal .ui-switch')?.classList.contains('is-on')`);
+  assert('поллинг не перетирает настройки музыки', switchBefore.before !== switchAfter, JSON.stringify({ ...switchBefore, afterPoll: switchAfter }));
+  await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
+
+  // Fluid shell при maximize.
+  await evaluate(`window.__TAURI_INTERNALS__.invoke('win_toggle_maximize'); true`);
+  await sleep(800);
+  const fluid = await evaluate(`(() => { const shell = document.querySelector('.app-shell'); const r = shell.getBoundingClientRect(); return { inner: [innerWidth, innerHeight], shell: [Math.round(r.width), Math.round(r.height)], left: Math.round(r.left) }; })()`);
+  assert('оболочка заполняет maximized-окно', fluid.shell[0] === fluid.inner[0] && fluid.shell[1] === fluid.inner[1] && fluid.left === 0, JSON.stringify(fluid));
+  await evaluate(`window.__TAURI_INTERNALS__.invoke('win_toggle_maximize'); true`);
   await sleep(500);
+
+  await sleep(300);
   const errors = consoleErrors();
   assert('нет ошибок в консоли за весь прогон', errors.length === 0, errors.join('; '));
 }

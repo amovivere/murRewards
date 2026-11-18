@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import Button from '../components/ui/Button.jsx';
+import { useEffect, useRef, useState } from 'react';
 import Icon from '../components/ui/Icon.jsx';
 import DesignPage from '../features/design/DesignPage.jsx';
 import LogPage from '../features/log/LogPage.jsx';
@@ -33,28 +32,105 @@ const PAGES = {
   design: DesignPage,
 };
 
+const HEALTH_LABELS = {
+  twitch: 'Twitch',
+  eventsub: 'EventSub',
+  audio: 'Звук',
+  ytdlp: 'yt-dlp',
+  overlay: 'Оверлей',
+};
+
 export default function App() {
   const [tab, setTab] = useState('rewards');
   const [healthOpen, setHealthOpen] = useState(false);
   const backend = useBackend();
   const [started, setStarted] = useState(false);
+  const [maximized, setMaximized] = useState(false);
+  const healthWrap = useRef(null);
+  const view = backend.view;
+  const health = view?.health || [];
+  const problems = health.filter((item) => item.state === 'error' || item.state === 'warn');
+  const healthOverall = health.some((item) => item.state === 'error')
+    ? 'error'
+    : health.some((item) => item.state === 'warn')
+      ? 'warn'
+      : 'ok';
+  const healthText =
+    health.length === 0
+      ? 'Проверяем системы…'
+      : problems.length === 0
+        ? 'Все системы работают'
+        : problems.length === 1
+          ? 'Есть замечание'
+          : `Замечаний: ${problems.length}`;
   const showPrototypeNav = !inTauri;
   const systemNav = SYSTEM_NAV.filter((item) => showPrototypeNav || !item.prototype);
+  if (inTauri && view && !view.connected && !systemNav.some((item) => item.id === 'onboarding')) {
+    systemNav.unshift({ id: 'onboarding', label: 'Подключение', icon: 'play' });
+  }
   const Page = PAGES[tab] || RewardsPage;
+  const volumePercent = Math.round((view?.volume ?? 0.29) * 100);
 
   useEffect(() => {
-    if (started || !backend.view) return;
+    if (started || !view) return;
     setStarted(true);
-    if (!backend.view.connected) setTab('onboarding');
-  }, [backend.view, started]);
+    if (!view.connected) setTab('onboarding');
+  }, [view, started]);
+
+  useEffect(() => {
+    if (!healthOpen) return undefined;
+    function onKeyDown(event) {
+      if (event.key === 'Escape') setHealthOpen(false);
+    }
+    function onPointerDown(event) {
+      if (healthWrap.current && !healthWrap.current.contains(event.target)) setHealthOpen(false);
+    }
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('mousedown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('mousedown', onPointerDown);
+    };
+  }, [healthOpen]);
 
   function windowAction(command) {
     if (!inTauri) return;
     invoke(command).catch(() => {});
   }
 
+  function toggleMaximize() {
+    windowAction('win_toggle_maximize');
+    setMaximized((value) => !value);
+  }
+
+  function startDrag(event) {
+    if (!inTauri || event.button !== 0) return;
+    if (event.target.closest('button, input, label, .health-wrap')) return;
+    windowAction('win_start_drag');
+  }
+
+  async function changeVolume(percent) {
+    if (!inTauri) return;
+    try {
+      await backend.call('set_volume', { volume: percent / 100 });
+    } catch {
+      // состояние обновится следующим поллингом
+    }
+  }
+
+  function navigate(next) {
+    setTab(next);
+  }
+
+  function healthRowTarget(item) {
+    if (item.action === 'settings' || item.action === 'log') return item.action;
+    if (item.key === 'overlay') return 'overlay';
+    if (item.key === 'audio' || item.key === 'ytdlp') return 'music';
+    return 'settings';
+  }
+
   return (
-    <div className="app-shell">
+    <div className="app-shell" style={{ '--accent': view?.accent || '#8B00FF', '--accent-text': 'color-mix(in srgb, var(--accent) 48%, white)' }}>
       <aside className="sidebar">
         <div className="sidebar__brand">
           <div className="brand-mark">
@@ -62,18 +138,19 @@ export default function App() {
           </div>
           <div>
             <div className="brand-name">Reward Sounds</div>
-            <div className="brand-sub">Studio · 2K</div>
+            <div className="brand-sub">Channel Points · OBS</div>
           </div>
         </div>
 
         <div className="sidebar__scroll">
           <div className="nav-label">ОСНОВНОЕ</div>
-          <nav>
+          <nav aria-label="Основные разделы">
             {NAV.map((item) => (
               <button
                 key={item.id}
                 className={`nav-item${tab === item.id ? ' is-active' : ''}`}
                 onClick={() => setTab(item.id)}
+                aria-current={tab === item.id ? 'page' : undefined}
               >
                 <Icon name={item.icon} />
                 <span>{item.label}</span>
@@ -84,12 +161,13 @@ export default function App() {
 
         <div className="sidebar__footer">
           <div className="nav-label">СИСТЕМА</div>
-          <nav>
+          <nav aria-label="Системные разделы">
             {systemNav.map((item) => (
               <button
                 key={item.id}
                 className={`nav-item${tab === item.id ? ' is-active' : ''}`}
                 onClick={() => setTab(item.id)}
+                aria-current={tab === item.id ? 'page' : undefined}
               >
                 <Icon name={item.icon} />
                 <span>{item.label}</span>
@@ -97,59 +175,60 @@ export default function App() {
               </button>
             ))}
           </nav>
-          <div className="sidebar__version">версия 1.7.0</div>
         </div>
       </aside>
 
       <div className="main">
-        <header className="topbar" data-tauri-drag-region onDoubleClick={() => windowAction('win_toggle_maximize')}>
-          <div className="health-wrap">
-            <button className={`health-chip${healthOpen ? ' is-open' : ''}`} onClick={() => setHealthOpen((value) => !value)}>
-              <span className="dot dot--ok" />
-              Все системы работают
+        <header className="topbar" onMouseDown={startDrag} onDoubleClick={toggleMaximize}>
+          <div className="health-wrap" ref={healthWrap}>
+            <button
+              className={`health-chip${healthOpen ? ' is-open' : ''}`}
+              onClick={() => setHealthOpen((value) => !value)}
+              aria-expanded={healthOpen}
+              aria-controls="health-popover"
+            >
+              <span className={`dot dot--${healthOverall === 'error' ? 'warn' : healthOverall === 'warn' ? 'warn' : 'ok'}`} />
+              {healthText}
               <span className="health-chip__chevron">›</span>
             </button>
 
             {healthOpen ? (
-              <div className="health-popover">
+              <div className="health-popover" id="health-popover" role="dialog" aria-label="Состояние систем">
                 <div className="health-popover__head">
                   <div>
                     <div className="eyebrow">СОСТОЯНИЕ СИСТЕМ</div>
-                    <div className="health-popover__title">Всё готово к эфиру</div>
+                    <div className="health-popover__title">
+                      {healthOverall === 'ok' ? 'Всё готово к эфиру' : 'Есть замечания'}
+                    </div>
                   </div>
-                  <span className="ui-pill ui-pill--ok">5/5</span>
+                  <span className={`ui-pill ui-pill--${healthOverall === 'ok' ? 'ok' : 'warning'}`}>
+                    {health.filter((item) => item.state === 'ok').length}/{health.length || 5}
+                  </span>
                 </div>
                 <div className="health-popover__rows">
-                  <button onClick={() => { setTab('settings'); setHealthOpen(false); }}>
-                    <span className="dot dot--ok" />
-                    <b>Twitch</b>
-                    <span>Подключено · @goshanmurz</span>
-                    <em>Открыть</em>
-                  </button>
-                  <button onClick={() => { setTab('settings'); setHealthOpen(false); }}>
-                    <span className="dot dot--ok" />
-                    <b>EventSub</b>
-                    <span>Слушаем активации наград</span>
-                    <em>Открыть</em>
-                  </button>
-                  <button onClick={() => { setTab('overlay'); setHealthOpen(false); }}>
-                    <span className="dot dot--ok" />
-                    <b>Оверлей</b>
-                    <span>127.0.0.1:8770/chat-overlay</span>
-                    <em>Открыть</em>
-                  </button>
-                  <button onClick={() => { setTab('music'); setHealthOpen(false); }}>
-                    <span className="dot dot--ok" />
-                    <b>Звук</b>
-                    <span>Analog 1/2 (Audient iD4)</span>
-                    <em>Открыть</em>
-                  </button>
-                  <button onClick={() => { setTab('music'); setHealthOpen(false); }}>
-                    <span className="dot dot--ok" />
-                    <b>yt-dlp</b>
-                    <span>2026.10.26 — готов</span>
-                    <em>Открыть</em>
-                  </button>
+                  {(health.length
+                    ? health
+                    : [
+                        { key: 'twitch', state: 'ok', detail: 'Подключено' },
+                        { key: 'eventsub', state: 'ok', detail: 'Слушаем активации наград' },
+                        { key: 'audio', state: 'ok', detail: 'Устройство выбрано' },
+                        { key: 'ytdlp', state: 'ok', detail: 'Готов' },
+                        { key: 'overlay', state: 'ok', detail: 'Оверлеи работают' },
+                      ]
+                  ).map((item) => (
+                    <button
+                      key={item.key}
+                      onClick={() => {
+                        setTab(healthRowTarget(item));
+                        setHealthOpen(false);
+                      }}
+                    >
+                      <span className={`dot dot--${item.state === 'error' ? 'warn' : item.state === 'warn' ? 'warn' : 'ok'}`} />
+                      <b>{HEALTH_LABELS[item.key] || item.title}</b>
+                      <span>{item.detail}</span>
+                      <em>Открыть</em>
+                    </button>
+                  ))}
                 </div>
                 <button className="health-popover__footer" onClick={() => { setTab('settings'); setHealthOpen(false); }}>
                   Открыть «Здоровье системы» →
@@ -159,30 +238,42 @@ export default function App() {
           </div>
 
           <div className="topbar__right">
-            <div className="volume-control">
+            <label className="volume-control">
               <Icon name="volume" size={15} />
               <span className="volume-control__label">ЗВУК</span>
-              <div className="volume-track volume-track--top">
-                <div className="volume-fill" style={{ width: '29%' }} />
-                <div className="volume-knob" style={{ left: '29%' }} />
-              </div>
-              <span className="volume-control__value">29%</span>
-            </div>
+              <input
+                className="ui-range volume-range"
+                type="range"
+                min={0}
+                max={100}
+                step={1}
+                value={volumePercent}
+                onChange={(event) => changeVolume(Number(event.target.value))}
+                aria-label="Общая громкость"
+              />
+              <span className="volume-control__value">{volumePercent}%</span>
+            </label>
             <div className="window-controls">
-              <button title="Свернуть" onClick={() => windowAction('win_minimize')}>—</button>
-              <button title="Развернуть" onClick={() => windowAction('win_toggle_maximize')}>▢</button>
-              <button className="window-close" title="Закрыть" onClick={() => windowAction('win_close')}>×</button>
+              <button title="Свернуть" aria-label="Свернуть окно" onClick={() => windowAction('win_minimize')}>—</button>
+              <button title={maximized ? 'Восстановить' : 'Развернуть'} aria-label={maximized ? 'Восстановить окно' : 'Развернуть окно'} onClick={toggleMaximize}>▢</button>
+              <button className="window-close" title="Закрыть" aria-label="Закрыть окно" onClick={() => windowAction('win_close')}>×</button>
             </div>
           </div>
         </header>
 
         <main className="content">
-          <Page backend={backend} />
+          {backend.error ? (
+            <div className="app-error-banner" role="alert">
+              <span>Нет связи с бэкендом приложения: {backend.error}</span>
+              <button className="app-error-retry" onClick={() => backend.refresh()}>Повторить</button>
+            </div>
+          ) : null}
+          <Page backend={backend} onNavigate={navigate} />
         </main>
 
         <footer className="footer">
-          <span>Готово</span>
-          <span>версия 1.7.0</span>
+          <span>{healthText}</span>
+          <span>версия {view?.version || '1.7.0'}</span>
         </footer>
       </div>
     </div>

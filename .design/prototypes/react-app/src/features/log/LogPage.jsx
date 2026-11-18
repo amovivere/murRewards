@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import Button from '../../components/ui/Button.jsx';
+import ConfirmModal from '../../components/ui/ConfirmModal.jsx';
 import Icon from '../../components/ui/Icon.jsx';
 import { invoke } from '../../lib/backend.js';
 
@@ -21,6 +22,9 @@ export default function LogPage({ backend }) {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(real);
   const [error, setError] = useState('');
+  const [clearOpen, setClearOpen] = useState(false);
+  const [clearing, setClearing] = useState(false);
+  const [toast, setToast] = useState('');
 
   async function load() {
     if (!real) return;
@@ -53,15 +57,32 @@ export default function LogPage({ backend }) {
   );
 
   async function clearLog() {
-    if (!real) {
-      setRows([]);
-      return;
-    }
+    setClearing(true);
     try {
-      await invoke('clear_log');
-      await load();
+      if (!real) {
+        setRows([]);
+      } else {
+        await invoke('clear_log');
+        await load();
+      }
+      setClearOpen(false);
+      setToast('Журнал очищен');
+      window.setTimeout(() => setToast(''), 2200);
     } catch (err) {
       setError(String(err));
+    } finally {
+      setClearing(false);
+    }
+  }
+
+  async function copyLog() {
+    try {
+      const text = visible.map((row) => `${row.time} ${row.level} ${row.message}`).join('\n');
+      await navigator.clipboard.writeText(text);
+      setToast('Журнал скопирован');
+      window.setTimeout(() => setToast(''), 2200);
+    } catch {
+      setToast('Не удалось скопировать журнал');
     }
   }
 
@@ -74,8 +95,8 @@ export default function LogPage({ backend }) {
           <p className="page-subtitle">Новые записи сверху · уровни, поиск и очистка</p>
         </div>
         <div className="page-actions">
-          <Button variant="secondary" icon={<Icon name="copy" />}>Скопировать</Button>
-          <Button variant="danger-ghost" onClick={clearLog}>Очистить</Button>
+          <Button variant="secondary" icon={<Icon name="copy" />} onClick={copyLog}>Скопировать</Button>
+          <Button variant="danger-ghost" onClick={() => setClearOpen(true)}>Очистить</Button>
         </div>
       </div>
 
@@ -121,6 +142,17 @@ export default function LogPage({ backend }) {
           Открыть папку журнала
         </Button>
       </div>
+      <ConfirmModal
+        open={clearOpen}
+        title="Очистить журнал?"
+        text="Текущие записи будут сохранены в архив, а журнал начнётся заново. Это действие нельзя отменить из интерфейса."
+        confirmLabel="Очистить журнал"
+        danger
+        busy={clearing}
+        onClose={() => setClearOpen(false)}
+        onConfirm={clearLog}
+      />
+      {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}
     </div>
   );
 }

@@ -523,7 +523,7 @@ export default function OverlayPage() {
         </aside>
       </div>
 
-      {toast ? <div className="ui-toast">{toast}</div> : null}
+      {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}
     </div>
   );
 }

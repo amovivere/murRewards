@@ -1608,6 +1608,9 @@ pub fn open_url(url: String) -> Result<(), String> {
         || url.starts_with("https://dev.twitch.tv/")
         || url.starts_with("https://dashboard.twitch.tv/")
         || url.starts_with("https://www.twitch.tv/")
+        || url.starts_with("https://www.youtube.com/")
+        || url.starts_with("https://youtube.com/")
+        || url.starts_with("https://youtu.be/")
         || url.starts_with("http://127.0.0.1:8770/")
         || url.starts_with("http://localhost:8770/");
     if !allowed {

@@ -8,7 +8,7 @@ const MOCK_BINDINGS = [
   { reward_id: '3', title: 'Беги', file: { name: 'run.mp3', volume: 1.33 } },
 ];
 
-export default function OnboardingPage({ backend }) {
+export default function OnboardingPage({ backend, onNavigate }) {
   const [busy, setBusy] = useState(false);
   const real = Boolean(backend?.available && backend.view);
   const view = backend?.view;
@@ -33,6 +33,14 @@ export default function OnboardingPage({ backend }) {
     } finally {
       setBusy(false);
     }
+  }
+
+  async function primary() {
+    if (connected) {
+      onNavigate?.('rewards');
+      return;
+    }
+    await login();
   }
 
   async function preview(binding) {
@@ -67,10 +75,10 @@ export default function OnboardingPage({ backend }) {
             Channel Points, а звуки играют с вашего компьютера.
           </p>
           <div className="onboarding-actions">
-            <Button variant="primary" size="lg" onClick={login} disabled={busy || connected}>
+            <Button variant="primary" size="lg" onClick={primary} disabled={busy}>
               {connected ? 'Продолжить настройку' : busy ? 'Открываем Twitch…' : 'Войти в Twitch'}
             </Button>
-            <Button variant="ghost" size="lg">Пропустить</Button>
+            <Button variant="ghost" size="lg" onClick={() => onNavigate?.('rewards')}>Пропустить</Button>
           </div>
         </div>
 

@@ -1,27 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../../components/ui/Button.jsx';
 import ColorPalette from '../../components/ui/ColorPalette.jsx';
 import Icon from '../../components/ui/Icon.jsx';
 import Modal from '../../components/ui/Modal.jsx';
-import { Panel } from '../../components/ui/Panel.jsx';
 
 const INITIAL_REWARDS = [
-  { id: 1, name: 'Ты новичок?', cost: 200, color: '#F55A5F', file: 'newbie.mp3', volume: 200, active: true, letter: 'Т' },
-  { id: 2, name: 'Мне нравится как он', cost: 150, color: '#4E7CFF', file: 'ilikehowhesm...', volume: 168, active: true, letter: 'М' },
-  { id: 3, name: 'МУЗЫКА JOTUB', cost: 50, color: '#A970FF', file: '', volume: 0, active: true, letter: 'М', music: true },
-  { id: 4, name: 'СКАЗАНУТЬ ЧЕТО', cost: 250, color: '#2DD4BF', file: '', volume: 0, active: true, letter: 'С' },
-  { id: 5, name: 'А где донаты', cost: 100, color: '#F5C97B', file: 'wheredonat...', volume: 185, active: true, letter: 'А' },
-  { id: 6, name: 'Смешок', cost: 200, color: '#EC4899', file: 'shitpost-lau...', volume: 109, active: true, letter: 'С' },
-  { id: 7, name: 'Шиза', cost: 250, color: '#00C8FF', file: 'Kanye - Vult...', volume: 46, active: true, letter: 'Ш' },
-  { id: 8, name: 'Беги', cost: 200, color: '#A3A3A3', file: 'run.mp3', volume: 133, active: true, letter: 'Б' },
+  { id: 1, name: 'Ты новичок?', cost: 200, color: '#F55A5F', file: 'newbie.mp3', volume: 200, active: true },
+  { id: 2, name: 'Мне нравится как он', cost: 150, color: '#4E7CFF', file: 'ilikehowhesm...', volume: 168, active: true },
+  { id: 3, name: 'МУЗЫКА JOTUB', cost: 50, color: '#A970FF', file: '', volume: 0, active: true, music: true },
+  { id: 4, name: 'СКАЗАНУТЬ ЧЕТО', cost: 250, color: '#2DD4BF', file: '', volume: 0, active: true },
+  { id: 5, name: 'А где донаты', cost: 100, color: '#F5C97B', file: 'wheredonat...', volume: 185, active: true },
+  { id: 6, name: 'Смешок', cost: 200, color: '#EC4899', file: 'shitpost-lau...', volume: 109, active: true },
+  { id: 7, name: 'Шиза', cost: 250, color: '#00C8FF', file: 'Kanye - Vult...', volume: 46, active: true },
+  { id: 8, name: 'Беги', cost: 200, color: '#A3A3A3', file: 'run.mp3', volume: 133, active: true },
 ];
 
 const FILTERS = [
-  { id: 'all', label: 'Все', count: 11 },
-  { id: 'sound', label: 'Со звуком', count: 9 },
-  { id: 'silent', label: 'Без звука', count: 2 },
-  { id: 'playing', label: 'Играет', count: 0 },
-  { id: 'off', label: 'Выключенные', count: 9 },
+  { id: 'all', label: 'Все' },
+  { id: 'sound', label: 'Со звуком' },
+  { id: 'silent', label: 'Без звука' },
+  { id: 'playing', label: 'Играет' },
+  { id: 'off', label: 'Выключенные' },
 ];
 
 function CreateRewardModal({ open, onClose, onCreate }) {
@@ -31,6 +30,16 @@ function CreateRewardModal({ open, onClose, onCreate }) {
   const [color, setColor] = useState('#A970FF');
   const [needText, setNeedText] = useState(true);
   const [needLink, setNeedLink] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    setName('');
+    setCost('100');
+    setDescription('');
+    setColor('#A970FF');
+    setNeedText(true);
+    setNeedLink(false);
+  }, [open]);
 
   function submit() {
     if (!name.trim()) return;
@@ -42,12 +51,6 @@ function CreateRewardModal({ open, onClose, onCreate }) {
       needText,
       needLink,
     });
-    setName('');
-    setCost('100');
-    setDescription('');
-    setColor('#A970FF');
-    setNeedText(true);
-    setNeedLink(false);
     onClose();
   }
 
@@ -63,7 +66,7 @@ function CreateRewardModal({ open, onClose, onCreate }) {
           <Button variant="secondary" onClick={onClose}>
             Отмена
           </Button>
-          <Button variant="primary" onClick={submit} disabled={!name.trim()}>
+          <Button variant="primary" onClick={submit} disabled={!name.trim() || Number(cost) < 1}>
             Создать награду
           </Button>
         </>
@@ -120,9 +123,16 @@ function CreateRewardModal({ open, onClose, onCreate }) {
 }
 
 function EditRewardModal({ reward, onClose, onSave }) {
-  const [name, setName] = useState(reward?.name || '');
-  const [cost, setCost] = useState(String(reward?.cost || 100));
-  const [color, setColor] = useState(reward?.color || '#A970FF');
+  const [name, setName] = useState('');
+  const [cost, setCost] = useState('100');
+  const [color, setColor] = useState('#A970FF');
+
+  useEffect(() => {
+    if (!reward) return;
+    setName(reward.name || '');
+    setCost(String(reward.cost ?? 100));
+    setColor(reward.color || '#A970FF');
+  }, [reward]);
 
   if (!reward) return null;
 
@@ -197,22 +207,40 @@ function DeleteRewardModal({ reward, onClose, onConfirm }) {
 
 export default function RewardsPage({ backend }) {
   const [rewards, setRewards] = useState(INITIAL_REWARDS);
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState(() => sessionStorage.getItem('rs.rewards.filter') || 'all');
+  const [query, setQuery] = useState(() => sessionStorage.getItem('rs.rewards.query') || '');
+  const [listView, setListView] = useState(() => sessionStorage.getItem('rs.rewards.list') === '1');
   const [createOpen, setCreateOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [editTarget, setEditTarget] = useState(null);
   const [menuFor, setMenuFor] = useState(null);
+  const [menuAbove, setMenuAbove] = useState(false);
   const [toast, setToast] = useState('');
 
   const realView = backend?.view;
-  const real = Boolean(backend?.available && realView?.connected);
+  const real = Boolean(backend?.available);
+  const connected = Boolean(realView?.connected);
+
+  useEffect(() => {
+    sessionStorage.setItem('rs.rewards.filter', filter);
+    sessionStorage.setItem('rs.rewards.query', query);
+    sessionStorage.setItem('rs.rewards.list', listView ? '1' : '0');
+  }, [filter, query, listView]);
+
+  useEffect(() => {
+    if (!menuFor) return undefined;
+    function onKeyDown(event) {
+      if (event.key === 'Escape') setMenuFor(null);
+    }
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [menuFor]);
   const displayRewards = real
-    ? (realView.rewards || []).map((reward) => ({
+    ? (realView?.rewards || []).map((reward) => ({
         id: reward.id,
         name: reward.title,
         cost: reward.cost,
         color: /^#[0-9a-f]{6}$/i.test(reward.color || '') ? reward.color : '#A3A3A3',
-        letter: (reward.title || '?').trim().charAt(0).toUpperCase(),
         file: reward.file?.name || '',
         meta: reward.file?.meta || '',
         volume: reward.file ? Math.round((reward.file.volume ?? 1) * 100) : 0,
@@ -232,6 +260,11 @@ export default function RewardsPage({ backend }) {
   };
 
   const visible = displayRewards.filter((reward) => {
+    if (query.trim()) {
+      const needle = query.trim().toLowerCase();
+      const haystack = `${reward.name} ${reward.file}`.toLowerCase();
+      if (!haystack.includes(needle)) return false;
+    }
     if (filter === 'sound') return Boolean(reward.file);
     if (filter === 'silent') return !reward.file;
     if (filter === 'off') return !reward.active;
@@ -261,7 +294,6 @@ export default function RewardsPage({ backend }) {
         return;
       }
     }
-    const letter = data.name.trim().charAt(0).toUpperCase() || 'Н';
     setRewards((current) => [
       ...current,
       {
@@ -272,7 +304,6 @@ export default function RewardsPage({ backend }) {
         file: '',
         volume: 0,
         active: true,
-        letter,
       },
     ]);
     notify(`Награда «${data.name}» создана`);
@@ -360,16 +391,37 @@ export default function RewardsPage({ backend }) {
     notify(`Тест: ${reward.file}`);
   }
 
+  async function changeVolume(reward, percent) {
+    if (!real) return;
+    try {
+      await backend.call('set_sound_volume', { rewardId: reward.id, volume: percent / 100 });
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function stopAll() {
+    if (!real) {
+      notify('Звуки остановлены');
+      return;
+    }
+    try {
+      await backend.invoke('stop_all_sounds');
+      notify('Все звуки остановлены');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
   return (
     <div className="page">
       <div className="page-head">
         <div>
           <div className="eyebrow">TWITCH · CHANNEL POINTS</div>
           <h1 className="page-title">Награды</h1>
-          <p className="page-subtitle">@goshanmurz · {counts.all} наград · {counts.sound} со звуком · {counts.silent} без звука</p>
+          <p className="page-subtitle">@{realView?.login || 'goshanmur'} · {counts.all} наград · {counts.sound} со звуком · {counts.silent} без звука</p>
         </div>
         <div className="page-actions">
-          <Button variant="ghost" icon={<Icon name="dots" />} />
           <Button variant="primary" icon={<Icon name="plus" />} onClick={() => setCreateOpen(true)}>
             Создать награду
           </Button>
@@ -379,18 +431,22 @@ export default function RewardsPage({ backend }) {
       <div className="toolbar-row">
         <label className="search-field">
           <Icon name="search" />
-          <input placeholder="Поиск награды" />
+          <input
+            placeholder="Поиск награды"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            aria-label="Поиск награды"
+          />
         </label>
-        <div className="view-switch">
-          <button className="is-active">
+        <div className="view-switch" role="group" aria-label="Вид наград">
+          <button className={!listView ? 'is-active' : ''} onClick={() => setListView(false)} aria-pressed={!listView}>
             <Icon name="grid" /> Плитка
           </button>
-          <button>
+          <button className={listView ? 'is-active' : ''} onClick={() => setListView(true)} aria-pressed={listView}>
             <Icon name="list" /> Список
           </button>
         </div>
-        <Button variant="secondary">Все награды</Button>
-        <Button variant="ghost">Остановить всё</Button>
+        <Button variant="ghost" onClick={stopAll}>Остановить всё</Button>
       </div>
 
       <div className="reward-filters">
@@ -399,21 +455,21 @@ export default function RewardsPage({ backend }) {
             key={item.id}
             className={`filter-pill${filter === item.id ? ' is-active' : ''}`}
             onClick={() => setFilter(item.id)}
+            aria-pressed={filter === item.id}
           >
             {item.label} <span>{counts[item.id] ?? 0}</span>
           </button>
         ))}
       </div>
 
-      <div className="reward-grid">
+      <div className={`reward-grid${listView ? ' is-list' : ''}`}>
         {visible.map((reward) => (
           <article
-            className={`reward-card${reward.music ? ' is-music' : ''}`}
+            className={`reward-card${reward.music ? ' is-music' : ''}${menuFor === reward.id ? ' is-menu-open' : ''}`}
             key={reward.id}
             style={{ '--reward-color': reward.color, '--reward-tint': `${reward.color}22` }}
           >
             <div className="reward-card__top">
-              <div className="reward-letter">{reward.letter}</div>
               <div className="reward-name-wrap">
                 <h3>{reward.name}</h3>
                 <div className="reward-meta">
@@ -421,7 +477,21 @@ export default function RewardsPage({ backend }) {
                   {reward.playing ? ' · играет' : ''}
                 </div>
               </div>
-              <button className="icon-ghost" title="Действия" onClick={() => setMenuFor(menuFor === reward.id ? null : reward.id)}>
+              <button
+                className="icon-ghost"
+                title="Действия"
+                aria-label={`Действия с наградой ${reward.name}`}
+                onClick={(event) => {
+                  if (menuFor === reward.id) {
+                    setMenuFor(null);
+                    return;
+                  }
+                  const card = event.currentTarget.closest('.reward-card');
+                  const rect = card?.getBoundingClientRect();
+                  setMenuAbove(Boolean(rect && rect.bottom + 150 > window.innerHeight));
+                  setMenuFor(reward.id);
+                }}
+              >
                 <Icon name="dots" />
               </button>
             </div>
@@ -429,11 +499,11 @@ export default function RewardsPage({ backend }) {
             {reward.music ? <div className="music-flag">♪ ★</div> : null}
 
             {menuFor === reward.id ? (
-              <div className="reward-menu">
-                <button onClick={() => { setMenuFor(null); setEditTarget(reward); }}>Редактировать</button>
-                <button onClick={() => { setMenuFor(null); chooseSound(reward); }}>Заменить звук</button>
-                <button onClick={() => { setMenuFor(null); removeSound(reward); }}>Убрать звук</button>
-                <button className="is-danger" onClick={() => { setMenuFor(null); setDeleteTarget(reward); }}>
+              <div className={`reward-menu${menuAbove ? ' is-above' : ''}`} role="menu">
+                <button role="menuitem" onClick={() => { setMenuFor(null); setEditTarget(reward); }}>Редактировать</button>
+                <button role="menuitem" onClick={() => { setMenuFor(null); chooseSound(reward); }}>Заменить звук</button>
+                <button role="menuitem" onClick={() => { setMenuFor(null); removeSound(reward); }}>Убрать звук</button>
+                <button role="menuitem" className="is-danger" onClick={() => { setMenuFor(null); setDeleteTarget(reward); }}>
                   Удалить награду
                 </button>
               </div>
@@ -442,7 +512,7 @@ export default function RewardsPage({ backend }) {
             <div className="sound-row">
               {reward.file ? (
                 <>
-                  <button className="play-button" onClick={() => previewSound(reward)}>
+                  <button className="play-button" onClick={() => previewSound(reward)} aria-label={`Прослушать ${reward.name}`}>
                     <Icon name="play" size={12} />
                   </button>
                   <span className="sound-name">{reward.file}</span>
@@ -455,10 +525,16 @@ export default function RewardsPage({ backend }) {
 
             {reward.file ? (
               <div className="volume-row">
-                <div className="volume-track">
-                  <div className="volume-fill" style={{ width: `${Math.min(reward.volume / 2, 100)}%` }} />
-                  <div className="volume-knob" style={{ left: `${Math.min(reward.volume / 2, 100)}%` }} />
-                </div>
+                <input
+                  className="ui-range card-volume"
+                  type="range"
+                  min={0}
+                  max={200}
+                  step={1}
+                  value={reward.volume}
+                  aria-label={`Громкость ${reward.name}`}
+                  onChange={(event) => changeVolume(reward, Number(event.target.value))}
+                />
                 <span>{reward.volume}%</span>
               </div>
             ) : (
@@ -472,25 +548,14 @@ export default function RewardsPage({ backend }) {
 
       {visible.length === 0 ? (
         <div className="reward-empty">
-          <div className="empty-state__title">Ничего не найдено</div>
-          <div className="empty-state__hint">Сбросьте фильтр или создайте новую награду.</div>
+          <div className="empty-state__title">{real && !connected ? 'Twitch не подключён' : 'Ничего не найдено'}</div>
+          <div className="empty-state__hint">
+            {real && !connected
+              ? 'Подключите Twitch в настройках, чтобы загрузить награды.'
+              : 'Сбросьте фильтр или создайте новую награду.'}
+          </div>
         </div>
       ) : null}
-
-      <Panel title="Состояния" description="Прототип показывает рабочую плитку; кнопки ниже проверяют варианты.">
-        <div className="inline-demo">
-          <Button variant="primary" onClick={() => setCreateOpen(true)}>
-            Создать награду
-          </Button>
-          <Button variant="secondary">Отмена</Button>
-          <Button variant="ghost">Проверить звук</Button>
-          <Button variant="danger">Удалить</Button>
-          <Button variant="danger-ghost">Убрать звук</Button>
-          <Button variant="secondary" disabled>
-            Недоступно
-          </Button>
-        </div>
-      </Panel>
 
       <CreateRewardModal open={createOpen} onClose={() => setCreateOpen(false)} onCreate={createReward} />
       <EditRewardModal
@@ -499,7 +564,7 @@ export default function RewardsPage({ backend }) {
         onSave={saveReward}
       />
       <DeleteRewardModal reward={deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={confirmDelete} />
-      {toast ? <div className="ui-toast">{toast}</div> : null}
+      {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}
     </div>
   );
 }

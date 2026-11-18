@@ -2322,3 +2322,235 @@ button {
 .log-time {
   white-space: nowrap;
 }
+
+/* ==== карточки наград: без буквенных аватаров, меню поверх сетки ==== */
+.reward-card {
+  overflow: visible;
+  padding-top: 14px;
+}
+
+.reward-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 14%;
+  right: 14%;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: var(--reward-color);
+  opacity: 0.75;
+}
+
+.reward-card.is-menu-open {
+  z-index: 20;
+}
+
+.reward-menu {
+  top: 44px;
+  right: 10px;
+  z-index: 30;
+}
+
+.reward-name-wrap {
+  padding-right: 22px;
+}
+
+.card-volume {
+  flex: 1;
+  min-width: 0;
+}
+
+.reward-grid.is-list {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.reward-grid.is-list .reward-card {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) minmax(190px, 1fr) 180px;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+}
+
+.reward-grid.is-list .reward-card__top {
+  align-items: center;
+}
+
+.reward-grid.is-list .sound-row {
+  margin: 0;
+}
+
+.reward-grid.is-list .volume-row {
+  margin: 0;
+}
+
+.reward-grid.is-list .reward-menu {
+  top: 46px;
+}
+
+/* ==== fluid window + accent + accessibility polish ==== */
+body {
+  background: var(--canvas);
+}
+
+.app-shell {
+  width: 100vw;
+  height: 100vh;
+  min-width: 1200px;
+  min-height: 800px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.nav-item.is-active {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.brand-mark {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 78%, white), var(--accent));
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.ui-button:focus-visible,
+.ui-range:focus-visible,
+.nav-item:focus-visible,
+.filter-pill:focus-visible,
+.view-switch button:focus-visible,
+.icon-ghost:focus-visible,
+.health-chip:focus-visible,
+.health-popover button:focus-visible,
+.window-controls button:focus-visible,
+.ui-color-swatch:focus-visible,
+.accent-swatch:focus-visible,
+.modal-color:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent-text, #c9a7ff);
+  outline-offset: 2px;
+}
+
+.volume-control {
+  cursor: default;
+}
+
+.volume-range {
+  width: 96px;
+  height: 18px;
+  flex: 0 0 96px;
+}
+
+.ui-toast {
+  bottom: 52px;
+  position: fixed;
+  z-index: 60;
+}
+
+.ui-modal-backdrop {
+  z-index: 80;
+}
+
+.health-row .link-button,
+.link-button {
+  border: 0;
+  background: transparent;
+  color: #9b9ba6;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 5px;
+}
+
+.link-button:hover {
+  background: #1f1f25;
+  color: #fff;
+}
+
+.reward-menu.is-above {
+  top: auto;
+  bottom: 44px;
+}
+
+/* ==== контраст и читаемость подписей ==== */
+:root {
+  --muted: #a3a3ad;
+  --dim: #85858f;
+}
+
+.nav-label,
+.sidebar__version {
+  color: #8c8c96;
+}
+
+.muted-line,
+.ui-field__hint,
+.ui-panel__description,
+.reward-meta,
+.sound-format,
+.sound-empty,
+.queue-meta,
+.health-popover__rows span:nth-child(3),
+.local-row__meta,
+.log-time,
+.volume-control__label,
+.volume-control__value {
+  color: #9c9ca7;
+}
+
+.reward-meta {
+  font-size: 11.5px;
+}
+
+.ui-field__hint,
+.muted-line,
+.ui-panel__description {
+  font-size: 12.5px;
+}
+
+.log-row {
+  font-size: 13px;
+}
+
+.filter-pill {
+  color: #b6b6c0;
+}
+
+.app-error-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+  color: #f0b4b4;
+  font-size: 12.5px;
+}
+
+.app-error-retry {
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.12);
+  color: #ffd7d7;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.app-error-retry:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.progress-track {
+  cursor: pointer;
+}
+
+.progress-track:focus-visible {
+  outline: 2px solid var(--accent-text, #c9a7ff);
+  outline-offset: 5px;
+}

@@ -38,9 +38,10 @@ http://127.0.0.1:8782/
 vanilla-UI и прежний размер окна. В режиме Tauri уже работают на реальных данных:
 **награды** (список, создание/редактирование/удаление, выбор и прослушивание
 звука), **музыка** (трек, очередь, пауза/пропуск, добавление ссылки, настройки),
-**настройки** (health, Twitch, звук, аудио, акцент, поведение окна) и
+**настройки** (health, Twitch, звук, аудио, акцент, поведение окна),
 **настройки чат-оверлея** (чтение/запись в AppData + живой iframe реального
-`/chat-overlay`). Журнал пока на мок-данных.
+`/chat-overlay`), **журнал** (реальные записи, уровни, поиск, очистка) и
+**онбординг** (реальные шаги и локальные привязки).
 
 Пересобрать и встроить после правок:
 
@@ -85,3 +86,5 @@ node tests/shots.mjs
 - [react-overlay-real.png](../../overlay-port/react-overlay-real.png) — реальные настройки оверлея
 - [react-music-real.png](../../overlay-port/react-music-real.png) — реальные данные музыки
 - [react-settings-real.png](../../overlay-port/react-settings-real.png) — реальные настройки
+- [react-log-real.png](../../overlay-port/react-log-real.png) — реальный журнал
+- [react-onboarding-real.png](../../overlay-port/react-onboarding-real.png) — реальный онбординг

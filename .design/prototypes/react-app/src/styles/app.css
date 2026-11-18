@@ -2314,3 +2314,11 @@ button {
 .health-row {
   grid-template-columns: 10px 130px minmax(0, 1fr) auto;
 }
+
+.log-row {
+  grid-template-columns: 165px 70px minmax(0, 1fr);
+}
+
+.log-time {
+  white-space: nowrap;
+}

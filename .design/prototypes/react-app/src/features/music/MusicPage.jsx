@@ -1,16 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../../components/ui/Button.jsx';
 import Icon from '../../components/ui/Icon.jsx';
 import Modal from '../../components/ui/Modal.jsx';
 import { Panel, Pill } from '../../components/ui/Panel.jsx';
 import { Select, SliderRow, ToggleRow } from '../../components/ui/Field.jsx';
 
-function MusicSettingsModal({ open, onClose, notify }) {
+const MOCK_CURRENT = {
+  title: 'ДИНАСТИЯ — Земляк',
+  user_login: 'nix',
+  duration_sec: 164,
+  state: 'playing',
+};
+
+function MusicSettingsModal({ open, music, onClose, onSave }) {
   const [maxQueue, setMaxQueue] = useState(10);
   const [maxDuration, setMaxDuration] = useState(15);
-  const [volume, setVolume] = useState(5);
+  const [overlaySeconds, setOverlaySeconds] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
   const [prefetch, setPrefetch] = useState(true);
+  const [pauseYandex, setPauseYandex] = useState(true);
+  const [restoreQueue, setRestoreQueue] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (!open || !music) return;
+    setMaxQueue(music.max_queue || 10);
+    setMaxDuration(Math.round((music.max_duration_sec || 900) / 60));
+    setOverlaySeconds(music.overlay_seconds || 0);
+    setAutoplay(music.enabled !== false);
+    setPrefetch(music.prefetch !== false);
+    setPauseYandex(music.pause_yandex !== false);
+    setRestoreQueue(music.restore_queue !== false);
+  }, [open, music]);
+
+  async function submit() {
+    setSaving(true);
+    try {
+      await onSave({
+        maxQueue,
+        maxDurationSec: maxDuration * 60,
+        overlaySeconds,
+        prefetch,
+        pauseYandex,
+        restoreQueue,
+      });
+      onClose();
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <Modal
@@ -22,7 +60,7 @@ function MusicSettingsModal({ open, onClose, notify }) {
       footer={
         <>
           <Button variant="secondary" onClick={onClose}>Отмена</Button>
-          <Button variant="primary" onClick={() => { onClose(); notify('Настройки музыки сохранены'); }}>Сохранить</Button>
+          <Button variant="primary" onClick={submit} disabled={saving}>{saving ? 'Сохраняем…' : 'Сохранить'}</Button>
         </>
       }
     >
@@ -30,23 +68,32 @@ function MusicSettingsModal({ open, onClose, notify }) {
         <div className="slider-list">
           <SliderRow label="Треков в очереди" value={maxQueue} min={1} max={30} onChange={setMaxQueue} />
           <SliderRow label="Макс. длительность" value={maxDuration} min={1} max={60} unit=" мин" onChange={setMaxDuration} />
-          <SliderRow label="Громкость музыки" value={volume} min={0} max={100} unit="%" onChange={setVolume} />
+          <SliderRow label="Оверлей после старта" value={overlaySeconds} min={0} max={60} unit=" с" onChange={setOverlaySeconds} />
         </div>
         <div className="switch-list">
           <ToggleRow label="Играть сразу после активации" checked={autoplay} onChange={setAutoplay} trailing={autoplay ? 'вкл' : 'выкл'} />
           <ToggleRow label="Предзагрузка следующего трека" checked={prefetch} onChange={setPrefetch} trailing={prefetch ? 'вкл' : 'выкл'} />
+          <ToggleRow label="Пауза Яндекс Музыки" checked={pauseYandex} onChange={setPauseYandex} trailing={pauseYandex ? 'вкл' : 'выкл'} />
+          <ToggleRow label="Восстанавливать очередь" checked={restoreQueue} onChange={setRestoreQueue} trailing={restoreQueue ? 'вкл' : 'выкл'} />
         </div>
-        <div className="modal-hint">Громкость музыки не меняет общую громкость Windows — только очередь заявок.</div>
+        <div className="modal-hint">Оверлей показывается только когда играет трек.</div>
       </div>
     </Modal>
   );
 }
 
-function ObsModal({ open, onClose, notify }) {
+function ObsModal({ open, music, onClose, onSave, onShow }) {
   const [seconds, setSeconds] = useState(0);
   const [font, setFont] = useState(17);
   const [position, setPosition] = useState('top');
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!open || !music) return;
+    setSeconds(music.overlay_seconds || 0);
+    setFont(music.overlay_font || 17);
+    setPosition(music.overlay_position || 'top');
+  }, [open, music]);
 
   function copy() {
     navigator.clipboard?.writeText('http://127.0.0.1:8770/overlay').catch(() => {});
@@ -67,14 +114,14 @@ function ObsModal({ open, onClose, notify }) {
             {copied ? 'Скопировано' : 'Скопировать URL'}
           </Button>
           <Button variant="secondary" onClick={onClose}>Закрыть</Button>
-          <Button variant="primary" onClick={() => { onClose(); notify('Оверлей показан'); }}>Показать сейчас</Button>
+          <Button variant="primary" onClick={async () => { await onSave({ overlaySeconds: seconds, overlayFont: font, overlayPosition: position }); await onShow(); onClose(); }}>
+            Показать сейчас
+          </Button>
         </>
       }
     >
       <div className="modal-form">
-        <div className="obs-url-box">
-          <code>http://127.0.0.1:8770/overlay</code>
-        </div>
+        <div className="obs-url-box"><code>http://127.0.0.1:8770/overlay</code></div>
         <div className="control-grid">
           <label className="modal-field">
             <span>ПОЛОЖЕНИЕ</span>
@@ -97,14 +144,49 @@ function ObsModal({ open, onClose, notify }) {
   );
 }
 
-export default function MusicPage() {
+function formatTime(total) {
+  const value = Math.max(0, Number(total) || 0);
+  return `${Math.floor(value / 60)}:${String(Math.floor(value % 60)).padStart(2, '0')}`;
+}
+
+export default function MusicPage({ backend }) {
   const [musicOpen, setMusicOpen] = useState(false);
   const [obsOpen, setObsOpen] = useState(false);
   const [toast, setToast] = useState('');
+  const [url, setUrl] = useState('');
+
+  const real = Boolean(backend?.available && backend.view);
+  const music = backend?.view?.music;
+  const current = real ? music?.current : MOCK_CURRENT;
+  const player = real
+    ? music?.player || { position_sec: 0, duration_sec: 0, paused: false, loaded: false }
+    : { position_sec: 58, duration_sec: 164, paused: false, loaded: true };
+  const items = real ? music?.items || [] : [];
+  const duration = player.duration_sec || current?.duration_sec || 0;
+  const progress = duration ? Math.min(100, (player.position_sec / duration) * 100) : 0;
 
   function notify(message) {
     setToast(message);
     window.setTimeout(() => setToast(''), 2200);
+  }
+
+  async function action(command, args = {}) {
+    if (!real) {
+      notify('Действие доступно в приложении');
+      return;
+    }
+    try {
+      await backend.call(command, args);
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function addManual() {
+    if (!url.trim()) return;
+    await action('music_add_manual', { url: url.trim() });
+    setUrl('');
+    notify('Ссылка добавлена в очередь');
   }
 
   return (
@@ -117,59 +199,85 @@ export default function MusicPage() {
         </div>
         <div className="page-actions">
           <Button variant="ghost" icon={<Icon name="dots" />} />
-          <Button variant="secondary" icon={<Icon name="external" />}>
-            Открыть YouTube
-          </Button>
-          <Button variant="secondary" onClick={() => setMusicOpen(true)}>
-            Настроить музыку
-          </Button>
+          <Button variant="secondary" icon={<Icon name="external" />}>Открыть YouTube</Button>
+          <Button variant="secondary" onClick={() => setMusicOpen(true)}>Настроить музыку</Button>
         </div>
       </div>
 
       <Panel
         title="Сейчас играет"
-        description="ДИНАСТИЯ — Земляк · заказал @nix · YouTube"
-        actions={<Pill tone="ok">готово</Pill>}
+        description={current ? `${current.title} · заказал @${current.user_login} · YouTube` : 'Ничего не играет'}
+        actions={<Pill tone={real && music?.ready ? 'ok' : 'neutral'}>{real && music?.ready ? 'готово' : 'ожидание'}</Pill>}
       >
-        <div className="player">
-          <div className="player__cover">
-            <Icon name="music" size={26} />
-          </div>
-          <div className="player__main">
-            <div className="player__title-row">
-              <div>
-                <div className="player__track">ДИНАСТИЯ — Земляк</div>
-                <div className="player__meta">@nix · YouTube · 2:44</div>
+        {current ? (
+          <div className="player">
+            <div className="player__cover"><Icon name="music" size={26} /></div>
+            <div className="player__main">
+              <div className="player__title-row">
+                <div>
+                  <div className="player__track">{current.title}</div>
+                  <div className="player__meta">@{current.user_login} · YouTube · {formatTime(duration)}</div>
+                </div>
+                <div className="player__controls">
+                  <Button variant="secondary" size="sm" icon={<Icon name="play" size={12} />} onClick={() => action('music_toggle_pause')} />
+                  <Button variant="secondary" size="sm" icon={<Icon name="pause" size={12} />} onClick={() => action('music_toggle_pause')} />
+                  <Button variant="secondary" size="sm" icon={<Icon name="next" size={12} />} onClick={() => action('music_skip')} />
+                  <Button variant="ghost" size="sm" onClick={() => action('music_skip')}>Пропустить трек</Button>
+                </div>
               </div>
-              <div className="player__controls">
-                <Button variant="secondary" size="sm" icon={<Icon name="play" size={12} />} />
-                <Button variant="secondary" size="sm" icon={<Icon name="pause" size={12} />} />
-                <Button variant="secondary" size="sm" icon={<Icon name="next" size={12} />} />
-                <Button variant="ghost" size="sm">Пропустить трек</Button>
+              <div className="player__progress">
+                <span>{formatTime(player.position_sec)}</span>
+                <div className="progress-track">
+                  <div className="progress-fill" style={{ width: `${progress}%` }} />
+                  <div className="progress-knob" style={{ left: `${progress}%` }} />
+                </div>
+                <span>{formatTime(duration)}</span>
               </div>
             </div>
-            <div className="player__progress">
-              <span>0:58</span>
-              <div className="progress-track">
-                <div className="progress-fill" style={{ width: '42%' }} />
-                <div className="progress-knob" style={{ left: '42%' }} />
-              </div>
-              <span>2:44</span>
-            </div>
           </div>
-        </div>
+        ) : (
+          <div className="empty-state">
+            <div className="empty-state__title">Ничего не играет</div>
+            <div className="empty-state__hint">Активируй награду-музыку или добавь ссылку вручную.</div>
+          </div>
+        )}
       </Panel>
 
       <div className="two-col">
-        <Panel title="Очередь" description="0 из 10" actions={<Button variant="danger-ghost" size="sm" onClick={() => notify('Очередь очищена')}>Очистить</Button>}>
-          <div className="empty-state">
-            <div className="empty-state__title">Очередь пуста</div>
-            <div className="empty-state__hint">Ссылка из активации награды появится здесь.</div>
-          </div>
+        <Panel
+          title="Очередь"
+          description={`${items.length} из ${music?.max_queue || 10}`}
+          actions={<Button variant="danger-ghost" size="sm" onClick={() => action('music_clear_queue')}>Очистить</Button>}
+        >
+          {items.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-state__title">Очередь пуста</div>
+              <div className="empty-state__hint">Ссылка из активации награды появится здесь.</div>
+            </div>
+          ) : (
+            <div className="queue-list">
+              {items.map((item, index) => (
+                <div className="queue-row" key={item.id}>
+                  <span className="queue-index">{index + 1}</span>
+                  <div className="queue-info">
+                    <div className="queue-title">{item.title}</div>
+                    <div className="queue-meta">@{item.user_login} · {formatTime(item.duration_sec)} · {item.state}</div>
+                  </div>
+                  <button className="icon-ghost" title="Выше" onClick={() => action('music_move_up', { id: item.id })}>↑</button>
+                  <button className="icon-ghost" title="Убрать" onClick={() => action('music_remove_item', { id: item.id })}>×</button>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="queue-input">
             <Icon name="plus" />
-            <input placeholder="Вставьте ссылку YouTube и нажмите Enter — трек встанет в очередь" />
-            <Button variant="secondary" size="sm">В очередь</Button>
+            <input
+              placeholder="Вставьте ссылку YouTube и нажмите Enter — трек встанет в очередь"
+              value={url}
+              onChange={(event) => setUrl(event.target.value)}
+              onKeyDown={(event) => event.key === 'Enter' && addManual()}
+            />
+            <Button variant="secondary" size="sm" onClick={addManual}>В очередь</Button>
           </div>
         </Panel>
 
@@ -177,23 +285,44 @@ export default function MusicPage() {
           <Panel title="OBS — строка «Сейчас играет»" actions={<Button variant="ghost" size="sm" onClick={() => setObsOpen(true)}>Настроить</Button>}>
             <div className="inline-row">
               <code className="url-code">http://127.0.0.1:8770/overlay</code>
-              <Button variant="secondary" size="sm" onClick={() => notify('Оверлей показан')}>Показать сейчас</Button>
+              <Button variant="secondary" size="sm" onClick={() => action('music_show_overlay')}>Показать сейчас</Button>
             </div>
-            <div className="muted-line">Ничего не играет</div>
+            <div className="muted-line">{current ? 'Строка играет' : 'Ничего не играет'}</div>
           </Panel>
 
           <Panel title="Состояние">
             <ul className="check-list">
-              <li><span className="dot dot--ok" /> yt-dlp 2026.10.26 — готов</li>
-              <li><span className="dot dot--ok" /> !трек: команда включена</li>
-              <li><span className="dot dot--ok" /> Звук: Analog 1/2</li>
+              <li><span className="dot dot--ok" /> yt-dlp {real ? music?.ytdlp_version || '—' : '2026.10.26'} — готов</li>
+              <li><span className={`dot ${real ? (music?.chat_online ? 'dot--ok' : 'dot--warn') : 'dot--ok'}`} /> !трек: команда {real ? (music?.chat_online ? 'включена' : 'ожидает канал') : 'включена'}</li>
+              <li><span className="dot dot--ok" /> Оверлей: {real ? (music?.overlay_ready ? 'готов' : 'не поднят') : 'готов'}</li>
             </ul>
           </Panel>
         </div>
       </div>
 
-      <MusicSettingsModal open={musicOpen} onClose={() => setMusicOpen(false)} notify={notify} />
-      <ObsModal open={obsOpen} onClose={() => setObsOpen(false)} notify={notify} />
+      <MusicSettingsModal
+        open={musicOpen}
+        music={music}
+        onClose={() => setMusicOpen(false)}
+        onSave={async (patch) => {
+          if (!real) {
+            notify('Настройки сохранены (прототип)');
+            return;
+          }
+          await backend.call('set_music_settings', { patch });
+          notify('Настройки музыки сохранены');
+        }}
+      />
+      <ObsModal
+        open={obsOpen}
+        music={music}
+        onClose={() => setObsOpen(false)}
+        onSave={async (patch) => {
+          if (!real) return;
+          await backend.call('set_music_settings', { patch });
+        }}
+        onShow={() => action('music_show_overlay')}
+      />
       {toast ? <div className="ui-toast">{toast}</div> : null}
     </div>
   );

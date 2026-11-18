@@ -31,3 +31,7 @@ desktop.ini
 .idea/
 .vscode/
 *.swp
+
+# Зависимости JS-прототипов
+**/node_modules/
+**/.vite/

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reward Sounds — прототип «Музыка»</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+        </span>
+        <span class="brand-name">Reward Sounds</span>
+      </div>
+
+      <nav class="nav-main" aria-label="Основная навигация">
+        <div class="nav-label">ОСНОВНОЕ</div>
+        <button class="nav-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="2" fill="currentColor" stroke="none"/><rect x="14" y="3" width="7" height="7" rx="2" fill="currentColor" stroke="none"/><rect x="3" y="14" width="7" height="7" rx="2" fill="currentColor" stroke="none"/><rect x="14" y="14" width="7" height="7" rx="2" fill="currentColor" stroke="none"/></svg>
+          <span>Награды</span>
+        </button>
+        <button class="nav-item active" type="button" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+          <span>Музыка</span>
+          <span class="nav-count">4</span>
+        </button>
+        <div class="nav-label">ЧАТ</div>
+        <button class="nav-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H5l-2 2V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z"/></svg>
+          <span>Чат</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="nav-label">СИСТЕМА</div>
+        <button class="nav-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/></svg>
+          <span>Настройки</span>
+        </button>
+        <button class="nav-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="5" cy="18" r="1.4" fill="currentColor" stroke="none"/><path d="M10 6h10M10 12h10M10 18h10"/></svg>
+          <span>Журнал</span>
+        </button>
+        <div class="version">версия 1.8.0</div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <button class="health-chip" type="button">
+          <span class="status-dot ok"></span>
+          <span>Все системы работают</span>
+          <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <span class="playing-chip"><span class="mini-eq" aria-hidden="true"><i></i><i></i><i></i></span>2 звучит</span>
+        <div class="spacer"></div>
+        <button class="icon-btn" type="button" aria-label="Без звука">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5l-5 4H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M19 6a8 8 0 0 1 0 12"/></svg>
+        </button>
+        <span class="vol-label">ЗВУК</span>
+        <input class="range top-range" id="top-volume" type="range" min="0" max="100" value="29" aria-label="Общая громкость">
+        <span class="vol-value" id="top-volume-value">29%</span>
+      </header>
+
+      <main class="content">
+        <div class="page-head">
+          <div>
+            <h1>Музыка</h1>
+            <p class="sub">Треки по заявке: зритель присылает ссылку на YouTube в чат</p>
+          </div>
+          <div class="head-actions">
+            <button class="icon-btn dots" id="more-btn" type="button" aria-label="Действия" aria-haspopup="menu" aria-expanded="false">•••</button>
+            <button class="btn secondary" type="button" id="obs-open">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/></svg>
+              Оверлей OBS
+            </button>
+            <button class="state-pill" type="button" id="accepting">
+              <span class="status-dot ok"></span>
+              Принимаем заявки
+            </button>
+          </div>
+        </div>
+
+        <section class="hero" aria-label="Сейчас играет">
+          <div class="cover cover-1" id="cover" aria-hidden="true">
+            <span class="cover-glow"></span>
+            <span class="cover-label">LIVE</span>
+            <span class="cover-eq"><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <div class="hero-main">
+            <div class="eyebrow">СЕЙЧАС ИГРАЕТ</div>
+            <h2 id="track-title">ДИНАСТИЯ — Земляк</h2>
+            <div class="track-meta"><span id="track-meta">заказал @nix · YouTube · 2:44</span></div>
+            <div class="wave" id="wave" aria-hidden="true"></div>
+            <div class="progress-row">
+              <span class="time" id="position">0:58</span>
+              <div class="seek" id="seek" role="slider" tabindex="0" aria-label="Перемотка" aria-valuemin="0" aria-valuemax="164" aria-valuenow="58">
+                <div class="seek-fill" id="seek-fill"></div>
+                <div class="seek-knob" id="seek-knob"></div>
+              </div>
+              <span class="time" id="duration">2:44</span>
+            </div>
+            <div class="controls">
+              <button class="round-btn" type="button" data-tip="Сначала" id="restart">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 5v5h5"/><path d="M4.5 10a8 8 0 1 1 .8 4"/></svg>
+              </button>
+              <button class="play-btn" type="button" data-tip="Пауза" id="play" aria-label="Пауза">
+                <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="5" width="3.6" height="14" rx="1.4"/><rect x="13.4" y="5" width="3.6" height="14" rx="1.4"/></svg>
+                <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M8 5.5v13l11-6.5z"/></svg>
+              </button>
+              <button class="round-btn" type="button" data-tip="Пропустить" id="skip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 5l9 7-9 7z" fill="currentColor" stroke="none"/><path d="M18 5v14"/></svg>
+              </button>
+              <button class="text-btn" type="button" id="skip-text">Пропустить трек</button>
+              <span class="spacer"></span>
+              <span class="next-inline">Следующий: <b id="next-inline">Vulvas — Kanye West</b></span>
+            </div>
+          </div>
+          <aside class="hero-side">
+            <div class="side-title">Громкость музыки <b id="music-volume-value">5%</b></div>
+            <input class="range" id="music-volume" type="range" min="0" max="100" value="5" aria-label="Громкость музыки">
+            <p class="hint">Не меняет громкость Windows — только очередь.</p>
+            <div class="divider"></div>
+            <div class="side-title">Следующий</div>
+            <div class="next-track">
+              <span class="mini-thumb mini-2"></span>
+              <div><b>Vulvas — Kanye West</b><small>@goshanmur · 3:33</small></div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="queue-card" aria-label="Очередь">
+          <div class="queue-head">
+            <div class="queue-title">Очередь <span id="queue-count">· 4 из 10</span></div>
+            <div class="chips">
+              <span class="chip accent">1 играет</span>
+              <span class="chip amber">1 загружается</span>
+            </div>
+            <div class="spacer"></div>
+            <button class="text-btn danger" id="clear-queue" type="button">Очистить</button>
+          </div>
+          <div class="queue-list" id="queue-list"></div>
+          <div class="queue-add">
+            <label class="add-field">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              <input id="new-track" type="text" placeholder="Вставьте ссылку YouTube и нажмите Enter — трек встанет в очередь">
+            </label>
+            <button class="btn secondary small" id="add-track" type="button">В очередь</button>
+          </div>
+          <div class="queue-hint">Ручная очередь не тратит баллы зрителей — удобно для проверки.</div>
+        </section>
+
+        <div class="bottom-grid">
+          <section class="obs-card" aria-label="OBS-оверлей">
+            <div class="card-head">
+              <div class="card-title">OBS — строка «Сейчас играет»</div>
+              <div class="spacer"></div>
+              <button class="text-btn" type="button" id="obs-settings">Настроить</button>
+            </div>
+            <div class="obs-url">
+              <code id="obs-url">http://127.0.0.1:8770/overlay</code>
+              <button class="icon-btn small" id="copy-url" type="button" data-tip="Скопировать">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+              </button>
+              <button class="btn ghost small" id="show-now" type="button">Показать сейчас</button>
+            </div>
+            <div class="obs-preview">
+              <span class="obs-eq"><i></i><i></i><i></i></span>
+              <span class="obs-track">ДИНАСТИЯ — Земляк</span>
+              <span class="obs-user">· заказал @nix</span>
+            </div>
+          </section>
+
+          <section class="health-card" aria-label="Состояние">
+            <div class="card-title">Состояние</div>
+            <div class="health-row"><span class="check">✓</span>yt-dlp 2026.10.26 — готов</div>
+            <div class="health-row"><span class="check">✓</span>Чат: команда !трек включена</div>
+            <div class="health-row"><span class="check">✓</span>Звук: Analogue 1/2 (Audient iD4)</div>
+            <div class="health-row"><span class="check">✓</span>Оверлей: порт 8770 свободен</div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <span class="footer-hint">Готово</span>
+        <span class="spacer"></span>
+        <span class="footer-version">версия 1.8.0</span>
+      </footer>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden>
+    <span class="toast-icon">✓</span>
+    <span class="toast-text" id="toast-text">Трек пропущен</span>
+    <button class="toast-action" id="toast-action" type="button" hidden>Отменить</button>
+    <button class="toast-close" id="toast-close" type="button" aria-label="Закрыть">×</button>
+  </div>
+
+  <div class="menu" id="menu" role="menu" hidden>
+    <button class="menu-item" role="menuitem" data-action="settings">Настройки музыки</button>
+    <button class="menu-item" role="menuitem" data-action="check">Проверить yt-dlp</button>
+    <div class="menu-sep"></div>
+    <button class="menu-item danger" role="menuitem" data-action="clear">Очистить очередь…</button>
+  </div>
+
+  <dialog class="dialog" id="clear-dialog" aria-labelledby="clear-title">
+    <h3 id="clear-title">Очистить очередь?</h3>
+    <p>Баллы зрителей вернутся, треки исчезнут из очереди. Текущий трек доиграет до конца.</p>
+    <div class="dialog-actions">
+      <button class="btn secondary" id="clear-cancel" type="button">Отмена</button>
+      <button class="btn danger" id="clear-confirm" type="button">Очистить</button>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

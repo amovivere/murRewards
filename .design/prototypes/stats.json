@@ -1,0 +1,70 @@
+﻿{
+  "vanilla": {
+    "vanilla/index.html": {
+      "bytes": 13434,
+      "gzip": 3472,
+      "lines": 220
+    },
+    "vanilla/styles.css": {
+      "bytes": 25153,
+      "gzip": 5609,
+      "lines": 472
+    },
+    "vanilla/app.js": {
+      "bytes": 16419,
+      "gzip": 4916,
+      "lines": 462
+    }
+  },
+  "react": {
+    "react/build/index.html": {
+      "bytes": 444,
+      "gzip": 327
+    },
+    "react\\build\\assets\\index-HkaKnvPo.js": {
+      "bytes": 497641,
+      "gzip": 158083
+    },
+    "react\\build\\assets\\index-VL7-Hztp.css": {
+      "bytes": 34427,
+      "gzip": 7557
+    },
+    "react\\build\\assets\\Inter-400-BOoJxjxf.ttf": {
+      "bytes": 411640,
+      "gzip": 196969
+    },
+    "react\\build\\assets\\Inter-600-ipl4pJhC.ttf": {
+      "bytes": 419744,
+      "gzip": 201328
+    }
+  },
+  "react_src": {
+    "react/src/main.jsx": {
+      "lines": 10,
+      "bytes": 240
+    },
+    "react/src/App.jsx": {
+      "lines": 727,
+      "bytes": 31126
+    },
+    "react/src/styles.css": {
+      "lines": 485,
+      "bytes": 11092
+    }
+  },
+  "vanilla_total": {
+    "bytes": 55006,
+    "gzip": 13997,
+    "lines": 1154
+  },
+  "react_build_total": {
+    "bytes": 1363896,
+    "gzip": 564264
+  },
+  "react_src_total": {
+    "lines": 1222,
+    "bytes": 42458
+  },
+  "react_packages": 129,
+  "node_modules_mb": 105.7
+}

@@ -1,0 +1,108 @@
+﻿{
+  "summary": {
+    "vanilla": {
+      "domNodes": 326,
+      "domContentLoaded": 15,
+      "loadEvent": 27,
+      "fcp": 48,
+      "transferKB": 854,
+      "jsHeapKB": 881,
+      "nodes": 736,
+      "layoutCount": 2,
+      "skipLatencyMs": 20
+    },
+    "react": {
+      "domNodes": 334,
+      "domContentLoaded": 27,
+      "loadEvent": 27,
+      "fcp": 68,
+      "transferKB": 1333,
+      "jsHeapKB": 3332,
+      "nodes": 1104,
+      "layoutCount": 4,
+      "skipLatencyMs": 30.8
+    }
+  },
+  "raw": {
+    "vanilla": {
+      "runs": [
+        {
+          "domNodes": 326,
+          "domContentLoaded": 17,
+          "loadEvent": 77,
+          "fcp": 144,
+          "transferKB": 854,
+          "title": "Reward Sounds — прототип «Музыка»",
+          "jsHeapKB": 881,
+          "nodes": 736,
+          "layoutCount": 2,
+          "skipLatencyMs": 26.9
+        },
+        {
+          "domNodes": 326,
+          "domContentLoaded": 13,
+          "loadEvent": 25,
+          "fcp": 44,
+          "transferKB": 854,
+          "title": "Reward Sounds — прототип «Музыка»",
+          "jsHeapKB": 602,
+          "nodes": 692,
+          "layoutCount": 2,
+          "skipLatencyMs": 19.7
+        },
+        {
+          "domNodes": 326,
+          "domContentLoaded": 15,
+          "loadEvent": 27,
+          "fcp": 48,
+          "transferKB": 854,
+          "title": "Reward Sounds — прототип «Музыка»",
+          "jsHeapKB": 945,
+          "nodes": 1556,
+          "layoutCount": 2,
+          "skipLatencyMs": 20
+        }
+      ]
+    },
+    "react": {
+      "runs": [
+        {
+          "domNodes": 334,
+          "domContentLoaded": 39,
+          "loadEvent": 39,
+          "fcp": 132,
+          "transferKB": 1333,
+          "title": "Reward Sounds — React-прототип «Музыка»",
+          "jsHeapKB": 3441,
+          "nodes": 1757,
+          "layoutCount": 3,
+          "skipLatencyMs": 30.8
+        },
+        {
+          "domNodes": 334,
+          "domContentLoaded": 27,
+          "loadEvent": 27,
+          "fcp": 68,
+          "transferKB": 1333,
+          "title": "Reward Sounds — React-прототип «Музыка»",
+          "jsHeapKB": 3330,
+          "nodes": 1104,
+          "layoutCount": 4,
+          "skipLatencyMs": 31.4
+        },
+        {
+          "domNodes": 334,
+          "domContentLoaded": 27,
+          "loadEvent": 27,
+          "fcp": 68,
+          "transferKB": 1333,
+          "title": "Reward Sounds — React-прототип «Музыка»",
+          "jsHeapKB": 3332,
+          "nodes": 1104,
+          "layoutCount": 4,
+          "skipLatencyMs": 19.2
+        }
+      ]
+    }
+  }
+}

@@ -22,6 +22,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
   const [pauseYandex, setPauseYandex] = useState(true);
   const [restoreQueue, setRestoreQueue] = useState(true);
   const [cookiesFile, setCookiesFile] = useState('');
+  const [cookiesOk, setCookiesOk] = useState(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -34,6 +35,12 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
     setPauseYandex(music.pause_yandex !== false);
     setRestoreQueue(music.restore_queue !== false);
     setCookiesFile(music.cookies_file || '');
+    setCookiesOk(null);
+    if (music.cookies_file) {
+      backend?.invoke('check_ytdlp_cookies', { path: music.cookies_file })
+        .then((ok) => setCookiesOk(Boolean(ok)))
+        .catch(() => setCookiesOk(false));
+    }
     // Намеренно только при открытии: фоновый поллинг не должен перетирать форму.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -91,14 +98,20 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
               className="ui-input is-mono"
               value={cookiesFile}
               placeholder="cookies.txt — нужен для видео 18+"
-              onChange={(event) => setCookiesFile(event.target.value)}
+              onChange={(event) => {
+                setCookiesFile(event.target.value);
+                setCookiesOk(null);
+              }}
             />
             <Button
               variant="secondary"
               onClick={async () => {
                 try {
                   const path = await backend?.invoke('choose_ytdlp_cookies');
-                  if (path) setCookiesFile(path);
+                  if (!path) return;
+                  setCookiesFile(path);
+                  const ok = await backend?.invoke('check_ytdlp_cookies', { path });
+                  setCookiesOk(Boolean(ok));
                 } catch (error) {
                   // отмена выбора — не ошибка
                 }
@@ -107,10 +120,21 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
               Выбрать…
             </Button>
           </div>
-          <div className="modal-hint">
-            Для видео 18+ экспортируйте cookies.txt из браузера, где выполнен вход в YouTube
-            (например, расширением «Get cookies.txt LOCALLY»), и выберите файл здесь.
-          </div>
+          {cookiesOk === false ? (
+            <div className="modal-hint is-warn">
+              В этом файле нет входа в YouTube. Откройте youtube.com под аккаунтом,
+              экспортируйте cookies заново и выберите файл. В нём должны быть cookie
+              домена .youtube.com (SID, HSID и т.п.), а не только google.com.
+            </div>
+          ) : cookiesOk === true ? (
+            <div className="modal-hint is-ok">В файле найден вход в YouTube.</div>
+          ) : null}
+          {cookiesOk === null ? (
+            <div className="modal-hint">
+              Для видео 18+ экспортируйте cookies.txt из браузера, где выполнен вход в YouTube
+              (например, расширением «Get cookies.txt LOCALLY»), и выберите файл здесь.
+            </div>
+          ) : null}
         </label>
       </div>
     </Modal>

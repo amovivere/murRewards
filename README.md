@@ -19,7 +19,7 @@ egui-версия осталась в `reward-sounds/` как бэкенд-би�
 - `reward-sounds/assets/chat-overlay*.{html,js}` — оверлей чата из reference-проекта
   `twitch-chat-overlay` и страница его настроек; отдаются локальным сервером.
 - `reward-sounds-tauri/dist/Reward Sounds Tauri.exe` — собранный прототип;
-  рядом должен лежать `yt-dlp.exe` (уже лежит).
+  рядом должны лежать `yt-dlp.exe` и `qjs.exe` (QuickJS для JS-челленджей YouTube).
 - `.design/overlay-port/` — отчёт о переносе чат-оверлея и скриншоты.
 - `.design/prototypes/react-app/` — исходники React-интерфейса
   (1600×1000, без адаптива): награды, музыка, оверлей, настройки, журнал,
@@ -143,11 +143,12 @@ vanilla-UI сохранён в `src-tauri/ui/legacy/`, но приложение
 Репозиторий инициализирован в корне проекта (ветка `main`). В коммиты попадают
 исходники обоих приложений, документация, скриншоты и материалы дизайна
 (`.design/`). Артефакты сборки не хранятся в репозитории: `target/`, `dist/`
-(включая `Reward Sounds Tauri.exe` и `yt-dlp.exe`), `*.exe`, логи, кэши Python
+(включая `Reward Sounds Tauri.exe`, `yt-dlp.exe` и `qjs.exe`), `*.exe`, логи, кэши Python
 и сгенерированные схемы Tauri — см. `.gitignore`.
 
 После клонирования готовые exe нужно собрать заново (см. «Запуск»), а
-`yt-dlp.exe` положить в `reward-sounds-tauri/dist/` вручную.
+`yt-dlp.exe` и `qjs.exe` положить в `reward-sounds-tauri/dist/` вручную.
+QuickJS можно скачать скриптом `reward-sounds-tauri/tools/fetch-quickjs.ps1`.
 
 ```powershell
 git status

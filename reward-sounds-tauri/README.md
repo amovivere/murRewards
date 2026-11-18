@@ -92,13 +92,16 @@ cargo build --release
 - Данные: `%APPDATA%\RewardSounds` (`config.toml`, `queue.json`,
   `chat_overlay_settings.js`, `logs/`, `window.json`); переопределяется
   `REWARD_SOUNDS_DATA_DIR`.
-- Рядом с exe нужен `yt-dlp.exe` (в `dist/` лежит). Без него работают награды
-  и оверлей, а музыка показывает «yt-dlp не найден» с кнопкой повторного поиска.
+- Рядом с exe нужны `yt-dlp.exe` и `qjs.exe` (QuickJS; в `dist/` лежат). Без
+  `yt-dlp` работают награды и оверлей, музыка показывает «yt-dlp не найден»;
+  без QuickJS не решаются JS-челленджи YouTube (видео 18+ не загружаются).
+- Для видео с возрастным ограничением: «Настройки музыки» → «Cookies YouTube»
+  → выбрать `cookies.txt`, экспортированный с youtube.com под аккаунтом.
 
 ## Тесты
 
 - `cargo test --release` в `src-tauri` — 5 тестов Tauri-ядра.
-- `cargo test --release` в `reward-sounds` — 97 юнит-тестов библиотеки
+- `cargo test --release` в `reward-sounds` — 99 юнит-тестов библиотеки
   (+ 5 интеграционных), включая оверлей.
 - `node tests-ui/run.mjs` из `reward-sounds-tauri` — **40 проверок** реального
   React-окна через DevTools Protocol: вкладки, реальные данные, оверлей,

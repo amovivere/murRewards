@@ -28,4 +28,4 @@ pub use player::{Player, PlayerState};
 pub use prefetch::{Prefetch, Prefetched};
 pub use queue::{ItemState, Queue, QueueItem, QueueReject};
 pub use service::{Config, MusicEvent, MusicService, Snapshot};
-pub use ytdlp::{VideoMeta, YtDlp, YtError};
+pub use ytdlp::{cookies_have_youtube_login, VideoMeta, YtDlp, YtError};

@@ -1295,6 +1295,11 @@ pub fn choose_ytdlp_cookies() -> Option<String> {
 }
 
 #[tauri::command]
+pub fn check_ytdlp_cookies(path: String) -> bool {
+    reward_sounds::music::cookies_have_youtube_login(Path::new(&path))
+}
+
+#[tauri::command]
 pub fn choose_sound(
     core: State<'_, Arc<AppCore>>,
     reward_id: String,

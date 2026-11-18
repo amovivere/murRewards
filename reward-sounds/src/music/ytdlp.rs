@@ -128,19 +128,55 @@ impl fmt::Display for YtError {
 
 impl std::error::Error for YtError {}
 
+/// Проверяет, есть ли в Netscape cookies.txt авторизация YouTube.
+///
+/// Для возрастных ограничений нужны именно cookie домена `.youtube.com`
+/// (`SID`, `__Secure-1PSID` и т.п.). Файл, экспортированный со страницы
+/// Google/Chrome Web Store, содержит только гостевые cookie и не подходит.
+pub fn cookies_have_youtube_login(path: &Path) -> bool {
+    let Ok(text) = std::fs::read_to_string(path) else {
+        return false;
+    };
+    text.lines().any(|line| {
+        if line.starts_with('#') || line.trim().is_empty() {
+            return false;
+        }
+        let fields: Vec<&str> = line.split('\t').collect();
+        if fields.len() < 7 {
+            return false;
+        }
+        let domain = fields[0].trim_start_matches('.');
+        let name = fields[5];
+        domain.ends_with("youtube.com")
+            && matches!(
+                name,
+                "SID" | "HSID" | "SSID" | "__Secure-1PSID" | "__Secure-3PSID" | "LOGIN_INFO"
+            )
+    })
+}
+
 /// Обёртка над `yt-dlp.exe`.
 pub struct YtDlp {
     exe: PathBuf,
     temp_dir: PathBuf,
     cookies: Option<PathBuf>,
+    js_runtime: Option<PathBuf>,
 }
 
 impl YtDlp {
     pub fn new(exe: impl Into<PathBuf>, temp_dir: impl Into<PathBuf>) -> Self {
+        let exe = exe.into();
+        // yt-dlp 2026+ решает JS-челленджи YouTube через внешний runtime.
+        // qjs.exe кладётся рядом с yt-dlp.exe при сборке/распаковке приложения.
+        let js_runtime = exe
+            .parent()
+            .map(|dir| dir.join("qjs.exe"))
+            .filter(|path| path.is_file());
         Self {
-            exe: exe.into(),
+            exe,
             temp_dir: temp_dir.into(),
             cookies: None,
+            js_runtime,
         }
     }
 
@@ -311,6 +347,11 @@ impl YtDlp {
         limit: usize,
     ) -> Result<ProcessOutput, YtError> {
         let mut command = self.command();
+        if let Some(js_runtime) = &self.js_runtime {
+            command
+                .arg("--js-runtimes")
+                .arg(format!("quickjs:{}", js_runtime.display()));
+        }
         if let Some(cookies) = &self.cookies {
             command.arg("--cookies").arg(cookies);
         }
@@ -354,7 +395,7 @@ impl YtDlp {
     fn describe_failure(&self, stderr: &str) -> String {
         let lower = stderr.to_lowercase();
         if lower.contains("sign in to confirm your age") || lower.contains("age-restricted") {
-            return "YouTube требует подтверждения возраста: добавьте cookies.txt в настройках музыки.".to_string();
+            return "YouTube требует подтверждения возраста. Убедитесь, что cookies.txt экспортирован с youtube.com под аккаунтом (нужны cookie .youtube.com).".to_string();
         }
         let line = stderr
             .lines()
@@ -535,6 +576,20 @@ mod tests {
         assert_eq!(format_duration(213), "3:33");
         assert_eq!(format_duration(5), "0:05");
         assert_eq!(format_duration(3723), "1:02:03");
+    }
+
+    #[test]
+    fn detects_youtube_login_cookies() {
+        let path = std::env::temp_dir().join("reward-sounds-cookies-test.txt");
+        std::fs::write(
+            &path,
+            "# Netscape HTTP Cookie File\n.youtube.com\tTRUE\t/\tTRUE\t0\tSID\tsecret\n.google.com\tTRUE\t/\tFALSE\t0\tNID\tvisitor\n",
+        )
+        .unwrap();
+        assert!(cookies_have_youtube_login(&path));
+        std::fs::write(&path, ".youtube.com\tTRUE\t/\tTRUE\t0\tPREF\thl=en\n").unwrap();
+        assert!(!cookies_have_youtube_login(&path));
+        let _ = std::fs::remove_file(&path);
     }
 
     #[test]

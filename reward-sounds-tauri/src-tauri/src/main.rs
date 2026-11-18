@@ -305,6 +305,7 @@ fn main() {
             core::get_state,
             core::refresh_rewards,
             core::choose_ytdlp_cookies,
+            core::check_ytdlp_cookies,
             core::choose_sound,
             core::clear_sound,
             core::set_sound_volume,

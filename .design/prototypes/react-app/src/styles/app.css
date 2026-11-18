@@ -3131,3 +3131,11 @@ a:focus-visible {
     flex: 1 1 100%;
   }
 }
+
+.modal-hint.is-warn {
+  color: #f1b07a;
+}
+
+.modal-hint.is-ok {
+  color: #82dfa6;
+}

@@ -2,38 +2,33 @@
 
 Полноценный интерфейс приложения для стримера: награды Twitch Channel Points,
 звуки, музыка по заявке из чата, OBS-оверлей чата с настройками, журнал
-и настройки. Переписан с egui (`../reward-sounds`) на **Tauri 2 + HTML/CSS/JS**;
-бэкенд общий — библиотека `reward-sounds`, поэтому поведение, конфиг и очередь
-совместимы со старой версией.
+и настройки. Интерфейс — **React 19**, собранный Vite и встроенный в
+**Tauri 2**; бэкенд общий — библиотека `reward-sounds`, поэтому поведение,
+конфиг и очередь совместимы со старой egui-версией.
 
 ## Стек
 
 - **Rust + Tauri 2** — окно, команды, трей, single-instance, общий бэкенд.
-- **HTML/CSS/JS без Node.js в рантайме** — ES-модули в `src-tauri/ui/`, ассеты
-  встраиваются в EXE, внешних зависимостей нет.
+- **React 19 + Vite** — исходники в `../.design/prototypes/react-app`,
+  собранная версия встроена в `src-tauri/ui/`; Node.js в рантайме не нужен.
 - **WebView2** — на Windows 10/11 уже установлен. Запускать обычным двойным
   кликом, **не от администратора**.
 
 ## Структура UI
 
 ```
-src-tauri/ui/
-├── index.html          каркас: сайдбар, кастомный заголовок, шапка, футер
-├── app.js              точка входа: навигация, опрос состояния, шапка, окно
-├── js/bridge.js        мост к Tauri, состояние, тосты, модалки, меню, слайдеры
-├── js/rewards.js       «Награды»: карточки/список, фильтры, редактор
-├── js/music.js         «Музыка»: плеер, очередь, OBS, настройки музыки
-├── js/sound-test.js    единый компонент «Проверить звук»
-├── js/settings.js      «Настройки»: Twitch, звук, аудио, здоровье, данные
-├── js/log.js           «Журнал»: уровни, поиск, отладка, автообновление
-├── js/onboarding.js    первый запуск и локальные привязки
-├── screens.css         стили компонентов, адаптив, доступность
-├── app.css             дополнения к макету (hover, состояния, адаптив)
-└── style.css           базовые стили макета (шрифт Inter встроен)
+src-tauri/ui/           собранный React-интерфейс (встроен в exe)
+src-tauri/ui/legacy/    архивный vanilla-UI (не загружается)
+../.design/prototypes/react-app/src/
+  app/                  каркас и навигация
+  components/ui/        Button, Field, Modal, Panel, Icon, ColorPalette
+  features/             rewards, music, overlay, settings, log, onboarding
+  styles/tokens.css     цвета, радиусы, тени, типографика
+  lib/backend.js        useBackend/invoke — мост к Tauri
 ```
 
 Tauri-команды описаны в `src-tauri/src/core.rs`; окно, трей, env-параметры,
-сохранение и clamp геометрии под DPI — в `src-tauri/src/main.rs`. Чат-оверлей
+сохранение и clamp геометрии — в `src-tauri/src/main.rs`. Чат-оверлей
 (`/chat-overlay`) отдаёт `reward-sounds/src/music/overlay.rs`, страницы —
 `reward-sounds/assets/chat-overlay*.html`, настройки сохраняются в
 `%APPDATA%\RewardSounds\chat_overlay_settings.js`. Фоновый читатель `!трек` —
@@ -105,10 +100,11 @@ cargo build --release
 - `cargo test --release` в `src-tauri` — 5 тестов Tauri-ядра.
 - `cargo test --release` в `reward-sounds` — 97 юнит-тестов библиотеки
   (+ 5 интеграционных), включая оверлей.
-- `node tests-ui/run.mjs` из `reward-sounds-tauri` — **62 проверки** реального
-  окна через DevTools Protocol: вкладки, фильтры, модалки, оверлей,
-  тосты, адаптив 980×680, журнал, ошибки IPC, окно, геометрия. Требуется
-  Node.js 20+, приложение должно быть закрыто. Подробнее — `tests-ui/README.md`.
+- `node tests-ui/run.mjs` из `reward-sounds-tauri` — **22 проверки** реального
+  React-окна через DevTools Protocol: вкладки, реальные данные, оверлей,
+  настройки, журнал, модалка, отсутствие ошибок. Требуется Node.js 20+,
+  приложение должно быть закрыто. Подробнее — `tests-ui/README.md`.
+  Старые 62 vanilla-проверки сохранены в `tests-ui/legacy-run.mjs`.
 
 ## Скриншоты
 

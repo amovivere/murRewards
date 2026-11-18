@@ -1,10 +1,10 @@
-// Смоук/интерактивные тесты Tauri-интерфейса через Chrome DevTools Protocol.
-// Запуск: node tests-ui/run.mjs
+// Смоук-тесты React-интерфейса Reward Sounds через Chrome DevTools Protocol.
+// Запуск: node tests-ui/run.mjs (приложение должно быть закрыто).
 // Требуется собранный exe (cargo build --release) и Node.js 20+.
-// Тесты безопасны: не меняют награды, цену музыки и привязки звуков.
+// Тесты безопасны: не создают и не удаляют награды, не меняют настройки.
 
 import { spawn } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 
@@ -32,7 +32,6 @@ const fail = (name, details) => {
   console.log(`FAIL  ${name}${details ? ` — ${details}` : ''}`);
 };
 const assert = (name, condition, details) => (condition ? pass(name) : fail(name, details));
-
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 console.log('exe:', exe);
@@ -74,7 +73,7 @@ async function connect() {
         return;
       }
     } catch {
-      // приложение ещё не подняло порт
+      // приложение ещё поднимает порт
     }
     await sleep(400);
   }
@@ -101,15 +100,6 @@ async function evaluate(expression) {
   return result.result.value;
 }
 
-const click = (selector) =>
-  evaluate(`(() => { const el = document.querySelector(${JSON.stringify(selector)}); if (!el) return false; el.click(); return true; })()`);
-
-const setValue = (selector, value) =>
-  evaluate(
-    `(() => { const el = document.querySelector(${JSON.stringify(selector)}); if (!el) return false; el.value = ${JSON.stringify(value)}; el.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`
-  );
-
-const clearEvents = () => events.splice(0);
 const consoleErrors = () =>
   events
     .filter(
@@ -126,427 +116,78 @@ const consoleErrors = () =>
           : event.params.args.map((arg) => arg.value || arg.description).join(' ')
     );
 
+async function clickTab(label) {
+  return evaluate(
+    `(() => { const el = Array.from(document.querySelectorAll('.nav-item')).find((b) => b.textContent.trim().startsWith(${JSON.stringify(label)})); if (!el) return false; el.click(); return true; })()`
+  );
+}
+
 async function run() {
   await connect();
   await send('Runtime.enable');
   await send('Log.enable');
   await send('Page.enable');
-  await send('Page.reload', { ignoreCache: true });
-  await sleep(4000);
-  clearEvents();
 
-  // 1. Загрузка приложения
-  const boot = await evaluate(
-    `({ rs: typeof window.RS, ready: window.RS?.state.ready, tab: window.RS?.state.tab, title: document.querySelector('.h1')?.textContent })`
-  );
-  assert('приложение загрузилось', boot.rs === 'object' && boot.ready === true, JSON.stringify(boot));
-  assert('осмысленный заголовок экрана', ['Награды', 'Музыка', 'Настройки', 'Журнал'].includes(boot.title), boot.title);
-  assert('нет ошибок в консоли при старте', consoleErrors().length === 0, consoleErrors().join('; '));
-
-  // 2. Вкладки
-  const connected = await evaluate(`window.RS.state.view.connected`);
-  for (const [tab, selector, label] of [
-    ['rewards', connected ? '.reward-card, .reward-row' : '.quick-start', 'Награды'],
-    ['music', '#music-player', 'Музыка'],
-    ['settings', '.settings-card', 'Настройки'],
-    ['log', '.log-row', 'Журнал'],
-  ]) {
-    await evaluate(`window.RS.render(${JSON.stringify(tab)})`);
-    await sleep(tab === 'log' ? 900 : 500);
-    const count = await evaluate(`document.querySelectorAll(${JSON.stringify(selector)}).length`);
-    assert(`вкладка «${label}» рендерится`, count > 0, `элементов ${selector}: ${count}`);
-    assert(`вкладка «${label}» без ошибок`, consoleErrors().length === 0, consoleErrors().join('; '));
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    if (await evaluate(`!!document.querySelector('.app-shell')`)) break;
+    await sleep(250);
   }
-
-  // 3. Вид «Список» / «Плитка»
-  if (connected) {
-    await evaluate(`window.RS.render('rewards')`);
-    await sleep(600);
-    await click('#view-mode [data-view="list"]');
-    await sleep(900);
-    const rows = await evaluate(`document.querySelectorAll('.reward-row').length`);
-    assert('переключатель «Список» работает', rows > 0, `строк: ${rows}`);
-    await click('#view-mode [data-view="grid"]');
-    await sleep(900);
-    const cards = await evaluate(`document.querySelectorAll('.reward-card').length`);
-    assert('переключатель «Плитка» работает', cards > 0, `карточек: ${cards}`);
-
-    // 4. Фильтры
-    await click('#reward-pills [data-filter="sound"]');
-    await sleep(300);
-    const filtered = await evaluate(`document.querySelectorAll('#rewards-list .reward-card').length`);
-    assert('фильтр «Со звуком» работает', filtered >= 0 && filtered < cards, `карточек: ${filtered}`);
-    await click('#reward-pills [data-filter="all"]');
-    await sleep(300);
-  }
-
-  // 5. Модалка создания награды
-  if (connected) {
-    await click('#reward-create');
-    await sleep(500);
-    const modal = await evaluate(
-      `({ open: !!document.querySelector('.modal-scrim'), focused: document.activeElement?.id, save: !!document.querySelector('#reward-save') })`
-    );
-    assert('модалка награды открывается', modal.open && modal.save, JSON.stringify(modal));
-    assert('автофокус на названии', modal.focused === 'reward-title', modal.focused);
-    await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))`);
-    await sleep(300);
-    assert('Escape закрывает модалку', !(await evaluate(`!!document.querySelector('.modal-scrim')`)));
-
-    // 6. Редактор сохраняет флаг «нужен ввод текста»
-    const musicCard = await evaluate(
-      `(() => { const el = Array.from(document.querySelectorAll('.reward-card')).find(card => card.querySelector('.music-badge')); if (!el) return null; el.querySelector('[data-dots]').click(); return true; })()`
-    );
-    if (musicCard) {
-      await sleep(300);
-      const items = await evaluate(`Array.from(document.querySelectorAll('.popmenu-item')).map(el => el.textContent.trim())`);
-      const editIndex = items.findIndex((text) => text.includes('Изменить'));
-      if (editIndex >= 0) {
-        await evaluate(`document.querySelectorAll('.popmenu-item')[${editIndex}].click()`);
-        await sleep(500);
-        const checked = await evaluate(`document.querySelector('#reward-input-required')?.checked`);
-        assert('флаг «ввод текста» сохраняется в редакторе', checked === true, String(checked));
-        await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))`);
-        await sleep(250);
-      }
-    }
-  }
-
-  // 7. Настройки: mute туда-обратно
-  await evaluate(`window.RS.render('settings')`);
-  await sleep(600);
-  const muteBefore = await evaluate(`window.RS.state.view.muted`);
-  await click('[data-setting="muted"]');
   await sleep(1200);
-  const muteAfter = await evaluate(`window.RS.state.view.muted`);
-  assert('тумблер «Без звука» переключается', muteAfter === !muteBefore, `${muteBefore} -> ${muteAfter}`);
-  await click('[data-setting="muted"]');
-  await sleep(1200);
-  const muteRestored = await evaluate(`window.RS.state.view.muted`);
-  assert('тумблер «Без звука» возвращается', muteRestored === muteBefore, `${muteRestored}`);
 
-  // 8. Музыка: модалка награды/цены
-  await evaluate(`window.RS.render('music')`);
-  await sleep(700);
-  await click('#music-price');
+  assert('React-интерфейс загрузился', await evaluate(`!!document.querySelector('.app-shell')`));
+
+  const tabs = await evaluate(`Array.from(document.querySelectorAll('.nav-item')).map((b) => b.textContent.trim())`);
+  const tabNames = tabs.map((name) => name.replace('proto', '').trim());
+  assert('есть вкладки «Награды, Музыка, Оверлей, Настройки, Журнал»', ['Награды', 'Музыка', 'Оверлей', 'Настройки', 'Журнал'].every((name) => tabNames.includes(name)), JSON.stringify(tabs));
+  assert('в интерфейсе нет вкладки «Чат»', !tabNames.includes('Чат'), JSON.stringify(tabs));
+  assert('нет служебных вкладок прототипа', !tabNames.includes('Дизайн-система'), JSON.stringify(tabs));
+
+  const size = await evaluate(`({ w: innerWidth, h: innerHeight })`);
+  assert('окно не меньше 1600×1000', size.w >= 1600 && size.h >= 1000, JSON.stringify(size));
+
+  const state = await evaluate(`window.__TAURI_INTERNALS__.invoke('get_state')`);
+  const overview = { connected: state.connected, rewards: state.rewards.length };
+
+  const rewards = await evaluate(`(async () => ({ cards: document.querySelectorAll('.reward-card').length, backend: (await window.__TAURI_INTERNALS__.invoke('get_state')).rewards.length }))()`);
+  assert('награды: карточки соответствуют бэкенду', rewards.cards === rewards.backend && rewards.cards >= 0, JSON.stringify(rewards));
+  assert('награды: есть первая карточка или пустое состояние', await evaluate(`!!document.querySelector('.reward-card') || !!document.querySelector('.reward-empty')`));
+
+  assert('переключение на «Музыку»', await clickTab('Музыка'));
   await sleep(500);
-  const price = await evaluate(
-    `({ open: !!document.querySelector('.modal-scrim'), choices: document.querySelectorAll('.reward-choice-row').length })`
+  assert('музыка: экран открылся', (await evaluate(`document.querySelector('.page-title')?.textContent`)) === 'Музыка');
+  assert('музыка: состояние из бэкенда', await evaluate(`!!document.querySelector('.player, .empty-state')`));
+
+  assert('переключение на «Оверлей»', await clickTab('Оверлей'));
+  await sleep(900);
+  assert('оверлей: экран открылся', (await evaluate(`document.querySelector('.page-title')?.textContent`)) === 'Оверлей чата');
+  const preview = await evaluate(`document.querySelector('.overlay-preview__frame')?.src || ''`);
+  assert('оверлей: превью — реальный сервер', preview.includes('127.0.0.1:8770/chat-overlay'), preview);
+
+  assert('переключение на «Настройки»', await clickTab('Настройки'));
+  await sleep(700);
+  assert('настройки: экран открылся', (await evaluate(`document.querySelector('.page-title')?.textContent`)) === 'Настройки');
+  const health = await evaluate(`document.querySelectorAll('.health-row').length`);
+  assert('настройки: строки здоровья из бэкенда', health > 0, `${health}`);
+
+  assert('переключение на «Журнал»', await clickTab('Журнал'));
+  await sleep(1600);
+  const logTitle = await evaluate(`document.querySelector('.page-title')?.textContent || ''`);
+  assert('журнал: экран открылся', logTitle.includes('Журнал'), logTitle);
+  const logRows = await evaluate(`document.querySelectorAll('.log-row').length`);
+  assert('журнал: записи загружаются', logRows > 0, `${logRows}`);
+
+  assert('переключение на «Награды»', await clickTab('Награды'));
+  await sleep(500);
+  const createOpened = await evaluate(
+    `(() => { const button = Array.from(document.querySelectorAll('.ui-button')).find((b) => b.textContent.includes('Создать награду')); if (!button) return false; button.click(); return true; })()`
   );
-  assert('модалка «Награда и цена» открывается', price.open && price.choices > 0, JSON.stringify(price));
-  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))`);
-  await sleep(250);
-
-  await click('#obs-settings');
-  await sleep(500);
-  const obs = await evaluate(
-    `({ open: !!document.querySelector('.modal-scrim'), seconds: document.querySelector('#obs-seconds')?.value, font: document.querySelector('#obs-font')?.value })`
-  );
-  assert('модалка OBS открывается с текущими настройками', obs.open && obs.seconds !== undefined, JSON.stringify(obs));
-  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))`);
-  await sleep(250);
-
-  // 9. Журнал: фильтр уровня и поиск
-  await evaluate(`window.RS.render('log')`);
-  await sleep(1200);
-  const logAll = await evaluate(`Array.from(document.querySelectorAll('.log-row')).filter(r => !r.hidden).length`);
-  await click('#log-levels [data-level="error"]');
-  await sleep(250);
-  const logErrors = await evaluate(
-    `Array.from(document.querySelectorAll('.log-row')).filter(r => !r.hidden).map(r => r.dataset.level)`
-  );
-  assert('фильтр журнала «Ошибки» работает', logErrors.every((level) => level === 'error'), JSON.stringify(logErrors.slice(0, 5)));
-  await click('#log-levels [data-level="all"]');
-  await sleep(250);
-  await setValue('#log-search', 'EventSub');
-  await sleep(250);
-  const logSearch = await evaluate(`Array.from(document.querySelectorAll('.log-row')).filter(r => !r.hidden).length`);
-  assert('поиск по журналу фильтрует', logSearch > 0 && logSearch <= logAll, `${logSearch} из ${logAll}`);
-  await setValue('#log-search', '');
-
-  // 10. Ошибки IPC показываются стеком тостов, а не глотаются
-  await evaluate(
-    `window.RS.api.invoke('this_command_does_not_exist').then(() => 'resolved').catch(() => 'rejected')`
-  );
-  await sleep(500);
-  const toastInfo = await evaluate(`(() => {
-    const toast = document.querySelector('.toast.toast-error');
-    return {
-      exists: !!toast,
-      text: toast?.querySelector('.toast-text')?.textContent || '',
-      action: toast?.querySelector('.toast-action')?.textContent || '',
-    };
-  })()`);
-  assert('ошибка IPC превращается в тост', toastInfo.exists, JSON.stringify(toastInfo));
-  assert('текст ошибки на русском', /[А-Яа-яЁё]/.test(toastInfo.text) && !/not found/i.test(toastInfo.text), toastInfo.text);
-  assert('у ошибки есть действие «Журнал»', /журнал/i.test(toastInfo.action), toastInfo.action);
-  assert('ошибка IPC не роняет интерфейс', (await evaluate(`typeof window.RS`)) === 'object');
-  await evaluate(`document.querySelectorAll('.toast').forEach((node) => node.remove()); true`);
-  clearEvents();
-
-  // 11. Статус-хаб и версия
-  const health = await evaluate(`({
-    state: document.querySelector('#health-chip')?.dataset.state,
-    text: document.querySelector('#health-text')?.textContent || '',
-    footerVersion: document.querySelector('#footer-version')?.textContent || '',
-  })`);
-  assert('статус-хаб показывает общее состояние', ['ok', 'warn', 'error'].includes(health.state) && health.text.length > 0, JSON.stringify(health));
-  assert('версия показана в футере', /версия \d/.test(health.footerVersion), JSON.stringify(health));
-
-  await click('#health-chip');
-  await sleep(350);
-  const healthPopover = await evaluate(`({
-    open: !!document.querySelector('.health-popover'),
-    rows: document.querySelectorAll('.health-popover .health-row').length,
-    hasSettings: !!document.querySelector('#health-open-settings'),
-  })`);
-  assert('поповер статус-хаба открывается', healthPopover.open && healthPopover.rows >= 5 && healthPopover.hasSettings, JSON.stringify(healthPopover));
-  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
-  await sleep(200);
-  assert('Esc закрывает поповер статуса', !(await evaluate(`!!document.querySelector('.health-popover')`)));
-
-  // 12. Чат-оверлей (reference) продолжает отдаваться локальным сервером
-  try {
-    const overlayPage = await fetch('http://127.0.0.1:8770/chat-overlay');
-    const overlayHtml = await overlayPage.text();
-    const overlayConfig = await fetch('http://127.0.0.1:8770/chat-overlay/config');
-    const overlayConfigHtml = await overlayConfig.text();
-    const overlaySettings = await fetch('http://127.0.0.1:8770/chat-overlay/settings.js');
-    const overlaySettingsJs = await overlaySettings.text();
-    assert('чат-оверлей отдаёт страницу', overlayPage.ok && overlayHtml.includes('Twitch Chat Overlay'), String(overlayPage.status));
-    assert('чат-оверлей отдаёт конфигуратор', overlayConfig.ok && overlayConfigHtml.includes('Настройки чата'), String(overlayConfig.status));
-    assert('чат-оверлей отдаёт настройки', overlaySettings.ok && overlaySettingsJs.includes('OVERLAY_SETTINGS'), String(overlaySettings.status));
-  } catch (error) {
-    assert('чат-оверлей отвечает по HTTP', false, error.message);
-  }
-
-  // 13. Замечания после ручного теста: цвет, список, плеер, журнал, сайдбар
-  await evaluate(`window.RS.render('rewards')`);
-  await sleep(700);
-  await click('#reward-create');
-  await sleep(500);
-  const colorPicker = await evaluate(`({
-    presets: document.querySelectorAll('#reward-color-palette .color-preset').length,
-    native: !!document.querySelector('#reward-color-native'),
-    hex: document.querySelector('#reward-color')?.value || '',
-  })`);
-  assert('пикер цвета: палитра и color input', colorPicker.presets >= 8 && colorPicker.native, JSON.stringify(colorPicker));
-  await evaluate(`document.querySelectorAll('#reward-color-palette .color-preset')[2]?.click()`);
-  await sleep(150);
-  const pickedColor = await evaluate(`({
-    hex: document.querySelector('#reward-color')?.value || '',
-    picked: document.querySelectorAll('#reward-color-palette .color-preset')[2]?.dataset.color || '',
-    active: document.querySelectorAll('#reward-color-palette .color-preset')[2]?.classList.contains('active'),
-  })`);
-  assert('клик по палитре меняет HEX цвета', pickedColor.hex.toLowerCase() === pickedColor.picked.toLowerCase() && pickedColor.active, JSON.stringify(pickedColor));
-  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
-  await sleep(250);
-
-  await click('#view-mode [data-view="list"]');
-  await sleep(800);
-  const listPlay = await evaluate(`({
-    rows: document.querySelectorAll('.reward-row').length,
-    plays: document.querySelectorAll('.reward-row .sound-play').length,
-    statuses: document.querySelectorAll('.reward-row .rr-status').length,
-    actionsWidth: Math.round(document.querySelector('.rr-actions')?.getBoundingClientRect().width || 0),
-    volumesAligned: (() => {
-      const rows = Array.from(document.querySelectorAll('.reward-row'));
-      const xs = rows.map((row) => Math.round(row.querySelector('.rr-volume')?.getBoundingClientRect().left || 0)).filter(Boolean);
-      return xs.length < 2 || Math.max(...xs) - Math.min(...xs) <= 1;
-    })(),
-  })`);
-  assert('в списке можно прослушать звук', listPlay.plays > 0, JSON.stringify(listPlay));
-  assert('в списке есть колонка статуса', listPlay.statuses === listPlay.rows, JSON.stringify(listPlay));
-  assert('колонка громкости выровнена', listPlay.volumesAligned, JSON.stringify(listPlay));
-  await click('#view-mode [data-view="grid"]');
-  await sleep(700);
-
-  await evaluate(`window.RS.render('log')`);
-  await sleep(1200);
-  const logOrder = await evaluate(`(() => {
-    const rows = Array.from(document.querySelectorAll('.log-row'));
-    const times = rows.map((row) => row.querySelector('.log-time')?.textContent || '');
-    return {
-      first: times[0] || '',
-      second: times[1] || '',
-      newestFirst: !times[1] || times[0] >= times[1],
-      clear: !!document.querySelector('#log-clear'),
-    };
-  })()`);
-  assert('журнал: новые записи сверху', logOrder.newestFirst, JSON.stringify(logOrder));
-  assert('журнал: есть кнопка очистки', logOrder.clear, JSON.stringify(logOrder));
-
-  await evaluate(`window.RS.render('settings')`);
-  await sleep(700);
-  const sidebar = await evaluate(`(() => {
-    const main = document.querySelector('.sidebar-main')?.getBoundingClientRect();
-    const system = document.querySelector('.sidebar-system')?.getBoundingClientRect();
-    const height = document.querySelector('#sidebar')?.offsetHeight || 0;
-    return { mainBottom: Math.round(main?.bottom || 0), systemTop: Math.round(system?.top || 0), height };
-  })()`);
-  assert('системные вкладки внизу сайдбара', sidebar.systemTop > sidebar.height * 0.7, JSON.stringify(sidebar));
-
-  // Акцентный цвет: карточка «Внешний вид»
-  const accentCard = await evaluate(`({
-    card: !!document.querySelector('#settings-appearance'),
-    presets: document.querySelectorAll('#accent-palette .color-preset').length,
-    native: !!document.querySelector('#accent-native'),
-    hex: document.querySelector('#accent-hex')?.value || '',
-  })`);
-  assert('карточка «Внешний вид» с пресетами', accentCard.card && accentCard.presets === 8 && accentCard.native, JSON.stringify(accentCard));
-  await evaluate(`document.querySelectorAll('#accent-palette .color-preset')[2]?.click()`);
-  await sleep(700);
-  const accentApplied = await evaluate(`({
-    css: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
-    view: window.RS.state.view?.accent || '',
-    hex: document.querySelector('#accent-hex')?.value || '',
-    exampleInk: document.querySelector('#appearance-example') ? getComputedStyle(document.querySelector('#appearance-example')).color : '',
-  })`);
-  assert('акцент применяется и сохраняется', accentApplied.css.toUpperCase() === '#3B82F6' && accentApplied.view.toUpperCase() === '#3B82F6', JSON.stringify(accentApplied));
-  assert('текст на акцентной кнопке читаемый', accentApplied.exampleInk === 'rgb(10, 10, 10)', accentApplied.exampleInk);
-  await evaluate(`document.querySelector('#accent-reset')?.click()`);
-  await sleep(800);
-  const accentReset = await evaluate(`({ css: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(), view: window.RS.state.view?.accent || '' })`);
-  assert('акцент сбрасывается к фирменному', accentReset.css.toUpperCase() === '#8B00FF' && accentReset.view.toUpperCase() === '#8B00FF', JSON.stringify(accentReset));
-
-  await evaluate(`window.RS.render('music')`);
-  await sleep(700);
-  const playerEmpty = await evaluate(`({
-    current: !!window.RS.state.view?.music?.current,
-    transport: !!document.querySelector('#play-toggle'),
-    cta: !!document.querySelector('#player-empty-add'),
-  })`);
-  if (!playerEmpty.current) {
-    assert('пустой плеер без фантомного транспорта', !playerEmpty.transport && playerEmpty.cta, JSON.stringify(playerEmpty));
-  }
-
-  // 14. Итерация: плотность, контекстное меню карточки, единый тест звука
-  await evaluate(`window.RS.render('rewards')`);
-  await sleep(700);
-  const density = await evaluate(`(() => {
-    const grid = document.querySelector('#rewards-list.grid');
-    const card = document.querySelector('.reward-card');
-    return {
-      grid: !!grid,
-      cols: grid ? getComputedStyle(grid).gridTemplateColumns.split(' ').length : 0,
-      cardHeight: card?.offsetHeight || 0,
-      cards: document.querySelectorAll('.reward-card').length,
-    };
-  })()`);
-  assert('плитка компактная: 4 колонки', density.grid && density.cols === 4, JSON.stringify(density));
-  assert('карточка не выше 180 px', density.cardHeight > 0 && density.cardHeight <= 180, JSON.stringify(density));
-
-  const hasFileCard = await evaluate(`(() => {
-    const card = Array.from(document.querySelectorAll('.reward-card')).find((el) => el.querySelector('.soundchip:not(.empty)'));
-    if (!card) return false;
-    card.querySelector('[data-dots]').click();
-    return true;
-  })()`);
-  if (hasFileCard) {
-    await sleep(300);
-    const cardMenu = await evaluate(`Array.from(document.querySelectorAll('.popmenu-item')).map((el) => el.textContent.trim())`);
-    assert('меню карточки: заменить/убрать звук', cardMenu.some((item) => item.includes('Заменить звук')) && cardMenu.some((item) => item.includes('Убрать звук')), JSON.stringify(cardMenu));
-    await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
-  }
-
-  await evaluate(`window.RS.render('settings')`);
-  await sleep(700);
-  const settingsNew = await evaluate(`({
-    soundTest: document.querySelectorAll('.sound-test').length,
-    danger: !!document.querySelector('.danger-zone'),
-    healthCard: !!document.querySelector('#settings-health'),
-    oldAudioTest: !!document.querySelector('#audio-test'),
-  })`);
-  assert('единый компонент теста звука', settingsNew.soundTest === 1 && !settingsNew.oldAudioTest, JSON.stringify(settingsNew));
-  assert('Twitch: опасная зона и здоровье системы', settingsNew.danger && settingsNew.healthCard, JSON.stringify(settingsNew));
-
-  await evaluate(`window.RS.render('music')`);
-  await sleep(700);
-  const musicNew = await evaluate(`({
-    emptyCta: !!document.querySelector('#player-empty-add'),
-    hasCurrent: !!window.RS.state.view?.music?.current,
-    saveButton: !!document.querySelector('#ms-save'),
-  })`);
-  if (!musicNew.hasCurrent) assert('у пустого плеера есть CTA', musicNew.emptyCta, JSON.stringify(musicNew));
-  await evaluate(`document.querySelector('#music-menu').click()`);
-  await sleep(250);
-  await evaluate(`Array.from(document.querySelectorAll('.popmenu-item')).find((el) => el.textContent.includes('Настройки музыки'))?.click()`);
-  await sleep(500);
-  const musicModal = await evaluate(`({
-    open: !!document.querySelector('.modal-scrim'),
-    save: !!document.querySelector('#ms-save'),
-    indicator: document.querySelector('#ms-save-state')?.textContent || '',
-  })`);
-  assert('настройки музыки сохраняются автосейвом', musicModal.open && !musicModal.save && /сохраня/i.test(musicModal.indicator), JSON.stringify(musicModal));
-  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
-  await sleep(250);
-
-  // 13. Клавиатура меню
-  await evaluate(`window.RS.render('rewards')`);
-  await sleep(600);
-  await click('#rewards-menu');
-  await sleep(300);
-  await evaluate(`document.activeElement?.dispatchEvent(new KeyboardEvent('keydown', {key:'ArrowDown', bubbles:true}))`);
-  await sleep(150);
-  const menuFocus = await evaluate(`({ tag: document.activeElement?.tagName, cls: document.activeElement?.className || '' })`);
-  assert('меню управляется стрелками', menuFocus.tag === 'BUTTON' && String(menuFocus.cls).includes('popmenu-item'), JSON.stringify(menuFocus));
-  await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
-  await sleep(200);
-
-  // 14. Адаптив 980×680
-  await send('Emulation.setDeviceMetricsOverride', { width: 980, height: 680, deviceScaleFactor: 1, mobile: false });
   await sleep(400);
-  await evaluate(`document.querySelector('#content').dataset.rendered = ''; window.RS.render('rewards')`);
-  await sleep(800);
-  const narrow = await evaluate(`(() => {
-    const toolbar = document.querySelector('.toolbar');
-    const tops = new Set(Array.from(toolbar?.children || [])
-      .filter((el) => el.offsetHeight > 2 && getComputedStyle(el).display !== 'none')
-      .map((el) => Math.round(el.getBoundingClientRect().top)));
-    return {
-      sidebar: document.querySelector('#sidebar')?.offsetWidth,
-      rows: document.querySelectorAll('#rewards-list .reward-row').length,
-      cards: document.querySelectorAll('#rewards-list .reward-card').length,
-      filters: getComputedStyle(document.querySelector('#rewards-filters')).display !== 'none',
-      pills: getComputedStyle(document.querySelector('#reward-pills')).display !== 'none',
-      volume: getComputedStyle(document.querySelector('.rr-volume')).display !== 'none',
-      toolbarRows: tops.size,
-    };
-  })()`);
-  assert('980: рейл-сайдбар 64 px', narrow.sidebar === 64, JSON.stringify(narrow));
-  assert('980: список по умолчанию, громкость на месте', narrow.rows > 0 && narrow.cards === 0 && narrow.volume, JSON.stringify(narrow));
-  assert('980: фильтры в поповере, тулбар в один ряд', narrow.filters && !narrow.pills && narrow.toolbarRows === 1, JSON.stringify(narrow));
-  await send('Emulation.clearDeviceMetricsOverride');
-  await sleep(400);
+  assert('модалка создания награды открывается', createOpened && (await evaluate(`document.querySelector('.ui-modal__title')?.textContent === 'Новая награда'`)));
+  await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
 
-  // 15. Окно: maximize/restore
-  await click('#window-max');
-  await sleep(800);
-  const maximized = await evaluate(`({ w: innerWidth, h: innerHeight })`);
-  assert('окно разворачивается', maximized.w >= 1200, JSON.stringify(maximized));
-  await click('#window-max');
-  await sleep(800);
-  const restored = await evaluate(`({ w: innerWidth, h: innerHeight })`);
-  assert('окно восстанавливается', restored.w >= 900 && restored.h >= 600, JSON.stringify(restored));
-
-  // 13. Геометрия окна сохраняется
-  const appData = process.env.APPDATA;
-  if (appData) {
-    const geometryFile = path.join(appData, 'RewardSounds', 'window.json');
-    await sleep(700);
-    if (existsSync(geometryFile)) {
-      const text = readFileSync(geometryFile, 'utf8');
-      let ok = false;
-      try {
-        const geometry = JSON.parse(text);
-        ok = geometry.width >= 800 && geometry.height >= 560;
-      } catch {}
-      assert('геометрия окна сохраняется в window.json', ok, text);
-    }
-  }
-
-  const finalErrors = consoleErrors();
-  assert('нет ошибок в консоли за весь прогон', finalErrors.length === 0, finalErrors.join('; '));
+  await sleep(500);
+  const errors = consoleErrors();
+  assert('нет ошибок в консоли за весь прогон', errors.length === 0, errors.join('; '));
 }
 
 run()

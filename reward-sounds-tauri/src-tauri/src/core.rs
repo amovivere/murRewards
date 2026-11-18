@@ -19,7 +19,7 @@ use reward_sounds::music::{self, ItemState};
 use reward_sounds::twitch::{self, RemoteReward};
 use reward_sounds::util;
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Emitter, Manager, State};
+use tauri::{AppHandle, Emitter, State};
 /// Сведения о привязанном аудиофайле.
 #[derive(Clone, Serialize)]
 pub struct FileInfo {
@@ -1615,43 +1615,6 @@ pub fn open_url(url: String) -> Result<(), String> {
     }
     webbrowser::open(&url).map_err(|err| err.to_string())?;
     Ok(())
-}
-
-/// Размер окна до входа в React-превью, чтобы вернуть его обратно.
-static REACT_PREVIEW_SIZE: Mutex<Option<tauri::PhysicalSize<u32>>> = Mutex::new(None);
-
-/// Открывает встроенный React-прототип нового интерфейса в том же окне.
-///
-/// Это режим предпросмотра: прототип живёт в `ui/next/` и не меняет рабочие
-/// настройки и данные. Окно временно увеличивается до 1600×1000.
-#[tauri::command]
-pub fn open_react_preview(window: tauri::WebviewWindow) -> Result<(), String> {
-    let size = window.inner_size().map_err(|error| error.to_string())?;
-    if let Ok(mut saved) = REACT_PREVIEW_SIZE.lock() {
-        *saved = Some(size);
-    }
-    window
-        .set_size(tauri::LogicalSize::new(1600.0, 1000.0))
-        .map_err(|error| format!("Не удалось изменить размер окна: {error}"))?;
-    window
-        .center()
-        .map_err(|error| format!("Не удалось центрировать окно: {error}"))?;
-    window
-        .eval("window.location.href = '/next/index.html';")
-        .map_err(|error| format!("Не удалось открыть React-превью: {error}"))
-}
-
-/// Возвращает окно из React-превью к рабочему интерфейсу.
-#[tauri::command]
-pub fn close_react_preview(window: tauri::WebviewWindow) -> Result<(), String> {
-    if let Ok(mut saved) = REACT_PREVIEW_SIZE.lock() {
-        if let Some(size) = saved.take() {
-            let _ = window.set_size(tauri::Size::Physical(size));
-        }
-    }
-    window
-        .eval("window.location.href = '/index.html';")
-        .map_err(|error| format!("Не удалось вернуться к приложению: {error}"))
 }
 
 /// Выбранный в диалоге звук (ещё не привязан к награде).

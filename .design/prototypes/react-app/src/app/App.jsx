@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../components/ui/Button.jsx';
 import Icon from '../components/ui/Icon.jsx';
 import DesignPage from '../features/design/DesignPage.jsx';
@@ -8,7 +8,7 @@ import OnboardingPage from '../features/onboarding/OnboardingPage.jsx';
 import OverlayPage from '../features/overlay/OverlayPage.jsx';
 import RewardsPage from '../features/rewards/RewardsPage.jsx';
 import SettingsPage from '../features/settings/SettingsPage.jsx';
-import { useBackend } from '../lib/backend.js';
+import { inTauri, invoke, useBackend } from '../lib/backend.js';
 
 const NAV = [
   { id: 'rewards', label: 'Награды', icon: 'rewards' },
@@ -34,11 +34,24 @@ const PAGES = {
 };
 
 export default function App() {
-  const [tab, setTab] = useState('overlay');
+  const [tab, setTab] = useState('rewards');
   const [healthOpen, setHealthOpen] = useState(false);
   const backend = useBackend();
-  const inTauriPreview = window.location.pathname.includes('/next/');
+  const [started, setStarted] = useState(false);
+  const showPrototypeNav = !inTauri;
+  const systemNav = SYSTEM_NAV.filter((item) => showPrototypeNav || !item.prototype);
   const Page = PAGES[tab] || RewardsPage;
+
+  useEffect(() => {
+    if (started || !backend.view) return;
+    setStarted(true);
+    if (!backend.view.connected) setTab('onboarding');
+  }, [backend.view, started]);
+
+  function windowAction(command) {
+    if (!inTauri) return;
+    invoke(command).catch(() => {});
+  }
 
   return (
     <div className="app-shell">
@@ -72,7 +85,7 @@ export default function App() {
         <div className="sidebar__footer">
           <div className="nav-label">СИСТЕМА</div>
           <nav>
-            {SYSTEM_NAV.map((item) => (
+            {systemNav.map((item) => (
               <button
                 key={item.id}
                 className={`nav-item${tab === item.id ? ' is-active' : ''}`}
@@ -84,30 +97,12 @@ export default function App() {
               </button>
             ))}
           </nav>
-          <div className="sidebar__version">версия 1.7.0 · React prototype</div>
-          {inTauriPreview ? (
-            <button
-              className="sidebar__back"
-              onClick={async () => {
-                try {
-                  if (window.__TAURI_INTERNALS__) {
-                    await window.__TAURI_INTERNALS__.invoke('close_react_preview');
-                    return;
-                  }
-                } catch {
-                  // fallback ниже
-                }
-                window.location.href = '/index.html';
-              }}
-            >
-              ← Вернуться к приложению
-            </button>
-          ) : null}
+          <div className="sidebar__version">версия 1.7.0</div>
         </div>
       </aside>
 
       <div className="main">
-        <header className="topbar">
+        <header className="topbar" data-tauri-drag-region onDoubleClick={() => windowAction('win_toggle_maximize')}>
           <div className="health-wrap">
             <button className={`health-chip${healthOpen ? ' is-open' : ''}`} onClick={() => setHealthOpen((value) => !value)}>
               <span className="dot dot--ok" />
@@ -174,9 +169,9 @@ export default function App() {
               <span className="volume-control__value">29%</span>
             </div>
             <div className="window-controls">
-              <button title="Свернуть">—</button>
-              <button title="Развернуть">▢</button>
-              <button className="window-close" title="Закрыть">×</button>
+              <button title="Свернуть" onClick={() => windowAction('win_minimize')}>—</button>
+              <button title="Развернуть" onClick={() => windowAction('win_toggle_maximize')}>▢</button>
+              <button className="window-close" title="Закрыть" onClick={() => windowAction('win_close')}>×</button>
             </div>
           </div>
         </header>

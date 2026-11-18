@@ -157,10 +157,10 @@ fn main() {
 
             let geometry = load_geometry();
             let (monitor_w, monitor_h, monitor_scale) = primary_monitor_logical(app);
-            // Окно не должно оказываться больше рабочей области: при 150 % DPI
-            // 1220×840 логических превращаются в 1830×1260 физических.
-            let max_w = (monitor_w - 24.0).max(900.0);
-            let max_h = (monitor_h - 80.0).max(620.0);
+            // Окно рассчитано на desktop 2K: 1600×1000 логических.
+            // Не даём ему выйти за рабочую область монитора.
+            let max_w = (monitor_w - 24.0).max(1600.0);
+            let max_h = (monitor_h - 80.0).max(1000.0);
             let devtools_args = std::env::var("REWARD_SOUNDS_DEVTOOLS_PORT")
                 .ok()
                 .map(|port| format!("--remote-debugging-port={port}"));
@@ -170,21 +170,21 @@ fn main() {
                 tauri::WebviewUrl::App("index.html".into()),
             )
             .title("Reward Sounds")
-            .min_inner_size(900.0, 620.0)
+            .min_inner_size(1600.0, 1000.0)
             .resizable(true)
             .maximizable(true)
             .minimizable(true)
             .decorations(false)
             .data_directory(data_dir);
             if let Some(geometry) = &geometry {
-                let width = (geometry.width as f64).clamp(900.0, max_w);
-                let height = (geometry.height as f64).clamp(620.0, max_h);
+                let width = (geometry.width as f64).clamp(1600.0, max_w);
+                let height = (geometry.height as f64).clamp(1000.0, max_h);
                 let x = (geometry.x as f64 / monitor_scale).clamp(0.0, (monitor_w - width).max(0.0));
                 let y = (geometry.y as f64 / monitor_scale).clamp(0.0, (monitor_h - height).max(0.0));
                 builder = builder.inner_size(width, height).position(x, y);
             } else {
                 builder = builder
-                    .inner_size(1220.0f64.min(max_w), 840.0f64.min(max_h))
+                    .inner_size(1600.0f64.min(max_w), 1000.0f64.min(max_h))
                     .center();
             }
             if let Some(args) = devtools_args.as_deref() {
@@ -326,8 +326,6 @@ fn main() {
             core::twitch_disconnect,
             core::set_app_setting,
             core::open_url,
-            core::open_react_preview,
-            core::close_react_preview,
             core::get_chat_overlay_settings,
             core::save_chat_overlay_settings,
             core::get_logs,

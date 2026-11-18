@@ -2624,3 +2624,43 @@ a:focus-visible {
 .overlay-preview__frame-wrap {
   height: clamp(320px, calc(100vh - 540px), 640px);
 }
+
+.ui-pill--error {
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #f28b8b;
+  background: rgba(239, 68, 68, 0.09);
+}
+
+.dot--error {
+  background: var(--danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.play-button {
+  width: 24px;
+  height: 24px;
+  flex-basis: 24px;
+}
+
+.ui-switch {
+  width: 44px;
+  height: 24px;
+}
+
+.ui-switch__dot {
+  width: 18px;
+  height: 18px;
+}
+
+.ui-switch.is-on .ui-switch__dot {
+  transform: translateX(20px);
+}
+
+.health-row .link-button {
+  min-height: 24px;
+  padding: 4px 6px;
+}
+
+.sound-row {
+  min-height: 30px;
+}

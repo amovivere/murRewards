@@ -519,6 +519,7 @@ export default function OverlayPage() {
               variant={previewMode === 'static' ? 'primary' : 'secondary'}
               size="sm"
               full
+              aria-pressed={previewMode === 'static'}
               onClick={() => setMode('static')}
             >
               Стационарный
@@ -527,6 +528,7 @@ export default function OverlayPage() {
               variant={previewMode === 'live' ? 'primary' : 'secondary'}
               size="sm"
               full
+              aria-pressed={previewMode === 'live'}
               onClick={() => setMode('live')}
             >
               Активный чат
@@ -534,6 +536,8 @@ export default function OverlayPage() {
             <Button
               variant="secondary"
               size="sm"
+              title="Добавить три демо-сообщения"
+              aria-label="Добавить три демо-сообщения"
               onClick={() => frameRef.current?.contentWindow?.postMessage({ tco: 'batch' }, '*')}
             >
               +3

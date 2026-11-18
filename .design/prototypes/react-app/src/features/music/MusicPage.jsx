@@ -160,6 +160,7 @@ export default function MusicPage({ backend }) {
   const [obsOpen, setObsOpen] = useState(false);
   const [clearOpen, setClearOpen] = useState(false);
   const [clearing, setClearing] = useState(false);
+  const [removeTarget, setRemoveTarget] = useState(null);
   const [toast, setToast] = useState('');
   const [url, setUrl] = useState(() => sessionStorage.getItem('rs.music.url') || '');
 
@@ -232,6 +233,12 @@ export default function MusicPage({ backend }) {
     }
   }
 
+  async function removeItem() {
+    if (!removeTarget) return;
+    await action('music_remove_item', { id: removeTarget.id });
+    setRemoveTarget(null);
+  }
+
   function openYouTube() {
     if (!real) {
       notify('Открыть YouTube можно в приложении');
@@ -276,8 +283,14 @@ export default function MusicPage({ backend }) {
                   <div className="player__meta">@{current.user_login} · YouTube · {formatTime(duration)}</div>
                 </div>
                 <div className="player__controls">
-                  <Button variant="secondary" size="sm" icon={<Icon name="play" size={12} />} aria-label="Продолжить" title="Продолжить" onClick={() => action('music_toggle_pause')} />
-                  <Button variant="secondary" size="sm" icon={<Icon name="pause" size={12} />} aria-label="Пауза" title="Пауза" onClick={() => action('music_toggle_pause')} />
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    icon={<Icon name={player.paused ? 'play' : 'pause'} size={12} />}
+                    aria-label={player.paused ? 'Продолжить' : 'Пауза'}
+                    title={player.paused ? 'Продолжить' : 'Пауза'}
+                    onClick={() => action('music_toggle_pause')}
+                  />
                   <Button variant="secondary" size="sm" icon={<Icon name="next" size={12} />} aria-label="Следующий трек" title="Следующий трек" onClick={() => action('music_skip')} />
                   <Button variant="ghost" size="sm" onClick={() => action('music_skip')}>Пропустить трек</Button>
                 </div>
@@ -323,8 +336,8 @@ export default function MusicPage({ backend }) {
                     <div className="queue-title">{item.title}</div>
                     <div className="queue-meta">@{item.user_login} · {formatTime(item.duration_sec)} · {item.state}</div>
                   </div>
-                  <button className="icon-ghost" title="Выше" aria-label="Поднять трек выше" onClick={() => action('music_move_up', { id: item.id })}>↑</button>
-                  <button className="icon-ghost" title="Убрать" aria-label="Убрать трек из очереди" onClick={() => action('music_remove_item', { id: item.id })}>×</button>
+                  <button className="icon-ghost" title="Выше" aria-label="Поднять трек выше" disabled={index === 0} onClick={() => action('music_move_up', { id: item.id })}>↑</button>
+                  <button className="icon-ghost" title="Убрать" aria-label="Убрать трек из очереди" onClick={() => setRemoveTarget(item)}>×</button>
                 </div>
               ))}
             </div>
@@ -332,6 +345,7 @@ export default function MusicPage({ backend }) {
           <div className="queue-input">
             <Icon name="plus" />
             <input
+              aria-label="Ссылка YouTube для очереди"
               placeholder="Вставьте ссылку YouTube и нажмите Enter — трек встанет в очередь"
               value={url}
               onChange={(event) => setUrl(event.target.value)}
@@ -392,6 +406,15 @@ export default function MusicPage({ backend }) {
         busy={clearing}
         onClose={() => setClearOpen(false)}
         onConfirm={clearQueue}
+      />
+      <ConfirmModal
+        open={Boolean(removeTarget)}
+        title="Убрать трек из очереди?"
+        text={removeTarget ? `«${removeTarget.title}» будет удалён из очереди.` : ''}
+        confirmLabel="Убрать"
+        danger
+        onClose={() => setRemoveTarget(null)}
+        onConfirm={removeItem}
       />
       {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}
     </div>

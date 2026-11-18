@@ -162,6 +162,20 @@ async function run() {
   assert('оверлей: экран открылся', (await evaluate(`document.querySelector('.page-title')?.textContent`)) === 'Оверлей чата');
   const preview = await evaluate(`document.querySelector('.overlay-preview__frame')?.src || ''`);
   assert('оверлей: превью — реальный сервер', preview.includes('127.0.0.1:8770/chat-overlay'), preview);
+  await sleep(700);
+  const previewFit = await evaluate(`(() => {
+    const wrap = document.querySelector('.overlay-preview__frame-wrap');
+    const preview = document.querySelector('.overlay-preview');
+    const content = document.querySelector('.content');
+    if (!wrap || !preview || !content) return null;
+    return {
+      loaded: !document.querySelector('.overlay-preview__loading'),
+      bottom: Math.round(preview.getBoundingClientRect().bottom),
+      contentBottom: Math.round(content.getBoundingClientRect().bottom),
+      size: wrap.getBoundingClientRect().height
+    };
+  })()`);
+  assert('оверлей: превью загружено и помещается в окно', Boolean(previewFit) && previewFit.loaded && previewFit.bottom <= previewFit.contentBottom, JSON.stringify(previewFit));
 
   assert('переключение на «Настройки»', await clickTab('Настройки'));
   await sleep(700);
@@ -270,6 +284,19 @@ async function run() {
   await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); true`);
   await sleep(350);
   assert('фокус возвращается на кнопку после Esc', await evaluate(`document.activeElement?.id === 'create-reward-btn'`));
+
+  const editFocus = await evaluate(`(async () => {
+    const card = document.querySelector('.reward-card');
+    const dots = card.querySelector('.icon-ghost');
+    dots.focus(); dots.click();
+    await new Promise((r) => setTimeout(r, 250));
+    Array.from(document.querySelectorAll('.reward-menu button')).find((b) => b.textContent.includes('Редактировать')).click();
+    await new Promise((r) => setTimeout(r, 300));
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await new Promise((r) => setTimeout(r, 300));
+    return document.activeElement === dots;
+  })()`);
+  assert('фокус возвращается на триггер меню после редактирования', editFocus);
 
   // Health popover: Esc.
   await evaluate(`document.querySelector('.health-chip').click(); true`);

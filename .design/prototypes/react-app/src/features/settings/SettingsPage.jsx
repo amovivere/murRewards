@@ -128,7 +128,7 @@ export default function SettingsPage({ backend, onNavigate }) {
 
       <Panel
         title="Здоровье системы"
-        actions={<Pill tone={healthOverall === 'ok' ? 'ok' : 'warning'}>{healthOverall === 'ok' ? 'OK' : 'ВНИМАНИЕ'}</Pill>}
+        actions={<Pill tone={healthOverall === 'ok' ? 'ok' : healthOverall === 'error' ? 'error' : 'warning'}>{healthOverall === 'ok' ? 'OK' : healthOverall === 'error' ? 'ОШИБКА' : 'ВНИМАНИЕ'}</Pill>}
       >
         <div className="health-grid">
           {(real && health.length
@@ -141,7 +141,7 @@ export default function SettingsPage({ backend, onNavigate }) {
               ]
           ).map((item) => (
             <div className="health-row" key={item.key || item.title}>
-              <span className={`dot dot--${item.state === 'error' ? 'warn' : item.state === 'warn' ? 'warn' : 'ok'}`} />
+              <span className={`dot dot--${item.state === 'error' ? 'error' : item.state === 'warn' ? 'warn' : 'ok'}`} />
               <b>{item.title}</b>
               <span>{item.detail}</span>
               <button className="link-button" onClick={() => goto(item.key === 'overlay' ? 'overlay' : item.key === 'audio' || item.key === 'ytdlp' ? 'music' : 'settings')}>

@@ -251,7 +251,7 @@ export default function App() {
                         setHealthOpen(false);
                       }}
                     >
-                      <span className={`dot dot--${item.state === 'error' ? 'warn' : item.state === 'warn' ? 'warn' : 'ok'}`} />
+                      <span className={`dot dot--${item.state === 'error' ? 'error' : item.state === 'warn' ? 'warn' : 'ok'}`} />
                       <b>{HEALTH_LABELS[item.key] || item.title}</b>
                       <span>{item.detail}</span>
                       <em>Открыть</em>

@@ -29,9 +29,16 @@ export default function LogPage({ backend }) {
   async function load() {
     if (!real) return;
     try {
+      const scroller = document.querySelector('.content');
+      const scrollTop = scroller?.scrollTop ?? 0;
       const entries = await invoke('get_logs', { limit: 200 });
       setRows(entries || []);
       setError('');
+      if (scroller) {
+        requestAnimationFrame(() => {
+          scroller.scrollTop = scrollTop;
+        });
+      }
     } catch (err) {
       setError(String(err));
     } finally {

@@ -1,0 +1,44 @@
+:root {
+  color-scheme: dark;
+
+  --canvas: #0a0a0a;
+  --page: #0b0b0c;
+  --sidebar: #0e0e0e;
+  --panel: #111111;
+  --surface: #161616;
+  --surface-2: #1c1c1c;
+  --hover: #202024;
+  --field: #141416;
+
+  --text: #f5f5f7;
+  --text-2: #b9b9c1;
+  --muted: #8b8b93;
+  --dim: #64646c;
+
+  --accent: #8b00ff;
+  --accent-hover: #9d2bff;
+  --accent-text: #c9a7ff;
+  --ok: #22c55e;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+  --info: #7dd3fc;
+
+  --border: #242428;
+  --border-soft: #1c1c20;
+
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  --shadow-panel: 0 18px 60px rgba(0, 0, 0, 0.42);
+  --shadow-pop: 0 30px 80px rgba(0, 0, 0, 0.55);
+
+  --font-ui: 'Inter', 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'Cascadia Mono', 'Consolas', monospace;
+
+  --sidebar-w: 240px;
+  --topbar-h: 64px;
+  --footer-h: 34px;
+}

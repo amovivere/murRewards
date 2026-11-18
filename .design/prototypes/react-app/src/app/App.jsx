@@ -1,0 +1,121 @@
+import { useState } from 'react';
+import Button from '../components/ui/Button.jsx';
+import Icon from '../components/ui/Icon.jsx';
+import DesignPage from '../features/design/DesignPage.jsx';
+import LogPage from '../features/log/LogPage.jsx';
+import MusicPage from '../features/music/MusicPage.jsx';
+import OverlayPage from '../features/overlay/OverlayPage.jsx';
+import RewardsPage from '../features/rewards/RewardsPage.jsx';
+import SettingsPage from '../features/settings/SettingsPage.jsx';
+
+const NAV = [
+  { id: 'rewards', label: 'Награды', icon: 'rewards' },
+  { id: 'music', label: 'Музыка', icon: 'music' },
+  { id: 'overlay', label: 'Оверлей', icon: 'overlay' },
+];
+
+const SYSTEM_NAV = [
+  { id: 'settings', label: 'Настройки', icon: 'settings' },
+  { id: 'log', label: 'Журнал', icon: 'log' },
+  { id: 'design', label: 'Дизайн-система', icon: 'design', prototype: true },
+];
+
+const PAGES = {
+  rewards: RewardsPage,
+  music: MusicPage,
+  overlay: OverlayPage,
+  settings: SettingsPage,
+  log: LogPage,
+  design: DesignPage,
+};
+
+export default function App() {
+  const [tab, setTab] = useState('overlay');
+  const Page = PAGES[tab] || RewardsPage;
+
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+        <div className="sidebar__brand">
+          <div className="brand-mark">
+            <Icon name="music" size={17} />
+          </div>
+          <div>
+            <div className="brand-name">Reward Sounds</div>
+            <div className="brand-sub">Studio · 2K</div>
+          </div>
+        </div>
+
+        <div className="sidebar__scroll">
+          <div className="nav-label">ОСНОВНОЕ</div>
+          <nav>
+            {NAV.map((item) => (
+              <button
+                key={item.id}
+                className={`nav-item${tab === item.id ? ' is-active' : ''}`}
+                onClick={() => setTab(item.id)}
+              >
+                <Icon name={item.icon} />
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        <div className="sidebar__footer">
+          <div className="nav-label">СИСТЕМА</div>
+          <nav>
+            {SYSTEM_NAV.map((item) => (
+              <button
+                key={item.id}
+                className={`nav-item${tab === item.id ? ' is-active' : ''}`}
+                onClick={() => setTab(item.id)}
+              >
+                <Icon name={item.icon} />
+                <span>{item.label}</span>
+                {item.prototype ? <em className="nav-prototype">proto</em> : null}
+              </button>
+            ))}
+          </nav>
+          <div className="sidebar__version">версия 1.7.0 · React prototype</div>
+        </div>
+      </aside>
+
+      <div className="main">
+        <header className="topbar">
+          <button className="health-chip">
+            <span className="dot dot--ok" />
+            Все системы работают
+            <span className="health-chip__chevron">›</span>
+          </button>
+
+          <div className="topbar__right">
+            <div className="volume-control">
+              <Icon name="volume" size={15} />
+              <span className="volume-control__label">ЗВУК</span>
+              <div className="volume-track volume-track--top">
+                <div className="volume-fill" style={{ width: '29%' }} />
+                <div className="volume-knob" style={{ left: '29%' }} />
+              </div>
+              <span className="volume-control__value">29%</span>
+            </div>
+            <div className="window-controls">
+              <button title="Свернуть">—</button>
+              <button title="Развернуть">▢</button>
+              <button className="window-close" title="Закрыть">×</button>
+            </div>
+          </div>
+        </header>
+
+        <main className="content">
+          <Page />
+        </main>
+
+        <footer className="footer">
+          <span>Готово</span>
+          <span>версия 1.7.0</span>
+        </footer>
+      </div>
+    </div>
+  );
+}

@@ -34,6 +34,7 @@ const PAGES = {
 
 export default function App() {
   const [tab, setTab] = useState('overlay');
+  const [healthOpen, setHealthOpen] = useState(false);
   const Page = PAGES[tab] || RewardsPage;
 
   return (
@@ -86,11 +87,60 @@ export default function App() {
 
       <div className="main">
         <header className="topbar">
-          <button className="health-chip">
-            <span className="dot dot--ok" />
-            Все системы работают
-            <span className="health-chip__chevron">›</span>
-          </button>
+          <div className="health-wrap">
+            <button className={`health-chip${healthOpen ? ' is-open' : ''}`} onClick={() => setHealthOpen((value) => !value)}>
+              <span className="dot dot--ok" />
+              Все системы работают
+              <span className="health-chip__chevron">›</span>
+            </button>
+
+            {healthOpen ? (
+              <div className="health-popover">
+                <div className="health-popover__head">
+                  <div>
+                    <div className="eyebrow">СОСТОЯНИЕ СИСТЕМ</div>
+                    <div className="health-popover__title">Всё готово к эфиру</div>
+                  </div>
+                  <span className="ui-pill ui-pill--ok">5/5</span>
+                </div>
+                <div className="health-popover__rows">
+                  <button onClick={() => { setTab('settings'); setHealthOpen(false); }}>
+                    <span className="dot dot--ok" />
+                    <b>Twitch</b>
+                    <span>Подключено · @goshanmurz</span>
+                    <em>Открыть</em>
+                  </button>
+                  <button onClick={() => { setTab('settings'); setHealthOpen(false); }}>
+                    <span className="dot dot--ok" />
+                    <b>EventSub</b>
+                    <span>Слушаем активации наград</span>
+                    <em>Открыть</em>
+                  </button>
+                  <button onClick={() => { setTab('overlay'); setHealthOpen(false); }}>
+                    <span className="dot dot--ok" />
+                    <b>Оверлей</b>
+                    <span>127.0.0.1:8770/chat-overlay</span>
+                    <em>Открыть</em>
+                  </button>
+                  <button onClick={() => { setTab('music'); setHealthOpen(false); }}>
+                    <span className="dot dot--ok" />
+                    <b>Звук</b>
+                    <span>Analog 1/2 (Audient iD4)</span>
+                    <em>Открыть</em>
+                  </button>
+                  <button onClick={() => { setTab('music'); setHealthOpen(false); }}>
+                    <span className="dot dot--ok" />
+                    <b>yt-dlp</b>
+                    <span>2026.10.26 — готов</span>
+                    <em>Открыть</em>
+                  </button>
+                </div>
+                <button className="health-popover__footer" onClick={() => { setTab('settings'); setHealthOpen(false); }}>
+                  Открыть «Здоровье системы» →
+                </button>
+              </div>
+            ) : null}
+          </div>
 
           <div className="topbar__right">
             <div className="volume-control">

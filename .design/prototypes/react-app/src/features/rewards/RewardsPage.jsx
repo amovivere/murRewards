@@ -119,6 +119,56 @@ function CreateRewardModal({ open, onClose, onCreate }) {
   );
 }
 
+function EditRewardModal({ reward, onClose, onSave }) {
+  const [name, setName] = useState(reward?.name || '');
+  const [cost, setCost] = useState(String(reward?.cost || 100));
+  const [color, setColor] = useState(reward?.color || '#A970FF');
+
+  if (!reward) return null;
+
+  return (
+    <Modal
+      open={!!reward}
+      onClose={onClose}
+      title="Редактировать награду"
+      subtitle="Изменения уйдут в Twitch и сразу появятся в списке."
+      width={560}
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>
+            Отмена
+          </Button>
+          <Button
+            variant="primary"
+            disabled={!name.trim()}
+            onClick={() => {
+              onSave({ ...reward, name: name.trim(), cost: Number(cost) || 0, color });
+              onClose();
+            }}
+          >
+            Сохранить
+          </Button>
+        </>
+      }
+    >
+      <div className="modal-form">
+        <label className="modal-field">
+          <span>НАЗВАНИЕ</span>
+          <input className="ui-input" value={name} onChange={(event) => setName(event.target.value)} />
+        </label>
+        <label className="modal-field">
+          <span>ЦЕНА, БАЛЛОВ</span>
+          <input className="ui-input" value={cost} onChange={(event) => setCost(event.target.value.replace(/\D/g, ''))} inputMode="numeric" />
+        </label>
+        <div className="modal-field">
+          <span>ЦВЕТ КАРТОЧКИ</span>
+          <ColorPalette value={color} onChange={setColor} />
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
 function DeleteRewardModal({ reward, onClose, onConfirm }) {
   return (
     <Modal
@@ -150,6 +200,7 @@ export default function RewardsPage() {
   const [filter, setFilter] = useState('all');
   const [createOpen, setCreateOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [editTarget, setEditTarget] = useState(null);
   const [menuFor, setMenuFor] = useState(null);
   const [toast, setToast] = useState('');
 
@@ -258,6 +309,7 @@ export default function RewardsPage() {
 
             {menuFor === reward.id ? (
               <div className="reward-menu">
+                <button onClick={() => { setMenuFor(null); setEditTarget(reward); }}>Редактировать</button>
                 <button onClick={() => { setMenuFor(null); notify('Открыт выбор звука'); }}>Заменить звук</button>
                 <button onClick={() => { setMenuFor(null); notify('Звук убран'); }}>Убрать звук</button>
                 <button className="is-danger" onClick={() => { setMenuFor(null); setDeleteTarget(reward); }}>
@@ -320,6 +372,14 @@ export default function RewardsPage() {
       </Panel>
 
       <CreateRewardModal open={createOpen} onClose={() => setCreateOpen(false)} onCreate={createReward} />
+      <EditRewardModal
+        reward={editTarget}
+        onClose={() => setEditTarget(null)}
+        onSave={(updated) => {
+          setRewards((current) => current.map((reward) => (reward.id === updated.id ? updated : reward)));
+          notify(`Награда «${updated.name}» обновлена`);
+        }}
+      />
       <DeleteRewardModal reward={deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={confirmDelete} />
       {toast ? <div className="ui-toast">{toast}</div> : null}
     </div>

@@ -83,6 +83,31 @@ const range = await evaluate(`(() => {
 })()`);
 console.log('range:', JSON.stringify(range));
 
+// Health popover
+await evaluate(`document.querySelector('.health-chip')?.click(); true`);
+await sleep(250);
+const health = await evaluate(`({ open: !!document.querySelector('.health-popover'), rows: document.querySelectorAll('.health-popover__rows button').length })`);
+if (!health.open || health.rows !== 5) throw new Error('health popover missing');
+console.log('health popover:', JSON.stringify(health));
+await evaluate(`document.querySelector('.health-chip')?.click(); true`);
+
+// Music settings and OBS modals
+await evaluate(`Array.from(document.querySelectorAll('.nav-item')).find((b) => b.textContent.trim().startsWith('Музыка')).click(); true`);
+await sleep(300);
+await evaluate(`Array.from(document.querySelectorAll('.ui-button')).find((b) => b.textContent.includes('Настроить музыку')).click(); true`);
+await sleep(300);
+const musicModal = await evaluate(`document.querySelector('.ui-modal__title')?.textContent || ''`);
+if (!musicModal.includes('Настройки музыки')) throw new Error('music modal missing');
+console.log('music modal:', musicModal);
+await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
+await sleep(200);
+await evaluate(`Array.from(document.querySelectorAll('.ui-button')).find((b) => b.textContent.trim() === 'Настроить').click(); true`);
+await sleep(300);
+const obsModal = await evaluate(`document.querySelector('.ui-modal__title')?.textContent || ''`);
+if (!obsModal.includes('OBS')) throw new Error('OBS modal missing');
+console.log('obs modal:', obsModal);
+await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
+
 // Create reward modal
 await evaluate(`Array.from(document.querySelectorAll('.nav-item')).find((b) => b.textContent.trim().startsWith('Награды')).click(); true`);
 await sleep(300);

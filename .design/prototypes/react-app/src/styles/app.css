@@ -2115,3 +2115,110 @@ button {
   color: #6f6f7a;
   font-size: 10.5px;
 }
+
+/* ============================ health popover ============================ */
+
+.health-wrap {
+  position: relative;
+}
+
+.health-chip.is-open {
+  border-color: rgba(139, 0, 255, 0.45);
+  background: #15121d;
+}
+
+.health-popover {
+  position: absolute;
+  top: 46px;
+  left: 0;
+  z-index: 30;
+  width: 388px;
+  border-radius: 14px;
+  border: 1px solid #34343d;
+  background: #121215;
+  box-shadow: var(--shadow-pop);
+  overflow: hidden;
+}
+
+.health-popover__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px 11px;
+  border-bottom: 1px solid #26262d;
+}
+
+.health-popover__title {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.health-popover__rows {
+  padding: 6px;
+}
+
+.health-popover__rows button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 10px 74px 1fr auto;
+  gap: 9px;
+  align-items: center;
+  padding: 8px 9px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #babac4;
+  text-align: left;
+  font-size: 12px;
+}
+
+.health-popover__rows button:hover {
+  background: #1c1c22;
+}
+
+.health-popover__rows b {
+  color: #e7e7ed;
+  font-weight: 600;
+}
+
+.health-popover__rows span:nth-child(3) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #898994;
+}
+
+.health-popover__rows em {
+  color: #8e8e99;
+  font-style: normal;
+  font-size: 11px;
+}
+
+.health-popover__footer {
+  width: 100%;
+  padding: 10px 16px;
+  border: 0;
+  border-top: 1px solid #26262d;
+  background: #101013;
+  color: #b9a4d8;
+  text-align: left;
+  font-size: 12px;
+}
+
+.health-popover__footer:hover {
+  background: #17131f;
+}
+
+.obs-url-box {
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid #2c2c33;
+  background: #0c0c0e;
+}
+
+.obs-url-box code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #d2d2db;
+}

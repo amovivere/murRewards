@@ -73,4 +73,38 @@ await sleep(500);
   console.log('rewards-create-modal.png', Math.round(fs.statSync(`${outDir}/rewards-create-modal.png`).size / 1024) + ' KB');
 }
 await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
+
+// Health popover
+await evaluate(`document.querySelector('.health-chip')?.click(); true`);
+await sleep(300);
+{
+  const { data } = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+  fs.writeFileSync(`${outDir}/health-popover.png`, Buffer.from(data, 'base64'));
+  console.log('health-popover.png', Math.round(fs.statSync(`${outDir}/health-popover.png`).size / 1024) + ' KB');
+}
+await evaluate(`document.querySelector('.health-chip')?.click(); true`);
+
+// Music settings modal
+await evaluate(`Array.from(document.querySelectorAll('.nav-item')).find((b) => b.textContent.trim().startsWith('Музыка')).click(); true`);
+await sleep(300);
+await evaluate(`Array.from(document.querySelectorAll('.ui-button')).find((b) => b.textContent.includes('Настроить музыку')).click(); true`);
+await sleep(350);
+{
+  const { data } = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+  fs.writeFileSync(`${outDir}/music-settings-modal.png`, Buffer.from(data, 'base64'));
+  console.log('music-settings-modal.png', Math.round(fs.statSync(`${outDir}/music-settings-modal.png`).size / 1024) + ' KB');
+}
+await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
+await sleep(200);
+
+// OBS modal
+await evaluate(`Array.from(document.querySelectorAll('.ui-button')).find((b) => b.textContent.trim() === 'Настроить').click(); true`);
+await sleep(350);
+{
+  const { data } = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+  fs.writeFileSync(`${outDir}/obs-modal.png`, Buffer.from(data, 'base64'));
+  console.log('obs-modal.png', Math.round(fs.statSync(`${outDir}/obs-modal.png`).size / 1024) + ' KB');
+}
+await evaluate(`document.querySelector('.ui-modal__close')?.click(); true`);
+
 ws.close();

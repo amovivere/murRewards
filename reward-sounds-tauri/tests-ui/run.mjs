@@ -156,6 +156,15 @@ async function run() {
   await sleep(500);
   assert('музыка: экран открылся', (await evaluate(`document.querySelector('.page-title')?.textContent`)) === 'Музыка');
   assert('музыка: состояние из бэкенда', await evaluate(`!!document.querySelector('.player, .empty-state')`));
+  const playerControls = await evaluate(`(() => {
+    const controls = Array.from(document.querySelectorAll('.player__controls .ui-button'));
+    const volume = document.querySelector('.player__volume input');
+    return {
+      sizes: controls.map((b) => [Math.round(b.getBoundingClientRect().width), Math.round(b.getBoundingClientRect().height)]),
+      volume: volume ? volume.getAttribute('aria-label') : null
+    };
+  })()`);
+  assert('музыка: у плеера есть громкость и крупные кнопки', Boolean(playerControls.volume) && playerControls.sizes.length > 0 && playerControls.sizes.every(([, h]) => h >= 40), JSON.stringify(playerControls));
 
   assert('переключение на «Оверлей»', await clickTab('Оверлей'));
   await sleep(900);

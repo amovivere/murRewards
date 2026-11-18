@@ -309,6 +309,7 @@ impl RewardSoundsApp {
             overlay_seconds: settings.music.overlay_seconds,
             overlay_position: settings.music.overlay_position.clone(),
             overlay_font: settings.music.overlay_font,
+            cookies_file: settings.music.cookies_file.clone(),
         };
         let music_temp = paths.data_dir.join("tmp");
         let music_service = music::MusicService::spawn(
@@ -1201,6 +1202,7 @@ impl RewardSoundsApp {
             overlay_seconds: self.settings.music.overlay_seconds,
             overlay_position: self.settings.music.overlay_position.clone(),
             overlay_font: self.settings.music.overlay_font,
+            cookies_file: self.settings.music.cookies_file.clone(),
         });
     }
 

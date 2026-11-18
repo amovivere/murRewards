@@ -121,6 +121,7 @@ pub struct MusicView {
     pub ytdlp_path: Option<String>,
     pub ytdlp_path_setting: String,
     pub ytdlp_update_days: u64,
+    pub cookies_file: String,
     pub error: Option<String>,
     pub current: Option<MusicItemView>,
     pub player: MusicPlayerView,
@@ -242,6 +243,7 @@ impl AppCore {
             overlay_seconds: settings.music.overlay_seconds,
             overlay_position: settings.music.overlay_position.clone(),
             overlay_font: settings.music.overlay_font,
+            cookies_file: settings.music.cookies_file.clone(),
         };
         let music_temp = paths.data_dir.join("tmp");
         let music_service = music::MusicService::spawn(
@@ -1040,6 +1042,7 @@ fn music_view(snapshot: &music::Snapshot, settings: &Settings) -> MusicView {
         ytdlp_path: snapshot.ytdlp_path.clone(),
         ytdlp_path_setting: settings.music.ytdlp_path.clone(),
         ytdlp_update_days: settings.music.ytdlp_update_days,
+        cookies_file: settings.music.cookies_file.clone(),
         error: snapshot.error.clone(),
         current: snapshot
             .current
@@ -1280,6 +1283,15 @@ pub fn set_volume(core: State<'_, Arc<AppCore>>, volume: f64) -> CoreView {
     }
     core.save();
     core.view()
+}
+
+#[tauri::command]
+pub fn choose_ytdlp_cookies() -> Option<String> {
+    rfd::FileDialog::new()
+        .add_filter("Cookies", &["txt"])
+        .set_title("Выберите cookies.txt для YouTube")
+        .pick_file()
+        .map(|path| path.to_string_lossy().into_owned())
 }
 
 #[tauri::command]
@@ -1835,6 +1847,7 @@ pub struct MusicSettingsPatch {
     pub overlay_font: Option<u32>,
     pub ytdlp_path: Option<String>,
     pub ytdlp_update_days: Option<u64>,
+    pub cookies_file: Option<String>,
 }
 
 /// Применяет патч настроек музыки с ограничениями диапазонов.
@@ -1872,6 +1885,9 @@ fn apply_music_patch(music: &mut reward_sounds::config::MusicSettings, patch: &M
     }
     if let Some(value) = patch.ytdlp_update_days {
         music.ytdlp_update_days = value.min(365);
+    }
+    if let Some(value) = &patch.cookies_file {
+        music.cookies_file = value.trim().to_string();
     }
 }
 
@@ -2083,6 +2099,7 @@ fn music_config(settings: &Settings) -> music::Config {
         overlay_seconds: settings.music.overlay_seconds,
         overlay_position: settings.music.overlay_position.clone(),
         overlay_font: settings.music.overlay_font,
+        cookies_file: settings.music.cookies_file.clone(),
     }
 }
 
@@ -2103,6 +2120,7 @@ mod tests {
             overlay_font: None,
             ytdlp_path: None,
             ytdlp_update_days: None,
+            cookies_file: None,
         }
     }
 

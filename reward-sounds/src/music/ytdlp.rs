@@ -132,6 +132,7 @@ impl std::error::Error for YtError {}
 pub struct YtDlp {
     exe: PathBuf,
     temp_dir: PathBuf,
+    cookies: Option<PathBuf>,
 }
 
 impl YtDlp {
@@ -139,7 +140,14 @@ impl YtDlp {
         Self {
             exe: exe.into(),
             temp_dir: temp_dir.into(),
+            cookies: None,
         }
+    }
+
+    /// Netscape cookies.txt для YouTube (видео с проверкой возраста).
+    pub fn with_cookies(mut self, cookies: Option<PathBuf>) -> Self {
+        self.cookies = cookies.filter(|path| path.is_file());
+        self
     }
 
     /// Ищет `yt-dlp.exe`: настройка → рядом с программой → `tools\` → `PATH`.
@@ -303,6 +311,9 @@ impl YtDlp {
         limit: usize,
     ) -> Result<ProcessOutput, YtError> {
         let mut command = self.command();
+        if let Some(cookies) = &self.cookies {
+            command.arg("--cookies").arg(cookies);
+        }
         command
             .args(args)
             .stdin(Stdio::null())
@@ -341,6 +352,10 @@ impl YtDlp {
 
     /// Берёт из stderr последнюю содержательную строку и убирает «ERROR:».
     fn describe_failure(&self, stderr: &str) -> String {
+        let lower = stderr.to_lowercase();
+        if lower.contains("sign in to confirm your age") || lower.contains("age-restricted") {
+            return "YouTube требует подтверждения возраста: добавьте cookies.txt в настройках музыки.".to_string();
+        }
         let line = stderr
             .lines()
             .map(str::trim)
@@ -520,6 +535,15 @@ mod tests {
         assert_eq!(format_duration(213), "3:33");
         assert_eq!(format_duration(5), "0:05");
         assert_eq!(format_duration(3723), "1:02:03");
+    }
+
+    #[test]
+    fn age_gate_error_mentions_cookies() {
+        let tool = YtDlp::new("yt-dlp.exe", ".");
+        let text = tool.describe_failure(
+            "ERROR: [youtube] tRAmPLYjbGg: Sign in to confirm your age. This video may be inappropriate",
+        );
+        assert!(text.contains("cookies.txt"), "{text}");
     }
 
     #[test]

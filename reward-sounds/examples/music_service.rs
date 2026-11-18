@@ -33,6 +33,7 @@ fn main() {
         overlay_seconds: 10,
         overlay_position: "top".to_string(),
         overlay_font: 17,
+        cookies_file: String::new(),
     };
 
     let service = MusicService::spawn(config, ytdlp_arg, temp_dir);

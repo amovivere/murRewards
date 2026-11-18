@@ -39,6 +39,8 @@ pub struct Config {
     /// `top` или `bottom`.
     pub overlay_position: String,
     pub overlay_font: u32,
+    /// cookies.txt для YouTube (возрастные ограничения).
+    pub cookies_file: String,
 }
 
 impl Default for Config {
@@ -55,6 +57,7 @@ impl Default for Config {
             overlay_seconds: 10,
             overlay_position: "top".to_string(),
             overlay_font: 17,
+            cookies_file: String::new(),
         }
     }
 }
@@ -410,7 +413,7 @@ fn run(
                             );
                             if let Some(exe) = exe.clone() {
                                 validating.insert(redemption_id.clone());
-                                spawn_validate(exe, temp_dir.clone(), item, tx.clone());
+                                spawn_validate(exe, temp_dir.clone(), config.cookies_file.clone(), item, tx.clone());
                             }
                         }
                         Err(err) => reject(&events, redemption_id, err.message()),
@@ -440,7 +443,7 @@ fn run(
                             );
                             if let Some(exe) = exe.clone() {
                                 validating.insert(item.redemption_id.clone());
-                                spawn_validate(exe, temp_dir.clone(), item, tx.clone());
+                                spawn_validate(exe, temp_dir.clone(), config.cookies_file.clone(), item, tx.clone());
                             }
                         }
                         Err(err) => log::warn!("Музыка: ручная ссылка не разобрана — {}", err.message()),
@@ -733,6 +736,7 @@ fn run(
                             spawn_download(
                                 exe,
                                 temp_dir.clone(),
+                                config.cookies_file.clone(),
                                 item.video_id.clone(),
                                 item.url.clone(),
                                 tx.clone(),
@@ -760,6 +764,7 @@ fn run(
                     spawn_download(
                         exe,
                         temp_dir.clone(),
+                        config.cookies_file.clone(),
                         next.video_id.clone(),
                         next.url.clone(),
                         tx.clone(),
@@ -840,11 +845,12 @@ fn reject(events: &Sender<MusicEvent>, redemption_id: String, reason: String) { 
 }
 
 /// Проверка ссылки в отдельном потоке: метаданные занимают секунды.
-fn spawn_validate(exe: PathBuf, temp_dir: PathBuf, item: QueueItem, tx: Sender<Cmd>) {
+fn spawn_validate(exe: PathBuf, temp_dir: PathBuf, cookies: String, item: QueueItem, tx: Sender<Cmd>) {
     let spawned = thread::Builder::new()
         .name("music-validate".to_string())
         .spawn(move || {
-            let tool = YtDlp::new(&exe, &temp_dir);
+            let cookies = (!cookies.trim().is_empty()).then(|| PathBuf::from(cookies.trim()));
+            let tool = YtDlp::new(&exe, &temp_dir).with_cookies(cookies);
             let redemption_id = item.redemption_id.clone();
 
             match tool.probe(&item.url) {
@@ -871,11 +877,12 @@ fn spawn_validate(exe: PathBuf, temp_dir: PathBuf, item: QueueItem, tx: Sender<C
 }
 
 /// Загрузка аудио в память в отдельном потоке.
-fn spawn_download(exe: PathBuf, temp_dir: PathBuf, video_id: String, url: String, tx: Sender<Cmd>) {
+fn spawn_download(exe: PathBuf, temp_dir: PathBuf, cookies: String, video_id: String, url: String, tx: Sender<Cmd>) {
     let spawned = thread::Builder::new()
         .name("music-download".to_string())
         .spawn(move || {
-            let tool = YtDlp::new(&exe, &temp_dir);
+            let cookies = (!cookies.trim().is_empty()).then(|| PathBuf::from(cookies.trim()));
+            let tool = YtDlp::new(&exe, &temp_dir).with_cookies(cookies);
             match tool.download_audio(&url) {
                 Ok(bytes) => {
                     let _ = tx.send(Cmd::AudioReady { video_id, bytes });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../../components/ui/Button.jsx';
 import ConfirmModal from '../../components/ui/ConfirmModal.jsx';
 import Icon from '../../components/ui/Icon.jsx';
@@ -13,7 +13,7 @@ const MOCK_CURRENT = {
   state: 'playing',
 };
 
-function MusicSettingsModal({ open, music, onClose, onSave }) {
+function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
   const [maxQueue, setMaxQueue] = useState(10);
   const [maxDuration, setMaxDuration] = useState(15);
   const [overlaySeconds, setOverlaySeconds] = useState(0);
@@ -21,6 +21,7 @@ function MusicSettingsModal({ open, music, onClose, onSave }) {
   const [prefetch, setPrefetch] = useState(true);
   const [pauseYandex, setPauseYandex] = useState(true);
   const [restoreQueue, setRestoreQueue] = useState(true);
+  const [cookiesFile, setCookiesFile] = useState('');
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -32,6 +33,7 @@ function MusicSettingsModal({ open, music, onClose, onSave }) {
     setPrefetch(music.prefetch !== false);
     setPauseYandex(music.pause_yandex !== false);
     setRestoreQueue(music.restore_queue !== false);
+    setCookiesFile(music.cookies_file || '');
     // Намеренно только при открытии: фоновый поллинг не должен перетирать форму.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -47,6 +49,7 @@ function MusicSettingsModal({ open, music, onClose, onSave }) {
         pauseYandex,
         restoreQueue,
         enabled: autoplay,
+        cookiesFile,
       });
       onClose();
     } finally {
@@ -81,6 +84,34 @@ function MusicSettingsModal({ open, music, onClose, onSave }) {
           <ToggleRow label="Восстанавливать очередь" checked={restoreQueue} onChange={setRestoreQueue} trailing={restoreQueue ? 'вкл' : 'выкл'} />
         </div>
         <div className="modal-hint">Оверлей показывается только когда играет трек.</div>
+        <label className="modal-field">
+          <span>COOKIES YOUTUBE</span>
+          <div className="inline-row">
+            <input
+              className="ui-input is-mono"
+              value={cookiesFile}
+              placeholder="cookies.txt — нужен для видео 18+"
+              onChange={(event) => setCookiesFile(event.target.value)}
+            />
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                try {
+                  const path = await backend?.invoke('choose_ytdlp_cookies');
+                  if (path) setCookiesFile(path);
+                } catch (error) {
+                  // отмена выбора — не ошибка
+                }
+              }}
+            >
+              Выбрать…
+            </Button>
+          </div>
+          <div className="modal-hint">
+            Для видео 18+ экспортируйте cookies.txt из браузера, где выполнен вход в YouTube
+            (например, расширением «Get cookies.txt LOCALLY»), и выберите файл здесь.
+          </div>
+        </label>
       </div>
     </Modal>
   );
@@ -177,6 +208,28 @@ export default function MusicPage({ backend }) {
   const items = real ? music?.items || [] : [];
   const duration = player.duration_sec || current?.duration_sec || 0;
   const progress = duration ? Math.min(100, (player.position_sec / duration) * 100) : 0;
+  const [volume, setVolume] = useState(() => Math.round((music?.volume ?? 0.7) * 100));
+  const volumeTouched = useRef(0);
+  const volumeTimer = useRef(null);
+
+  useEffect(() => {
+    if (Date.now() - volumeTouched.current < 1200) return;
+    setVolume(Math.round((music?.volume ?? 0.7) * 100));
+  }, [music?.volume]);
+
+  useEffect(() => {
+    return () => window.clearTimeout(volumeTimer.current);
+  }, []);
+
+  function changeMusicVolume(next) {
+    const value = Math.max(0, Math.min(100, Number(next) || 0));
+    volumeTouched.current = Date.now();
+    setVolume(value);
+    window.clearTimeout(volumeTimer.current);
+    volumeTimer.current = window.setTimeout(() => {
+      if (real) backend.call('music_set_volume', { volume: value / 100 }).catch((error) => notify(String(error)));
+    }, 100);
+  }
 
   function notify(message) {
     setToast(message);
@@ -211,15 +264,9 @@ export default function MusicPage({ backend }) {
       return;
     }
     try {
-      const before = items.length;
-      const next = await backend.call('music_add_manual', { url: link });
-      const after = next?.music?.items?.length ?? before;
-      if (after <= before) {
-        notify('Не удалось добавить ссылку — проверьте адрес и журнал');
-        return;
-      }
+      await backend.call('music_add_manual', { url: link });
       setUrl('');
-      notify('Ссылка добавлена в очередь');
+      notify('Ссылка принята — трек появится в очереди после проверки');
     } catch (error) {
       notify(String(error));
     }
@@ -288,26 +335,42 @@ export default function MusicPage({ backend }) {
                 <div className="player__controls">
                   <Button
                     variant="secondary"
-                    size="sm"
-                    icon={<Icon name={player.paused ? 'play' : 'pause'} size={12} />}
+                    size="md"
+                    icon={<Icon name={player.paused ? 'play' : 'pause'} size={18} />}
                     aria-label={player.paused ? 'Продолжить' : 'Пауза'}
                     title={player.paused ? 'Продолжить' : 'Пауза'}
                     onClick={() => action('music_toggle_pause')}
                   />
-                  <Button variant="secondary" size="sm" icon={<Icon name="next" size={12} />} aria-label="Следующий трек" title="Следующий трек" onClick={() => action('music_skip')} />
-                  <Button variant="ghost" size="sm" onClick={() => action('music_skip')}>Пропустить трек</Button>
+                  <Button variant="secondary" size="md" icon={<Icon name="next" size={18} />} aria-label="Следующий трек" title="Следующий трек" onClick={() => action('music_skip')} />
+                  <Button variant="ghost" size="md" onClick={() => action('music_skip')}>Пропустить трек</Button>
                 </div>
               </div>
-              <div className="player__progress">
-                <span>{formatTime(player.position_sec)}</span>
-                <div className="progress-track" role="slider" aria-label="Перемотка трека" aria-valuemin={0} aria-valuemax={duration} aria-valuenow={player.position_sec} tabIndex={0} onClick={seek} onKeyDown={(event) => {
-                  if (event.key === 'ArrowRight') action('music_seek', { sec: Math.min(duration, player.position_sec + 5) });
-                  if (event.key === 'ArrowLeft') action('music_seek', { sec: Math.max(0, player.position_sec - 5) });
-                }}>
-                  <div className="progress-fill" style={{ width: `${progress}%` }} />
-                  <div className="progress-knob" style={{ left: `${progress}%` }} />
+              <div className="player__bottom">
+                <div className="player__progress">
+                  <span>{formatTime(player.position_sec)}</span>
+                  <div className="progress-track" role="slider" aria-label="Перемотка трека" aria-valuemin={0} aria-valuemax={duration} aria-valuenow={player.position_sec} tabIndex={0} onClick={seek} onKeyDown={(event) => {
+                    if (event.key === 'ArrowRight') action('music_seek', { sec: Math.min(duration, player.position_sec + 5) });
+                    if (event.key === 'ArrowLeft') action('music_seek', { sec: Math.max(0, player.position_sec - 5) });
+                  }}>
+                    <div className="progress-fill" style={{ width: `${progress}%` }} />
+                    <div className="progress-knob" style={{ left: `${progress}%` }} />
+                  </div>
+                  <span>{formatTime(duration)}</span>
                 </div>
-                <span>{formatTime(duration)}</span>
+                <div className="player__volume">
+                  <Icon name="volume" size={16} />
+                  <input
+                    className="ui-range"
+                    type="range"
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={volume}
+                    aria-label="Громкость музыки"
+                    onChange={(event) => changeMusicVolume(event.target.value)}
+                  />
+                  <span>{volume}%</span>
+                </div>
               </div>
             </div>
           </div>
@@ -380,6 +443,7 @@ export default function MusicPage({ backend }) {
       <MusicSettingsModal
         open={musicOpen}
         music={music}
+        backend={backend}
         onClose={() => setMusicOpen(false)}
         onSave={async (patch) => {
           if (!real) {

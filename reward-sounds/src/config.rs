@@ -68,6 +68,8 @@ pub struct MusicSettings {
     pub ytdlp_path: String,
     /// Обновлять `yt-dlp` раз в N дней (0 — не обновлять).
     pub ytdlp_update_days: u64,
+    /// Файл cookies.txt для YouTube (нужен для видео с возрастным ограничением).
+    pub cookies_file: String,
     /// Подгружать следующий трек заранее, пока играет текущий.
     pub prefetch: bool,
     /// Громкость музыки: 0.0–1.0, отдельно от звуков наград.
@@ -95,6 +97,7 @@ impl Default for MusicSettings {
             max_duration_sec: 480,
             ytdlp_path: "auto".to_string(),
             ytdlp_update_days: 7,
+            cookies_file: String::new(),
             prefetch: true,
             music_volume: 0.7,
             restore_queue: true,
@@ -373,6 +376,7 @@ impl Settings {
         if self.music.ytdlp_path.is_empty() {
             self.music.ytdlp_path = "auto".to_string();
         }
+        self.music.cookies_file = self.music.cookies_file.trim().to_string();
     }
 
     /// Загружает настройки. Если файла нет — настройки по умолчанию.

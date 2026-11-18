@@ -2943,3 +2943,133 @@ a:focus-visible {
   color: #9a9aa5;
   font-size: 12px;
 }
+
+/* ==== финальная структура карточки: одинаковая высота со звуком и без ==== */
+.reward-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 176px;
+}
+
+.reward-card__top {
+  align-items: center;
+  min-height: 22px;
+}
+
+.reward-card .reward-meta {
+  color: #a2a2ad;
+  font-size: 11.5px;
+}
+
+.card-sound {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  flex: 1;
+  padding: 10px 12px;
+}
+
+.card-sound-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.card-sound-title {
+  margin: 0;
+  color: #f0f0f5;
+  font-size: 13.5px;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
+}
+
+.card-sound-meta {
+  margin-top: 3px;
+  color: #9b9ba6;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-sound-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px;
+}
+
+.card-volume {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-volume-value {
+  flex: 0 0 36px;
+  text-align: right;
+  color: #bdbdc7;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.play-large.is-empty {
+  border-style: dashed;
+  border-color: #393943;
+  background: #15151a;
+  color: #71717c;
+}
+
+.card-sound.is-empty .card-sound-title {
+  color: #d7d7df;
+}
+
+.reward-grid.is-list .reward-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+}
+
+.reward-grid.is-list .reward-card__top {
+  flex: 0 0 170px;
+  width: 170px;
+}
+
+.reward-grid.is-list .card-sound {
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  gap: 14px;
+}
+
+.reward-grid.is-list .card-sound-main {
+  flex: 1;
+}
+
+.reward-grid.is-list .card-sound-title {
+  min-height: 0;
+  -webkit-line-clamp: 1;
+}
+
+.reward-grid.is-list .card-sound-controls {
+  flex: 0 0 220px;
+  width: 220px;
+}
+
+.reward-grid.is-list .play-large {
+  width: 40px;
+  height: 40px;
+  flex-basis: 40px;
+}

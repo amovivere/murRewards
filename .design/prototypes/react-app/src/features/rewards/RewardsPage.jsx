@@ -561,12 +561,8 @@ export default function RewardsPage({ backend }) {
             style={{ '--reward-color': reward.color, '--reward-tint': `${reward.color}22` }}
           >
             <div className="reward-card__top">
-              <div className="reward-name-wrap">
-                <h3>{reward.name}</h3>
-                <div className="reward-meta">
-                  {reward.cost} баллов
-                  {reward.requiresInput ? ' · нужен текст' : ''}
-                </div>
+              <div className="reward-meta">
+                {reward.cost} баллов{reward.requiresInput ? ' · нужен текст' : ''}
               </div>
               <div className="reward-card__right">
                 <span className={`reward-status${reward.playing ? ' is-playing' : reward.active ? ' is-active' : ' is-off'}`}>
@@ -605,9 +601,9 @@ export default function RewardsPage({ backend }) {
               </div>
             ) : null}
 
-            {reward.file ? (
-              <>
-                <div className="card-sound">
+            <div className={`card-sound${reward.file ? '' : ' is-empty'}`}>
+              <div className="card-sound-main">
+                {reward.file ? (
                   <button
                     className="play-large"
                     onClick={() => previewSound(reward)}
@@ -616,39 +612,43 @@ export default function RewardsPage({ backend }) {
                   >
                     <Icon name="play" size={20} />
                   </button>
-                  <div className="card-sound-info">
-                    <div className="card-sound-title">Звук привязан</div>
-                    <div className="card-sound-meta">
-                      {reward.meta || 'аудиофайл'} · нажмите, чтобы прослушать
-                    </div>
+                ) : (
+                  <div className="play-large is-empty" aria-hidden="true">
+                    <Icon name="volume" size={20} />
                   </div>
-                  {reward.music ? <span className="card-flag">♪</span> : null}
+                )}
+                <div className="card-sound-info">
+                  <h3 className="card-sound-title">{reward.name}</h3>
+                  <div className="card-sound-meta">
+                    {reward.file
+                      ? `${reward.meta || 'аудиофайл'} · нажмите, чтобы прослушать`
+                      : 'Звук не выбран · награда будет беззвучной'}
+                  </div>
                 </div>
-                <div className="volume-row card-volume-row">
-                  <input
-                    className="ui-range card-volume"
-                    type="range"
-                    min={0}
-                    max={200}
-                    step={1}
-                    value={reward.volume}
-                    aria-label={`Громкость ${reward.name}`}
-                    onChange={(event) => changeVolume(reward, Number(event.target.value))}
-                  />
-                  <span>{reward.volume}%</span>
-                </div>
-              </>
-            ) : (
-              <div className="card-sound-empty">
-                <div>
-                  <div className="card-sound-title">Звук не выбран</div>
-                  <div className="card-sound-meta">Награда будет беззвучной</div>
-                </div>
-                <Button variant="secondary" size="sm" onClick={() => chooseSound(reward)}>
-                  Выбрать звук
-                </Button>
+                {reward.music ? <span className="card-flag">♪</span> : null}
               </div>
-            )}
+              <div className="card-sound-controls">
+                {reward.file ? (
+                  <>
+                    <input
+                      className="ui-range card-volume"
+                      type="range"
+                      min={0}
+                      max={200}
+                      step={1}
+                      value={reward.volume}
+                      aria-label={`Громкость ${reward.name}`}
+                      onChange={(event) => changeVolume(reward, Number(event.target.value))}
+                    />
+                    <span className="card-volume-value">{reward.volume}%</span>
+                  </>
+                ) : (
+                  <Button variant="secondary" size="sm" full onClick={() => chooseSound(reward)}>
+                    Выбрать звук
+                  </Button>
+                )}
+              </div>
+            </div>
           </article>
         ))}
       </div>

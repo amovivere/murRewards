@@ -1,6 +1,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod chat;
 mod core;
 
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -325,12 +324,6 @@ fn main() {
             core::twitch_start_login,
             core::twitch_cancel_login,
             core::twitch_disconnect,
-            core::chat_connect,
-            core::chat_disconnect,
-            core::chat_send_message,
-            core::chat_refresh,
-            core::chat_clear_messages,
-            core::chat_set_settings,
             core::set_app_setting,
             core::open_url,
             core::get_logs,

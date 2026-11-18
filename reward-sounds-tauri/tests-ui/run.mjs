@@ -300,34 +300,22 @@ async function run() {
     rows: document.querySelectorAll('.health-popover .health-row').length,
     hasSettings: !!document.querySelector('#health-open-settings'),
   })`);
-  assert('поповер статус-хаба открывается', healthPopover.open && healthPopover.rows >= 6 && healthPopover.hasSettings, JSON.stringify(healthPopover));
+  assert('поповер статус-хаба открывается', healthPopover.open && healthPopover.rows >= 5 && healthPopover.hasSettings, JSON.stringify(healthPopover));
   await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', {key:'Escape'}))`);
   await sleep(200);
   assert('Esc закрывает поповер статуса', !(await evaluate(`!!document.querySelector('.health-popover')`)));
 
-  // 12. Вкладка «Чат» и чат-оверлей
-  await evaluate(`window.RS.render('chat')`);
-  await sleep(900);
-  const chatUi = await evaluate(`({
-    grid: !!document.querySelector('.chat-grid'),
-    connection: !!document.querySelector('#chat-connection'),
-    commands: document.querySelectorAll('.chat-command').length,
-    overlayUrl: document.querySelector('#chat-overlay-url')?.textContent || '',
-    feed: !!document.querySelector('#chat-feed'),
-    input: !!document.querySelector('#chat-input'),
-    healthChat: (window.RS.state.view?.health || []).find((item) => item.key === 'chat')?.state,
-  })`);
-  assert('вкладка «Чат» рендерится', chatUi.grid && chatUi.connection && chatUi.feed, JSON.stringify(chatUi));
-  assert('в чате 4 команды и поле ввода', chatUi.commands === 4 && chatUi.input, JSON.stringify(chatUi));
-  assert('ссылка на оверлей чата /chat', /\/chat/.test(chatUi.overlayUrl), chatUi.overlayUrl);
-  assert('чат есть в здоровье системы', !!chatUi.healthChat, String(chatUi.healthChat));
-
+  // 12. Чат-оверлей (reference) продолжает отдаваться локальным сервером
   try {
-    const chatPage = await fetch('http://127.0.0.1:8770/chat');
-    const chatState = await fetch('http://127.0.0.1:8770/chat/state');
-    const stateJson = await chatState.json();
-    assert('чат-оверлей отдаёт страницу', chatPage.ok && (await chatPage.text()).length > 100);
-    assert('чат-оверлей отдаёт состояние', chatState.ok && Array.isArray(stateJson.messages));
+    const overlayPage = await fetch('http://127.0.0.1:8770/chat-overlay');
+    const overlayHtml = await overlayPage.text();
+    const overlayConfig = await fetch('http://127.0.0.1:8770/chat-overlay/config');
+    const overlayConfigHtml = await overlayConfig.text();
+    const overlaySettings = await fetch('http://127.0.0.1:8770/chat-overlay/settings.js');
+    const overlaySettingsJs = await overlaySettings.text();
+    assert('чат-оверлей отдаёт страницу', overlayPage.ok && overlayHtml.includes('Twitch Chat Overlay'), String(overlayPage.status));
+    assert('чат-оверлей отдаёт конфигуратор', overlayConfig.ok && overlayConfigHtml.includes('Настройки чата'), String(overlayConfig.status));
+    assert('чат-оверлей отдаёт настройки', overlaySettings.ok && overlaySettingsJs.includes('OVERLAY_SETTINGS'), String(overlaySettings.status));
   } catch (error) {
     assert('чат-оверлей отвечает по HTTP', false, error.message);
   }

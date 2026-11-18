@@ -704,41 +704,6 @@ button.dots { min-width: 30px; min-height: 28px; display: inline-flex; align-ite
   .player-side-hint { margin-top: 4px; }
   .player-progress-row { margin-top: 10px; }
 }
-/* ===== вкладка «Чат» ===== */
-.chat-pills { margin-top: 12px; flex-wrap: wrap; }
-.chat-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
-.chat-card { padding: 14px 16px; min-width: 0; }
-.chat-live { grid-column: 1 / -1; }
-.chat-conn-status { margin: 8px 0 6px; }
-.chat-command-list { display: flex; flex-direction: column; gap: 2px; margin-top: 8px; }
-.chat-command { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
-.chat-command code { font-size: 11.6px; color: var(--accent-text); background: rgba(var(--accent-rgb),.10); border: 1px solid rgba(var(--accent-rgb),.22); border-radius: 7px; padding: 2px 7px; white-space: nowrap; }
-.chat-command-info { flex: 1 1 auto; min-width: 0; }
-.chat-command-title { font-size: 12.4px; color: #E6E6E6; }
-.chat-command-hint { font-size: 10.6px; color: #8B8B8B; }
-.chat-overlay-url { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-.chat-overlay-url code { flex: 1 1 auto; min-width: 0; font-size: 11.4px; color: #DADADA; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 6px 9px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.chat-overlay-controls { margin-top: 8px; }
-.chat-overlay-controls .setting-row { margin-top: 6px; }
-.chat-overlay-slider-row { display: flex; align-items: center; gap: 8px; }
-.chat-live-head { display: flex; align-items: center; gap: 10px; }
-.chat-live-count { font-size: 11px; color: #8B8B8B; }
-.chat-feed { margin-top: 10px; height: 300px; overflow-y: auto; overscroll-behavior: contain; border-radius: 10px; background: rgba(255,255,255,.025); border: 1px solid rgba(255,255,255,.06); padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; }
-.chat-feed-empty { margin: auto; color: #6E6E6E; font-size: 12.4px; }
-.chat-message { display: flex; align-items: baseline; gap: 7px; font-size: 12.6px; line-height: 18px; }
-.chat-time { font-size: 10px; color: #6E6E6E; flex: 0 0 auto; }
-.chat-user { font-weight: 600; flex: 0 0 auto; }
-.chat-badge { font-size: 8.6px; letter-spacing: .4px; text-transform: uppercase; color: #8B8B8B; border: 1px solid rgba(255,255,255,.14); border-radius: 6px; padding: 0 4px; flex: 0 0 auto; }
-.chat-badge-broadcaster { color: #F5C97B; border-color: rgba(245,158,11,.35); }
-.chat-text { color: #DADADA; min-width: 0; overflow-wrap: anywhere; }
-.chat-send-row { display: flex; gap: 8px; margin-top: 10px; }
-.chat-input { flex: 1 1 auto; min-width: 0; height: 34px; border-radius: 9px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); padding: 0 10px; }
-.chat-input:disabled { opacity: .55; }
-@media (max-width: 1120px) {
-  .chat-grid { grid-template-columns: minmax(0, 1fr); }
-  .chat-card { padding: 12px 14px; }
-  .chat-feed { height: 240px; }
-}
 /* ===== выбор цвета награды (палитра + color input) ===== */
 .color-controls { display: flex; align-items: center; gap: 8px; }
 .color-swatch {

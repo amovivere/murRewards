@@ -27,7 +27,6 @@ import { renderMusic, syncMusic, tickPlayer } from './js/music.js';
 import { renderSettings, syncSettings } from './js/settings.js';
 import { renderLog, refreshLog, syncLog } from './js/log.js';
 import { renderOnboarding, syncOnboarding } from './js/onboarding.js';
-import { renderChat, syncChat } from './js/chat.js';
 
 const content = () => $('#content');
 let pollTimer = null;
@@ -107,8 +106,6 @@ function applyView(view) {
     syncOnboarding(root, view);
   } else if (tab === 'music') {
     syncMusic(root, view);
-  } else if (tab === 'chat') {
-    syncChat(root, view);
   } else if (tab === 'overlay') {
     // Страница настроек оверлея живёт на локальном сервере и открывается как iframe.
   } else if (tab === 'settings') {
@@ -121,7 +118,7 @@ function applyView(view) {
 function initialTab() {
   const params = new URLSearchParams(location.search);
   const screen = params.get('screen');
-  if (screen && ['rewards', 'music', 'chat', 'overlay', 'settings', 'log', 'onboarding'].includes(screen)) return screen;
+  if (screen && ['rewards', 'music', 'overlay', 'settings', 'log', 'onboarding'].includes(screen)) return screen;
   return 'rewards';
 }
 
@@ -156,8 +153,6 @@ function renderTab(tab) {  const root = content();
     else renderRewards(root, view);
   } else if (tab === 'music') {
     renderMusic(root, view);
-  } else if (tab === 'chat') {
-    renderChat(root, view);
   } else if (tab === 'overlay') {
     renderOverlay(root);
   } else if (tab === 'settings') {
@@ -193,13 +188,12 @@ function emptyView() {
     bindings: 0,
     local_bindings: [],
     playing: [],
-    chat_ready: false,
     eventsub: 'stopped',
     eventsub_error: null,
     grid_view: true,
     normalizing: false,
     normalize_message: null,
-    music: { enabled: false, ready: false, items: [], current: null, player: {}, volume: 0, reward_title: '', reward_cost: 0, reward_id: '', max_queue: 0, max_duration_sec: 0, overlay_seconds: 0, overlay_font: 17, overlay_position: 'top' },
+    music: { enabled: false, ready: false, items: [], current: null, player: {}, volume: 0, reward_title: '', reward_cost: 0, reward_id: '', max_queue: 0, max_duration_sec: 0, overlay_seconds: 0, overlay_font: 17, overlay_position: 'top', chat_online: false },
     auth: { state: 'idle' },
     client_id: '',
     autostart: false,
@@ -209,20 +203,6 @@ function emptyView() {
     data_dir: '',
     log_file: '',
     health: [],
-    chat: {
-      enabled: false,
-      connected: false,
-      read_only: false,
-      error: null,
-      login: '',
-      messages: [],
-      overlay_url: 'http://127.0.0.1:8770/chat',
-      overlay_theme: 'dark',
-      overlay_opacity: 60,
-      overlay_font: 16,
-      overlay_seconds: 0,
-      commands: { queue: true, song: true, skip: true, sound: true },
-    },
   };
 }
 
@@ -341,7 +321,7 @@ function openHealthPopover(anchor) {
         <div class="settings-row-hint">${
           summary.problems
             ? 'Есть проблемы — они подсвечены и ведут туда, где исправляются'
-            : 'Всё готово к работе: награды, звук, музыка, чат и оверлей'
+            : 'Всё готово к работе: награды, звук, музыка и оверлей'
         }</div>
       </div>
       <span class="pill ${summary.errors ? 'pill-danger' : summary.warns ? 'pill-warn' : 'pill-accent'}">${

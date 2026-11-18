@@ -7,10 +7,8 @@
 
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
-use std::sync::{Arc, Mutex, OnceLock};
+use std::sync::{Arc, Mutex};
 use std::thread;
-
-use serde::Serialize;
 
 use crate::config::AppPaths;
 use super::service::Snapshot;
@@ -30,51 +28,6 @@ const CHAT_OVERLAY_SETTINGS_DEFAULT: &str =
 
 /// Страница настроек чат-оверлея (адаптированный config.html reference-проекта).
 const CHAT_CONFIG_PAGE: &str = include_str!("../../assets/chat-overlay-config.html");
-
-/// Страница старого минимального чат-оверлея.
-const CHAT_PAGE: &str = include_str!("../../assets/chat.html");
-
-/// Сообщение чата для оверлея: только то, что нужно странице.
-#[derive(Debug, Clone, Default, Serialize)]
-pub struct ChatOverlayMessage {
-    /// Идентификатор сообщения: по нему страница понимает, что пришло новое.
-    pub id: String,
-    /// Время сообщения в миллисекундах Unix.
-    pub at_ms: u64,
-    pub user: String,
-    pub display_name: String,
-    /// Цвет имени (`#RRGGBB`), если Twitch его задал.
-    pub color: Option<String>,
-    pub text: String,
-    pub is_moderator: bool,
-    pub is_broadcaster: bool,
-}
-
-/// Состояние чат-оверлея. Общее для Tauri-модуля чата и HTTP-сервера:
-/// модуль кладёт сюда сообщения, страница читает их из `/chat/state`.
-#[derive(Debug, Clone, Default, Serialize)]
-pub struct ChatOverlayState {
-    /// Последние сообщения, старые в начале.
-    pub messages: Vec<ChatOverlayMessage>,
-    /// Скрывать оверлей через N секунд без сообщений (0 — не скрывать).
-    pub seconds: u64,
-}
-
-/// Глобальное состояние чат-оверлея: так Tauri-модуль чата подключается
-/// к серверу, не меняя его сигнатуры (egui-версия остаётся нетронутой).
-static CHAT_STATE: OnceLock<Arc<Mutex<ChatOverlayState>>> = OnceLock::new();
-
-/// Подключает состояние чата к оверлею. Вызывается при запуске чат-сервиса.
-pub fn set_chat_state(state: Arc<Mutex<ChatOverlayState>>) {
-    if CHAT_STATE.set(state).is_err() {
-        log::warn!("Чат-оверлей: состояние уже было подключено, повторная установка пропущена");
-    }
-}
-
-/// Текущее состояние чат-оверлея (пока чат не запущен — `None`).
-pub fn chat_state() -> Option<Arc<Mutex<ChatOverlayState>>> {
-    CHAT_STATE.get().cloned()
-}
 
 /// Запускает сервер оверлея в фоне.
 pub fn spawn(state: Arc<Mutex<Snapshot>>, port: u16) {
@@ -216,8 +169,8 @@ fn save_chat_overlay(body: &[u8]) -> (u16, &'static str, String) {
 
 /// Выбирает ответ на путь запроса: страница или JSON состояния.
 ///
-/// `/overlay` и `/state` — оверлей музыки (как раньше), `/chat` и
-/// `/chat/state` — новый чат-оверлей.
+/// `/overlay` и `/state` — оверлей музыки, `/chat-overlay` — оверлей чата
+/// (страница, настройки и конфигуратор).
 fn response_for(path: &str, state: &Arc<Mutex<Snapshot>>) -> (&'static str, String) {
     if path.starts_with("/chat-overlay/settings.js") {
         ("application/javascript; charset=utf-8", chat_overlay_settings())
@@ -225,10 +178,6 @@ fn response_for(path: &str, state: &Arc<Mutex<Snapshot>>) -> (&'static str, Stri
         ("text/html; charset=utf-8", CHAT_CONFIG_PAGE.to_string())
     } else if path.starts_with("/chat-overlay") {
         ("text/html; charset=utf-8", CHAT_OVERLAY_PAGE.to_string())
-    } else if path.starts_with("/chat/state") {
-        ("application/json; charset=utf-8", chat_state_json())
-    } else if path.starts_with("/chat") {
-        ("text/html; charset=utf-8", CHAT_PAGE.to_string())
     } else if path.starts_with("/state") {
         ("application/json; charset=utf-8", state_json(state))
     } else {
@@ -299,21 +248,6 @@ fn state_json(state: &Arc<Mutex<Snapshot>>) -> String {
     )
 }
 
-/// Состояние для страницы чат-оверлея.
-///
-/// Если чат-модуль ещё не подключился, отдаём пустой список: страница просто
-/// ничего не покажет и продолжит опрос.
-fn chat_state_json() -> String {
-    let Some(state) = chat_state() else {
-        return "{\"messages\":[],\"seconds\":0}".to_string();
-    };
-    let Ok(state) = state.lock() else {
-        return "{\"messages\":[],\"seconds\":0}".to_string();
-    };
-    serde_json::to_string(&*state)
-        .unwrap_or_else(|_| "{\"messages\":[],\"seconds\":0}".to_string())
-}
-
 /// Экранирует строку для JSON.
 fn json_str(value: &str) -> String {
     serde_json::to_string(value).unwrap_or_else(|_| "\"\"".to_string())
@@ -327,46 +261,23 @@ mod tests {
     fn routes_chat_overlay_and_keeps_music_routes() {
         let state = Arc::new(Mutex::new(Snapshot::default()));
 
-        let (content_type, body) = response_for("/chat", &state);
+        let (content_type, body) = response_for("/chat-overlay", &state);
         assert_eq!(content_type, "text/html; charset=utf-8");
-        assert!(body.contains("<title>Чат</title>"));
+        assert!(body.contains("<title>Twitch Chat Overlay</title>"));
 
-        let (content_type, body) = response_for("/chat?theme=dark&opacity=60&font=16&max=12", &state);
+        let (content_type, body) = response_for("/chat-overlay/config", &state);
         assert_eq!(content_type, "text/html; charset=utf-8");
-        assert!(body.contains("/chat/state"));
+        assert!(body.contains("Настройки чата"));
 
-        let (content_type, body) = response_for("/chat/state", &state);
-        assert_eq!(content_type, "application/json; charset=utf-8");
-        assert_eq!(body, "{\"messages\":[],\"seconds\":0}");
+        let (content_type, body) = response_for("/chat-overlay/settings.js", &state);
+        assert_eq!(content_type, "application/javascript; charset=utf-8");
+        assert!(body.contains("OVERLAY_SETTINGS"));
 
-        // Старые маршруты музыки не сломались.
+        // Маршруты музыки не сломались.
         let (content_type, body) = response_for("/overlay", &state);
         assert_eq!(content_type, "text/html; charset=utf-8");
         assert!(body.contains("<title>Сейчас играет</title>"));
         let (content_type, _) = response_for("/state", &state);
         assert_eq!(content_type, "application/json; charset=utf-8");
-    }
-
-    #[test]
-    fn chat_state_serializes_for_overlay_page() {
-        let state = ChatOverlayState {
-            messages: vec![ChatOverlayMessage {
-                id: "abc".to_string(),
-                at_ms: 1_730_000_000_000,
-                user: "viewer".to_string(),
-                display_name: "Viewer".to_string(),
-                color: Some("#FF0000".to_string()),
-                text: "привет".to_string(),
-                is_moderator: true,
-                is_broadcaster: false,
-            }],
-            seconds: 0,
-        };
-        let json = serde_json::to_string(&state).unwrap();
-        assert!(json.contains("\"messages\""));
-        assert!(json.contains("\"id\":\"abc\""));
-        assert!(json.contains("\"display_name\":\"Viewer\""));
-        assert!(json.contains("\"is_moderator\":true"));
-        assert!(json.contains("\"at_ms\":1730000000000"));
     }
 }

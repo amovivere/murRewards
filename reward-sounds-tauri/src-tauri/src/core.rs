@@ -21,8 +21,6 @@ use reward_sounds::util;
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, State};
 
-use crate::chat;
-
 /// Сведения о привязанном аудиофайле.
 #[derive(Clone, Serialize)]
 pub struct FileInfo {
@@ -81,63 +79,14 @@ pub struct AuthView {
 /// Один индикатор здоровья подсистемы для статус-хаба.
 #[derive(Clone, Serialize)]
 pub struct HealthItemView {
-    /// twitch | eventsub | chat | audio | ytdlp | overlay
+    /// twitch | eventsub | audio | ytdlp | overlay
     pub key: String,
     pub title: String,
     /// ok | warn | error | off
     pub state: String,
     pub detail: String,
-    /// Вкладка, куда ведёт «Открыть»: settings | music | chat | log.
+    /// Вкладка, куда ведёт «Открыть»: settings | music | log.
     pub action: String,
-}
-
-/// Сообщение чата в том виде, в котором его удобно рисовать.
-#[derive(Clone, Serialize)]
-pub struct ChatMessageView {
-    pub id: String,
-    /// Время сообщения в миллисекундах Unix.
-    pub at_ms: u64,
-    pub user: String,
-    pub display_name: String,
-    /// Цвет имени (#RRGGBB) из тега Twitch.
-    pub color: Option<String>,
-    pub text: String,
-    pub is_moderator: bool,
-    pub is_broadcaster: bool,
-}
-
-/// Состояние вкладки «Чат».
-#[derive(Clone, Serialize)]
-pub struct ChatView {
-    /// Чат включён в настройках.
-    pub enabled: bool,
-    pub connected: bool,
-    /// Анонимное подключение: сообщения видны, отправка недоступна.
-    pub read_only: bool,
-    pub error: Option<String>,
-    /// Канал, к которому подключён чат.
-    pub login: String,
-    /// Последние сообщения, старые в начале (не больше 100).
-    pub messages: Vec<ChatMessageView>,
-    /// URL страницы чат-оверлея с параметрами темы/прозрачности/шрифта.
-    pub overlay_url: String,
-    /// Текущие настройки чата (зеркало файла chat.json для переключателей).
-    pub settings: chat::ChatSettings,
-}
-
-impl ChatMessageView {
-    fn from_message(message: &chat::ChatMessage) -> Self {
-        Self {
-            id: message.id.clone(),
-            at_ms: message.at_ms,
-            user: message.user.clone(),
-            display_name: message.display_name.clone(),
-            color: message.color.clone(),
-            text: message.text.clone(),
-            is_moderator: message.is_moderator,
-            is_broadcaster: message.is_broadcaster,
-        }
-    }
 }
 
 /// Одна заявка в очереди музыки.
@@ -216,14 +165,10 @@ pub struct CoreView {
     pub bindings: usize,
     pub local_bindings: Vec<LocalBindingView>,
     pub playing: Vec<String>,
-    /// Доступна ли команда `!трек` в чате канала.
-    pub chat_ready: bool,
     pub music_enabled: bool,
     pub music_reward_title: String,
     pub music_reward_cost: u32,
     pub music: MusicView,
-    /// Вкладка «Чат»: подключение, сообщения и настройки.
-    pub chat: ChatView,
     pub eventsub: String,
     pub eventsub_error: Option<String>,
     pub client_id: String,
@@ -248,15 +193,6 @@ struct Inner {
     twitch: twitch::Service,
     audio: audio::AudioEngine,
     music: music::MusicService,
-    /// Авторизованный чат: чтение, отправка и команды стримера.
-    chat: chat::Service,
-    /// Настройки чата (отдельный файл `chat.json`).
-    chat_settings: chat::ChatSettings,
-    /// Подпись последнего подключения чата (`login:rw` / `login:ro`):
-    /// по ней понимаем, нужно ли переподключаться при смене аккаунта или токена.
-    chat_last_connect: Option<String>,
-    /// Ограничитель ответов на команды из чата.
-    chat_gate: chat::ReplyLimiter,
     eventsub: eventsub::Service,
     playback_state: Arc<Mutex<PlaybackState>>,
     eventsub_state: String,
@@ -321,19 +257,11 @@ impl AppCore {
         }
         let playback = Playback::new(audio_engine.clone(), Arc::clone(&playback_state));
         let eventsub_service = eventsub::Service::spawn_headless(playback);
-        // Чат: настройки из отдельного файла, сервис — в своём потоке.
-        let chat_settings = chat::ChatSettings::load(&chat::ChatSettings::path(&paths));
-        let chat_service = chat::Service::spawn();
-        chat_service.set_settings(chat_settings.clone());
         let inner = Inner {
             settings,
             twitch: twitch::Service::spawn(),
             audio: audio_engine,
             music: music_service,
-            chat: chat_service,
-            chat_settings,
-            chat_last_connect: None,
-            chat_gate: chat::ReplyLimiter::default(),
             eventsub: eventsub_service,
             playback_state,
             eventsub_state: "stopped".to_string(),
@@ -427,27 +355,20 @@ impl AppCore {
     }
 
     /// При запуске: обновляет токен, если он истёк, иначе сразу тянет награды.
-    /// После этого подключает чат, если он включён и аккаунт сохранён.
     fn bootstrap(&self) {
-        let connected = {
-            let mut inner = self.lock();
-            if !inner.settings.twitch.is_connected() {
-                false
-            } else if inner.settings.twitch.user_id.trim().is_empty() {
-                inner.error =
-                    Some("В сохранённом входе нет ID канала. Подключите Twitch заново.".into());
-                false
-            } else {
-                if twitch::token_expired_or_soon(inner.settings.twitch.expires_at) {
-                    self.start_refresh(&mut inner);
-                } else {
-                    self.fetch_rewards(&mut inner);
-                }
-                true
-            }
-        };
-        if connected {
-            self.start_chat(false);
+        let mut inner = self.lock();
+        if !inner.settings.twitch.is_connected() {
+            return;
+        }
+        if inner.settings.twitch.user_id.trim().is_empty() {
+            inner.error =
+                Some("В сохранённом входе нет ID канала. Подключите Twitch заново.".into());
+            return;
+        }
+        if twitch::token_expired_or_soon(inner.settings.twitch.expires_at) {
+            self.start_refresh(&mut inner);
+        } else {
+            self.fetch_rewards(&mut inner);
         }
     }
 
@@ -509,7 +430,6 @@ impl AppCore {
         }
         self.poll_eventsub();
         self.poll_music_events();
-        self.poll_chat();
         self.poll_audio_state();
         self.poll_normalize();
     }
@@ -704,137 +624,6 @@ impl AppCore {
         }
     }
 
-    /// Подключает чат к каналу текущего аккаунта.
-    ///
-    /// Если есть токен — входим с ним (можно писать); если токен прочитать
-    /// не удалось — подключаемся анонимно, в режиме только чтения. `force`
-    /// переподключает даже когда уже подключены к этому же каналу.
-    fn start_chat(&self, force: bool) {
-        let mut inner = self.lock();
-        if !inner.chat_settings.enabled {
-            if inner.chat.snapshot().connected {
-                inner.chat.disconnect();
-            }
-            inner.chat_last_connect = None;
-            return;
-        }
-        if !inner.settings.twitch.is_connected() {
-            return;
-        }
-        let login = inner.settings.twitch.login.trim().to_lowercase();
-        if login.is_empty() {
-            return;
-        }
-        let token = inner.settings.twitch.access_token().unwrap_or_default();
-        let desired_read_only = token.is_empty();
-        let signature = format!(
-            "{login}:{}",
-            if desired_read_only { "ro" } else { "rw" }
-        );
-        let snapshot = inner.chat.snapshot();
-        // Не переподключаемся, если уже сидим на этом канале в нужном режиме.
-        // Важно: если токен есть, а чат читает анонимно (старый токен без прав),
-        // после нового входа надо переподключиться с полными правами.
-        let already_ready = snapshot.connected
-            && snapshot.read_only == desired_read_only
-            && inner.chat_last_connect.as_deref() == Some(signature.as_str());
-        if !force && already_ready {
-            return;
-        }
-        inner.chat.connect(&login, &token);
-        inner.chat_last_connect = Some(signature);
-        log::info!(
-            "Чат: подключаемся к каналу #{login}{}",
-            if token.is_empty() {
-                " (без токена — только чтение)"
-            } else {
-                ""
-            }
-        );
-    }
-
-    /// Отключает чат и сбрасывает подпись подключения.
-    fn stop_chat(&self) {
-        let mut inner = self.lock();
-        inner.chat.disconnect();
-        inner.chat_last_connect = None;
-    }
-
-    /// Забирает события чата: обновляет статус и обрабатывает команды зрителей.
-    fn poll_chat(&self) {
-        let events = { self.lock().chat.try_recv() };
-        for event in events {
-            match event {
-                chat::ChatEvent::Connected { read_only } => {
-                    let login = self.lock().chat.snapshot().login;
-                    if read_only {
-                        log::info!("Чат: подключён к #{login} в режиме только чтения");
-                    } else {
-                        log::info!("Чат: подключён к #{login}");
-                    }
-                }
-                chat::ChatEvent::Disconnected(reason) => {
-                    if !reason.is_empty() {
-                        log::warn!("Чат: {reason}");
-                    }
-                }
-                chat::ChatEvent::Message(message) => self.handle_chat_command(&message),
-                chat::ChatEvent::Error(message) => log::warn!("Чат: {message}"),
-            }
-        }
-    }
-
-    /// Команда стримера/зрителя из чата: `!queue`, `!song`, `!skip`, `!звук`.
-    fn handle_chat_command(&self, message: &chat::ChatMessage) {
-        let command = chat::parse_command(&message.text);
-        if command == chat::ChatCommand::Unknown {
-            return;
-        }
-        let now = Instant::now();
-        let mut inner = self.lock();
-        if !inner.chat_settings.enabled {
-            return;
-        }
-        let snapshot = inner.chat.snapshot();
-        if !snapshot.connected || snapshot.read_only {
-            return;
-        }
-        if !command.allowed(&inner.chat_settings) {
-            return;
-        }
-        let command_key = command.key();
-        if !inner.chat_gate.ready(&message.user, command_key, now) {
-            return;
-        }
-        let context = chat_command_context(&inner, message.is_moderator || message.is_broadcaster);
-        let Some((mut text, action)) = chat::command_reply(&command, &context) else {
-            return;
-        };
-        match &action {
-            chat::ChatAction::None => {}
-            chat::ChatAction::Skip => inner.music.skip(),
-            chat::ChatAction::Play(sound) => {
-                let path = PathBuf::from(&sound.path);
-                if path.is_file() {
-                    if let Err(err) = inner
-                        .audio
-                        .play(&sound.id, path, sound.volume)
-                    {
-                        log::warn!("Чат: не удалось проиграть «{}»: {err}", sound.title);
-                    }
-                } else {
-                    text = "Не нашёл такой звук".to_string();
-                }
-            }
-        }
-        inner.chat_gate.record(&message.user, command_key, now);
-        if let Err(err) = inner.chat.send(&text) {
-            log::warn!("Чат: ответ на команду не отправлен: {err}");
-        } else {
-            log::info!("Чат: ответ на {command_key} для @{} — {text}", message.user);
-        }
-    }
-
     fn set_redemption_status(&self, redemption_id: &str, status: twitch::RedemptionStatus) {
         if redemption_id.starts_with("manual-") || redemption_id.contains("-replay-") {
             return;
@@ -890,9 +679,6 @@ impl AppCore {
                     }
                 }
                 self.start_eventsub();
-                // Токен обновился — если чат был в режиме чтения, переподключаем
-                // его уже с полными правами.
-                self.start_chat(false);
             }
             twitch::Event::CodeReady {
                 user_code,
@@ -940,10 +726,6 @@ impl AppCore {
                     let mut inner = self.lock();
                     self.fetch_rewards(&mut inner);
                 }
-                // Новый вход: могли сменить аккаунт — историю чата очищаем
-                // и подключаемся к каналу заново.
-                self.lock().chat.clear_messages();
-                self.start_chat(false);
             }
             twitch::Event::RewardsLoaded { rewards } => {
                 let mut inner = self.lock();
@@ -1035,9 +817,6 @@ impl AppCore {
                     inner.error = Some(message.clone());
                     inner.auth.state = "error".to_string();
                     inner.auth.error = Some(message);
-                    inner.chat.disconnect();
-                    inner.chat.clear_messages();
-                    inner.chat_last_connect = None;
                     apply_music_config(&mut inner);
                 }
                 self.save();
@@ -1087,22 +866,7 @@ impl AppCore {
             })
             .collect();
         let music_snapshot = inner.music.snapshot();
-        let chat_snapshot = inner.chat.snapshot();
         let health = health_view(settings, &inner, &music_snapshot, &audio);
-        let chat = ChatView {
-            enabled: inner.chat_settings.enabled,
-            connected: chat_snapshot.connected,
-            read_only: chat_snapshot.read_only,
-            error: chat_snapshot.error.clone(),
-            login: chat_snapshot.login.clone(),
-            messages: chat_snapshot
-                .messages
-                .iter()
-                .map(ChatMessageView::from_message)
-                .collect(),
-            overlay_url: chat_overlay_url(&inner.chat_settings),
-            settings: inner.chat.settings(),
-        };
         CoreView {
             version: reward_sounds::VERSION.to_string(),
             login: settings.twitch.login.clone(),
@@ -1119,13 +883,10 @@ impl AppCore {
             bindings: settings.twitch_rewards.len(),
             local_bindings,
             playing: active,
-            chat_ready: settings.twitch.is_connected()
-                && !settings.twitch.login.trim().is_empty(),
             music_enabled: settings.music.enabled,
             music_reward_title: settings.music.reward_title.clone(),
             music_reward_cost: settings.music.reward_cost,
             music: music_view(&music_snapshot, settings),
-            chat,
             eventsub: inner.eventsub_state.clone(),
             eventsub_error: inner.eventsub_error.clone(),
             client_id: settings.twitch.client_id.clone(),
@@ -1168,7 +929,7 @@ fn health_view(
     let twitch_detail = if settings.twitch.is_connected() {
         format!("Подключено · @{}", settings.twitch.login)
     } else {
-        "Twitch не подключён — награды и чат недоступны".to_string()
+        "Twitch не подключён — награды и команда !трек недоступны".to_string()
     };
 
     let eventsub_state = if !settings.twitch.is_connected() {
@@ -1188,25 +949,6 @@ fn health_view(
         "Нужен Twitch".to_string()
     } else {
         format!("Статус: {}", inner.eventsub_state)
-    };
-
-    // Строка «Чат» показывает новый авторизованный чат (команды и сообщения),
-    // а состояние `!трек` остаётся в MusicView.chat_online.
-    let chat_snapshot = inner.chat.snapshot();
-    let (chat_state, chat_detail) = if !inner.chat_settings.enabled {
-        ("off", "Чат выключен".to_string())
-    } else if chat_snapshot.connected {
-        if chat_snapshot.read_only {
-            ("ok", "Только чтение — нет прав на отправку".to_string())
-        } else {
-            ("ok", "Команды работают".to_string())
-        }
-    } else if !settings.twitch.is_connected() {
-        ("off", "Нужен Twitch".to_string())
-    } else if let Some(error) = &chat_snapshot.error {
-        ("warn", error.clone())
-    } else {
-        ("warn", "Чат переподключается".to_string())
     };
 
     let audio_state = if !audio.is_ready() || settings.muted {
@@ -1245,7 +987,7 @@ fn health_view(
     let overlay_state = if music.overlay_ready { "ok" } else { "error" };
     let overlay_detail = if music.overlay_ready {
         format!(
-            "http://127.0.0.1:{}/overlay · чат: /chat",
+            "http://127.0.0.1:{}/overlay · чат-оверлей: /chat-overlay",
             reward_sounds::music::overlay::PORT
         )
     } else {
@@ -1255,7 +997,6 @@ fn health_view(
     vec![
         item("twitch", "Twitch", twitch_state, twitch_detail, "settings"),
         item("eventsub", "EventSub", eventsub_state, eventsub_detail, "settings"),
-        item("chat", "Чат", chat_state, chat_detail, "chat"),
         item("audio", "Звук", audio_state, audio_detail, "settings"),
         item("ytdlp", "yt-dlp", ytdlp_state, ytdlp_detail, "music"),
         item("overlay", "Оверлей", overlay_state, overlay_detail, "music"),
@@ -1674,9 +1415,6 @@ pub fn twitch_disconnect(core: State<'_, Arc<AppCore>>) -> CoreView {
         inner.eventsub.stop();
         inner.eventsub_state = "stopped".to_string();
         inner.eventsub_error = None;
-        inner.chat.disconnect();
-        inner.chat.clear_messages();
-        inner.chat_last_connect = None;
         inner.auth = AuthView {
             state: "idle".to_string(),
             ..AuthView::default()
@@ -1685,85 +1423,6 @@ pub fn twitch_disconnect(core: State<'_, Arc<AppCore>>) -> CoreView {
     }
     core.save();
     core.view()
-}
-
-/// Проверяет, что чат вообще можно подключать (включён и есть вход в Twitch).
-fn ensure_chat_can_connect(core: &AppCore) -> Result<(), String> {
-    let inner = core.lock();
-    if !inner.chat_settings.enabled {
-        return Err("Чат выключен. Включите его на вкладке «Чат».".into());
-    }
-    if !inner.settings.twitch.is_connected() {
-        return Err(
-            "Чат доступен после входа в Twitch — войдите в аккаунт на вкладке «Настройки»."
-                .into(),
-        );
-    }
-    Ok(())
-}
-
-/// Подключиться к чату канала (переподключает, даже если уже подключён).
-#[tauri::command]
-pub fn chat_connect(core: State<'_, Arc<AppCore>>) -> Result<CoreView, String> {
-    ensure_chat_can_connect(&core)?;
-    core.start_chat(true);
-    Ok(core.view())
-}
-
-/// Отключиться от чата (история сообщений сохраняется).
-#[tauri::command]
-pub fn chat_disconnect(core: State<'_, Arc<AppCore>>) -> CoreView {
-    core.stop_chat();
-    core.view()
-}
-
-/// Отправить сообщение в чат от имени стримера.
-#[tauri::command]
-pub fn chat_send_message(
-    core: State<'_, Arc<AppCore>>,
-    text: String,
-) -> Result<CoreView, String> {
-    {
-        let inner = core.lock();
-        inner.chat.send(&text)?;
-    }
-    Ok(core.view())
-}
-
-/// Переподключить чат (кнопка «Обновить»).
-#[tauri::command]
-pub fn chat_refresh(core: State<'_, Arc<AppCore>>) -> Result<CoreView, String> {
-    ensure_chat_can_connect(&core)?;
-    core.start_chat(true);
-    Ok(core.view())
-}
-
-/// Очистить историю сообщений чата (интерфейс и оверлей).
-#[tauri::command]
-pub fn chat_clear_messages(core: State<'_, Arc<AppCore>>) -> CoreView {
-    core.lock().chat.clear_messages();
-    core.view()
-}
-
-/// Настройки чата: оверлей и список обрабатываемых команд.
-#[tauri::command]
-pub fn chat_set_settings(
-    core: State<'_, Arc<AppCore>>,
-    patch: chat::ChatSettingsPatch,
-) -> Result<CoreView, String> {
-    let force = patch.enabled == Some(true);
-    let settings = {
-        let mut inner = core.lock();
-        inner.chat_settings.apply_patch(&patch);
-        let settings = inner.chat_settings.clone();
-        inner.chat.set_settings(settings.clone());
-        settings
-    };
-    chat::ChatSettings::save(&settings, &chat::ChatSettings::path(&core.paths))
-        .map_err(|err| format!("Не удалось сохранить настройки чата: {err}"))?;
-    // Включили/выключили чат или сменили оверлей — приводим подключение в порядок.
-    core.start_chat(force);
-    Ok(core.view())
 }
 
 /// Проверяет акцентный цвет: только `#RRGGBB`.
@@ -2377,59 +2036,6 @@ fn music_config(settings: &Settings) -> music::Config {
         overlay_position: settings.music.overlay_position.clone(),
         overlay_font: settings.music.overlay_font,
     }
-}
-
-/// Собирает данные для ответа на команду из чата: очередь, текущий трек
-/// и привязанные звуки. Ничего не блокирует и не ходит в сеть.
-fn chat_command_context(inner: &Inner, can_skip: bool) -> chat::ChatCommandContext {
-    let snapshot = inner.music.snapshot();
-    let current_id = snapshot
-        .current
-        .as_ref()
-        .map(|item| item.redemption_id.clone());
-    let queue = snapshot
-        .items
-        .iter()
-        .filter(|item| !item.state.is_final())
-        .filter(|item| Some(&item.redemption_id) != current_id.as_ref())
-        .map(|item| item.label())
-        .collect();
-    let current = snapshot.current.as_ref().map(|item| {
-        (
-            item.label(),
-            snapshot.player.position_sec,
-            item.duration_sec,
-        )
-    });
-    let sounds = inner
-        .settings
-        .twitch_rewards
-        .iter()
-        .filter(|binding| !binding.path.trim().is_empty())
-        .map(|binding| chat::SoundCandidate {
-            id: binding.reward_id.clone(),
-            title: binding.title.clone(),
-            path: binding.path.clone(),
-            volume: inner.settings.effective_sound_volume(&binding.reward_id),
-        })
-        .collect();
-    chat::ChatCommandContext {
-        queue,
-        current,
-        sounds,
-        can_skip,
-    }
-}
-
-/// URL страницы чат-оверлея: тема, прозрачность и шрифт берутся из настроек.
-fn chat_overlay_url(settings: &chat::ChatSettings) -> String {
-    format!(
-        "http://127.0.0.1:{port}/chat?theme={theme}&opacity={opacity}&font={font}&max=12",
-        port = reward_sounds::music::overlay::PORT,
-        theme = settings.overlay_theme,
-        opacity = settings.overlay_opacity,
-        font = settings.overlay_font,
-    )
 }
 
 #[cfg(test)]

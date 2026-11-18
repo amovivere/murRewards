@@ -326,6 +326,8 @@ fn main() {
             core::twitch_disconnect,
             core::set_app_setting,
             core::open_url,
+            core::open_react_preview,
+            core::close_react_preview,
             core::get_logs,
             core::clear_log,
             core::create_reward,

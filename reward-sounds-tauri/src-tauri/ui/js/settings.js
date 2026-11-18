@@ -356,8 +356,10 @@ function appCard(view) {
     <div class="settings-row"><div class="settings-row-title">Версия</div><div class="settings-version">${escapeHtml(view.version || '')}</div></div>
     <div class="settings-actions">
       <button class="btn btn-secondary" id="app-hide">Свернуть в трей</button>
+      <button class="btn btn-secondary" id="app-react-preview">Открыть React-прототип</button>
       <button class="btn btn-secondary reward-delete-text" id="app-exit">Выйти из приложения</button>
     </div>
+    <div class="settings-row-hint">«React-превью» открывает новый интерфейс отдельным окном для сравнения — рабочие настройки и данные оно не меняет.</div>
     <div class="settings-row-hint">Изменения «Закрывать в трей» и «Запускать свёрнутым» применяются сразу, но окно уже открыто — поведение при закрытии поменяется без перезапуска.</div>`
   );
 }
@@ -559,6 +561,11 @@ function bind(root, view) {
 
   $('#app-hide', root)?.addEventListener('click', () => {
     invoke('win_hide').then(() => toast('Окно свёрнуто в трей')).catch(() => {});
+  });
+  $('#app-react-preview', root)?.addEventListener('click', () => {
+    invoke('open_react_preview').catch(() => {
+      location.href = '/next/index.html';
+    });
   });
   $('#app-exit', root)?.addEventListener('click', async () => {
     const ok = await confirmDialog({

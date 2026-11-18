@@ -1,0 +1,13 @@
+﻿const targets = await (await fetch('http://127.0.0.1:9333/json')).json();
+const page = targets.find((target) => target.type === 'page');
+const ws = new WebSocket(page.webSocketDebuggerUrl);
+let nextId = 0; const pending = new Map();
+ws.onmessage = (event) => { const m = JSON.parse(event.data); if (m.id && pending.has(m.id)) { pending.get(m.id)(m.result); pending.delete(m.id); } };
+await new Promise((resolve, reject) => { ws.onopen = resolve; ws.onerror = reject; });
+const send = (method, params = {}) => new Promise((resolve) => { const id = ++nextId; pending.set(id, resolve); ws.send(JSON.stringify({ id, method, params })); });
+const evaluate = async (expression) => (await send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true })).result.value;
+await send('Runtime.enable');
+await evaluate(`document.querySelector('.sidebar__back')?.click(); true`);
+await new Promise(r => setTimeout(r, 1800));
+console.log(JSON.stringify(await evaluate(`({ url: location.href, innerWidth, innerHeight, title: document.title, nav: Array.from(document.querySelectorAll('.nav-item')).map(b => b.textContent.trim()) })`), null, 2));
+ws.close(); process.exit(0);

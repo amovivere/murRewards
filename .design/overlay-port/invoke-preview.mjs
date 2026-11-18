@@ -1,0 +1,12 @@
+﻿const t = await (await fetch('http://127.0.0.1:9333/json')).json();
+const p = t.find(x => x.type === 'page');
+const ws = new WebSocket(p.webSocketDebuggerUrl);
+await new Promise((r, j) => { ws.onopen = r; ws.onerror = j; });
+let id = 0; const pending = new Map();
+ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.id && pending.has(m.id)) { pending.get(m.id)(m.result); pending.delete(m.id); } };
+const send = (method, params = {}) => new Promise((res) => { const n = ++id; pending.set(n, res); ws.send(JSON.stringify({ id: n, method, params })); });
+const result = await send('Runtime.evaluate', { expression: `window.__TAURI_INTERNALS__.invoke('open_react_preview').catch((e) => 'err:' + e); 'started'`, returnByValue: true });
+console.log(JSON.stringify(result));
+await new Promise(r => setTimeout(r, 2500));
+ws.close();
+process.exit(0);

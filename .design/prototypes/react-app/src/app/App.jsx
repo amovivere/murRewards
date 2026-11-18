@@ -35,6 +35,7 @@ const PAGES = {
 export default function App() {
   const [tab, setTab] = useState('overlay');
   const [healthOpen, setHealthOpen] = useState(false);
+  const inTauriPreview = window.location.pathname.includes('/next/');
   const Page = PAGES[tab] || RewardsPage;
 
   return (
@@ -82,6 +83,24 @@ export default function App() {
             ))}
           </nav>
           <div className="sidebar__version">версия 1.7.0 · React prototype</div>
+          {inTauriPreview ? (
+            <button
+              className="sidebar__back"
+              onClick={async () => {
+                try {
+                  if (window.__TAURI_INTERNALS__) {
+                    await window.__TAURI_INTERNALS__.invoke('close_react_preview');
+                    return;
+                  }
+                } catch {
+                  // fallback ниже
+                }
+                window.location.href = '/index.html';
+              }}
+            >
+              ← Вернуться к приложению
+            </button>
+          ) : null}
         </div>
       </aside>
 

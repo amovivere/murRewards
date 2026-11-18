@@ -14,7 +14,7 @@ import {
 import { clone, DEFAULT_STATE, normalizeState } from './overlayData.js';
 
 const STORAGE_KEY = 'rs-react-overlay-settings';
-const PREVIEW_URL = '/overlay.html?preview=1&bg=1&demo=1';
+const PREVIEW_URL = './overlay.html?preview=1&bg=1&demo=1';
 
 function loadState() {
   try {

@@ -1,0 +1,30 @@
+{
+  "method": "Win32 SendInput (real mouse), CDP измерение innerWidth/innerHeight и title кнопки",
+  "originalOuterRect": "473,136 1819x1072",
+  "doubleClick1": {
+    "isZoomed": true,
+    "outerRect": "-8,-8 2576x1408",
+    "inner": "2560x1392",
+    "maximizeButtonTitle": "Восстановить",
+    "ariaLabel": "Восстановить окно"
+  },
+  "doubleClick2": {
+    "isZoomed": false,
+    "outerRect": "200,100 1843x1116",
+    "inner": "1827x1107",
+    "maximizeButtonTitle": "Развернуть",
+    "ariaLabel": "Развернуть окно"
+  },
+  "singleDrag": {
+    "fromOuterRect": "200,100 1843x1116",
+    "toOuterRect": "270,135 1843x1116",
+    "sizeUnchanged": true
+  },
+  "geometryRestored": "473,136 1819x1072",
+  "shots": [
+    "40-max-rewards.png",
+    "41-max-overlay.png",
+    "42-max-settings.png",
+    "43-restored.png"
+  ]
+}

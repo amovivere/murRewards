@@ -2615,3 +2615,12 @@ a:focus-visible {
   outline: 2px solid var(--accent-text, #c9a7ff);
   outline-offset: 2px;
 }
+
+.overlay-preview__frame-wrap {
+  height: clamp(360px, calc(100vh - 430px), 720px);
+  aspect-ratio: auto;
+}
+
+.overlay-preview__frame-wrap {
+  height: clamp(320px, calc(100vh - 540px), 640px);
+}

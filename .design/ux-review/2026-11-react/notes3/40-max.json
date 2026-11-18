@@ -1,0 +1,131 @@
+{
+  "before": {
+    "tag": "before",
+    "innerW": 1827,
+    "innerH": 1107,
+    "shell": {
+      "w": 1827,
+      "h": 1107,
+      "x": 0,
+      "y": 0
+    },
+    "margins": {
+      "l": 0,
+      "r": 0,
+      "t": 0,
+      "b": 0
+    },
+    "content": {
+      "clientW": 1587,
+      "clientH": 1009
+    },
+    "gridCols": "374.75px 374.75px 374.75px 374.75px",
+    "winButtons": [
+      {
+        "title": "Свернуть",
+        "aria": "Свернуть окно"
+      },
+      {
+        "title": "Развернуть",
+        "aria": "Развернуть окно"
+      },
+      {
+        "title": "Закрыть",
+        "aria": "Закрыть окно"
+      }
+    ],
+    "docScrollW": 1827
+  },
+  "max": {
+    "tag": "maximized",
+    "innerW": 2560,
+    "innerH": 1392,
+    "shell": {
+      "w": 2560,
+      "h": 1392,
+      "x": 0,
+      "y": 0
+    },
+    "margins": {
+      "l": 0,
+      "r": 0,
+      "t": 0,
+      "b": 0
+    },
+    "content": {
+      "clientW": 2320,
+      "clientH": 1294
+    },
+    "gridCols": "342.391px 342.406px 342.391px 342.406px 342.391px",
+    "winButtons": [
+      {
+        "title": "Свернуть",
+        "aria": "Свернуть окно"
+      },
+      {
+        "title": "Восстановить",
+        "aria": "Восстановить окно"
+      },
+      {
+        "title": "Закрыть",
+        "aria": "Закрыть окно"
+      }
+    ],
+    "docScrollW": 2560
+  },
+  "restored": {
+    "tag": "restored",
+    "innerW": 1827,
+    "innerH": 1107,
+    "shell": {
+      "w": 1827,
+      "h": 1107,
+      "x": 0,
+      "y": 0
+    },
+    "margins": {
+      "l": 0,
+      "r": 0,
+      "t": 0,
+      "b": 0
+    },
+    "content": {
+      "clientW": 1572,
+      "clientH": 1009
+    },
+    "gridCols": null,
+    "winButtons": [
+      {
+        "title": "Свернуть",
+        "aria": "Свернуть окно"
+      },
+      {
+        "title": "Развернуть",
+        "aria": "Развернуть окно"
+      },
+      {
+        "title": "Закрыть",
+        "aria": "Закрыть окно"
+      }
+    ],
+    "docScrollW": 1827
+  },
+  "overlay": {
+    "preview": {
+      "top": 280,
+      "bottom": 1320,
+      "h": 1040
+    },
+    "content": {
+      "top": 64,
+      "bottom": 1358,
+      "clientH": 1294
+    },
+    "iframe": {
+      "w": 388,
+      "h": 834
+    },
+    "sizeLabel": "388 × 834",
+    "clipped": false
+  }
+}

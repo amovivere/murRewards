@@ -1,0 +1,39 @@
+{
+  "aOpen": {
+    "tag": "INPUT",
+    "cls": "ui-input",
+    "text": "",
+    "placeholder": "Например, «Сказать слово»",
+    "insideModal": true
+  },
+  "aClose": {
+    "tag": "BODY",
+    "cls": "",
+    "text": "Reward SoundsChannel Points · ",
+    "placeholder": "",
+    "insideModal": false
+  },
+  "aModal": false,
+  "bOpen": {
+    "tag": "INPUT",
+    "cls": "ui-input",
+    "text": "",
+    "placeholder": "Например, «Сказать слово»",
+    "insideModal": true
+  },
+  "bClose": {
+    "tag": "BODY",
+    "cls": "",
+    "text": "Reward SoundsChannel Points · ",
+    "placeholder": "",
+    "insideModal": false
+  },
+  "bModal": false,
+  "cClose": {
+    "tag": "BODY",
+    "cls": "",
+    "text": "Reward SoundsChannel Points · ",
+    "placeholder": "",
+    "insideModal": false
+  }
+}

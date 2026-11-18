@@ -1,0 +1,130 @@
+{
+  "createOpen": {
+    "modal": true,
+    "active": {
+      "tag": "INPUT",
+      "cls": "ui-input",
+      "text": "",
+      "aria": null,
+      "placeholder": "Например, «Сказать слово»",
+      "rect": {
+        "x": 623,
+        "y": 400,
+        "w": 558,
+        "h": 34
+      }
+    }
+  },
+  "createEsc": {
+    "modal": false,
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel Points · ",
+      "aria": null,
+      "placeholder": "",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1803,
+        "h": 1063
+      }
+    }
+  },
+  "createSlowEsc": {
+    "modal": false,
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel Points · ",
+      "aria": null,
+      "placeholder": "",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1803,
+        "h": 1063
+      }
+    }
+  },
+  "editOpen": {
+    "active": {
+      "tag": "BUTTON",
+      "cls": "ui-modal__close",
+      "text": "×",
+      "aria": "Закрыть",
+      "placeholder": "",
+      "rect": {
+        "x": 1131,
+        "y": 373,
+        "w": 30,
+        "h": 30
+      }
+    }
+  },
+  "editEsc": {
+    "modal": false,
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel Points · ",
+      "aria": null,
+      "placeholder": "",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1803,
+        "h": 1063
+      }
+    }
+  },
+  "deleteEsc": {
+    "modal": false,
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel Points · ",
+      "aria": null,
+      "placeholder": "",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 1803,
+        "h": 1063
+      }
+    }
+  },
+  "confirmOpen": {
+    "modal": true,
+    "title": "Очистить журнал?",
+    "active": {
+      "tag": "BUTTON",
+      "cls": "ui-modal__close",
+      "text": "×",
+      "aria": "Закрыть",
+      "placeholder": "",
+      "rect": {
+        "x": 1081,
+        "y": 445,
+        "w": 30,
+        "h": 30
+      }
+    }
+  },
+  "confirmEsc": {
+    "modal": false,
+    "active": {
+      "tag": "BUTTON",
+      "cls": "ui-button ui-button--danger-ghost ui-button--md",
+      "text": "Очистить",
+      "aria": null,
+      "placeholder": "",
+      "rect": {
+        "x": 1673,
+        "y": 88,
+        "w": 89,
+        "h": 34
+      }
+    }
+  }
+}

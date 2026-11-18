@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 const FOCUSABLE =
   'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])';
 
-export default function Modal({ open, title, subtitle, onClose, children, footer, width = 620 }) {
+export default function Modal({ open, title, subtitle, onClose, children, footer, width = 620, returnFocus = null }) {
   const panelRef = useRef(null);
   const previousFocus = useRef(null);
   const onCloseRef = useRef(onClose);
@@ -11,7 +11,7 @@ export default function Modal({ open, title, subtitle, onClose, children, footer
 
   useEffect(() => {
     if (!open) return undefined;
-    previousFocus.current = document.activeElement;
+    previousFocus.current = returnFocus || document.activeElement;
     const panel = panelRef.current;
     if (panel && !panel.contains(document.activeElement)) {
       const first = panel.querySelector(FOCUSABLE);

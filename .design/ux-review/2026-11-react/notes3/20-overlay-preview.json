@@ -1,0 +1,45 @@
+{
+  "loadingSeen": {
+    "at": 0,
+    "loading": "Загружаем превью…",
+    "iframe": true,
+    "sizeLabel": "420 × 900"
+  },
+  "previewInfo": {
+    "loadingNow": null,
+    "iframe": {
+      "rect": {
+        "x": 1358,
+        "y": 345,
+        "w": 388,
+        "h": 834
+      },
+      "clientW": 388,
+      "clientH": 834,
+      "src": "http://127.0.0.1:8770/chat-overlay?preview=1&bg=1&demo=1"
+    },
+    "sizeLabel": "388 × 834",
+    "preview": {
+      "rect": {
+        "x": 1342,
+        "y": 280,
+        "w": 420,
+        "h": 1040,
+        "bottom": 1320
+      },
+      "sticky": "sticky",
+      "overflow": "visible"
+    },
+    "content": {
+      "rect": {
+        "top": 64,
+        "bottom": 1029
+      },
+      "clientH": 965,
+      "scrollH": 2110,
+      "scrollTop": 0
+    },
+    "previewClipped": true,
+    "frameWrapOverflow": "hidden"
+  }
+}

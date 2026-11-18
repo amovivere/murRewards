@@ -1,0 +1,58 @@
+{
+  "preset0": {
+    "options": [
+      "Обычный",
+      "Минимал"
+    ],
+    "active": "Обычный"
+  },
+  "renameResult": {
+    "modal": false,
+    "options": [
+      "Аудит3-пресет",
+      "Минимал"
+    ],
+    "active": "Аудит3-пресет",
+    "status": "Есть несохранённые изменения"
+  },
+  "deleteResult": {
+    "modal": false,
+    "options": [
+      "Минимал"
+    ],
+    "active": "Минимал",
+    "status": "Есть несохранённые изменения"
+  },
+  "presetAfterReload": {
+    "options": [
+      "Обычный",
+      "Минимал"
+    ],
+    "active": "Обычный",
+    "status": "Сохранено"
+  },
+  "backendSameBefore": true,
+  "backendSameAfterReload": true,
+  "previewScrolled": {
+    "scrollTop": 1145,
+    "preview": {
+      "top": -38,
+      "bottom": 1001,
+      "h": 1040
+    },
+    "content": {
+      "top": 64,
+      "bottom": 1029
+    },
+    "clipped": false,
+    "openPreviewBtn": {
+      "rect": {
+        "x": 1357,
+        "y": 952,
+        "w": 390,
+        "h": 34
+      },
+      "visible": true
+    }
+  }
+}

@@ -8,6 +8,7 @@ export default function ConfirmModal({
   confirmLabel = 'Подтвердить',
   danger = false,
   busy = false,
+  returnFocus = null,
   onClose,
   onConfirm,
 }) {
@@ -17,6 +18,7 @@ export default function ConfirmModal({
       onClose={onClose}
       title={title}
       width={460}
+      returnFocus={returnFocus}
       footer={
         <>
           <Button variant="secondary" onClick={onClose} disabled={busy}>

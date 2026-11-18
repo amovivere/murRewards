@@ -1,0 +1,38 @@
+{
+  "rewards": {
+    "innerW": 2560,
+    "innerH": 1392,
+    "content": {
+      "x": 240,
+      "w": 2320,
+      "pad": "24px 26px 0px"
+    },
+    "page": {
+      "x": 520,
+      "w": 1760
+    },
+    "grid": {
+      "x": 520,
+      "w": 1760,
+      "cols": "342.391px 342.406px 342.391px 342.406px 342.391px"
+    },
+    "panel": null,
+    "pageStyleMaxW": "1760px"
+  },
+  "overlay": {
+    "controls": {
+      "x": 266,
+      "w": 1817
+    },
+    "preview": {
+      "x": 2099,
+      "w": 420,
+      "bottom": 1320
+    },
+    "content": {
+      "x": 240,
+      "w": 2320,
+      "bottom": 1358
+    }
+  }
+}

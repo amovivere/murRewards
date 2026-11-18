@@ -1,0 +1,206 @@
+{
+  "overlay": {
+    "total": 36,
+    "namedCount": 36,
+    "unnamedCount": 0,
+    "named": [
+      {
+        "role": "slider",
+        "name": "Общая громкость"
+      },
+      {
+        "role": "combobox",
+        "name": "Пресет оверлея"
+      },
+      {
+        "role": "switch",
+        "name": "Бейджи"
+      },
+      {
+        "role": "switch",
+        "name": "Эмодзи Twitch / BTTV"
+      },
+      {
+        "role": "switch",
+        "name": "Эмодзи 7TV"
+      },
+      {
+        "role": "switch",
+        "name": "Скрывать команды"
+      },
+      {
+        "role": "slider",
+        "name": "Размер шрифта"
+      },
+      {
+        "role": "slider",
+        "name": "Межстрочный"
+      },
+      {
+        "role": "slider",
+        "name": "Отступ по X"
+      },
+      {
+        "role": "slider",
+        "name": "Отступ по Y"
+      },
+      {
+        "role": "slider",
+        "name": "Промежуток"
+      },
+      {
+        "role": "slider",
+        "name": "Скругление"
+      },
+      {
+        "role": "slider",
+        "name": "Размер эмодзи"
+      },
+      {
+        "role": "switch",
+        "name": "Показывать время"
+      },
+      {
+        "role": "textbox",
+        "name": "Текст: HEX"
+      },
+      {
+        "role": "textbox",
+        "name": "Свой цвет ника: HEX"
+      },
+      {
+        "role": "textbox",
+        "name": "Фон плашки: HEX"
+      },
+      {
+        "role": "slider",
+        "name": "Фон плашки: прозрачность"
+      },
+      {
+        "role": "textbox",
+        "name": "Рамка плашки: HEX"
+      },
+      {
+        "role": "slider",
+        "name": "Рамка плашки: прозрачность"
+      },
+      {
+        "role": "textbox",
+        "name": "Подсветка: HEX"
+      },
+      {
+        "role": "textbox",
+        "name": "Тень / обводка: HEX"
+      },
+      {
+        "role": "textbox",
+        "name": "Фон области: HEX"
+      },
+      {
+        "role": "slider",
+        "name": "Фон области: прозрачность"
+      },
+      {
+        "role": "textbox",
+        "name": "Время: HEX"
+      },
+      {
+        "role": "textbox",
+        "name": "Канал Twitch"
+      },
+      {
+        "role": "textbox",
+        "name": "nightbot, streamelements"
+      },
+      {
+        "role": "textbox",
+        "name": "спам, реклама"
+      },
+      {
+        "role": "combobox",
+        "name": "Тема"
+      },
+      {
+        "role": "combobox",
+        "name": "Шрифт"
+      },
+      {
+        "role": "combobox",
+        "name": "Выравнивание"
+      },
+      {
+        "role": "combobox",
+        "name": "Рост"
+      },
+      {
+        "role": "combobox",
+        "name": "Анимация"
+      },
+      {
+        "role": "combobox",
+        "name": "Читаемость"
+      },
+      {
+        "role": "textbox",
+        "name": "arstotsky, mira"
+      },
+      {
+        "role": "combobox",
+        "name": "Цвет ника"
+      }
+    ],
+    "unnamed": []
+  },
+  "settings": {
+    "total": 7,
+    "namedCount": 7,
+    "unnamedCount": 0,
+    "named": [
+      {
+        "role": "slider",
+        "name": "Общая громкость"
+      },
+      {
+        "role": "slider",
+        "name": "Громкость"
+      },
+      {
+        "role": "switch",
+        "name": "Без звука"
+      },
+      {
+        "role": "switch",
+        "name": "Воспроизводить звуки наград"
+      },
+      {
+        "role": "switch",
+        "name": "Запускать с Windows"
+      },
+      {
+        "role": "switch",
+        "name": "Закрывать в трей"
+      },
+      {
+        "role": "switch",
+        "name": "Запускать свёрнутым"
+      }
+    ],
+    "unnamed": []
+  },
+  "log": {
+    "total": 2,
+    "namedCount": 2,
+    "unnamedCount": 0,
+    "named": [
+      {
+        "role": "slider",
+        "name": "Общая громкость"
+      },
+      {
+        "role": "textbox",
+        "name": "Поиск по журналу"
+      }
+    ],
+    "unnamed": []
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "hexEl": {
+    "value": "#FFFFFF",
+    "aria": "Текст: HEX",
+    "rect": {
+      "x": 325,
+      "y": 682,
+      "w": 463,
+      "h": 34
+    }
+  },
+  "hexSteps": [
+    "#FFFFFF",
+    "#",
+    "#1",
+    "#12",
+    "#12a",
+    "#12ab",
+    "#12abc",
+    "#12ABC0"
+  ],
+  "hexAfter": {
+    "value": "#12ABC0",
+    "swatchBg": "rgb(18, 171, 192)",
+    "active": true
+  }
+}

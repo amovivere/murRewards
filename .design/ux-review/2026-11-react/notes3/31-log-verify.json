@@ -1,0 +1,39 @@
+{
+  "log": {
+    "filters": [
+      {
+        "text": "Все",
+        "pressed": "true"
+      },
+      {
+        "text": "INFO",
+        "pressed": "false"
+      },
+      {
+        "text": "WARN",
+        "pressed": "false"
+      },
+      {
+        "text": "ERROR",
+        "pressed": "false"
+      },
+      {
+        "text": "DEBUG",
+        "pressed": "false"
+      }
+    ],
+    "count": "182 из 182 записей",
+    "searchAria": "Поиск по журналу",
+    "toolbar": {
+      "cls": "toolbar-row log-toolbar",
+      "position": "sticky",
+      "top": "0px",
+      "zIndex": "5"
+    }
+  },
+  "sticky": {
+    "top": 88,
+    "contentTop": 64,
+    "stuck": true
+  }
+}

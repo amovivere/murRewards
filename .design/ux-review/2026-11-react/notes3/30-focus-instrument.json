@@ -1,0 +1,31 @@
+{
+  "pos": {
+    "x": 1684,
+    "y": 105
+  },
+  "openLog": {
+    "active": {
+      "tag": "INPUT",
+      "placeholder": "Например, «Сказать слово»",
+      "text": ""
+    },
+    "log": [
+      {
+        "tag": "INPUT",
+        "cls": "ui-input",
+        "text": "",
+        "placeholder": "Например, «Сказать слово»",
+        "connected": true
+      }
+    ]
+  },
+  "closeLog": {
+    "active": {
+      "tag": "BODY",
+      "cls": "",
+      "text": "Reward SoundsChannel Points · "
+    },
+    "log": [],
+    "modal": false
+  }
+}

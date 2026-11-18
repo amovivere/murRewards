@@ -1,0 +1,29 @@
+{
+  "dirtyState": {
+    "status": "Есть несохранённые изменения",
+    "value": "audit3-channel",
+    "apply": {
+      "disabled": false
+    }
+  },
+  "leaveModal": {
+    "modal": true,
+    "title": "Выйти без сохранения?",
+    "text": "В настройках оверлея есть несохранённые изменения. Если уйти сейчас, они будут потеряны.",
+    "buttons": [
+      "×",
+      "Отмена",
+      "Выйти без сохранения"
+    ],
+    "stillOverlay": "Оверлей чата"
+  },
+  "afterCancel": {
+    "modal": false,
+    "title": "Оверлей чата",
+    "value": "audit3-channel"
+  },
+  "afterLeave": {
+    "modal": false,
+    "title": "Награды"
+  }
+}

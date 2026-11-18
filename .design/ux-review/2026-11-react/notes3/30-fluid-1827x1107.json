@@ -1,0 +1,60 @@
+{
+  "base": {
+    "innerW": 1827,
+    "innerH": 1107,
+    "shell": {
+      "x": 0,
+      "y": 0,
+      "w": 1827,
+      "h": 1107
+    },
+    "margins": {
+      "l": 0,
+      "r": 0,
+      "t": 0,
+      "b": 0
+    },
+    "content": {
+      "clientW": 1587,
+      "clientH": 1009,
+      "scrollH": 1009
+    },
+    "gridCols": "374.75px 374.75px 374.75px 374.75px",
+    "docScrollW": 1827,
+    "bodyOverflow": "hidden",
+    "bodyBg": "rgb(10, 10, 10)"
+  },
+  "toast": {
+    "text": "Все звуки остановлены",
+    "role": "status",
+    "rect": {
+      "x": 830,
+      "y": 1017,
+      "w": 167,
+      "h": 38
+    },
+    "inside": true
+  },
+  "overlay": {
+    "preview": {
+      "top": 280,
+      "bottom": 1320,
+      "h": 1040
+    },
+    "content": {
+      "top": 64,
+      "bottom": 1073,
+      "clientH": 1009
+    },
+    "iframe": {
+      "w": 388,
+      "h": 834
+    },
+    "sizeLabel": "388 × 834",
+    "clipped": true
+  },
+  "settings": {
+    "scrollH": 1103,
+    "clientH": 1009
+  }
+}

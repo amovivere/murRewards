@@ -1,0 +1,79 @@
+{
+  "dots": {
+    "card": {
+      "x": 266,
+      "y": 941,
+      "w": 1496,
+      "h": 60
+    },
+    "x": 1003,
+    "y": 971,
+    "name": "Переименовать ченить"
+  },
+  "bottomMenu": {
+    "menu": true,
+    "card": {
+      "x": 266,
+      "y": 941,
+      "w": 1496,
+      "h": 60
+    },
+    "menuRect": {
+      "x": 1352,
+      "y": 824,
+      "w": 399,
+      "h": 132
+    },
+    "above": true,
+    "items": [
+      {
+        "text": "Редактировать",
+        "rect": {
+          "x": 1358,
+          "y": 830,
+          "w": 387,
+          "h": 30
+        },
+        "topEl": "BUTTON.",
+        "inViewport": true,
+        "clickable": true
+      },
+      {
+        "text": "Заменить звук",
+        "rect": {
+          "x": 1358,
+          "y": 860,
+          "w": 387,
+          "h": 30
+        },
+        "topEl": "BUTTON.",
+        "inViewport": true,
+        "clickable": true
+      },
+      {
+        "text": "Убрать звук",
+        "rect": {
+          "x": 1358,
+          "y": 890,
+          "w": 387,
+          "h": 30
+        },
+        "topEl": "BUTTON.",
+        "inViewport": true,
+        "clickable": true
+      },
+      {
+        "text": "Удалить награду",
+        "rect": {
+          "x": 1358,
+          "y": 920,
+          "w": 387,
+          "h": 30
+        },
+        "topEl": "BUTTON.is-danger",
+        "inViewport": true,
+        "clickable": true
+      }
+    ]
+  }
+}

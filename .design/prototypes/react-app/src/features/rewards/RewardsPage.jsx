@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../../components/ui/Button.jsx';
 import ColorPalette from '../../components/ui/ColorPalette.jsx';
 import Icon from '../../components/ui/Icon.jsx';
@@ -23,7 +23,7 @@ const FILTERS = [
   { id: 'off', label: 'Выключенные' },
 ];
 
-function CreateRewardModal({ open, onClose, onCreate }) {
+function CreateRewardModal({ open, onClose, onCreate, returnFocus }) {
   const [name, setName] = useState('');
   const [cost, setCost] = useState('100');
   const [color, setColor] = useState('#A970FF');
@@ -55,6 +55,7 @@ function CreateRewardModal({ open, onClose, onCreate }) {
       title="Новая награда"
       subtitle="Награда создастся в канале через Twitch API и сразу появится в списке."
       width={600}
+      returnFocus={returnFocus}
       footer={
         <>
           <Button variant="secondary" onClick={onClose}>
@@ -103,7 +104,7 @@ function CreateRewardModal({ open, onClose, onCreate }) {
   );
 }
 
-function EditRewardModal({ reward, onClose, onSave }) {
+function EditRewardModal({ reward, onClose, onSave, returnFocus }) {
   const [name, setName] = useState('');
   const [cost, setCost] = useState('100');
   const [color, setColor] = useState('#A970FF');
@@ -124,6 +125,7 @@ function EditRewardModal({ reward, onClose, onSave }) {
       title="Редактировать награду"
       subtitle="Изменения уйдут в Twitch и сразу появятся в списке."
       width={560}
+      returnFocus={returnFocus}
       footer={
         <>
           <Button variant="secondary" onClick={onClose}>
@@ -160,7 +162,7 @@ function EditRewardModal({ reward, onClose, onSave }) {
   );
 }
 
-function DeleteRewardModal({ reward, onClose, onConfirm }) {
+function DeleteRewardModal({ reward, onClose, onConfirm, returnFocus }) {
   return (
     <Modal
       open={!!reward}
@@ -168,6 +170,7 @@ function DeleteRewardModal({ reward, onClose, onConfirm }) {
       title={`Удалить «${reward?.name || ''}»?`}
       subtitle="Награда будет удалена в Twitch. Привязка звука и настройки громкости тоже исчезнут."
       width={460}
+      returnFocus={returnFocus}
       footer={
         <>
           <Button variant="secondary" onClick={onClose}>
@@ -196,6 +199,8 @@ export default function RewardsPage({ backend }) {
   const [editTarget, setEditTarget] = useState(null);
   const [menuFor, setMenuFor] = useState(null);
   const [menuAbove, setMenuAbove] = useState(false);
+  const createTriggerRef = useRef(null);
+  const menuTriggerRef = useRef(null);
   const [toast, setToast] = useState('');
 
   const realView = backend?.view;
@@ -213,8 +218,15 @@ export default function RewardsPage({ backend }) {
     function onKeyDown(event) {
       if (event.key === 'Escape') setMenuFor(null);
     }
+    function onPointerDown(event) {
+      if (!event.target.closest('.reward-menu, .icon-ghost')) setMenuFor(null);
+    }
     document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    document.addEventListener('mousedown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('mousedown', onPointerDown);
+    };
   }, [menuFor]);
   const displayRewards = real
     ? (realView?.rewards || []).map((reward) => ({
@@ -403,7 +415,7 @@ export default function RewardsPage({ backend }) {
           <p className="page-subtitle">@{realView?.login || 'goshanmur'} · {counts.all} наград · {counts.sound} со звуком · {counts.silent} без звука</p>
         </div>
         <div className="page-actions">
-          <Button variant="primary" icon={<Icon name="plus" />} onClick={() => setCreateOpen(true)}>
+          <Button id="create-reward-btn" variant="primary" icon={<Icon name="plus" />} onClick={(event) => { createTriggerRef.current = event.currentTarget; setCreateOpen(true); }}>
             Создать награду
           </Button>
         </div>
@@ -467,6 +479,7 @@ export default function RewardsPage({ backend }) {
                     setMenuFor(null);
                     return;
                   }
+                  menuTriggerRef.current = event.currentTarget;
                   const card = event.currentTarget.closest('.reward-card');
                   const rect = card?.getBoundingClientRect();
                   setMenuAbove(Boolean(rect && rect.bottom + 150 > window.innerHeight));
@@ -538,13 +551,14 @@ export default function RewardsPage({ backend }) {
         </div>
       ) : null}
 
-      <CreateRewardModal open={createOpen} onClose={() => setCreateOpen(false)} onCreate={createReward} />
+      <CreateRewardModal open={createOpen} onClose={() => setCreateOpen(false)} onCreate={createReward} returnFocus={createTriggerRef.current} />
       <EditRewardModal
         reward={editTarget}
         onClose={() => setEditTarget(null)}
         onSave={saveReward}
+        returnFocus={menuTriggerRef.current}
       />
-      <DeleteRewardModal reward={deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={confirmDelete} />
+      <DeleteRewardModal reward={deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={confirmDelete} returnFocus={menuTriggerRef.current} />
       {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}
     </div>
   );

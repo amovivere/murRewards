@@ -1,0 +1,26 @@
+{
+  "presetCount": 2,
+  "renameModal": {
+    "title": "Переименовать пресет",
+    "subtitle": "Название видно только в приложении.",
+    "input": "Обычный",
+    "buttons": [
+      "×",
+      "Отмена",
+      "Сохранить"
+    ],
+    "dialogRole": "dialog"
+  },
+  "renameClosed": false,
+  "deleteModal": {
+    "title": "Удалить пресет?",
+    "subtitle": "Пресет «Обычный» будет удалён.",
+    "body": "Это действие нельзя отменить.",
+    "buttons": [
+      "×",
+      "Отмена",
+      "Удалить"
+    ]
+  },
+  "deleteClosed": false
+}

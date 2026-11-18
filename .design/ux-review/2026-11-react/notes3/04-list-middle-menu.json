@@ -1,0 +1,44 @@
+{
+  "mid": {
+    "card": {
+      "x": 266,
+      "y": 190,
+      "w": 1496,
+      "h": 60
+    },
+    "name": "А где донаты",
+    "x": 1003,
+    "y": 220
+  },
+  "midMenu": {
+    "menu": true,
+    "rect": {
+      "x": 1352,
+      "y": 237,
+      "w": 399,
+      "h": 132
+    },
+    "items": [
+      {
+        "text": "Редактировать",
+        "topEl": "BUTTON.",
+        "clickable": true
+      },
+      {
+        "text": "Заменить звук",
+        "topEl": "BUTTON.",
+        "clickable": true
+      },
+      {
+        "text": "Убрать звук",
+        "topEl": "BUTTON.",
+        "clickable": true
+      },
+      {
+        "text": "Удалить награду",
+        "topEl": "BUTTON.is-danger",
+        "clickable": true
+      }
+    ]
+  }
+}

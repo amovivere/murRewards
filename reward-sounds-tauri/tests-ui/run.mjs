@@ -269,7 +269,7 @@ async function run() {
   await sleep(350);
   await evaluate(`document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); true`);
   await sleep(350);
-  assert('фокус возвращается на кнопку после Esc', await evaluate(`document.activeElement?.textContent?.includes('Создать награду')`));
+  assert('фокус возвращается на кнопку после Esc', await evaluate(`document.activeElement?.id === 'create-reward-btn'`));
 
   // Health popover: Esc.
   await evaluate(`document.querySelector('.health-chip').click(); true`);

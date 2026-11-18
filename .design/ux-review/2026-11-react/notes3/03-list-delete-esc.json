@@ -1,0 +1,17 @@
+{
+  "modal": false,
+  "active": {
+    "tag": "BODY",
+    "cls": "",
+    "text": "Reward SoundsChannel Points · ",
+    "aria": null,
+    "placeholder": "",
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1803,
+      "h": 1063
+    }
+  },
+  "menu": false
+}

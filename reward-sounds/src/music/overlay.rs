@@ -92,6 +92,36 @@ fn handle(mut stream: TcpStream, state: &Arc<Mutex<Snapshot>>) {
         .unwrap_or(buffer.len());
     let body = &buffer[body_start.min(buffer.len())..];
 
+    if path.starts_with("/image-reward/thumb/") {
+        let rest = path
+            .trim_start_matches("/image-reward/thumb/")
+            .split('?')
+            .next()
+            .unwrap_or("");
+        let mut parts = rest.split('/');
+        let reward_id = parts.next().unwrap_or("");
+        let index = parts.next().and_then(|value| value.parse::<usize>().ok()).unwrap_or(0);
+        let Some(bytes) = crate::image_reward::library_media(reward_id, index) else {
+            let body = b"not found";
+            let header = format!(
+                "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+                body.len()
+            );
+            let _ = stream.write_all(header.as_bytes());
+            let _ = stream.write_all(body);
+            return;
+        };
+        let content_type = crate::image_reward::content_type_for(&bytes);
+        let header = format!(
+            "HTTP/1.1 200 OK\r\nContent-Type: {content_type}\r\nCache-Control: no-cache\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+            bytes.len()
+        );
+        let _ = stream.write_all(header.as_bytes());
+        let _ = stream.write_all(&bytes);
+        let _ = stream.flush();
+        return;
+    }
+
     if path.starts_with("/image-reward/media") {
         let Some(bytes) = crate::image_reward::media_bytes() else {
             let body = b"not found";

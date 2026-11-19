@@ -231,7 +231,7 @@ async function run() {
   assert('в карточках нет буквенных аватаров', (await evaluate(`document.querySelectorAll('.reward-letter').length`)) === 0);
   const cardPresentation = await evaluate(`(() => {
     const card = document.querySelector('.reward-card');
-    const play = card?.querySelector('.play-large');
+    const play = card?.querySelector('.reward-b-play, .play-large');
     const rect = play?.getBoundingClientRect();
     return {
       hasFileName: Boolean(card?.querySelector('.sound-name')),
@@ -266,11 +266,11 @@ async function run() {
     const state = await window.__TAURI_INTERNALS__.invoke('get_state');
     const first = state.rewards[0];
     return {
-      values: Array.from(document.querySelectorAll('.ui-modal input')).map((i) => i.value),
+      values: Array.from(document.querySelectorAll('.reward-editor__inspector .ui-input')).map((i) => i.value),
       title: first.title,
       cost: String(first.cost),
       modalTitle: document.querySelector('.ui-modal__title')?.textContent || '',
-      soundPath: document.querySelector('.modal-sound-path')?.textContent || '',
+      soundPath: document.querySelector('.editor-sound__path, .modal-sound-path')?.textContent || '',
       backendPath: first.file?.path || '',
       saveDisabled: Array.from(document.querySelectorAll('.ui-modal button')).find((b) => b.textContent.includes('Сохранить'))?.disabled
     };

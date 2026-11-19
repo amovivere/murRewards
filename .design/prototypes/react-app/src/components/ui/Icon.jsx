@@ -20,6 +20,13 @@ const paths = {
       <path d="M8 21h8M12 17v4" />
     </>
   ),
+  image: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <circle cx="8.5" cy="9" r="1.5" fill="currentColor" stroke="none" />
+      <path d="m4 17 5-5 4 4 2-2 5 5" />
+    </>
+  ),
   settings: (
     <>
       <path d="M4 6h16M4 12h16M4 18h16" />

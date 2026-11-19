@@ -50,6 +50,8 @@ fn default_version() -> u32 {
 #[serde(default)]
 pub struct ImageRewardSettings {
     pub reward_id: String,
+    /// sound | image | both
+    pub mode: String,
     /// Файлы изображений (пути внутри AppData).
     pub images: Vec<String>,
     /// Максимальный угол поворота, градусы.
@@ -68,6 +70,7 @@ impl Default for ImageRewardSettings {
     fn default() -> Self {
         Self {
             reward_id: String::new(),
+            mode: "both".to_string(),
             images: Vec::new(),
             max_angle_deg: 40.0,
             size_pct: 32.0,
@@ -80,6 +83,10 @@ impl Default for ImageRewardSettings {
 
 impl ImageRewardSettings {
     pub fn normalized(mut self) -> Self {
+        self.mode = match self.mode.as_str() {
+            "sound" | "image" => self.mode,
+            _ => "both".to_string(),
+        };
         self.max_angle_deg = self.max_angle_deg.clamp(0.0, 40.0);
         self.size_pct = self.size_pct.clamp(8.0, 80.0);
         self.opacity = self.opacity.clamp(0.1, 1.0);

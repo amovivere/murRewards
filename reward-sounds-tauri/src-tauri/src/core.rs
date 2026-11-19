@@ -70,6 +70,8 @@ pub struct RewardView {
     pub has_sound: bool,
     pub file: Option<FileInfo>,
     pub playing: bool,
+    /// sound | image | both | none
+    pub mode: String,
     pub images: Vec<ImageInfoView>,
     pub image: Option<ImageAppearanceView>,
 }
@@ -249,6 +251,7 @@ impl AppCore {
         let paths = AppPaths::resolve();
         let _ = paths.ensure_dirs();
         let (mut settings, _) = Settings::load(&paths.config_file);
+        reward_sounds::image_reward::set_library(&settings.music.image_rewards);
         // Автозапуск читаем из реестра: пользователь мог включить/выключить его
         // вне приложения, а UI должен показывать реальное состояние.
         settings.autostart = reward_sounds::autostart::is_enabled();
@@ -375,6 +378,7 @@ impl AppCore {
             }
             (Arc::clone(&inner.playback_state), inner.settings.clone())
         };
+        reward_sounds::image_reward::set_library(&settings.music.image_rewards);
         let mut state = playback_state
             .lock()
             .unwrap_or_else(|err| err.into_inner());
@@ -879,7 +883,7 @@ impl AppCore {
                     .image_rewards
                     .iter()
                     .find(|image| image.reward_id == reward.id);
-                let images = image_settings
+                let images: Vec<ImageInfoView> = image_settings
                     .map(|image| {
                         image
                             .images
@@ -895,6 +899,19 @@ impl AppCore {
                             .collect()
                     })
                     .unwrap_or_default();
+                let has_sound = file.as_ref().map(|file| file.exists).unwrap_or(false);
+                let mode = image_settings
+                    .map(|image| image.mode.clone())
+                    .filter(|mode| mode != "both" || !images.is_empty())
+                    .unwrap_or_else(|| {
+                        if has_sound {
+                            "sound".to_string()
+                        } else if !images.is_empty() {
+                            "image".to_string()
+                        } else {
+                            "none".to_string()
+                        }
+                    });
                 RewardView {
                     id: reward.id.clone(),
                     title: reward.title.clone(),
@@ -902,9 +919,10 @@ impl AppCore {
                     color: reward.color.clone(),
                     available: reward.is_available(),
                     requires_input: reward.requires_input,
-                    has_sound: file.as_ref().map(|file| file.exists).unwrap_or(false),
+                    has_sound,
                     file,
                     playing: active.iter().any(|id| id == &reward.id),
+                    mode,
                     images,
                     image: image_settings.map(|image| ImageAppearanceView {
                         max_angle_deg: image.max_angle_deg,
@@ -1467,6 +1485,7 @@ pub fn remove_reward_image(
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ImageSettingsPatch {
+    pub mode: Option<String>,
     pub max_angle_deg: Option<f64>,
     pub size_pct: Option<f64>,
     pub opacity: Option<f64>,
@@ -1482,30 +1501,46 @@ pub fn set_reward_image_settings(
 ) -> CoreView {
     {
         let mut inner = core.lock();
-        if let Some(entry) = inner
+        let index = inner
+            .settings
+            .music
+            .image_rewards
+            .iter()
+            .position(|image| image.reward_id == reward_id);
+        if index.is_none() {
+            let mut entry = reward_sounds::config::ImageRewardSettings::default();
+            entry.reward_id = reward_id.clone();
+            inner.settings.music.image_rewards.push(entry);
+        }
+        let entry = inner
             .settings
             .music
             .image_rewards
             .iter_mut()
             .find(|image| image.reward_id == reward_id)
-        {
-            if let Some(value) = patch.max_angle_deg {
-                entry.max_angle_deg = value;
-            }
-            if let Some(value) = patch.size_pct {
-                entry.size_pct = value;
-            }
-            if let Some(value) = patch.opacity {
-                entry.opacity = value;
-            }
-            if let Some(value) = patch.duration_ms {
-                entry.duration_ms = value;
-            }
-            if let Some(value) = patch.safe_margin_pct {
-                entry.safe_margin_pct = value;
-            }
-            *entry = entry.clone().normalized();
+            .expect("запись создана");
+        if let Some(value) = &patch.mode {
+            entry.mode = match value.as_str() {
+                "sound" | "image" => value.clone(),
+                _ => "both".to_string(),
+            };
         }
+        if let Some(value) = patch.max_angle_deg {
+            entry.max_angle_deg = value;
+        }
+        if let Some(value) = patch.size_pct {
+            entry.size_pct = value;
+        }
+        if let Some(value) = patch.opacity {
+            entry.opacity = value;
+        }
+        if let Some(value) = patch.duration_ms {
+            entry.duration_ms = value;
+        }
+        if let Some(value) = patch.safe_margin_pct {
+            entry.safe_margin_pct = value;
+        }
+        *entry = entry.clone().normalized();
     }
     core.save();
     core.view()

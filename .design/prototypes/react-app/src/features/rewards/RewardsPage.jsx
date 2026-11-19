@@ -38,6 +38,7 @@ function mapReward(reward) {
     playing: Boolean(reward.playing),
     requiresInput: Boolean(reward.requires_input),
     hasSound: Boolean(reward.has_sound),
+    mode: reward.mode || 'none',
     images: reward.images || [],
     imageSettings: reward.image || {
       max_angle_deg: 40,
@@ -47,6 +48,16 @@ function mapReward(reward) {
       safe_margin_pct: 6,
     },
   };
+}
+
+function modeLabel(reward) {
+  if (reward.mode === 'both') return 'звук + картинки';
+  if (reward.mode === 'image') return 'картинки';
+  if (reward.mode === 'sound') return 'звук';
+  if (reward.file && reward.images.length) return 'звук + картинки';
+  if (reward.images.length) return 'картинки';
+  if (reward.file) return 'звук';
+  return 'пусто';
 }
 
 function CreateRewardModal({ open, onClose, onCreate, returnFocus }) {
@@ -164,14 +175,12 @@ function EditRewardModal({
       open={!!reward}
       onClose={onClose}
       title="Настройки карточки"
-      subtitle="Основные поля уйдут в Twitch, звук применяется сразу."
-      width={620}
+      subtitle="Одна награда может играть звук, показывать картинку — или и то, и другое."
+      width={1000}
       returnFocus={returnFocus}
       footer={
         <>
-          <Button variant="secondary" onClick={onClose}>
-            Отмена
-          </Button>
+          <Button variant="secondary" onClick={onClose}>Отмена</Button>
           <Button
             variant="primary"
             disabled={!name.trim()}
@@ -185,47 +194,113 @@ function EditRewardModal({
         </>
       }
     >
-      <div className="modal-form">
-        <div className="control-grid">
-          <label className="modal-field">
-            <span>НАЗВАНИЕ</span>
-            <input className="ui-input" value={name} onChange={(event) => setName(event.target.value)} />
-          </label>
-          <label className="modal-field">
-            <span>ЦЕНА, БАЛЛОВ</span>
-            <input className="ui-input" value={cost} onChange={(event) => setCost(event.target.value.replace(/\D/g, ''))} inputMode="numeric" />
-          </label>
-        </div>
-        <div className="modal-field">
-          <span>ЦВЕТ КАРТОЧКИ</span>
-          <ColorPalette value={color} onChange={setColor} />
+      <div className="reward-editor">
+        <div className="reward-editor__modes">
+          <span>ЧТО ДЕЛАЕТ НАГРАДА</span>
+          {[
+            { id: 'sound', label: 'Звук', icon: 'volume' },
+            { id: 'image', label: 'Картинки', icon: 'image' },
+            { id: 'both', label: 'Звук + картинки', icon: 'design' },
+          ].map((mode) => (
+            <button
+              key={mode.id}
+              type="button"
+              className={reward.mode === mode.id ? 'is-active' : ''}
+              onClick={() => onImageSettings?.(reward, { mode: mode.id })}
+            >
+              <Icon name={mode.icon} size={14} />
+              {mode.label}
+            </button>
+          ))}
         </div>
 
-        <div className="modal-divider" />
-        <div className="modal-field">
-          <span>ЗВУК</span>
-          {reward.file ? (
-            <div className="modal-sound-card">
-              <div className="modal-sound-head">
-                <div className="modal-sound-icon"><Icon name="play" size={14} /></div>
-                <div className="modal-sound-info">
-                  <div className="modal-sound-name">{reward.file}</div>
-                  <div className="modal-sound-path" title={reward.path}>{reward.path || 'Файл привязан к награде'}</div>
-                  <div className="modal-sound-meta">{reward.meta || 'аудиофайл'}</div>
+        <div className="reward-editor__body">
+          <section className="reward-editor__gallery">
+            <div className="reward-editor__section-head">
+              <span>КАРТИНКИ</span>
+              <small>{reward.images.length} / 8</small>
+            </div>
+            <div className="editor-gallery">
+              {reward.images.map((image, index) => (
+                <div className="editor-photo" key={image.path || index}>
+                  <img
+                    src={`http://127.0.0.1:8770/image-reward/thumb/${encodeURIComponent(reward.id)}/${index}?v=${encodeURIComponent(image.path)}`}
+                    alt={image.name}
+                    loading="lazy"
+                  />
+                  {index === 0 ? <span className="editor-photo__cover">обложка</span> : null}
+                  <button type="button" className="editor-photo__remove" aria-label={`Убрать ${image.name}`} onClick={() => onRemoveImage?.(reward, image)}>×</button>
                 </div>
+              ))}
+              {reward.images.length < 8 ? (
+                <button type="button" className="editor-photo editor-photo--add" onClick={() => onAddImages?.(reward)}>
+                  <Icon name="plus" size={20} />
+                  <span>Добавить</span>
+                </button>
+              ) : null}
+            </div>
+            <div className="modal-hint">При активации покажется одна случайная картинка.</div>
+
+            {reward.images.length > 0 ? (
+              <div className="editor-appearance">
+                <SliderRow label="Максимальный угол" value={Math.round(reward.imageSettings.max_angle_deg)} min={0} max={40} unit="°" onChange={(value) => onImageSettings?.(reward, { maxAngleDeg: value })} />
+                <SliderRow label="Размер" value={Math.round(reward.imageSettings.size_pct)} min={12} max={60} unit="%" onChange={(value) => onImageSettings?.(reward, { sizePct: value })} />
+                <SliderRow label="Длительность" value={(reward.imageSettings.duration_ms / 1000).toFixed(1)} min={1} max={10} step={0.5} unit=" с" onChange={(value) => onImageSettings?.(reward, { durationMs: Math.round(value * 1000) })} />
+                <SliderRow label="Прозрачность" value={Math.round(reward.imageSettings.opacity * 100)} min={50} max={100} unit="%" onChange={(value) => onImageSettings?.(reward, { opacity: value / 100 })} />
+                <SliderRow label="Safe area" value={Math.round(reward.imageSettings.safe_margin_pct)} min={0} max={15} unit="%" onChange={(value) => onImageSettings?.(reward, { safeMarginPct: value })} />
               </div>
-              <div className="modal-sound-actions">
-                <Button variant="secondary" size="sm" icon={<Icon name="play" size={12} />} onClick={() => onPreviewSound?.(reward)}>
-                  Прослушать
-                </Button>
-                <Button variant="secondary" size="sm" onClick={() => onChooseSound?.(reward)}>
-                  Заменить
-                </Button>
-                <Button variant="danger-ghost" size="sm" onClick={() => onRemoveSound?.(reward)}>
-                  Убрать
-                </Button>
-              </div>
-              <div className="modal-volume">
+            ) : null}
+          </section>
+
+          <section className="reward-editor__preview">
+            <div className="reward-editor__section-head">
+              <span>ПРЕВЬЮ OBS</span>
+              <small>1920 × 1080</small>
+            </div>
+            <div className="editor-preview">
+              <iframe title="Превью картинки награды" src="http://127.0.0.1:8770/image-reward?preview=1" />
+              <div className="editor-preview__hint">Картинка появляется в случайной точке и под случайным углом</div>
+            </div>
+            <Button variant="secondary" full onClick={() => {
+              if (reward.file) onPreviewSound?.(reward);
+              if (reward.images.length) onPreviewImage?.(reward);
+            }}>
+              Показать ещё раз
+            </Button>
+          </section>
+
+          <aside className="reward-editor__inspector">
+            <div className="reward-editor__section-head"><span>ОСНОВНОЕ</span></div>
+            <label className="modal-field">
+              <span>НАЗВАНИЕ</span>
+              <input className="ui-input" value={name} onChange={(event) => setName(event.target.value)} />
+            </label>
+            <div className="control-grid">
+              <label className="modal-field">
+                <span>ЦЕНА, БАЛЛОВ</span>
+                <input className="ui-input" value={cost} onChange={(event) => setCost(event.target.value.replace(/\D/g, ''))} inputMode="numeric" />
+              </label>
+              <label className="modal-field">
+                <span>ЦВЕТ</span>
+                <ColorPalette value={color} onChange={setColor} />
+              </label>
+            </div>
+
+            <div className="reward-editor__section-head"><span>ЗВУК</span><small>один на карточку</small></div>
+            {reward.file ? (
+              <div className="editor-sound">
+                <div className="editor-sound__head">
+                  <div className="editor-sound__play"><Icon name="play" size={14} /></div>
+                  <div>
+                    <div className="editor-sound__name">{reward.file}</div>
+                    <div className="editor-sound__path" title={reward.path}>{reward.path}</div>
+                  </div>
+                </div>
+                <div className="editor-sound__actions">
+                  <Button variant="secondary" size="sm" onClick={() => onPreviewSound?.(reward)}>Прослушать</Button>
+                  <Button variant="secondary" size="sm" onClick={() => onChooseSound?.(reward)}>Заменить</Button>
+                  <Button variant="danger-ghost" size="sm" onClick={() => onRemoveSound?.(reward)}>Убрать</Button>
+                </div>
                 <SliderRow
                   label="Громкость"
                   value={volume}
@@ -238,56 +313,11 @@ function EditRewardModal({
                   }}
                 />
               </div>
-            </div>
-          ) : (
-            <div className="modal-sound-empty">
-              <span>Звук не выбран — награда будет беззвучной.</span>
-              <Button variant="secondary" size="sm" onClick={() => onChooseSound?.(reward)}>
-                Выбрать звук
-              </Button>
-            </div>
-          )}
-          <div className="modal-hint">Файл и громкость сохраняются отдельно, сразу после изменения.</div>
+            ) : (
+              <Button variant="secondary" full onClick={() => onChooseSound?.(reward)}>Выбрать звук</Button>
+            )}
+          </aside>
         </div>
-
-        <div className="modal-divider" />
-        <div className="modal-field">
-          <span>КАРТИНКИ НА ЭКРАНЕ</span>
-          <div className="image-gallery">
-            {reward.images.map((image, index) => (
-              <div className="image-chip" key={image.path || index}>
-                <div className={`image-chip__preview image-chip__preview--${index % 4}`} aria-hidden="true" />
-                <div className="image-chip__name" title={image.path}>{image.name}</div>
-                <button type="button" className="image-chip__remove" aria-label={`Убрать ${image.name}`} onClick={() => onRemoveImage?.(reward, image)}>×</button>
-              </div>
-            ))}
-            {reward.images.length < 8 ? (
-              <button type="button" className="image-add" onClick={() => onAddImages?.(reward)}>
-                + Добавить
-              </button>
-            ) : null}
-          </div>
-          <div className="modal-hint">При активации выбирается случайная картинка и появляется в случайном месте OBS.</div>
-        </div>
-
-        {reward.images.length > 0 ? (
-          <>
-            <div className="image-settings-grid">
-              <SliderRow label="Угол" value={Math.round(reward.imageSettings.max_angle_deg)} min={0} max={40} unit="°" onChange={(value) => onImageSettings?.(reward, { maxAngleDeg: value })} />
-              <SliderRow label="Размер" value={Math.round(reward.imageSettings.size_pct)} min={12} max={60} unit="%" onChange={(value) => onImageSettings?.(reward, { sizePct: value })} />
-              <SliderRow label="Длительность" value={(reward.imageSettings.duration_ms / 1000).toFixed(1)} min={1} max={10} step={0.5} unit=" с" onChange={(value) => onImageSettings?.(reward, { durationMs: Math.round(value * 1000) })} />
-              <SliderRow label="Прозрачность" value={Math.round(reward.imageSettings.opacity * 100)} min={50} max={100} unit="%" onChange={(value) => onImageSettings?.(reward, { opacity: value / 100 })} />
-              <SliderRow label="Safe area" value={Math.round(reward.imageSettings.safe_margin_pct)} min={0} max={15} unit="%" onChange={(value) => onImageSettings?.(reward, { safeMarginPct: value })} />
-            </div>
-            <div className="image-preview">
-              <div className="image-preview__head">
-                <span>ПРЕВЬЮ OBS</span>
-                <Button variant="secondary" size="sm" onClick={() => onPreviewImage?.(reward)}>Показать картинку</Button>
-              </div>
-              <iframe title="Превью картинки награды" src="http://127.0.0.1:8770/image-reward" />
-            </div>
-          </>
-        ) : null}
       </div>
     </Modal>
   );
@@ -580,6 +610,12 @@ export default function RewardsPage({ backend }) {
     }
   }
 
+  async function previewReward(reward) {
+    if (reward.file) await previewSound(reward);
+    if (reward.images.length) await previewRewardImage(reward);
+    if (!reward.file && !reward.images.length) notify('Добавьте звук или картинки');
+  }
+
   async function previewRewardImage(reward) {
     if (!real) {
       notify('Превью доступно в приложении');
@@ -703,67 +739,74 @@ export default function RewardsPage({ backend }) {
               </div>
             ) : null}
 
-            <div className={`card-sound${reward.file ? '' : ' is-empty'}`}>
-              <div className="card-sound-main">
-                {reward.file ? (
-                  <button
-                    className="play-large"
-                    onClick={() => previewSound(reward)}
-                    aria-label={`Прослушать ${reward.name}`}
-                    title="Прослушать"
-                  >
-                    <Icon name="play" size={20} />
-                  </button>
+            <div className="reward-b-card">
+              <div className="reward-b-cover">
+                {reward.images.length > 0 ? (
+                  <img
+                    src={`http://127.0.0.1:8770/image-reward/thumb/${encodeURIComponent(reward.id)}/0?v=${reward.images[0]?.path || ''}`}
+                    alt=""
+                    loading="lazy"
+                  />
                 ) : (
-                  <div className="play-large is-empty" aria-hidden="true">
-                    <Icon name="volume" size={20} />
+                  <div className="reward-b-cover__empty">
+                    <Icon name={reward.file ? 'music' : 'image'} size={22} />
                   </div>
                 )}
-                <div className="card-sound-info">
-                  <h3 className="card-sound-title">{reward.name}</h3>
-                  <div className="card-sound-meta">
-                    {reward.file
-                      ? `${reward.meta || 'аудиофайл'} · нажмите, чтобы прослушать`
-                      : 'Звук не выбран · награда будет беззвучной'}
-                  </div>
-                </div>
-                {reward.music ? <span className="card-flag">♪</span> : null}
+                {reward.images.length > 1 ? <span className="reward-b-cover__count">{reward.images.length}</span> : null}
               </div>
-              <div className="card-sound-controls">
+
+              <div className="reward-b-main">
+                <h3 className="reward-b-title">{reward.name}</h3>
+                <div className="reward-b-badges">
+                  <span className={`reward-mode reward-mode--${reward.mode}`}>{modeLabel(reward)}</span>
+                  {reward.requiresInput ? <span className="reward-mini-chip">текст</span> : null}
+                </div>
+
                 {reward.file ? (
-                  <>
-                    <input
-                      className="ui-range card-volume"
-                      type="range"
-                      min={0}
-                      max={200}
-                      step={1}
-                      value={reward.volume}
-                      aria-label={`Громкость ${reward.name}`}
-                      onChange={(event) => changeVolume(reward, Number(event.target.value))}
-                    />
-                    <span className="card-volume-value">{reward.volume}%</span>
-                  </>
+                  <div className="reward-b-sound">
+                    <button
+                      type="button"
+                      className="reward-b-play"
+                      onClick={() => previewSound(reward)}
+                      aria-label={`Прослушать ${reward.name}`}
+                      title="Прослушать"
+                    >
+                      <Icon name="play" size={14} />
+                    </button>
+                    <span className="reward-b-sound__label">Звук привязан</span>
+                    <span className="reward-b-sound__volume">{reward.volume}%</span>
+                  </div>
                 ) : (
-                  <Button variant="secondary" size="sm" full onClick={() => chooseSound(reward)}>
-                    Выбрать звук
-                  </Button>
+                  <div className="reward-b-empty-line">Звука нет</div>
                 )}
+
+                {reward.images.length > 0 ? (
+                  <div className="reward-b-images">
+                    <Icon name="image" size={13} />
+                    <span>{reward.images.length} картинок</span>
+                    <span>±{Math.round(reward.imageSettings.max_angle_deg)}°</span>
+                    <span>{(reward.imageSettings.duration_ms / 1000).toFixed(1)} с</span>
+                  </div>
+                ) : null}
+
+                {!reward.file && !reward.images.length ? (
+                  <div className="reward-b-warning">Пустая карточка — не сработает</div>
+                ) : null}
+                {reward.file && reward.mode === 'image' ? (
+                  <div className="reward-b-warning">Только картинки — звук не играет</div>
+                ) : null}
+                {reward.images.length && reward.mode === 'sound' ? (
+                  <div className="reward-b-warning">Только звук — картинки скрыты</div>
+                ) : null}
               </div>
             </div>
 
-            {reward.images.length > 0 ? (
-              <div className="card-images">
-                <div className="card-images__stack" aria-hidden="true">
-                  <span /><span /><span />
-                </div>
-                <div className="card-images__text">
-                  <strong>{reward.images.length} картинок · случайная</strong>
-                  <span>появится в OBS под углом ±{Math.round(reward.imageSettings.max_angle_deg)}°</span>
-                </div>
-                <Button variant="secondary" size="sm" onClick={() => setEditTarget(reward)}>Настроить</Button>
-              </div>
-            ) : null}
+            <div className="reward-b-footer">
+              <Button variant="ghost" size="sm" icon={<Icon name="settings" size={14} />} onClick={() => setEditTarget(reward)}>
+                Редактор
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => previewReward(reward)}>Показать</Button>
+            </div>
           </article>
         ))}
       </div>

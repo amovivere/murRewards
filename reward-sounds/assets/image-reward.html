@@ -32,6 +32,10 @@
 <body>
 <div id="stage"><div id="flash"></div><div id="card"></div></div>
 <script>
+  if (new URLSearchParams(location.search).has('preview')) {
+    document.documentElement.style.background = '#0b0b0e';
+    document.body.style.background = '#0b0b0e';
+  }
   const card = document.getElementById('card');
   const flash = document.getElementById('flash');
   let current = null;

@@ -1,5 +1,6 @@
 //! Показ картинки-награды в OBS: глобальное состояние для оверлея.
 
+use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::{Mutex, OnceLock};
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
@@ -20,9 +21,40 @@ pub struct Shown {
 }
 
 static STATE: OnceLock<Mutex<Option<Shown>>> = OnceLock::new();
+static LIBRARY: OnceLock<Mutex<HashMap<String, Vec<PathBuf>>>> = OnceLock::new();
 
 fn state() -> &'static Mutex<Option<Shown>> {
     STATE.get_or_init(|| Mutex::new(None))
+}
+
+fn library() -> &'static Mutex<HashMap<String, Vec<PathBuf>>> {
+    LIBRARY.get_or_init(|| Mutex::new(HashMap::new()))
+}
+
+/// Обновляет каталог картинок для превью в приложении и OBS.
+pub fn set_library(rewards: &[ImageRewardSettings]) {
+    let mut map = HashMap::new();
+    for reward in rewards {
+        map.insert(
+            reward.reward_id.clone(),
+            reward
+                .images
+                .iter()
+                .filter(|path| PathBuf::from(path).is_file())
+                .map(PathBuf::from)
+                .collect(),
+        );
+    }
+    if let Ok(mut library) = library().lock() {
+        *library = map;
+    }
+}
+
+/// Отдаёт картинку из каталога награды (для `<img src="/image-reward/thumb/...">`).
+pub fn library_media(reward_id: &str, index: usize) -> Option<Vec<u8>> {
+    let library = library().lock().ok()?;
+    let path = library.get(reward_id)?.get(index)?;
+    std::fs::read(path).ok()
 }
 
 fn random_unit(seed: u64, salt: u64) -> f64 {

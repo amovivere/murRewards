@@ -17,6 +17,7 @@ use crate::eventsub::Redemption;
 pub struct PlaybackState {
     bindings: HashMap<String, (String, f32)>,
     image_rewards: HashMap<String, ImageRewardSettings>,
+    image_modes: HashMap<String, String>,
     volume: f32,
     enabled: bool,
 }
@@ -26,6 +27,7 @@ impl Default for PlaybackState {
         Self {
             bindings: HashMap::new(),
             image_rewards: HashMap::new(),
+            image_modes: HashMap::new(),
             volume: 0.8,
             enabled: true,
         }
@@ -52,6 +54,12 @@ impl PlaybackState {
             .iter()
             .filter(|reward| !reward.reward_id.is_empty() && !reward.images.is_empty())
             .map(|reward| (reward.reward_id.clone(), reward.clone()))
+            .collect();
+        self.image_modes = settings
+            .music
+            .image_rewards
+            .iter()
+            .map(|reward| (reward.reward_id.clone(), reward.mode.clone()))
             .collect();
         self.volume = settings.effective_volume();
         self.enabled = settings.playback_enabled;
@@ -92,7 +100,7 @@ impl Playback {
 
     /// Играет звук награды (или пишет понятную причину, почему нет).
     pub fn play(&self, redemption: &Redemption) {
-        let (binding, image, volume, enabled) = {
+        let (binding, image, mode, volume, enabled) = {
             let Ok(state) = self.state.lock() else {
                 log::error!("Не удалось получить настройки проигрывания");
                 return;
@@ -103,19 +111,34 @@ impl Playback {
                     .get(&redemption.reward_id)
                     .map(|(path, volume)| (path.clone(), *volume)),
                 state.image_rewards.get(&redemption.reward_id).cloned(),
+                state
+                    .image_modes
+                    .get(&redemption.reward_id)
+                    .cloned()
+                    .unwrap_or_else(|| "both".to_string()),
                 state.volume(),
                 state.is_enabled(),
             )
         };
 
         // Картинка — отдельная часть награды: показываем даже при выключенных звуках.
-        if let Some(image) = image.as_ref() {
-            if crate::image_reward::show(image) {
-                log::info!(
-                    "Картинка награды «{}» показана в OBS",
-                    redemption.reward_title
-                );
+        if mode != "sound" {
+            if let Some(image) = image.as_ref() {
+                if crate::image_reward::show(image) {
+                    log::info!(
+                        "Картинка награды «{}» показана в OBS",
+                        redemption.reward_title
+                    );
+                }
             }
+        }
+
+        if mode == "image" {
+            log::info!(
+                "Награда «{}»: режим только картинки — звук пропущен",
+                redemption.reward_title
+            );
+            return;
         }
 
         if !enabled {

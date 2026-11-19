@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Картинка награды</title>
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; }
+  #stage { position: fixed; inset: 0; pointer-events: none; }
+  #card {
+    position: absolute;
+    left: var(--x, 40%);
+    top: var(--y, 40%);
+    width: var(--size, 32%);
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) scale(0.55);
+    transition: opacity 220ms ease, transform 420ms cubic-bezier(.16, 1.35, .35, 1);
+    filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.55));
+    will-change: transform, opacity;
+  }
+  #card.show { opacity: var(--opacity, .95); transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) scale(1.04); }
+  #card.settle { transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) scale(1); }
+  #card img { display: block; width: 100%; height: auto; border-radius: 14px; }
+  #flash {
+    position: fixed; inset: 0; opacity: 0; pointer-events: none;
+    background: radial-gradient(circle at var(--x, 40%) var(--y, 40%), rgba(255,255,255,.22), transparent 38%);
+    transition: opacity 120ms ease;
+  }
+  #flash.on { opacity: 1; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="flash"></div><div id="card"></div></div>
+<script>
+  const card = document.getElementById('card');
+  const flash = document.getElementById('flash');
+  let current = null;
+  let lastTs = 0;
+  let timers = [];
+
+  function clearTimers() {
+    timers.forEach((timer) => clearTimeout(timer));
+    timers = [];
+  }
+
+  function show(data) {
+    if (!data || !data.show) return;
+    if (current === data.id + data.angle + data.x + data.y) return;
+    current = data.id + data.angle + data.x + data.y;
+    clearTimers();
+    const img = document.createElement('img');
+    img.src = data.media + '&v=' + Date.now();
+    img.alt = '';
+    card.replaceChildren(img);
+    card.style.setProperty('--x', data.x + '%');
+    card.style.setProperty('--y', data.y + '%');
+    card.style.setProperty('--angle', data.angle.toFixed(1) + 'deg');
+    card.style.setProperty('--size', data.size + '%');
+    card.style.setProperty('--opacity', data.opacity);
+    flash.style.setProperty('--x', data.x + '%');
+    flash.style.setProperty('--y', data.y + '%');
+    requestAnimationFrame(() => {
+      flash.classList.add('on');
+      card.classList.add('show');
+      timers.push(setTimeout(() => flash.classList.remove('on'), 160));
+      timers.push(setTimeout(() => card.classList.add('settle'), 430));
+    });
+    timers.push(setTimeout(() => {
+      card.classList.remove('show', 'settle');
+      current = null;
+    }, Math.max(500, data.duration - 260)));
+  }
+
+  async function poll() {
+    try {
+      const response = await fetch('/image-reward/state', { cache: 'no-store' });
+      const data = await response.json();
+      show(data);
+    } catch (_) {}
+    setTimeout(poll, 220);
+  }
+  poll();
+</script>
+</body>
+</html>

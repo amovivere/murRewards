@@ -1,0 +1,13 @@
+{
+  "name": "reward-sounds-image-reward-lab",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Reward Sounds — «картинка на экране за баллы»: UX-концепт и интерактивный прототип.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5177",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5178"
+  },
+  "dependencies": { "react": "^19.1.0", "react-dom": "^19.1.0" }
+}

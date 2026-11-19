@@ -18,6 +18,7 @@ pub mod config;
 pub mod eventsub;
 pub mod http;
 pub mod icon;
+pub mod image_reward;
 pub mod json;
 pub mod logging;
 pub mod music;

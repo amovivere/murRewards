@@ -45,6 +45,51 @@ fn default_version() -> u32 {
     CONFIG_VERSION
 }
 
+/// Настройки показа картинок для одной награды.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct ImageRewardSettings {
+    pub reward_id: String,
+    /// Файлы изображений (пути внутри AppData).
+    pub images: Vec<String>,
+    /// Максимальный угол поворота, градусы.
+    pub max_angle_deg: f64,
+    /// Размер картинки в процентах ширины OBS-сцены.
+    pub size_pct: f64,
+    /// Прозрачность 0.0–1.0.
+    pub opacity: f64,
+    /// Сколько миллисекунд показывать.
+    pub duration_ms: u64,
+    /// Безопасный отступ от краёв, проценты.
+    pub safe_margin_pct: f64,
+}
+
+impl Default for ImageRewardSettings {
+    fn default() -> Self {
+        Self {
+            reward_id: String::new(),
+            images: Vec::new(),
+            max_angle_deg: 40.0,
+            size_pct: 32.0,
+            opacity: 0.95,
+            duration_ms: 4000,
+            safe_margin_pct: 6.0,
+        }
+    }
+}
+
+impl ImageRewardSettings {
+    pub fn normalized(mut self) -> Self {
+        self.max_angle_deg = self.max_angle_deg.clamp(0.0, 40.0);
+        self.size_pct = self.size_pct.clamp(8.0, 80.0);
+        self.opacity = self.opacity.clamp(0.1, 1.0);
+        self.duration_ms = self.duration_ms.clamp(500, 15000);
+        self.safe_margin_pct = self.safe_margin_pct.clamp(0.0, 20.0);
+        self.images.retain(|path| !path.trim().is_empty());
+        self
+    }
+}
+
 /// Настройки вкладки «Музыка»: треки по заявке из YouTube.
 ///
 /// Аудио не сохраняется на диск: заявка скачивается в память и играет
@@ -86,6 +131,7 @@ pub struct MusicSettings {
     pub autodj: bool,
     /// Ссылки YouTube для AutoDJ.
     pub autodj_playlist: Vec<String>,
+    pub image_rewards: Vec<ImageRewardSettings>,
     /// Сколько секунд показывать строку «Сейчас играет» в оверлее.
     pub overlay_seconds: u64,
     /// Где показывать строку: `top` или `bottom`.
@@ -114,6 +160,7 @@ impl Default for MusicSettings {
             blocked_videos: Vec::new(),
             autodj: false,
             autodj_playlist: Vec::new(),
+            image_rewards: Vec::new(),
             overlay_seconds: 10,
             overlay_position: "top".to_string(),
             overlay_font: 17,
@@ -389,6 +436,12 @@ impl Settings {
             self.music.ytdlp_path = "auto".to_string();
         }
         self.music.cookies_file = self.music.cookies_file.trim().to_string();
+        self.music.image_rewards.retain(|image| !image.reward_id.trim().is_empty());
+        for image in &mut self.music.image_rewards {
+            image.reward_id = image.reward_id.trim().to_string();
+            let normalized = image.clone().normalized();
+            *image = normalized;
+        }
     }
 
     /// Загружает настройки. Если файла нет — настройки по умолчанию.

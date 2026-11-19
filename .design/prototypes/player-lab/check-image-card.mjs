@@ -1,0 +1,22 @@
+﻿import fs from 'node:fs';
+const targets = await (await fetch('http://127.0.0.1:9333/json')).json();
+const page = targets.find((x) => x.type === 'page');
+const ws = new WebSocket(page.webSocketDebuggerUrl);
+let id = 0; const pending = new Map();
+ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.id && pending.has(m.id)) { pending.get(m.id)(m.result); pending.delete(m.id); } };
+await new Promise((r, j) => { ws.onopen = r; ws.onerror = j; });
+const send = (method, params = {}) => new Promise((res) => { const n = ++id; pending.set(n, res); ws.send(JSON.stringify({ id: n, method, params })); });
+const ev = async (expression) => (await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true })).result.value;
+await send('Runtime.enable'); await send('Page.enable');
+await new Promise(r => setTimeout(r, 1500));
+const info = await ev(`(async () => {
+  const s = await window.__TAURI_INTERNALS__.invoke('get_state');
+  const first = s.rewards?.[0];
+  const card = document.querySelector('.reward-card');
+  const shown = await window.__TAURI_INTERNALS__.invoke('preview_reward_image', { rewardId: first?.id || '13468a28-2ca8-4b4b-a897-f2ef8ac22625' });
+  return { first: { id:first?.id, images:first?.images?.length, image:first?.image }, cardImages: card?.querySelectorAll('.card-images').length, shown };
+})()`);
+const shot = await send('Page.captureScreenshot', { format: 'png' });
+fs.writeFileSync('F:/WorkSpaces/Mur rewards/.design/prototypes/player-lab/shots/cards-with-images-test.png', Buffer.from(shot.data, 'base64'));
+console.log(JSON.stringify(info, null, 2));
+ws.close(); process.exit(0);

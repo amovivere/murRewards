@@ -3741,3 +3741,166 @@ a:focus-visible {
   flex: 1;
   min-width: 0;
 }
+
+/* ==== картинки в карточке и настройках ==== */
+.play-large {
+  width: 60px;
+  height: 60px;
+  flex-basis: 60px;
+}
+
+.reward-card {
+  min-height: 210px;
+}
+
+.card-images {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid #2d2d36;
+  border-radius: 10px;
+  background: #15151a;
+}
+
+.card-images__stack {
+  position: relative;
+  width: 34px;
+  height: 30px;
+  flex: 0 0 34px;
+}
+
+.card-images__stack span {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid #4b3d66;
+  background: linear-gradient(135deg, #3b2d55, #1d2438);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.card-images__stack span:nth-child(1) { left: 0; top: 3px; transform: rotate(-9deg); }
+.card-images__stack span:nth-child(2) { left: 4px; top: 1px; transform: rotate(4deg); }
+.card-images__stack span:nth-child(3) { left: 8px; top: 0; transform: rotate(12deg); }
+
+.card-images__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-images__text strong {
+  display: block;
+  color: #eee9fb;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.card-images__text span {
+  display: block;
+  margin-top: 2px;
+  color: #91919c;
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 6px;
+}
+
+.image-chip {
+  position: relative;
+  width: 92px;
+  border: 1px solid #303039;
+  border-radius: 8px;
+  padding: 5px;
+  background: #151519;
+}
+
+.image-chip__preview {
+  height: 48px;
+  border-radius: 5px;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #8b00ff, #3b82f6);
+}
+
+.image-chip__preview--1 { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.image-chip__preview--2 { background: linear-gradient(135deg, #06b6d4, #22c55e); }
+.image-chip__preview--3 { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
+
+.image-chip__name {
+  color: #b8b8c3;
+  font-size: 9.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.image-chip__remove {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 18px;
+  height: 18px;
+  border: 0;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.image-add {
+  width: 92px;
+  min-height: 85px;
+  border: 1px dashed #3a3a45;
+  border-radius: 8px;
+  background: transparent;
+  color: #93939e;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.image-add:hover {
+  border-color: var(--accent);
+  color: #e9ddff;
+}
+
+.image-settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.image-preview {
+  margin-top: 8px;
+  border: 1px solid #2c2c35;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0b0b0e;
+}
+
+.image-preview__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 9px;
+  color: #858590;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.image-preview iframe {
+  display: block;
+  width: 100%;
+  height: 190px;
+  border: 0;
+  background: #0b0b0e;
+}

@@ -41,6 +41,23 @@ pub struct LocalBindingView {
     pub music: bool,
 }
 
+/// Картинка, привязанная к награде.
+#[derive(Clone, Serialize)]
+pub struct ImageInfoView {
+    pub path: String,
+    pub name: String,
+}
+
+/// Настройки появления картинки.
+#[derive(Clone, Serialize)]
+pub struct ImageAppearanceView {
+    pub max_angle_deg: f64,
+    pub size_pct: f64,
+    pub opacity: f64,
+    pub duration_ms: u64,
+    pub safe_margin_pct: f64,
+}
+
 /// Награда в том виде, в котором её удобно рисовать.
 #[derive(Clone, Serialize)]
 pub struct RewardView {
@@ -53,6 +70,8 @@ pub struct RewardView {
     pub has_sound: bool,
     pub file: Option<FileInfo>,
     pub playing: bool,
+    pub images: Vec<ImageInfoView>,
+    pub image: Option<ImageAppearanceView>,
 }
 
 /// Запись журнала для экрана «Журнал».
@@ -855,6 +874,27 @@ impl AppCore {
             .iter()
             .map(|reward| {
                 let file = inner.files.get(&reward.id).cloned();
+                let image_settings = settings
+                    .music
+                    .image_rewards
+                    .iter()
+                    .find(|image| image.reward_id == reward.id);
+                let images = image_settings
+                    .map(|image| {
+                        image
+                            .images
+                            .iter()
+                            .filter(|path| Path::new(path).is_file())
+                            .map(|path| ImageInfoView {
+                                path: path.clone(),
+                                name: Path::new(path)
+                                    .file_name()
+                                    .map(|name| name.to_string_lossy().into_owned())
+                                    .unwrap_or_else(|| path.clone()),
+                            })
+                            .collect()
+                    })
+                    .unwrap_or_default();
                 RewardView {
                     id: reward.id.clone(),
                     title: reward.title.clone(),
@@ -865,6 +905,14 @@ impl AppCore {
                     has_sound: file.as_ref().map(|file| file.exists).unwrap_or(false),
                     file,
                     playing: active.iter().any(|id| id == &reward.id),
+                    images,
+                    image: image_settings.map(|image| ImageAppearanceView {
+                        max_angle_deg: image.max_angle_deg,
+                        size_pct: image.size_pct,
+                        opacity: image.opacity,
+                        duration_ms: image.duration_ms,
+                        safe_margin_pct: image.safe_margin_pct,
+                    }),
                 }
             })
             .collect();
@@ -1313,6 +1361,171 @@ pub fn choose_ytdlp_cookies() -> Option<String> {
 #[tauri::command]
 pub fn check_ytdlp_cookies(path: String) -> bool {
     reward_sounds::music::cookies_have_youtube_login(Path::new(&path))
+}
+
+#[tauri::command]
+pub fn add_reward_images(
+    core: State<'_, Arc<AppCore>>,
+    reward_id: String,
+) -> Result<CoreView, String> {
+    let Some(files) = rfd::FileDialog::new()
+        .add_filter("Изображения", &["png", "jpg", "jpeg", "webp"])
+        .set_title("Добавить картинки к награде")
+        .pick_files()
+    else {
+        return Ok(core.view());
+    };
+    let reward_id = reward_id.trim().to_string();
+    if reward_id.is_empty() {
+        return Err("Не передана награда.".into());
+    }
+    let dir = core
+        .paths
+        .data_dir
+        .join("image-rewards")
+        .join(reward_id.chars().filter(|c| c.is_ascii_alphanumeric() || *c == '-' || *c == '_').collect::<String>());
+    std::fs::create_dir_all(&dir).map_err(|err| format!("Не удалось создать папку картинок: {err}"))?;
+    let mut added = Vec::new();
+    for (index, source) in files.iter().enumerate() {
+        let ext = source
+            .extension()
+            .and_then(|ext| ext.to_str())
+            .unwrap_or("")
+            .to_ascii_lowercase();
+        if !matches!(ext.as_str(), "png" | "jpg" | "jpeg" | "webp") {
+            continue;
+        }
+        let size = std::fs::metadata(source).map(|meta| meta.len()).unwrap_or(0);
+        if size == 0 || size > 8 * 1024 * 1024 {
+            continue;
+        }
+        let stamp = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|value| value.as_millis())
+            .unwrap_or(0);
+        let dest = dir.join(format!("img-{stamp}-{index}.{ext}"));
+        if std::fs::copy(source, &dest).is_ok() {
+            added.push(dest.to_string_lossy().into_owned());
+        }
+    }
+    if added.is_empty() {
+        return Err("Не выбрано ни одного поддерживаемого изображения (PNG/JPEG/WebP до 8 МБ).".into());
+    }
+    {
+        let mut inner = core.lock();
+        let entry = inner
+            .settings
+            .music
+            .image_rewards
+            .iter_mut()
+            .find(|image| image.reward_id == reward_id);
+        let entry = match entry {
+            Some(entry) => entry,
+            None => {
+                let mut entry = reward_sounds::config::ImageRewardSettings::default();
+                entry.reward_id = reward_id.clone();
+                inner.settings.music.image_rewards.push(entry);
+                inner
+                    .settings
+                    .music
+                    .image_rewards
+                    .last_mut()
+                    .expect("только что добавлена")
+            }
+        };
+        entry.images.extend(added);
+        entry.images.truncate(8);
+        let normalized = entry.clone().normalized();
+        *entry = normalized;
+    }
+    core.save();
+    Ok(core.view())
+}
+
+#[tauri::command]
+pub fn remove_reward_image(
+    core: State<'_, Arc<AppCore>>,
+    reward_id: String,
+    path: String,
+) -> CoreView {
+    {
+        let mut inner = core.lock();
+        if let Some(entry) = inner
+            .settings
+            .music
+            .image_rewards
+            .iter_mut()
+            .find(|image| image.reward_id == reward_id)
+        {
+            entry.images.retain(|item| item != &path);
+        }
+    }
+    core.save();
+    core.view()
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ImageSettingsPatch {
+    pub max_angle_deg: Option<f64>,
+    pub size_pct: Option<f64>,
+    pub opacity: Option<f64>,
+    pub duration_ms: Option<u64>,
+    pub safe_margin_pct: Option<f64>,
+}
+
+#[tauri::command]
+pub fn set_reward_image_settings(
+    core: State<'_, Arc<AppCore>>,
+    reward_id: String,
+    patch: ImageSettingsPatch,
+) -> CoreView {
+    {
+        let mut inner = core.lock();
+        if let Some(entry) = inner
+            .settings
+            .music
+            .image_rewards
+            .iter_mut()
+            .find(|image| image.reward_id == reward_id)
+        {
+            if let Some(value) = patch.max_angle_deg {
+                entry.max_angle_deg = value;
+            }
+            if let Some(value) = patch.size_pct {
+                entry.size_pct = value;
+            }
+            if let Some(value) = patch.opacity {
+                entry.opacity = value;
+            }
+            if let Some(value) = patch.duration_ms {
+                entry.duration_ms = value;
+            }
+            if let Some(value) = patch.safe_margin_pct {
+                entry.safe_margin_pct = value;
+            }
+            *entry = entry.clone().normalized();
+        }
+    }
+    core.save();
+    core.view()
+}
+
+#[tauri::command]
+pub fn preview_reward_image(core: State<'_, Arc<AppCore>>, reward_id: String) -> bool {
+    let image = {
+        let inner = core.lock();
+        inner
+            .settings
+            .music
+            .image_rewards
+            .iter()
+            .find(|image| image.reward_id == reward_id)
+            .cloned()
+    };
+    image
+        .map(|image| reward_sounds::image_reward::show(&image))
+        .unwrap_or(false)
 }
 
 #[tauri::command]

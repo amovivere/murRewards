@@ -38,6 +38,14 @@ function mapReward(reward) {
     playing: Boolean(reward.playing),
     requiresInput: Boolean(reward.requires_input),
     hasSound: Boolean(reward.has_sound),
+    images: reward.images || [],
+    imageSettings: reward.image || {
+      max_angle_deg: 40,
+      size_pct: 32,
+      opacity: 0.95,
+      duration_ms: 4000,
+      safe_margin_pct: 6,
+    },
   };
 }
 
@@ -131,6 +139,10 @@ function EditRewardModal({
   onRemoveSound,
   onPreviewSound,
   onVolumeChange,
+  onAddImages,
+  onRemoveImage,
+  onImageSettings,
+  onPreviewImage,
 }) {
   const [name, setName] = useState('');
   const [cost, setCost] = useState('100');
@@ -237,6 +249,45 @@ function EditRewardModal({
           )}
           <div className="modal-hint">Файл и громкость сохраняются отдельно, сразу после изменения.</div>
         </div>
+
+        <div className="modal-divider" />
+        <div className="modal-field">
+          <span>КАРТИНКИ НА ЭКРАНЕ</span>
+          <div className="image-gallery">
+            {reward.images.map((image, index) => (
+              <div className="image-chip" key={image.path || index}>
+                <div className={`image-chip__preview image-chip__preview--${index % 4}`} aria-hidden="true" />
+                <div className="image-chip__name" title={image.path}>{image.name}</div>
+                <button type="button" className="image-chip__remove" aria-label={`Убрать ${image.name}`} onClick={() => onRemoveImage?.(reward, image)}>×</button>
+              </div>
+            ))}
+            {reward.images.length < 8 ? (
+              <button type="button" className="image-add" onClick={() => onAddImages?.(reward)}>
+                + Добавить
+              </button>
+            ) : null}
+          </div>
+          <div className="modal-hint">При активации выбирается случайная картинка и появляется в случайном месте OBS.</div>
+        </div>
+
+        {reward.images.length > 0 ? (
+          <>
+            <div className="image-settings-grid">
+              <SliderRow label="Угол" value={Math.round(reward.imageSettings.max_angle_deg)} min={0} max={40} unit="°" onChange={(value) => onImageSettings?.(reward, { maxAngleDeg: value })} />
+              <SliderRow label="Размер" value={Math.round(reward.imageSettings.size_pct)} min={12} max={60} unit="%" onChange={(value) => onImageSettings?.(reward, { sizePct: value })} />
+              <SliderRow label="Длительность" value={(reward.imageSettings.duration_ms / 1000).toFixed(1)} min={1} max={10} step={0.5} unit=" с" onChange={(value) => onImageSettings?.(reward, { durationMs: Math.round(value * 1000) })} />
+              <SliderRow label="Прозрачность" value={Math.round(reward.imageSettings.opacity * 100)} min={50} max={100} unit="%" onChange={(value) => onImageSettings?.(reward, { opacity: value / 100 })} />
+              <SliderRow label="Safe area" value={Math.round(reward.imageSettings.safe_margin_pct)} min={0} max={15} unit="%" onChange={(value) => onImageSettings?.(reward, { safeMarginPct: value })} />
+            </div>
+            <div className="image-preview">
+              <div className="image-preview__head">
+                <span>ПРЕВЬЮ OBS</span>
+                <Button variant="secondary" size="sm" onClick={() => onPreviewImage?.(reward)}>Показать картинку</Button>
+              </div>
+              <iframe title="Превью картинки награды" src="http://127.0.0.1:8770/image-reward" />
+            </div>
+          </>
+        ) : null}
       </div>
     </Modal>
   );
@@ -491,6 +542,57 @@ export default function RewardsPage({ backend }) {
     }
   }
 
+  async function addImages(reward) {
+    if (!real) {
+      notify('Добавление картинок доступно в приложении');
+      return;
+    }
+    try {
+      const next = await backend.call('add_reward_images', { rewardId: reward.id });
+      const updated = next?.rewards?.find((item) => item.id === reward.id);
+      if (updated) setEditTarget(mapReward(updated));
+      notify('Картинки добавлены');
+    } catch (error) {
+      notify(`Не удалось добавить картинки: ${error}`);
+    }
+  }
+
+  async function removeImage(reward, image) {
+    if (!real) return;
+    try {
+      const next = await backend.call('remove_reward_image', { rewardId: reward.id, path: image.path });
+      const updated = next?.rewards?.find((item) => item.id === reward.id);
+      if (updated) setEditTarget(mapReward(updated));
+      notify('Картинка убрана');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function setImageSettings(reward, patch) {
+    if (!real) return;
+    try {
+      const next = await backend.call('set_reward_image_settings', { rewardId: reward.id, patch });
+      const updated = next?.rewards?.find((item) => item.id === reward.id);
+      if (updated) setEditTarget(mapReward(updated));
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function previewRewardImage(reward) {
+    if (!real) {
+      notify('Превью доступно в приложении');
+      return;
+    }
+    try {
+      const shown = await backend.call('preview_reward_image', { rewardId: reward.id });
+      notify(shown ? 'Картинка показана в OBS-превью' : 'Сначала добавьте картинки');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
   async function stopAll() {
     if (!real) {
       notify('Звуки остановлены');
@@ -649,6 +751,19 @@ export default function RewardsPage({ backend }) {
                 )}
               </div>
             </div>
+
+            {reward.images.length > 0 ? (
+              <div className="card-images">
+                <div className="card-images__stack" aria-hidden="true">
+                  <span /><span /><span />
+                </div>
+                <div className="card-images__text">
+                  <strong>{reward.images.length} картинок · случайная</strong>
+                  <span>появится в OBS под углом ±{Math.round(reward.imageSettings.max_angle_deg)}°</span>
+                </div>
+                <Button variant="secondary" size="sm" onClick={() => setEditTarget(reward)}>Настроить</Button>
+              </div>
+            ) : null}
           </article>
         ))}
       </div>
@@ -674,6 +789,10 @@ export default function RewardsPage({ backend }) {
         onRemoveSound={removeSound}
         onPreviewSound={previewSound}
         onVolumeChange={changeVolume}
+        onAddImages={addImages}
+        onRemoveImage={removeImage}
+        onImageSettings={setImageSettings}
+        onPreviewImage={previewRewardImage}
       />
       <DeleteRewardModal reward={deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={confirmDelete} returnFocus={menuTriggerRef.current} />
       {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}

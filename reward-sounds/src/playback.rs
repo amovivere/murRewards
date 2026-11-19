@@ -9,13 +9,14 @@ use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
 use crate::audio::{self, AudioEngine};
-use crate::config::Settings;
+use crate::config::{ImageRewardSettings, Settings};
 use crate::eventsub::Redemption;
 
 /// Актуальные настройки проигрывания, общие для UI и сервиса EventSub.
 #[derive(Debug, Clone)]
 pub struct PlaybackState {
     bindings: HashMap<String, (String, f32)>,
+    image_rewards: HashMap<String, ImageRewardSettings>,
     volume: f32,
     enabled: bool,
 }
@@ -24,6 +25,7 @@ impl Default for PlaybackState {
     fn default() -> Self {
         Self {
             bindings: HashMap::new(),
+            image_rewards: HashMap::new(),
             volume: 0.8,
             enabled: true,
         }
@@ -43,6 +45,13 @@ impl PlaybackState {
                     (reward.path.clone(), reward.volume as f32),
                 )
             })
+            .collect();
+        self.image_rewards = settings
+            .music
+            .image_rewards
+            .iter()
+            .filter(|reward| !reward.reward_id.is_empty() && !reward.images.is_empty())
+            .map(|reward| (reward.reward_id.clone(), reward.clone()))
             .collect();
         self.volume = settings.effective_volume();
         self.enabled = settings.playback_enabled;
@@ -83,7 +92,7 @@ impl Playback {
 
     /// Играет звук награды (или пишет понятную причину, почему нет).
     pub fn play(&self, redemption: &Redemption) {
-        let (binding, volume, enabled) = {
+        let (binding, image, volume, enabled) = {
             let Ok(state) = self.state.lock() else {
                 log::error!("Не удалось получить настройки проигрывания");
                 return;
@@ -93,10 +102,21 @@ impl Playback {
                     .bindings
                     .get(&redemption.reward_id)
                     .map(|(path, volume)| (path.clone(), *volume)),
+                state.image_rewards.get(&redemption.reward_id).cloned(),
                 state.volume(),
                 state.is_enabled(),
             )
         };
+
+        // Картинка — отдельная часть награды: показываем даже при выключенных звуках.
+        if let Some(image) = image.as_ref() {
+            if crate::image_reward::show(image) {
+                log::info!(
+                    "Картинка награды «{}» показана в OBS",
+                    redemption.reward_title
+                );
+            }
+        }
 
         if !enabled {
             log::info!(

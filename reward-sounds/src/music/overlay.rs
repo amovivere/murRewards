@@ -18,6 +18,8 @@ pub const PORT: u16 = 8770;
 
 /// Готовая страница (вшита в бинарник).
 const PAGE: &str = include_str!("../../assets/overlay.html");
+/// Страница оверлея «картинка награды».
+const IMAGE_PAGE: &str = include_str!("../../assets/image-reward.html");
 
 /// Страница чат-оверлея (перенесена из reference-проекта twitch-chat-overlay).
 const CHAT_OVERLAY_PAGE: &str = include_str!("../../assets/chat-overlay.html");
@@ -89,6 +91,28 @@ fn handle(mut stream: TcpStream, state: &Arc<Mutex<Snapshot>>) {
         .map(|index| index + 4)
         .unwrap_or(buffer.len());
     let body = &buffer[body_start.min(buffer.len())..];
+
+    if path.starts_with("/image-reward/media") {
+        let Some(bytes) = crate::image_reward::media_bytes() else {
+            let body = b"not found";
+            let header = format!(
+                "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+                body.len()
+            );
+            let _ = stream.write_all(header.as_bytes());
+            let _ = stream.write_all(body);
+            return;
+        };
+        let content_type = crate::image_reward::content_type_for(&bytes);
+        let header = format!(
+            "HTTP/1.1 200 OK\r\nContent-Type: {content_type}\r\nCache-Control: no-store\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+            bytes.len()
+        );
+        let _ = stream.write_all(header.as_bytes());
+        let _ = stream.write_all(&bytes);
+        let _ = stream.flush();
+        return;
+    }
 
     let (status, content_type, body) = if method == "POST" && path.starts_with("/chat-overlay/save") {
         save_chat_overlay(body)
@@ -172,7 +196,14 @@ fn save_chat_overlay(body: &[u8]) -> (u16, &'static str, String) {
 /// `/overlay` и `/state` — оверлей музыки, `/chat-overlay` — оверлей чата
 /// (страница, настройки и конфигуратор).
 fn response_for(path: &str, state: &Arc<Mutex<Snapshot>>) -> (&'static str, String) {
-    if path.starts_with("/chat-overlay/settings.js") {
+    if path.starts_with("/image-reward/state") {
+        (
+            "application/json; charset=utf-8",
+            crate::image_reward::state_json(),
+        )
+    } else if path.starts_with("/image-reward") {
+        ("text/html; charset=utf-8", IMAGE_PAGE.to_string())
+    } else if path.starts_with("/chat-overlay/settings.js") {
         ("application/javascript; charset=utf-8", chat_overlay_settings())
     } else if path.starts_with("/chat-overlay/config") {
         ("text/html; charset=utf-8", CHAT_CONFIG_PAGE.to_string())

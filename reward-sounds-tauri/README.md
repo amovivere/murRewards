@@ -101,9 +101,9 @@ cargo build --release
 ## Тесты
 
 - `cargo test --release` в `src-tauri` — 5 тестов Tauri-ядра.
-- `cargo test --release` в `reward-sounds` — 99 юнит-тестов библиотеки
+- `cargo test --release` в `reward-sounds` — 100 юнит-тестов библиотеки
   (+ 5 интеграционных), включая оверлей.
-- `node tests-ui/run.mjs` из `reward-sounds-tauri` — **42 проверки** реального
+- `node tests-ui/run.mjs` из `reward-sounds-tauri` — **43 проверки** реального
   React-окна через DevTools Protocol: вкладки, реальные данные, оверлей,
   настройки, журнал, модалка, отсутствие ошибок. Требуется Node.js 20+,
   приложение должно быть закрыто. Подробнее — `tests-ui/README.md`.

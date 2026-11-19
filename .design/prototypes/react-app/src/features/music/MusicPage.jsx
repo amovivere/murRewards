@@ -28,6 +28,8 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
   const [prefetch, setPrefetch] = useState(true);
   const [pauseYandex, setPauseYandex] = useState(true);
   const [restoreQueue, setRestoreQueue] = useState(true);
+  const [cooldown, setCooldown] = useState(0);
+  const [blocked, setBlocked] = useState('');
   const [cookiesFile, setCookiesFile] = useState('');
   const [cookiesOk, setCookiesOk] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -41,6 +43,8 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
     setPrefetch(music.prefetch !== false);
     setPauseYandex(music.pause_yandex !== false);
     setRestoreQueue(music.restore_queue !== false);
+    setCooldown(music.request_cooldown_sec || 0);
+    setBlocked((music.blocked_videos || []).join('\n'));
     setCookiesFile(music.cookies_file || '');
     setCookiesOk(null);
     if (music.cookies_file) {
@@ -63,6 +67,8 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
         pauseYandex,
         restoreQueue,
         enabled: autoplay,
+        requestCooldownSec: cooldown,
+        blockedVideos: blocked.split(/[\n,]+/).map((id) => id.trim()).filter(Boolean),
         cookiesFile,
       });
       onClose();
@@ -90,6 +96,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
           <SliderRow label="Треков в очереди" value={maxQueue} min={1} max={30} onChange={setMaxQueue} />
           <SliderRow label="Макс. длительность" value={maxDuration} min={1} max={60} unit=" мин" onChange={setMaxDuration} />
           <SliderRow label="Оверлей после старта" value={overlaySeconds} min={0} max={60} unit=" с" onChange={setOverlaySeconds} />
+          <SliderRow label="Кулдаун заявок" value={cooldown} min={0} max={600} step={5} unit=" с" onChange={setCooldown} />
         </div>
         <div className="switch-list">
           <ToggleRow label="Играть сразу после активации" checked={autoplay} onChange={setAutoplay} trailing={autoplay ? 'вкл' : 'выкл'} />
@@ -98,6 +105,16 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
           <ToggleRow label="Восстанавливать очередь" checked={restoreQueue} onChange={setRestoreQueue} trailing={restoreQueue ? 'вкл' : 'выкл'} />
         </div>
         <div className="modal-hint">Оверлей показывается только когда играет трек.</div>
+        <label className="modal-field">
+          <span>БЛОК-ЛИСТ ВИДЕО</span>
+          <textarea
+            className="ui-input modal-textarea"
+            value={blocked}
+            placeholder="ID видео YouTube, по одному на строку (например dQw4w9WgXcQ)"
+            onChange={(event) => setBlocked(event.target.value)}
+          />
+          <div className="modal-hint">Заблокированные видео не принимаются в очередь.</div>
+        </label>
         <label className="modal-field">
           <span>COOKIES YOUTUBE</span>
           <div className="inline-row">
@@ -233,8 +250,11 @@ export default function MusicPage({ backend }) {
   const [removeTarget, setRemoveTarget] = useState(null);
   const [skipOpen, setSkipOpen] = useState(false);
   const [skipReason, setSkipReason] = useState('wrong');
+  const [blockCurrent, setBlockCurrent] = useState(false);
   const [optimisticPaused, setOptimisticPaused] = useState(null);
+  const [undoVisible, setUndoVisible] = useState(false);
   const [toast, setToast] = useState('');
+  const undoTimer = useRef(null);
   const [url, setUrl] = useState(() => sessionStorage.getItem('rs.music.url') || '');
 
   useEffect(() => {
@@ -253,6 +273,9 @@ export default function MusicPage({ backend }) {
   const nextItem = items.find((item) => item.id !== current?.id && item.state === 'queued')
     || items.find((item) => item.id !== current?.id);
   const queuedCount = items.filter((item) => item.state === 'queued').length;
+  const playedCount = items.filter((item) => item.state === 'done').length;
+  const skippedCount = items.filter((item) => item.state === 'skipped').length;
+  const failedCount = items.filter((item) => item.state === 'failed').length;
   const paused = optimisticPaused ?? player.paused;
 
   useEffect(() => {
@@ -394,15 +417,43 @@ export default function MusicPage({ backend }) {
 
   function openSkip() {
     setSkipReason('wrong');
+    setBlockCurrent(false);
     setSkipOpen(true);
   }
 
   async function confirmSkip() {
     const reason = SKIP_REASONS.find((item) => item.id === skipReason) || SKIP_REASONS[0];
+    const videoId = current?.video_id;
     await action('music_skip', { reason: reason.label });
+    if (blockCurrent && real && videoId) {
+      const blocked = Array.from(new Set([...(music?.blocked_videos || []), videoId]));
+      await backend.call('set_music_settings', { patch: { blockedVideos: blocked } });
+    }
     setSkipOpen(false);
+    setUndoVisible(true);
+    window.clearTimeout(undoTimer.current);
+    undoTimer.current = window.setTimeout(() => setUndoVisible(false), 8000);
     notify(`Пропущено: ${reason.label.toLowerCase()} · баллы вернутся зрителю`);
   }
+
+  async function undoSkip() {
+    setUndoVisible(false);
+    window.clearTimeout(undoTimer.current);
+    if (!real) {
+      notify('Пропуск отменён (прототип)');
+      return;
+    }
+    try {
+      await backend.call('music_undo_skip');
+      notify('Пропуск отменён — трек вернулся в начало очереди');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  useEffect(() => {
+    return () => window.clearTimeout(undoTimer.current);
+  }, []);
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -591,6 +642,26 @@ export default function MusicPage({ backend }) {
             </div>
           </Panel>
 
+          <Panel title="Статистика эфира">
+            <div className="music-stats">
+              <div className="music-stat">
+                <strong>{playedCount}</strong>
+                <span>сыграно</span>
+              </div>
+              <div className="music-stat">
+                <strong>{skippedCount}</strong>
+                <span>пропущено</span>
+              </div>
+              <div className="music-stat">
+                <strong>{failedCount}</strong>
+                <span>ошибок</span>
+              </div>
+            </div>
+            <div className="muted-line">
+              Блок-лист: {music?.blocked_videos?.length || 0} · кулдаун: {music?.request_cooldown_sec || 0} с
+            </div>
+          </Panel>
+
           <Panel title="OBS — строка «Сейчас играет»" actions={<Button variant="ghost" size="sm" onClick={() => setObsOpen(true)}>Настроить</Button>}>
             <div className="inline-row">
               <code className="url-code">http://127.0.0.1:8770/overlay</code>
@@ -634,6 +705,10 @@ export default function MusicPage({ backend }) {
             </label>
           ))}
         </div>
+        <label className="modal-check">
+          <input type="checkbox" checked={blockCurrent} onChange={(event) => setBlockCurrent(event.target.checked)} />
+          <span>Добавить видео в блок-лист, чтобы его больше не заказывали</span>
+        </label>
         <div className="modal-hint">Баллы вернутся зрителю, событие попадёт в журнал.</div>
       </Modal>
 
@@ -680,7 +755,12 @@ export default function MusicPage({ backend }) {
         onClose={() => setRemoveTarget(null)}
         onConfirm={removeItem}
       />
-      {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}
+      {undoVisible ? (
+        <div className="ui-toast ui-toast--action" role="status" aria-live="polite">
+          <span>Трек пропущен, баллы вернутся</span>
+          <button type="button" onClick={undoSkip}>Отменить</button>
+        </div>
+      ) : toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}
     </div>
   );
 }

@@ -246,6 +246,22 @@ impl Queue {
         Some(item)
     }
 
+    /// Возвращает пропущенную заявку в начало очереди.
+    pub fn requeue_front(&mut self, redemption_id: &str) -> bool {
+        let Some(index) = self
+            .items
+            .iter()
+            .position(|item| item.redemption_id == redemption_id)
+        else {
+            return false;
+        };
+        let mut item = self.items.remove(index);
+        item.state = ItemState::Queued;
+        item.error = None;
+        self.items.insert(0, item);
+        true
+    }
+
     /// Помечает заявку завершённой.
     pub fn complete(&mut self, redemption_id: &str, state: ItemState) -> bool {
         match self
@@ -469,6 +485,19 @@ mod tests {
         queue.complete("redemption-a", ItemState::Done);
         assert_eq!(queue.pending(), 0, "завершённые не занимают место");
         assert!(queue.has_room());
+    }
+
+    #[test]
+    fn requeues_skipped_item_to_front() {
+        let mut queue = Queue::new(10, 480);
+        queue.push(item("a", "1")).unwrap();
+        queue.push(item("b", "2")).unwrap();
+        let first = queue.take_next().expect("первая заявка");
+        queue.complete(&first.redemption_id, ItemState::Skipped);
+        assert!(queue.requeue_front(&first.redemption_id));
+        let first_again = queue.take_next().expect("после отмены пропуска");
+        assert_eq!(first_again.redemption_id, first.redemption_id);
+        assert_eq!(first_again.state, ItemState::Playing);
     }
 
     #[test]

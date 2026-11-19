@@ -138,6 +138,8 @@ pub struct MusicView {
     pub max_queue: usize,
     pub max_duration_sec: u64,
     pub pause_yandex: bool,
+    pub request_cooldown_sec: u64,
+    pub blocked_videos: Vec<String>,
     pub restore_queue: bool,
     pub prefetch: bool,
     pub volume: f64,
@@ -238,6 +240,8 @@ impl AppCore {
             max_duration_sec: settings.music.max_duration_sec,
             volume: settings.music.volume_f32(),
             pause_yandex: settings.music.pause_yandex,
+            request_cooldown_sec: settings.music.request_cooldown_sec,
+            blocked_videos: settings.music.blocked_videos.clone(),
             channel: settings.twitch.login.clone(),
             restore_queue: settings.music.restore_queue,
             overlay_seconds: settings.music.overlay_seconds,
@@ -1085,6 +1089,8 @@ fn music_view(snapshot: &music::Snapshot, settings: &Settings) -> MusicView {
         max_queue: settings.music.max_queue,
         max_duration_sec: settings.music.max_duration_sec,
         pause_yandex: settings.music.pause_yandex,
+        request_cooldown_sec: settings.music.request_cooldown_sec,
+        blocked_videos: settings.music.blocked_videos.clone(),
         restore_queue: settings.music.restore_queue,
         prefetch: settings.music.prefetch,
         volume: settings.music.music_volume,
@@ -1777,6 +1783,12 @@ pub fn music_next(core: State<'_, Arc<AppCore>>) -> CoreView {
 }
 
 #[tauri::command]
+pub fn music_undo_skip(core: State<'_, Arc<AppCore>>) -> CoreView {
+    core.lock().music.undo_skip();
+    core.view()
+}
+
+#[tauri::command]
 pub fn music_skip(core: State<'_, Arc<AppCore>>, reason: Option<String>) -> CoreView {
     core.lock()
         .music
@@ -1859,6 +1871,8 @@ pub struct MusicSettingsPatch {
     pub max_queue: Option<usize>,
     pub max_duration_sec: Option<u64>,
     pub pause_yandex: Option<bool>,
+    pub request_cooldown_sec: Option<u64>,
+    pub blocked_videos: Option<Vec<String>>,
     pub restore_queue: Option<bool>,
     pub prefetch: Option<bool>,
     pub overlay_seconds: Option<u64>,
@@ -1882,6 +1896,16 @@ fn apply_music_patch(music: &mut reward_sounds::config::MusicSettings, patch: &M
     }
     if let Some(value) = patch.pause_yandex {
         music.pause_yandex = value;
+    }
+    if let Some(value) = patch.request_cooldown_sec {
+        music.request_cooldown_sec = value.min(3600);
+    }
+    if let Some(value) = &patch.blocked_videos {
+        music.blocked_videos = value
+            .iter()
+            .map(|id| id.trim().to_string())
+            .filter(|id| !id.is_empty())
+            .collect();
     }
     if let Some(value) = patch.restore_queue {
         music.restore_queue = value;
@@ -2113,6 +2137,8 @@ fn music_config(settings: &Settings) -> music::Config {
         max_duration_sec: settings.music.max_duration_sec,
         volume: settings.music.volume_f32(),
         pause_yandex: settings.music.pause_yandex,
+        request_cooldown_sec: settings.music.request_cooldown_sec,
+        blocked_videos: settings.music.blocked_videos.clone(),
         channel: settings.twitch.login.clone(),
         restore_queue: settings.music.restore_queue,
         overlay_seconds: settings.music.overlay_seconds,
@@ -2132,6 +2158,8 @@ mod tests {
             max_queue: None,
             max_duration_sec: None,
             pause_yandex: None,
+            request_cooldown_sec: None,
+            blocked_videos: None,
             restore_queue: None,
             prefetch: None,
             overlay_seconds: None,

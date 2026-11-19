@@ -28,6 +28,8 @@ fn main() {
         max_duration_sec: 480,
         volume: 0.7,
         pause_yandex: false,
+        request_cooldown_sec: 0,
+        blocked_videos: Vec::new(),
         channel: String::new(),
         restore_queue: false,
         overlay_seconds: 10,
@@ -91,7 +93,7 @@ fn main() {
                     redemption_id,
                     reason,
                 } => println!("[!] {redemption_id}: ошибка — {reason}"),
-                MusicEvent::Skipped { redemption_id } => {
+                MusicEvent::Skipped { redemption_id, .. } => {
                     println!("[→] {redemption_id}: пропущено")
                 }
             }
@@ -99,7 +101,7 @@ fn main() {
 
         if let Some(deadline) = skip_at {
             if Instant::now() >= deadline {
-                service.skip();
+                service.skip("демо-пропуск");
                 skip_at = None;
             }
         }

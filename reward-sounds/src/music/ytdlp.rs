@@ -581,7 +581,9 @@ mod tests {
 
     #[test]
     fn detects_youtube_login_cookies() {
-        let path = std::env::temp_dir().join("reward-sounds-cookies-test.txt");
+        let dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("target/test-tmp");
+        std::fs::create_dir_all(&dir).expect("тестовая папка");
+        let path = dir.join("reward-sounds-cookies-test.txt");
         std::fs::write(
             &path,
             "# Netscape HTTP Cookie File\n.youtube.com\tTRUE\t/\tTRUE\t0\tSID\tsecret\n.google.com\tTRUE\t/\tFALSE\t0\tNID\tvisitor\n",

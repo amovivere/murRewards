@@ -168,6 +168,12 @@ async function run() {
   })()`);
   assert('музыка: у плеера есть громкость и крупные кнопки', Boolean(playerControls.volume) && playerControls.sizes.length >= 3 && playerControls.sizes.every(([, h]) => h >= 40), JSON.stringify(playerControls));
   assert('музыка: «Следующий» и «Пропустить» — разные кнопки', playerControls.labels.some((l) => l.includes('Следующий')) && playerControls.labels.some((l) => l.includes('Пропустить')) && playerControls.rules >= 2, JSON.stringify(playerControls));
+  const queueLayout = await evaluate(`(() => {
+    const stage = document.querySelector('.music-stage')?.getBoundingClientRect();
+    const queue = document.querySelector('.music-layout .two-col > .ui-panel')?.getBoundingClientRect();
+    return stage && queue ? { stageRight: Math.round(stage.right), queueLeft: Math.round(queue.left) } : null;
+  })()`);
+  assert('музыка: очередь справа от сцены', Boolean(queueLayout) && queueLayout.queueLeft >= queueLayout.stageRight, JSON.stringify(queueLayout));
   const skipButtonEnabled = await evaluate(`(() => { const b = Array.from(document.querySelectorAll('.music-transport .ui-button')).find((x) => x.textContent.includes('Пропустить')); return !!b && !b.disabled; })()`);
   let skipDialogOk = true;
   if (skipButtonEnabled) {

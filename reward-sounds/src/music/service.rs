@@ -7,12 +7,12 @@
 //! Работает в отдельном потоке: проверка ссылки и загрузка аудио занимают
 //! несколько секунд, и ни интерфейс, ни EventSub ждать не должны.
 
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use std::sync::mpsc::{self, Receiver, RecvTimeoutError, Sender};
 use std::sync::{Arc, Mutex};
 use std::thread;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 use super::links;
 use super::player::{Player, PlayerState, DEFAULT_VOLUME};
@@ -30,6 +30,10 @@ pub struct Config {
     pub volume: f32,
     /// Ставить Яндекс Музыку на паузу на время заявок и возвращать после.
     pub pause_yandex: bool,
+    /// Кулдаун между заявками одного зрителя, секунды.
+    pub request_cooldown_sec: u64,
+    /// ID видео, запрещённые к заказу.
+    pub blocked_videos: Vec<String>,
     /// Канал Twitch (нужен для чтения команды из чата).
     pub channel: String,
     /// Восстанавливать очередь после перезапуска.
@@ -58,6 +62,8 @@ impl Default for Config {
             overlay_position: "top".to_string(),
             overlay_font: 17,
             cookies_file: String::new(),
+            request_cooldown_sec: 0,
+            blocked_videos: Vec::new(),
         }
     }
 }
@@ -153,6 +159,7 @@ pub(super) enum Cmd {
     Skip(String),
     /// Перейти к следующему треку: текущий считается отработанным (без возврата баллов).
     Next,
+    UndoSkip,
     ClearQueue,
     RemoveItem(String),
     MoveUp(String),
@@ -255,6 +262,11 @@ impl MusicService {
         let _ = self.tx.send(Cmd::Next);
     }
 
+    /// Возвращает последнюю пропущенную заявку в начало очереди.
+    pub fn undo_skip(&self) {
+        let _ = self.tx.send(Cmd::UndoSkip);
+    }
+
     pub fn clear_queue(&self) {
         let _ = self.tx.send(Cmd::ClearQueue);
     }
@@ -324,6 +336,8 @@ fn run(
     let mut queue = Queue::new(config.max_queue, config.max_duration_sec);
     let mut prefetch = Prefetch::new();
     let mut current: Option<QueueItem> = None;
+    let mut last_skipped: Option<QueueItem> = None;
+    let mut last_request: HashMap<String, Instant> = HashMap::new();
     let mut loading: HashSet<String> = HashSet::new();
     /// Яндекс Музыка была поставлена на паузу нами — её нужно вернуть.
     let mut yandex_paused = false;
@@ -414,16 +428,37 @@ fn run(
                 } else {
                     match links::parse(&user_input) {
                         Ok(link) => {
-                            let item = QueueItem::new(
-                                redemption_id.clone(),
-                                &link.video_id,
-                                &link.url,
-                                user_login,
-                                redeemed_at,
-                            );
-                            if let Some(exe) = exe.clone() {
-                                validating.insert(redemption_id.clone());
-                                spawn_validate(exe, temp_dir.clone(), config.cookies_file.clone(), item, tx.clone());
+                            if config.blocked_videos.iter().any(|id| id == &link.video_id) {
+                                reject(&events, redemption_id, "Это видео в блок-листе канала".into());
+                            } else {
+                                let cooldown = config.request_cooldown_sec;
+                                let cooling = cooldown > 0
+                                    && last_request
+                                        .get(&user_login)
+                                        .map(|at| at.elapsed().as_secs() < cooldown)
+                                        .unwrap_or(false);
+                                if cooling {
+                                    reject(
+                                        &events,
+                                        redemption_id,
+                                        format!("Кулдаун: следующую заявку можно через {cooldown} с"),
+                                    );
+                                } else {
+                                    if cooldown > 0 {
+                                        last_request.insert(user_login.clone(), Instant::now());
+                                    }
+                                    let item = QueueItem::new(
+                                        redemption_id.clone(),
+                                        &link.video_id,
+                                        &link.url,
+                                        user_login,
+                                        redeemed_at,
+                                    );
+                                    if let Some(exe) = exe.clone() {
+                                        validating.insert(redemption_id.clone());
+                                        spawn_validate(exe, temp_dir.clone(), config.cookies_file.clone(), item, tx.clone());
+                                    }
+                                }
                             }
                         }
                         Err(err) => reject(&events, redemption_id, err.message()),
@@ -440,20 +475,24 @@ fn run(
                 } else {
                     match links::parse(&user_input) {
                         Ok(link) => {
-                            let stamp = std::time::SystemTime::now()
-                                .duration_since(std::time::UNIX_EPOCH)
-                                .map(|d| d.as_millis())
-                                .unwrap_or(0);
-                            let item = QueueItem::new(
-                                format!("manual-{stamp}"),
-                                &link.video_id,
-                                &link.url,
-                                "manual",
-                                stamp.to_string(),
-                            );
-                            if let Some(exe) = exe.clone() {
-                                validating.insert(item.redemption_id.clone());
-                                spawn_validate(exe, temp_dir.clone(), config.cookies_file.clone(), item, tx.clone());
+                            if config.blocked_videos.iter().any(|id| id == &link.video_id) {
+                                log::warn!("Музыка: ручная ссылка {} в блок-листе", link.video_id);
+                            } else {
+                                let stamp = std::time::SystemTime::now()
+                                    .duration_since(std::time::UNIX_EPOCH)
+                                    .map(|d| d.as_millis())
+                                    .unwrap_or(0);
+                                let item = QueueItem::new(
+                                    format!("manual-{stamp}"),
+                                    &link.video_id,
+                                    &link.url,
+                                    "manual",
+                                    stamp.to_string(),
+                                );
+                                if let Some(exe) = exe.clone() {
+                                    validating.insert(item.redemption_id.clone());
+                                    spawn_validate(exe, temp_dir.clone(), config.cookies_file.clone(), item, tx.clone());
+                                }
                             }
                         }
                         Err(err) => log::warn!("Музыка: ручная ссылка не разобрана — {}", err.message()),
@@ -543,11 +582,20 @@ fn run(
                     awaiting_start = None;
                     player.stop().ok();
                     queue.complete(&item.redemption_id, ItemState::Skipped);
+                    last_skipped = Some(item.clone());
                     let _ = events.send(MusicEvent::Skipped {
                         redemption_id: item.redemption_id,
                         reason,
                     });
                     persist_queue(&queue, &queue_file, config.restore_queue);
+                }
+            }
+            Ok(Cmd::UndoSkip) => {
+                if let Some(item) = last_skipped.take() {
+                    if queue.requeue_front(&item.redemption_id) {
+                        log::info!("Музыка: пропуск отменён — «{}» возвращён", item.label());
+                        persist_queue(&queue, &queue_file, config.restore_queue);
+                    }
                 }
             }
             Ok(Cmd::ClearQueue) => {

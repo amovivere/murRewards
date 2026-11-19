@@ -76,8 +76,12 @@ pub struct MusicSettings {
     pub music_volume: f64,
     /// Восстанавливать очередь после перезапуска.
     pub restore_queue: bool,
-    /// Ставить Яндекс Музыку на паузу на время заявок и возвращать после.
+    /// Пауза Яндекс Музыки на время заявок и возврат после.
     pub pause_yandex: bool,
+    /// Кулдаун между заявками одного зрителя, секунды (0 — без кулдауна).
+    pub request_cooldown_sec: u64,
+    /// ID видео YouTube, которые нельзя заказывать.
+    pub blocked_videos: Vec<String>,
     /// Сколько секунд показывать строку «Сейчас играет» в оверлее.
     pub overlay_seconds: u64,
     /// Где показывать строку: `top` или `bottom`.
@@ -102,6 +106,8 @@ impl Default for MusicSettings {
             music_volume: 0.7,
             restore_queue: true,
             pause_yandex: true,
+            request_cooldown_sec: 0,
+            blocked_videos: Vec::new(),
             overlay_seconds: 10,
             overlay_position: "top".to_string(),
             overlay_font: 17,

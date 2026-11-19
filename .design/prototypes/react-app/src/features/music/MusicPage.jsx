@@ -21,6 +21,7 @@ const SKIP_REASONS = [
 ];
 
 const SCENES_KEY = 'rs.music.scenes';
+let autoDjArmedInMemory = false;
 const DEFAULT_SCENES = [
   { id: 'stream', name: 'Стрим', patch: { enabled: true, maxQueue: 10, maxDurationSec: 480, requestCooldownSec: 0, autodj: false } },
   { id: 'requests', name: 'Только заявки', patch: { enabled: true, maxQueue: 8, maxDurationSec: 300, requestCooldownSec: 60, autodj: false } },
@@ -294,6 +295,7 @@ export default function MusicPage({ backend }) {
   const [toast, setToast] = useState('');
   const undoTimer = useRef(null);
   const autoDjRef = useRef({ at: 0, index: 0 });
+  const [autoDjArmed, setAutoDjArmed] = useState(() => autoDjArmedInMemory);
   const [url, setUrl] = useState(() => sessionStorage.getItem('rs.music.url') || '');
 
   useEffect(() => {
@@ -316,6 +318,7 @@ export default function MusicPage({ backend }) {
   const skippedCount = items.filter((item) => item.state === 'skipped').length;
   const failedCount = items.filter((item) => item.state === 'failed').length;
   const paused = optimisticPaused ?? player.paused;
+  const autoDjReady = Boolean(music?.autodj && (music.autodj_playlist || []).length > 0);
 
   useEffect(() => {
     if (optimisticPaused === null) return undefined;
@@ -340,7 +343,7 @@ export default function MusicPage({ backend }) {
   }, []);
 
   useEffect(() => {
-    if (!real || !music?.autodj) return;
+    if (!autoDjArmed || !real || !music?.autodj) return;
     const playlist = (music.autodj_playlist || []).filter(Boolean);
     if (!playlist.length || current || queuedCount > 0) return;
     const now = Date.now();
@@ -349,7 +352,7 @@ export default function MusicPage({ backend }) {
     const url = playlist[autoDjRef.current.index % playlist.length];
     autoDjRef.current.index += 1;
     backend.call('music_add_manual', { url }).catch((error) => notify(String(error)));
-  }, [real, music?.autodj, music?.autodj_playlist, current, queuedCount]);
+  }, [real, autoDjArmed, music?.autodj, music?.autodj_playlist, current, queuedCount]);
 
   function changeMusicVolume(next) {
     const value = Math.max(0, Math.min(100, Number(next) || 0));
@@ -380,8 +383,42 @@ export default function MusicPage({ backend }) {
     }
   }
 
+  async function startAutoDj() {
+    if (!music?.autodj) {
+      notify('AutoDJ выключен — включите его в настройках музыки');
+      return;
+    }
+    const playlist = (music.autodj_playlist || []).filter(Boolean);
+    if (!playlist.length) {
+      notify('Добавьте ссылки в плейлист AutoDJ');
+      return;
+    }
+    if (current || queuedCount > 0) {
+      notify('Трек уже загружается');
+      return;
+    }
+    setAutoDjArmed(true);
+    autoDjArmedInMemory = true;
+    if (!real) {
+      notify('AutoDJ запущен (прототип)');
+      return;
+    }
+    autoDjRef.current.at = Date.now();
+    const url = playlist[autoDjRef.current.index % playlist.length];
+    autoDjRef.current.index += 1;
+    try {
+      await backend.call('music_add_manual', { url });
+      notify('AutoDJ запущен — очередь пуста, играет плейлист');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
   async function togglePause() {
-    if (!current) return;
+    if (!current) {
+      await startAutoDj();
+      return;
+    }
     const next = !paused;
     setOptimisticPaused(next);
     if (!real) {
@@ -631,11 +668,12 @@ export default function MusicPage({ backend }) {
             <Button
               variant="primary"
               size="lg"
-              icon={<Icon name={paused ? 'play' : 'pause'} size={20} />}
+              icon={<Icon name={!current || paused ? 'play' : 'pause'} size={20} />}
               onClick={togglePause}
-              disabled={!current}
+              disabled={!current && !(autoDjReady && queuedCount === 0)}
+              title={!current ? 'Запустить AutoDJ' : undefined}
             >
-              {paused ? 'Продолжить' : 'Пауза'}
+              {!current ? 'Play' : paused ? 'Продолжить' : 'Пауза'}
             </Button>
             <Button variant="secondary" size="lg" icon={<Icon name="next" size={18} />} onClick={nextTrack} disabled={!current || !nextItem}>
               Следующий трек

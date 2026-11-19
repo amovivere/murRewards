@@ -6,7 +6,7 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use tauri::menu::{CheckMenuItem, Menu, MenuItem};
+use tauri::menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem};
 use tauri::tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent};
 use tauri::{Listener, Manager, WindowEvent};
 
@@ -232,6 +232,23 @@ fn main() {
             let core_state = app.state::<std::sync::Arc<core::AppCore>>();
             let playback_on = core_state.playback_enabled();
             let show = MenuItem::with_id(app, "show", "Открыть Reward Sounds", true, None::<&str>)?;
+            let now = MenuItem::with_id(
+                app,
+                "now",
+                "Сейчас: ничего не играет",
+                false,
+                None::<&str>,
+            )?;
+            let music_pause = MenuItem::with_id(
+                app,
+                "music-pause",
+                "Пауза музыки",
+                true,
+                None::<&str>,
+            )?;
+            let music_next =
+                MenuItem::with_id(app, "music-next", "Следующий трек", true, None::<&str>)?;
+            let separator = PredefinedMenuItem::separator(app)?;
             let playback = CheckMenuItem::with_id(
                 app,
                 "playback",
@@ -242,8 +259,16 @@ fn main() {
             )?;
             let stop_all =
                 MenuItem::with_id(app, "stop", "Остановить все звуки", true, None::<&str>)?;
+            let hide =
+                MenuItem::with_id(app, "hide", "Свернуть в трей", true, None::<&str>)?;
             let quit = MenuItem::with_id(app, "quit", "Выход", true, None::<&str>)?;
-            let menu = Menu::with_items(app, &[&show, &playback, &stop_all, &quit])?;
+            let menu = Menu::with_items(
+                app,
+                &[
+                    &show, &now, &music_pause, &music_next, &separator, &playback, &stop_all,
+                    &hide, &quit,
+                ],
+            )?;
             let playback_for_menu = playback.clone();
             let playback_for_events = playback.clone();
             let icon = app
@@ -257,6 +282,14 @@ fn main() {
                 .show_menu_on_left_click(false)
                 .on_menu_event(move |app, event| match event.id.as_ref() {
                     "show" => show_main(app),
+                    "music-pause" => {
+                        let core = app.state::<std::sync::Arc<core::AppCore>>();
+                        core.tray_toggle_music();
+                    }
+                    "music-next" => {
+                        let core = app.state::<std::sync::Arc<core::AppCore>>();
+                        core.tray_next_music();
+                    }
                     "playback" => {
                         let core = app.state::<std::sync::Arc<core::AppCore>>();
                         let enabled = !core.playback_enabled();
@@ -267,6 +300,11 @@ fn main() {
                         let core = app.state::<std::sync::Arc<core::AppCore>>();
                         if let Err(err) = core.stop_all_sounds() {
                             log::warn!("Не удалось остановить звуки из трея: {err}");
+                        }
+                    }
+                    "hide" => {
+                        if let Some(window) = app.get_webview_window("main") {
+                            let _ = window.hide();
                         }
                     }
                     "quit" => app.exit(0),
@@ -285,6 +323,24 @@ fn main() {
                     _ => {}
                 })
                 .build(app)?;
+            // Меню трея показывает текущий трек и состояние паузы.
+            let tray_app = app.handle().clone();
+            let tray_now = now.clone();
+            let tray_pause = music_pause.clone();
+            std::thread::spawn(move || loop {
+                std::thread::sleep(std::time::Duration::from_secs(2));
+                let core = tray_app.state::<std::sync::Arc<core::AppCore>>();
+                let (title, paused) = core.tray_now_playing();
+                let now_text = title
+                    .map(|title| format!("Сейчас: {title}"))
+                    .unwrap_or_else(|| "Сейчас: ничего не играет".to_string());
+                let pause_text = if paused { "Продолжить музыку" } else { "Пауза музыки" };
+                if tray_now.set_text(now_text).is_err()
+                    || tray_pause.set_text(pause_text).is_err()
+                {
+                    break;
+                }
+            });
             // Галочка в трее должна совпадать с тумблером в настройках.
             app.listen("playback-changed", move |event| {
                 let enabled = event.payload().trim() == "true";

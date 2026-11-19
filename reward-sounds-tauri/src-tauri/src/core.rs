@@ -369,6 +369,28 @@ impl AppCore {
         self.lock().audio.stop_all()
     }
 
+    /// Переключает паузу музыки из трея.
+    pub fn tray_toggle_music(&self) {
+        let inner = self.lock();
+        let paused = inner.music.snapshot().player.paused;
+        inner.music.set_paused(!paused);
+    }
+
+    /// Включает следующий трек из трея.
+    pub fn tray_next_music(&self) {
+        self.lock().music.next();
+    }
+
+    /// Текущий трек и пауза для меню трея.
+    pub fn tray_now_playing(&self) -> (Option<String>, bool) {
+        let inner = self.lock();
+        let snapshot = inner.music.snapshot();
+        (
+            snapshot.current.as_ref().map(|item| item.label()),
+            snapshot.player.paused,
+        )
+    }
+
     fn lock(&self) -> MutexGuard<'_, Inner> {
         self.inner.lock().unwrap_or_else(|err| err.into_inner())
     }

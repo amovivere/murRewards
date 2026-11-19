@@ -148,11 +148,12 @@ fn main() {
             let close_to_tray = state.close_to_tray();
             app.manage(state);
 
-            let data_dir = app
-                .path()
-                .app_local_data_dir()
-                .map_err(|err| -> Box<dyn std::error::Error> { Box::new(err) })?
-                .join("EBWebView");
+            // Портативный профиль WebView2 рядом с exe. В AppData профиль
+            // может оказаться залипшим/недоступным после аварийного завершения.
+            let data_dir = std::env::current_exe()?
+                .parent()
+                .ok_or("нет папки приложения")?
+                .join("webview-data");
             std::fs::create_dir_all(&data_dir)?;
 
             let geometry = load_geometry();

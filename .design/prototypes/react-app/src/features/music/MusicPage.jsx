@@ -233,6 +233,7 @@ export default function MusicPage({ backend }) {
   const [removeTarget, setRemoveTarget] = useState(null);
   const [skipOpen, setSkipOpen] = useState(false);
   const [skipReason, setSkipReason] = useState('wrong');
+  const [optimisticPaused, setOptimisticPaused] = useState(null);
   const [toast, setToast] = useState('');
   const [url, setUrl] = useState(() => sessionStorage.getItem('rs.music.url') || '');
 
@@ -252,6 +253,17 @@ export default function MusicPage({ backend }) {
   const nextItem = items.find((item) => item.id !== current?.id && item.state === 'queued')
     || items.find((item) => item.id !== current?.id);
   const queuedCount = items.filter((item) => item.state === 'queued').length;
+  const paused = optimisticPaused ?? player.paused;
+
+  useEffect(() => {
+    if (optimisticPaused === null) return undefined;
+    if (player.paused === optimisticPaused) {
+      setOptimisticPaused(null);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => setOptimisticPaused(null), 2500);
+    return () => window.clearTimeout(timer);
+  }, [player.paused, optimisticPaused]);
   const [volume, setVolume] = useState(() => Math.round((music?.volume ?? 0.7) * 100));
   const volumeTouched = useRef(0);
   const volumeTimer = useRef(null);
@@ -287,10 +299,25 @@ export default function MusicPage({ backend }) {
     }
     try {
       await backend.call(command, args);
-      if (command === 'music_toggle_pause') notify(player.paused ? 'Воспроизведение продолжено' : 'Пауза');
       if (command === 'music_skip') notify('Трек пропущен');
       if (command === 'music_show_overlay') notify('Оверлей показан');
     } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function togglePause() {
+    if (!current) return;
+    const next = !paused;
+    setOptimisticPaused(next);
+    if (!real) {
+      notify(next ? 'Пауза' : 'Воспроизведение продолжено');
+      return;
+    }
+    try {
+      await backend.call('music_toggle_pause');
+    } catch (error) {
+      setOptimisticPaused(null);
       notify(String(error));
     }
   }
@@ -383,7 +410,7 @@ export default function MusicPage({ backend }) {
       if (['input', 'textarea', 'select'].includes(tag) || document.querySelector('.ui-modal')) return;
       if (event.code === 'Space') {
         event.preventDefault();
-        action('music_toggle_pause');
+        togglePause();
       } else if (event.shiftKey && event.key === 'ArrowRight') {
         event.preventDefault();
         nextTrack();
@@ -422,8 +449,9 @@ export default function MusicPage({ backend }) {
         </div>
       </div>
 
+      <div className="music-layout">
       <section className="music-stage">
-        <div className={`music-stage__cover${player.paused || !current ? ' is-paused' : ''}`}>
+        <div className={`music-stage__cover${paused || !current ? ' is-paused' : ''}`}>
           <div className="music-stage__vinyl"><Icon name="music" size={34} /></div>
           <div className="music-stage__eq" aria-hidden="true">
             <i /><i /><i /><i /><i />
@@ -463,11 +491,11 @@ export default function MusicPage({ backend }) {
             <Button
               variant="primary"
               size="lg"
-              icon={<Icon name={player.paused ? 'play' : 'pause'} size={20} />}
-              onClick={() => action('music_toggle_pause')}
+              icon={<Icon name={paused ? 'play' : 'pause'} size={20} />}
+              onClick={togglePause}
               disabled={!current}
             >
-              {player.paused ? 'Продолжить' : 'Пауза'}
+              {paused ? 'Продолжить' : 'Пауза'}
             </Button>
             <Button variant="secondary" size="lg" icon={<Icon name="next" size={18} />} onClick={nextTrack} disabled={!current || !nextItem}>
               Следующий трек
@@ -497,28 +525,6 @@ export default function MusicPage({ backend }) {
             <span><kbd>S</kbd> пропустить с причиной</span>
           </div>
         </div>
-
-        <aside className="music-stage__aside">
-          <div className="eyebrow">ДАЛЬШЕ В ОЧЕРЕДИ</div>
-          {nextItem ? (
-            <>
-              <div className="music-next-card">
-                <div className="music-next-card__index">1</div>
-                <div>
-                  <div className="music-next-card__title">{nextItem.title}</div>
-                  <div className="music-next-card__meta">@{nextItem.user_login} · {formatTime(nextItem.duration_sec)}</div>
-                </div>
-              </div>
-              <div className="music-next-more">Всего {items.length} из {music?.max_queue || 10}{nextItem.prefetched ? ' · следующий уже загружен' : ''}</div>
-            </>
-          ) : (
-            <div className="music-next-empty">Очередь пуста — можно добавить ссылку ниже.</div>
-          )}
-          <div className={`music-stage__status${real && music?.ready ? ' is-ok' : ''}`}>
-            <span className="dot dot--ok" />
-            {real && music?.ready ? 'yt-dlp готов' : 'ожидание'}
-          </div>
-        </aside>
       </section>
 
       <div className="two-col">
@@ -601,6 +607,7 @@ export default function MusicPage({ backend }) {
             </ul>
           </Panel>
         </div>
+      </div>
       </div>
 
       <Modal

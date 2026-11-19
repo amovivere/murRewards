@@ -3603,3 +3603,65 @@ a:focus-visible {
 .overlay-preview__frame-wrap {
   height: clamp(300px, calc(100vh - 580px), 620px);
 }
+
+/* ==== очередь справа, как в Stage ==== */
+.music-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 430px;
+  gap: 16px;
+  align-items: start;
+}
+
+.music-layout > .music-stage {
+  grid-column: 1;
+  grid-row: 1;
+  grid-template-columns: 150px minmax(0, 1fr);
+  margin-bottom: 0;
+}
+
+.music-layout > .two-col {
+  display: contents;
+}
+
+.music-layout .two-col > .ui-panel:first-child {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: start;
+  position: sticky;
+  top: 8px;
+  max-height: calc(100vh - 150px);
+  overflow: auto;
+}
+
+.music-layout .stack {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+}
+
+.music-transport .ui-button--primary {
+  min-width: 172px;
+  justify-content: center;
+}
+
+.music-transport .ui-button:nth-child(2) {
+  min-width: 190px;
+  justify-content: center;
+}
+
+.music-transport .ui-button:nth-child(3) {
+  min-width: 160px;
+  justify-content: center;
+}
+
+@media (max-width: 1450px) {
+  .music-layout {
+    grid-template-columns: minmax(0, 1fr) 390px;
+  }
+
+  .music-layout .stack {
+    grid-template-columns: 1fr 1fr;
+  }
+}

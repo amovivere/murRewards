@@ -50,6 +50,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
   const [autodj, setAutodj] = useState(false);
   const [autodjShuffle, setAutodjShuffle] = useState(false);
   const [autodjInterrupt, setAutodjInterrupt] = useState(true);
+  const [fadeMs, setFadeMs] = useState(600);
   const [autodjPlaylist, setAutodjPlaylist] = useState('');
   const [cookiesFile, setCookiesFile] = useState('');
   const [cookiesOk, setCookiesOk] = useState(null);
@@ -69,6 +70,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
     setAutodj(Boolean(music.autodj));
     setAutodjShuffle(Boolean(music.autodj_shuffle));
     setAutodjInterrupt(music.autodj_interrupt !== false);
+    setFadeMs(music.fade_ms ?? 600);
     setAutodjPlaylist((music.autodj_playlist || []).join('\n'));
     setCookiesFile(music.cookies_file || '');
     setCookiesOk(null);
@@ -97,6 +99,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
         autodj,
         autodjShuffle,
         autodjInterrupt,
+        fadeMs,
         autodjPlaylist: autodjPlaylist.split(/[\n,]+/).map((url) => url.trim()).filter(Boolean),
         cookiesFile,
       });
@@ -135,6 +138,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
           <ToggleRow label="AutoDJ при пустой очереди" checked={autodj} onChange={setAutodj} trailing={autodj ? 'вкл' : 'выкл'} />
           <ToggleRow label="Перемешивать плейлист AutoDJ" checked={autodjShuffle} onChange={setAutodjShuffle} trailing={autodjShuffle ? 'вкл' : 'выкл'} />
           <ToggleRow label="Прерывать AutoDJ заявкой" checked={autodjInterrupt} onChange={setAutodjInterrupt} trailing={autodjInterrupt ? 'вкл' : 'выкл'} />
+          <SliderRow label="Плавный переход" value={fadeMs / 1000} min={0} max={3} step={0.1} unit=" с" onChange={(value) => setFadeMs(Math.round(value * 1000))} />
         </div>
         {autodj ? (
           <label className="modal-field">
@@ -519,6 +523,7 @@ export default function MusicPage({ backend }) {
       autodj: Boolean(music?.autodj),
       autodjShuffle: Boolean(music?.autodj_shuffle),
       autodjInterrupt: music?.autodj_interrupt !== false,
+      fadeMs: music?.fade_ms ?? 600,
       autodjPlaylist: music?.autodj_playlist || [],
       blockedVideos: music?.blocked_videos || [],
     };

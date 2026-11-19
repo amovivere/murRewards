@@ -194,6 +194,8 @@ pub struct MusicSettings {
     pub autodj_shuffle: bool,
     /// Прерывать AutoDJ заявкой и возвращаться к нему после очереди.
     pub autodj_interrupt: bool,
+    /// Длительность плавного перехода AutoDJ → заявка, миллисекунды.
+    pub fade_ms: u64,
     /// Ссылки YouTube для AutoDJ.
     pub autodj_playlist: Vec<String>,
     pub image_rewards: Vec<ImageRewardSettings>,
@@ -226,6 +228,7 @@ impl Default for MusicSettings {
             autodj: false,
             autodj_shuffle: false,
             autodj_interrupt: true,
+            fade_ms: 600,
             autodj_playlist: Vec::new(),
             image_rewards: Vec::new(),
             overlay_seconds: 10,

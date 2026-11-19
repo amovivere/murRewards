@@ -33,6 +33,7 @@ fn main() {
         autodj: false,
         autodj_shuffle: false,
         autodj_interrupt: true,
+        fade_ms: 600,
         autodj_playlist: Vec::new(),
         channel: String::new(),
         restore_queue: false,

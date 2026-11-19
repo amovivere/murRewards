@@ -40,6 +40,8 @@ pub struct Config {
     pub autodj_shuffle: bool,
     /// Прерывать AutoDJ заявкой и возвращаться к нему после очереди.
     pub autodj_interrupt: bool,
+    /// Длительность плавного перехода, миллисекунды.
+    pub fade_ms: u64,
     /// Ссылки плейлиста AutoDJ.
     pub autodj_playlist: Vec<String>,
     /// Канал Twitch (нужен для чтения команды из чата).
@@ -75,6 +77,7 @@ impl Default for Config {
             autodj: false,
             autodj_shuffle: false,
             autodj_interrupt: true,
+            fade_ms: 600,
             autodj_playlist: Vec::new(),
         }
     }
@@ -372,6 +375,25 @@ fn request_is_waiting(queue: &Queue) -> bool {
         .any(|item| item.state == ItemState::Queued && !is_autodj_item(item))
 }
 
+/// Плавно меняет громкость плеера. Вызывается из потока службы.
+fn fade_volume(player: &Player, from: f32, to: f32, duration_ms: u64) {
+    let duration_ms = duration_ms.min(3000);
+    if duration_ms == 0 {
+        player.set_volume(to).ok();
+        return;
+    }
+    let steps = (duration_ms / 25).max(1);
+    for step in 0..=steps {
+        let ratio = step as f32 / steps as f32;
+        player
+            .set_volume((from + (to - from) * ratio).clamp(0.0, 1.0))
+            .ok();
+        if step < steps {
+            thread::sleep(Duration::from_millis(duration_ms / steps));
+        }
+    }
+}
+
 fn run(
     mut config: Config,
     ytdlp_path: String,
@@ -416,6 +438,7 @@ fn run(
     let mut autodj_bytes: Option<Vec<u8>> = None;
     /// (заявка AutoDJ, байты, позиция) — пауза перед заявкой зрителя.
     let mut autodj_resume: Option<(QueueItem, Vec<u8>, u64)> = None;
+    let mut pending_fade_in = false;
 
     let data_dir = data_dir;
     let queue_file = data_dir.join("queue.json");
@@ -606,6 +629,9 @@ fn run(
                         } else {
                             autodj_bytes = None;
                         }
+                        if pending_fade_in && !is_autodj_item(item) {
+                            player.set_volume(0.0).ok();
+                        }
                         if let Err(err) = player.play(bytes, item.duration_sec) {
                             log::error!("Музыка: плеер не запустился: {err}");
                             queue.fail(&item.redemption_id, err.clone());
@@ -614,6 +640,9 @@ fn run(
                                 reason: err,
                             });
                             current = None;
+                        } else if pending_fade_in {
+                            fade_volume(&player, 0.0, config.volume, config.fade_ms);
+                            pending_fade_in = false;
                         }
                     }
                 } else {
@@ -700,10 +729,13 @@ fn run(
                 last_autodj_at = None;
                 autodj_bytes = None;
                 autodj_resume = None;
+                pending_fade_in = false;
                 if let Some(item) = current.take() {
                     if is_autodj_item(&item) {
                         awaiting_start = None;
+                        fade_volume(&player, config.volume, 0.0, config.fade_ms);
                         player.stop().ok();
+                        player.set_volume(config.volume).ok();
                         queue.remove(&item.redemption_id);
                     } else {
                         current = Some(item);
@@ -929,8 +961,10 @@ fn run(
             && current.as_ref().is_some_and(is_autodj_item)
             && request_is_waiting(&queue)
         {
+            fade_volume(&player, config.volume, 0.0, config.fade_ms);
             let position = player.state().position_sec;
             player.stop().ok();
+            player.set_volume(config.volume).ok();
             if let Some(item) = current.take() {
                 queue.remove(&item.redemption_id);
                 if let Some(bytes) = autodj_bytes.take() {
@@ -939,6 +973,7 @@ fn run(
                         position
                     );
                     autodj_resume = Some((item, bytes, position));
+                    pending_fade_in = true;
                 }
             }
         }
@@ -988,6 +1023,9 @@ fn run(
                         } else {
                             autodj_bytes = None;
                         }
+                        if pending_fade_in {
+                            player.set_volume(0.0).ok();
+                        }
                         if let Err(err) = player.play(ready.bytes, item.duration_sec) {
                             log::error!("Музыка: плеер не запустился: {err}");
                             queue.fail(&item.redemption_id, err.clone());
@@ -997,6 +1035,10 @@ fn run(
                             });
                         } else {
                             current = Some(item);
+                            if pending_fade_in {
+                                fade_volume(&player, 0.0, config.volume, config.fade_ms);
+                                pending_fade_in = false;
+                            }
                         }
                     }
                     None => {
@@ -1027,12 +1069,14 @@ fn run(
         if current.is_none() && autodj_resume.is_some() && !request_is_waiting(&queue) {
             let (item, bytes, position) = autodj_resume.take().expect("resume есть");
             if !bytes.is_empty() {
-                player.set_volume(config.volume).ok();
+                player.set_volume(0.0).ok();
                 match player.play(bytes.clone(), item.duration_sec) {
                     Ok(()) => {
                         player.seek(position).ok();
                         current = Some(item);
                         autodj_bytes = Some(bytes);
+                        fade_volume(&player, 0.0, config.volume, config.fade_ms);
+                        pending_fade_in = false;
                         log::info!("Музыка: AutoDJ продолжен с {} с", position);
                     }
                     Err(err) => {

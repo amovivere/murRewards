@@ -15,6 +15,7 @@ export default function SettingsPage({ backend, onNavigate }) {
   const [volume, setVolume] = useState(Math.round((view?.volume ?? 0.29) * 100));
   const [confirmDisconnect, setConfirmDisconnect] = useState(false);
   const [toast, setToast] = useState('');
+  const auth = view?.auth;
 
   useEffect(() => {
     if (!view) return;
@@ -22,6 +23,11 @@ export default function SettingsPage({ backend, onNavigate }) {
     setCloseToTray(Boolean(view.close_to_tray));
     setVolume(Math.round((view.volume ?? 0.29) * 100));
   }, [view]);
+
+  useEffect(() => {
+    if (!auth?.verification_uri) return;
+    backend?.invoke('open_url', { url: auth.verification_uri }).catch(() => {});
+  }, [auth?.verification_uri, backend]);
 
   async function setting(key, value) {
     if (!real) return;
@@ -87,6 +93,29 @@ export default function SettingsPage({ backend, onNavigate }) {
       await backend.invoke('refresh_twitch_now');
       await backend.refresh();
       notify('Данные Twitch обновлены');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function connectTwitch() {
+    if (!real) return;
+    if (!view?.client_id) {
+      notify('Client ID не настроен — откройте экран «Подключение».');
+      return;
+    }
+    try {
+      await backend.invoke('twitch_start_login', { clientId: view.client_id });
+      await backend.refresh();
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function cancelTwitchLogin() {
+    try {
+      await backend.invoke('twitch_cancel_login');
+      await backend.refresh();
     } catch (error) {
       notify(String(error));
     }
@@ -164,6 +193,28 @@ export default function SettingsPage({ backend, onNavigate }) {
         <Panel title="Twitch" description="Аккаунт канала, с которого читаются награды">
           <div className="strong-line">{real && view.connected ? `Подключено · @${login}` : real ? 'Не подключено' : 'Подключено · @goshanmurz'}</div>
           <div className="muted-line">Активации наград слушаются</div>
+          {!view?.connected ? (
+            <Button variant="primary" full onClick={connectTwitch}>
+              Подключить Twitch
+            </Button>
+          ) : null}
+          {auth?.state === 'waiting' && auth.user_code ? (
+            <div className="onboarding-code">
+              <div className="onboarding-code__label">КОД ДЛЯ ВХОДА</div>
+              <button
+                type="button"
+                className="onboarding-code__value"
+                onClick={() => navigator.clipboard?.writeText(auth.user_code).catch(() => {})}
+              >
+                {auth.user_code}
+              </button>
+              <div className="onboarding-code__hint">
+                Введите на <a href={auth.verification_uri} target="_blank" rel="noreferrer">twitch.tv/activate</a>
+              </div>
+              <Button variant="ghost" size="sm" onClick={cancelTwitchLogin}>Отменить вход</Button>
+            </div>
+          ) : null}
+          {auth?.state === 'error' && auth.error ? <div className="onboarding-error">{auth.error}</div> : null}
           <Button variant="secondary" full onClick={refreshTwitch}>
             Обновить данные
           </Button>

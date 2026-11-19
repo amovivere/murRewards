@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../../components/ui/Button.jsx';
 import { Panel } from '../../components/ui/Panel.jsx';
 
@@ -10,12 +10,24 @@ const MOCK_BINDINGS = [
 
 export default function OnboardingPage({ backend, onNavigate }) {
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [clientId, setClientId] = useState('');
   const real = Boolean(backend?.available && backend.view);
   const view = backend?.view;
   const connected = real ? Boolean(view.connected) : true;
+  const auth = view?.auth;
   const audioReady = real ? Boolean(view.audio_ready) : true;
   const bindings = real ? view.local_bindings || [] : MOCK_BINDINGS;
   const hasBindings = bindings.length > 0;
+
+  useEffect(() => {
+    if (view?.client_id) setClientId(view.client_id);
+  }, [view?.client_id]);
+
+  useEffect(() => {
+    if (!auth?.verification_uri) return;
+    backend?.invoke('open_url', { url: auth.verification_uri }).catch(() => {});
+  }, [auth?.verification_uri]);
 
   const steps = [
     { title: 'Войти в Twitch', hint: `Награды и EventSub${connected ? ' подключены' : ' подключатся автоматически'}`, done: connected },
@@ -26,10 +38,17 @@ export default function OnboardingPage({ backend, onNavigate }) {
 
   async function login() {
     if (!real) return;
+    if (!clientId.trim()) {
+      setError('Укажите Client ID приложения Twitch.');
+      return;
+    }
     setBusy(true);
+    setError('');
     try {
-      await backend.invoke('twitch_start_login');
+      await backend.invoke('twitch_start_login', { clientId: clientId.trim() });
       await backend.refresh();
+    } catch (err) {
+      setError(String(err));
     } finally {
       setBusy(false);
     }
@@ -80,6 +99,31 @@ export default function OnboardingPage({ backend, onNavigate }) {
             </Button>
             <Button variant="ghost" size="lg" onClick={() => onNavigate?.('rewards')}>Пропустить</Button>
           </div>
+          {!connected && !view?.client_id ? (
+            <label className="onboarding-client">
+              <span>CLIENT ID ПРИЛОЖЕНИЯ TWITCH</span>
+              <input className="ui-input" value={clientId} onChange={(event) => setClientId(event.target.value)} placeholder="30 букв/цифр из dev.twitch.tv" />
+            </label>
+          ) : null}
+          {error ? <div className="onboarding-error">{error}</div> : null}
+          {auth?.state === 'waiting' && auth.user_code ? (
+            <div className="onboarding-code">
+              <div className="onboarding-code__label">КОД ДЛЯ ВХОДА</div>
+              <button
+                type="button"
+                className="onboarding-code__value"
+                onClick={() => navigator.clipboard?.writeText(auth.user_code).catch(() => {})}
+                title="Скопировать код"
+              >
+                {auth.user_code}
+              </button>
+              <div className="onboarding-code__hint">
+                Введите код на <a href={auth.verification_uri} target="_blank" rel="noreferrer">twitch.tv/activate</a>. Окно браузера откроется автоматически.
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => backend.invoke('twitch_cancel_login').then(() => backend.refresh())}>Отменить вход</Button>
+            </div>
+          ) : null}
+          {auth?.state === 'error' && auth.error ? <div className="onboarding-error">{auth.error}</div> : null}
         </div>
 
         <div className="onboarding-steps">

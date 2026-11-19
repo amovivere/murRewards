@@ -1691,9 +1691,15 @@ pub fn stop_all_sounds(core: State<'_, Arc<AppCore>>) -> Result<(), String> {
 #[tauri::command]
 pub fn twitch_start_login(
     core: State<'_, Arc<AppCore>>,
-    client_id: String,
+    client_id: Option<String>,
 ) -> Result<CoreView, String> {
-    let id = client_id.trim().to_string();
+    let stored = core.lock().settings.twitch.client_id.clone();
+    let id = client_id
+        .as_deref()
+        .filter(|id| !id.trim().is_empty())
+        .unwrap_or(&stored)
+        .trim()
+        .to_string();
     if id.len() < 20 || !id.chars().all(|c| c.is_ascii_alphanumeric()) {
         return Err("Client ID должен состоять примерно из 30 букв и цифр без пробелов.".into());
     }

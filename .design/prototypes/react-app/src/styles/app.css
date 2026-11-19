@@ -4461,3 +4461,67 @@ a:focus-visible {
   border: 0;
   background: #0b0b0e;
 }
+
+/* ==== вход в Twitch из приложения ==== */
+.onboarding-client {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 12px;
+  max-width: 360px;
+}
+
+.onboarding-client > span {
+  color: #8f8f9a;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.onboarding-code {
+  margin-top: 12px;
+  padding: 11px 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, #33333d);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 8%, #15151b);
+  max-width: 390px;
+}
+
+.onboarding-code__label {
+  color: #9b8bb8;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.onboarding-code__value {
+  display: block;
+  margin: 4px 0;
+  border: 0;
+  background: transparent;
+  color: #f4edff;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+}
+
+.onboarding-code__hint {
+  color: #9595a0;
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+
+.onboarding-code__hint a {
+  color: var(--accent-text, #cbb0ff);
+}
+
+.onboarding-error {
+  margin-top: 9px;
+  padding: 7px 9px;
+  border: 1px solid rgba(245, 90, 95, 0.3);
+  border-radius: 7px;
+  background: rgba(245, 90, 95, 0.08);
+  color: #f0a7aa;
+  font-size: 10.5px;
+  max-width: 420px;
+}

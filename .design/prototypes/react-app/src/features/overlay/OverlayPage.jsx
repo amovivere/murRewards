@@ -34,7 +34,134 @@ function uid() {
   return `preset-${Date.now().toString(36)}`;
 }
 
-export default function OverlayPage() {
+function MusicOverlaySection({ backend, notify }) {
+  const real = Boolean(backend?.available && backend?.view);
+  const music = backend?.view?.music;
+  const current = music?.current;
+  const [seconds, setSeconds] = useState(music?.overlay_seconds ?? 10);
+  const [font, setFont] = useState(music?.overlay_font ?? 17);
+  const [position, setPosition] = useState(music?.overlay_position || 'top');
+  const [saving, setSaving] = useState(false);
+  const url = 'http://127.0.0.1:8770/overlay';
+
+  useEffect(() => {
+    setSeconds(music?.overlay_seconds ?? 10);
+    setFont(music?.overlay_font ?? 17);
+    setPosition(music?.overlay_position || 'top');
+  }, [music?.overlay_seconds, music?.overlay_font, music?.overlay_position]);
+
+  async function save() {
+    if (!real) {
+      notify('Настройки сохранены (прототип)');
+      return;
+    }
+    setSaving(true);
+    try {
+      await backend.call('set_music_settings', {
+        patch: { overlaySeconds: seconds, overlayFont: font, overlayPosition: position },
+      });
+      notify('Настройки оверлея музыки сохранены');
+    } catch (error) {
+      notify(String(error));
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function show() {
+    if (!real) {
+      notify('Оверлей показан (прототип)');
+      return;
+    }
+    try {
+      await backend.call('music_show_overlay');
+      notify('Строка «Сейчас играет» показана в OBS');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(url);
+      notify('URL для OBS скопирован');
+    } catch {
+      notify(url);
+    }
+  }
+
+  return (
+    <div className="overlay-music-tab">
+      <div className="overlay-layout">
+        <div className="overlay-controls">
+          <Panel
+            title="Строка «Сейчас играет»"
+            description="Второй оверлей для OBS: что играет и кто заказал."
+            actions={<Pill tone={real && music?.ready ? 'ok' : 'neutral'}>{real && music?.ready ? 'готово' : 'ожидание'}</Pill>}
+          >
+            <div className="overlay-music-track">
+              <div className="overlay-music-track__art"><Icon name="music" size={24} /></div>
+              <div className="overlay-music-track__text">
+                <div className="overlay-music-track__title">{current?.title || 'Сейчас ничего не играет'}</div>
+                <div className="overlay-music-track__meta">
+                  {current ? `@${current.user_login} · YouTube` : 'Строка появится, когда заиграет трек'}
+                </div>
+              </div>
+              <Button variant="secondary" size="sm" onClick={show}>Показать сейчас</Button>
+            </div>
+
+            <div className="slider-list">
+              <SliderRow label="Показывать после старта" value={seconds} min={0} max={60} unit=" с" onChange={setSeconds} />
+            </div>
+            <div className="control-grid">
+              <Field label="Позиция на экране">
+                <Select value={position} onChange={setPosition}>
+                  <option value="top">Сверху</option>
+                  <option value="bottom">Снизу</option>
+                </Select>
+              </Field>
+              <Field label="Размер шрифта">
+                <TextInput type="number" value={String(font)} onChange={(value) => setFont(Math.max(12, Math.min(48, Number(value) || 17)))} />
+              </Field>
+            </div>
+            <div className="inline-row overlay-music-url">
+              <code className="url-code">{url}</code>
+              <Button variant="secondary" size="sm" icon={<Icon name="copy" />} onClick={copy}>Скопировать</Button>
+            </div>
+            <div className="modal-hint">0 секунд — показывать всё время, пока играет трек.</div>
+            <div className="overlay-music-actions">
+              <Button variant="secondary" full onClick={show}>Открыть превью в OBS</Button>
+              <Button variant="primary" full onClick={save} disabled={saving}>{saving ? 'Сохраняем…' : 'Применить'}</Button>
+            </div>
+          </Panel>
+        </div>
+
+        <aside className="overlay-preview overlay-preview--music">
+          <div className="overlay-preview__head">
+            <div>
+              <div className="eyebrow">ПРЕВЬЮ В OBS</div>
+              <div className="overlay-preview__title">Строка «Сейчас играет»</div>
+            </div>
+            <span className="overlay-preview__size">127.0.0.1:8770/overlay</span>
+          </div>
+          <div className="overlay-preview__frame-wrap overlay-preview__frame-wrap--music">
+            <iframe
+              className="overlay-preview__frame"
+              title="Превью строки «Сейчас играет»"
+              src={`${url}?preview=1`}
+            />
+          </div>
+          <div className="overlay-preview__hint">
+            Это отдельный Browser Source в OBS. Он не зависит от оверлея чата и может стоять на другой сцене.
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+export default function OverlayPage({ backend }) {
+  const [overlayTab, setOverlayTab] = useState('chat');
   const [state, setState] = useState(loadState);
   const [savedState, setSavedState] = useState(() => loadState());
   const [toast, setToast] = useState('');
@@ -228,22 +355,51 @@ export default function OverlayPage() {
       <div className="page-head">
         <div>
           <div className="eyebrow">ИНСТРУМЕНТЫ · OBS</div>
-          <h1 className="page-title">Оверлей чата</h1>
+          <h1 className="page-title">Оверлеи</h1>
           <p className="page-subtitle">
-            Настройки оверлея, который добавляется в OBS как «Браузер». Чат в приложении не показывается —
-            только красивый оверлей и его настройки.
+            Отдельные оверлеи для OBS: чат и строка «Сейчас играет». У каждого свои настройки и Browser Source.
           </p>
         </div>
         <div className="page-actions">
-          <Button variant="ghost" icon={<Icon name="external" />} onClick={() => setShowOssUrl((v) => !v)}>
-            URL для OBS
-          </Button>
-          <Button variant="primary" onClick={save} disabled={!dirty}>
-            Применить
-          </Button>
+          {overlayTab === 'chat' ? (
+            <>
+              <Button variant="ghost" icon={<Icon name="external" />} onClick={() => setShowOssUrl((v) => !v)}>
+                URL для OBS
+              </Button>
+              <Button variant="primary" onClick={save} disabled={!dirty}>
+                Применить
+              </Button>
+            </>
+          ) : null}
         </div>
       </div>
 
+      <div className="overlay-tabs" role="tablist" aria-label="Тип оверлея">
+        <button
+          role="tab"
+          aria-selected={overlayTab === 'chat'}
+          className={overlayTab === 'chat' ? 'is-active' : ''}
+          onClick={() => setOverlayTab('chat')}
+        >
+          <Icon name="chat" size={16} />
+          Чат
+          <span className="overlay-tabs__hint">сообщения</span>
+        </button>
+        <button
+          role="tab"
+          aria-selected={overlayTab === 'music'}
+          className={overlayTab === 'music' ? 'is-active' : ''}
+          onClick={() => setOverlayTab('music')}
+        >
+          <Icon name="music" size={16} />
+          Музыка
+          <span className="overlay-tabs__hint">сейчас играет</span>
+        </button>
+        <span className="overlay-tabs__note">Позже сюда добавятся другие оверлеи</span>
+      </div>
+
+      {overlayTab === 'chat' ? (
+        <>
       {showOssUrl ? (
         <div className="overlay-url-bar">
           <div>
@@ -564,6 +720,10 @@ export default function OverlayPage() {
           </Button>
         </aside>
       </div>
+        </>
+      ) : (
+        <MusicOverlaySection backend={backend} notify={notify} />
+      )}
 
       <Modal
         open={Boolean(presetDialog)}

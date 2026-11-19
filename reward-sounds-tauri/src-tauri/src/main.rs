@@ -378,6 +378,7 @@ fn main() {
             core::music_restart,
             core::music_next,
             core::music_start_autodj,
+            core::music_stop_autodj,
             core::music_retry_item,
             core::music_undo_skip,
             core::music_skip,

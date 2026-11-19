@@ -172,7 +172,9 @@ pub struct MusicView {
     pub request_cooldown_sec: u64,
     pub blocked_videos: Vec<String>,
     pub autodj: bool,
+    pub autodj_shuffle: bool,
     pub autodj_playlist: Vec<String>,
+    pub autodj_active: bool,
     pub restore_queue: bool,
     pub prefetch: bool,
     pub volume: f64,
@@ -277,6 +279,7 @@ impl AppCore {
             request_cooldown_sec: settings.music.request_cooldown_sec,
             blocked_videos: settings.music.blocked_videos.clone(),
             autodj: settings.music.autodj,
+            autodj_shuffle: settings.music.autodj_shuffle,
             autodj_playlist: settings.music.autodj_playlist.clone(),
             channel: settings.twitch.login.clone(),
             restore_queue: settings.music.restore_queue,
@@ -1215,7 +1218,9 @@ fn music_view(snapshot: &music::Snapshot, settings: &Settings) -> MusicView {
         request_cooldown_sec: settings.music.request_cooldown_sec,
         blocked_videos: settings.music.blocked_videos.clone(),
         autodj: settings.music.autodj,
+        autodj_shuffle: settings.music.autodj_shuffle,
         autodj_playlist: settings.music.autodj_playlist.clone(),
+        autodj_active: snapshot.autodj_active,
         restore_queue: settings.music.restore_queue,
         prefetch: settings.music.prefetch,
         volume: settings.music.music_volume,
@@ -2232,6 +2237,12 @@ pub fn music_start_autodj(core: State<'_, Arc<AppCore>>) -> CoreView {
 }
 
 #[tauri::command]
+pub fn music_stop_autodj(core: State<'_, Arc<AppCore>>) -> CoreView {
+    core.lock().music.stop_autodj();
+    core.view()
+}
+
+#[tauri::command]
 pub fn music_retry_item(core: State<'_, Arc<AppCore>>, redemption_id: String) -> CoreView {
     core.lock().music.retry(&redemption_id);
     core.view()
@@ -2329,6 +2340,7 @@ pub struct MusicSettingsPatch {
     pub request_cooldown_sec: Option<u64>,
     pub blocked_videos: Option<Vec<String>>,
     pub autodj: Option<bool>,
+    pub autodj_shuffle: Option<bool>,
     pub autodj_playlist: Option<Vec<String>>,
     pub restore_queue: Option<bool>,
     pub prefetch: Option<bool>,
@@ -2366,6 +2378,9 @@ fn apply_music_patch(music: &mut reward_sounds::config::MusicSettings, patch: &M
     }
     if let Some(value) = patch.autodj {
         music.autodj = value;
+    }
+    if let Some(value) = patch.autodj_shuffle {
+        music.autodj_shuffle = value;
     }
     if let Some(value) = &patch.autodj_playlist {
         music.autodj_playlist = value
@@ -2607,6 +2622,7 @@ fn music_config(settings: &Settings) -> music::Config {
         request_cooldown_sec: settings.music.request_cooldown_sec,
         blocked_videos: settings.music.blocked_videos.clone(),
         autodj: settings.music.autodj,
+        autodj_shuffle: settings.music.autodj_shuffle,
         autodj_playlist: settings.music.autodj_playlist.clone(),
         channel: settings.twitch.login.clone(),
         restore_queue: settings.music.restore_queue,
@@ -2630,6 +2646,7 @@ mod tests {
             request_cooldown_sec: None,
             blocked_videos: None,
             autodj: None,
+            autodj_shuffle: None,
             autodj_playlist: None,
             restore_queue: None,
             prefetch: None,

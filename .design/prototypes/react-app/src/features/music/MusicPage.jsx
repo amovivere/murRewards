@@ -48,6 +48,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
   const [cooldown, setCooldown] = useState(0);
   const [blocked, setBlocked] = useState('');
   const [autodj, setAutodj] = useState(false);
+  const [autodjShuffle, setAutodjShuffle] = useState(false);
   const [autodjPlaylist, setAutodjPlaylist] = useState('');
   const [cookiesFile, setCookiesFile] = useState('');
   const [cookiesOk, setCookiesOk] = useState(null);
@@ -65,6 +66,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
     setCooldown(music.request_cooldown_sec || 0);
     setBlocked((music.blocked_videos || []).join('\n'));
     setAutodj(Boolean(music.autodj));
+    setAutodjShuffle(Boolean(music.autodj_shuffle));
     setAutodjPlaylist((music.autodj_playlist || []).join('\n'));
     setCookiesFile(music.cookies_file || '');
     setCookiesOk(null);
@@ -91,6 +93,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
         requestCooldownSec: cooldown,
         blockedVideos: blocked.split(/[\n,]+/).map((id) => id.trim()).filter(Boolean),
         autodj,
+        autodjShuffle,
         autodjPlaylist: autodjPlaylist.split(/[\n,]+/).map((url) => url.trim()).filter(Boolean),
         cookiesFile,
       });
@@ -127,6 +130,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
           <ToggleRow label="Пауза Яндекс Музыки" checked={pauseYandex} onChange={setPauseYandex} trailing={pauseYandex ? 'вкл' : 'выкл'} />
           <ToggleRow label="Восстанавливать очередь" checked={restoreQueue} onChange={setRestoreQueue} trailing={restoreQueue ? 'вкл' : 'выкл'} />
           <ToggleRow label="AutoDJ при пустой очереди" checked={autodj} onChange={setAutodj} trailing={autodj ? 'вкл' : 'выкл'} />
+          <ToggleRow label="Перемешивать плейлист AutoDJ" checked={autodjShuffle} onChange={setAutodjShuffle} trailing={autodjShuffle ? 'вкл' : 'выкл'} />
         </div>
         {autodj ? (
           <label className="modal-field">
@@ -394,6 +398,19 @@ export default function MusicPage({ backend }) {
     }
   }
 
+  async function stopAutoDj() {
+    if (!real) {
+      notify('AutoDJ остановлен (прототип)');
+      return;
+    }
+    try {
+      await backend.call('music_stop_autodj');
+      notify('AutoDJ остановлен');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
   async function togglePause() {
     if (!current) {
       await startAutoDj();
@@ -495,6 +512,7 @@ export default function MusicPage({ backend }) {
       maxDurationSec: music?.max_duration_sec || 480,
       requestCooldownSec: music?.request_cooldown_sec || 0,
       autodj: Boolean(music?.autodj),
+      autodjShuffle: Boolean(music?.autodj_shuffle),
       autodjPlaylist: music?.autodj_playlist || [],
       blockedVideos: music?.blocked_videos || [],
     };
@@ -661,6 +679,9 @@ export default function MusicPage({ backend }) {
             <Button variant="danger-ghost" size="lg" onClick={openSkip} disabled={!current}>
               Пропустить…
             </Button>
+            {music?.autodj_active ? (
+              <Button variant="danger-ghost" size="lg" onClick={stopAutoDj}>Остановить AutoDJ</Button>
+            ) : null}
             <div className="music-transport__volume">
               <Icon name="volume" size={16} />
               <input

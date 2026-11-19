@@ -190,6 +190,8 @@ pub struct MusicSettings {
     pub blocked_videos: Vec<String>,
     /// Включать резервный плейлист, когда очередь пуста.
     pub autodj: bool,
+    /// Перемешивать плейлист AutoDJ.
+    pub autodj_shuffle: bool,
     /// Ссылки YouTube для AutoDJ.
     pub autodj_playlist: Vec<String>,
     pub image_rewards: Vec<ImageRewardSettings>,
@@ -220,6 +222,7 @@ impl Default for MusicSettings {
             request_cooldown_sec: 0,
             blocked_videos: Vec::new(),
             autodj: false,
+            autodj_shuffle: false,
             autodj_playlist: Vec::new(),
             image_rewards: Vec::new(),
             overlay_seconds: 10,

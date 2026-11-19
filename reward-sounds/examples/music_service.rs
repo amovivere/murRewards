@@ -31,6 +31,7 @@ fn main() {
         request_cooldown_sec: 0,
         blocked_videos: Vec::new(),
         autodj: false,
+        autodj_shuffle: false,
         autodj_playlist: Vec::new(),
         channel: String::new(),
         restore_queue: false,

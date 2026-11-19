@@ -307,6 +307,7 @@ impl RewardSoundsApp {
             request_cooldown_sec: settings.music.request_cooldown_sec,
             blocked_videos: settings.music.blocked_videos.clone(),
             autodj: settings.music.autodj,
+            autodj_shuffle: settings.music.autodj_shuffle,
             autodj_playlist: settings.music.autodj_playlist.clone(),
             channel: settings.twitch.login.clone(),
             restore_queue: settings.music.restore_queue,
@@ -510,6 +511,7 @@ impl RewardSoundsApp {
         let done = item("demo-4", "Ты новичок?", "newbie", 8, music::ItemState::Done);
         self.music_snapshot = music::Snapshot {
             enabled: true,
+            autodj_active: false,
             items: vec![current.clone(), queued, next, done],
             player: music::PlayerState {
                 loaded: true,
@@ -1205,6 +1207,7 @@ impl RewardSoundsApp {
             request_cooldown_sec: self.settings.music.request_cooldown_sec,
             blocked_videos: self.settings.music.blocked_videos.clone(),
             autodj: self.settings.music.autodj,
+            autodj_shuffle: self.settings.music.autodj_shuffle,
             autodj_playlist: self.settings.music.autodj_playlist.clone(),
             channel: self.settings.twitch.login.clone(),
             restore_queue: self.settings.music.restore_queue,

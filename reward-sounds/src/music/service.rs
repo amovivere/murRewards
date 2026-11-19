@@ -36,6 +36,8 @@ pub struct Config {
     pub blocked_videos: Vec<String>,
     /// Включён ли AutoDJ.
     pub autodj: bool,
+    /// Перемешивать ли плейлист AutoDJ.
+    pub autodj_shuffle: bool,
     /// Ссылки плейлиста AutoDJ.
     pub autodj_playlist: Vec<String>,
     /// Канал Twitch (нужен для чтения команды из чата).
@@ -69,6 +71,7 @@ impl Default for Config {
             request_cooldown_sec: 0,
             blocked_videos: Vec::new(),
             autodj: false,
+            autodj_shuffle: false,
             autodj_playlist: Vec::new(),
         }
     }
@@ -83,6 +86,8 @@ pub struct Snapshot {
     pub player: PlayerState,
     /// Заявка, которая играет или готовится прямо сейчас.
     pub current: Option<QueueItem>,
+    /// AutoDJ сейчас активен (включён кнопкой Play).
+    pub autodj_active: bool,
     /// Какой трек уже лежит в памяти и ждёт очереди.
     pub prefetched: Option<String>,
     pub ytdlp_version: Option<String>,
@@ -167,6 +172,8 @@ pub(super) enum Cmd {
     Next,
     UndoSkip,
     StartAutoDj,
+    StopAutoDj,
+    AutoDjTrack { url: String },
     Retry(String),
     ClearQueue,
     RemoveItem(String),
@@ -285,6 +292,11 @@ impl MusicService {
         let _ = self.tx.send(Cmd::StartAutoDj);
     }
 
+    /// Останавливает AutoDJ и убирает его текущий/ожидающий трек.
+    pub fn stop_autodj(&self) {
+        let _ = self.tx.send(Cmd::StopAutoDj);
+    }
+
     /// Повторяет упавшую заявку.
     pub fn retry(&self, redemption_id: &str) {
         let _ = self.tx.send(Cmd::Retry(redemption_id.to_string()));
@@ -385,6 +397,7 @@ fn run(
     /// AutoDJ включается только после кнопки Play; дальше работает в сервисе.
     let mut autodj_armed = false;
     let mut autodj_index = 0usize;
+    let mut last_autodj_index: Option<usize> = None;
     let mut last_autodj_at: Option<Instant> = None;
 
     let data_dir = data_dir;
@@ -537,6 +550,9 @@ fn run(
             Ok(Cmd::Validated(Ok(item))) => {
                 let redemption_id = item.redemption_id.clone();
                 validating.remove(&redemption_id);
+                if redemption_id.starts_with("autodj-") && !autodj_armed {
+                    continue;
+                }
                 let title = item.label();
                 match queue.push(item) {
                     Ok(()) => {
@@ -640,6 +656,58 @@ fn run(
                 autodj_armed = true;
                 last_autodj_at = None;
                 log::info!("Музыка: AutoDJ включён кнопкой Play");
+            }
+            Ok(Cmd::StopAutoDj) => {
+                autodj_armed = false;
+                last_autodj_at = None;
+                if let Some(item) = current.take() {
+                    if item.redemption_id.starts_with("autodj-") {
+                        awaiting_start = None;
+                        player.stop().ok();
+                        queue.remove(&item.redemption_id);
+                    } else {
+                        current = Some(item);
+                    }
+                }
+                let autodj_items: Vec<String> = queue
+                    .items()
+                    .iter()
+                    .filter(|item| item.redemption_id.starts_with("autodj-"))
+                    .map(|item| item.redemption_id.clone())
+                    .collect();
+                for redemption_id in autodj_items {
+                    queue.remove(&redemption_id);
+                }
+                persist_queue(&queue, &queue_file, config.restore_queue);
+                log::info!("Музыка: AutoDJ остановлен");
+            }
+            Ok(Cmd::AutoDjTrack { url }) => {
+                if !autodj_armed {
+                    continue;
+                }
+                if !config.enabled || version.is_none() || !queue.has_room() {
+                    continue;
+                }
+                match links::parse(&url) {
+                    Ok(link) => {
+                        let stamp = std::time::SystemTime::now()
+                            .duration_since(std::time::UNIX_EPOCH)
+                            .map(|value| value.as_millis())
+                            .unwrap_or(0);
+                        let item = QueueItem::new(
+                            format!("autodj-{stamp}"),
+                            &link.video_id,
+                            &link.url,
+                            "AutoDJ",
+                            stamp.to_string(),
+                        );
+                        if let Some(exe) = exe.clone() {
+                            validating.insert(item.redemption_id.clone());
+                            spawn_validate(exe, temp_dir.clone(), config.cookies_file.clone(), item, tx.clone());
+                        }
+                    }
+                    Err(err) => log::warn!("AutoDJ: ссылка не разобрана — {}", err.message()),
+                }
             }
             Ok(Cmd::Retry(redemption_id)) => {
                 if queue.retry_failed(&redemption_id) {
@@ -899,11 +967,25 @@ fn run(
                 .filter(|url| !url.trim().is_empty())
                 .collect();
             if !playlist.is_empty() {
-                let url = playlist[autodj_index % playlist.len()].clone();
-                autodj_index += 1;
+                let index = if config.autodj_shuffle {
+                    let nanos = std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .map(|value| value.as_nanos() as usize)
+                        .unwrap_or(0);
+                    let mut index = nanos % playlist.len();
+                    if playlist.len() > 1 && Some(index) == last_autodj_index {
+                        index = (index + 1) % playlist.len();
+                    }
+                    index
+                } else {
+                    autodj_index % playlist.len()
+                };
+                let url = playlist[index].clone();
+                last_autodj_index = Some(index);
+                autodj_index = index + 1;
                 last_autodj_at = Some(Instant::now());
                 log::info!("Музыка: AutoDJ ставит следующий трек");
-                let _ = tx.send(Cmd::Manual { user_input: url });
+                let _ = tx.send(Cmd::AutoDjTrack { url });
             }
         }
 
@@ -944,6 +1026,7 @@ fn run(
             snapshot.items = queue.items().to_vec();
             snapshot.player = player.state();
             snapshot.current = current.clone();
+            snapshot.autodj_active = autodj_armed;
             snapshot.prefetched = prefetch.ready_video().map(str::to_string);
             snapshot.ytdlp_version = version.clone();
             snapshot.ytdlp_path = exe.as_ref().map(|path| path.display().to_string());

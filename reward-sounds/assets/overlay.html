@@ -114,6 +114,10 @@
   </div>
 
 <script>
+  // В превью приложения показываем тёмный фон, в OBS — прозрачный.
+  if (new URLSearchParams(location.search).has('preview')) {
+    document.documentElement.style.background = '#0b0b0e';
+  }
   const now = document.getElementById('now');
 
   const fmt = (sec) => {

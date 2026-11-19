@@ -620,7 +620,11 @@ impl AppCore {
                     log::warn!("Музыка: трек не сыграл — {reason}");
                     self.set_redemption_status(&redemption_id, twitch::RedemptionStatus::Canceled);
                 }
-                music::MusicEvent::Skipped { redemption_id } => {
+                music::MusicEvent::Skipped {
+                    redemption_id,
+                    reason,
+                } => {
+                    log::info!("Музыка: пропуск {redemption_id} — {reason}");
                     self.set_redemption_status(&redemption_id, twitch::RedemptionStatus::Canceled);
                 }
             }
@@ -1767,8 +1771,16 @@ pub fn music_restart(core: State<'_, Arc<AppCore>>) -> CoreView {
 }
 
 #[tauri::command]
-pub fn music_skip(core: State<'_, Arc<AppCore>>) -> CoreView {
-    core.lock().music.skip();
+pub fn music_next(core: State<'_, Arc<AppCore>>) -> CoreView {
+    core.lock().music.next();
+    core.view()
+}
+
+#[tauri::command]
+pub fn music_skip(core: State<'_, Arc<AppCore>>, reason: Option<String>) -> CoreView {
+    core.lock()
+        .music
+        .skip(reason.unwrap_or_else(|| "без причины".to_string()));
     core.view()
 }
 

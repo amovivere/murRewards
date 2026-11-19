@@ -157,18 +157,31 @@ async function run() {
   assert('музыка: экран открылся', (await evaluate(`document.querySelector('.page-title')?.textContent`)) === 'Музыка');
   assert('музыка: состояние из бэкенда', await evaluate(`!!document.querySelector('.player, .empty-state')`));
   const playerControls = await evaluate(`(() => {
-    const controls = Array.from(document.querySelectorAll('.player__controls .ui-button'));
-    const volume = document.querySelector('.player__volume input');
+    const controls = Array.from(document.querySelectorAll('.music-transport .ui-button'));
+    const volume = document.querySelector('.music-transport__volume input');
     return {
       sizes: controls.map((b) => [Math.round(b.getBoundingClientRect().width), Math.round(b.getBoundingClientRect().height)]),
-      volume: volume ? volume.getAttribute('aria-label') : null
+      labels: controls.map((b) => b.textContent.trim()),
+      volume: volume ? volume.getAttribute('aria-label') : null,
+      rules: document.querySelectorAll('.rules-row').length
     };
   })()`);
-  assert('музыка: у плеера есть громкость и крупные кнопки', Boolean(playerControls.volume) && playerControls.sizes.length > 0 && playerControls.sizes.every(([, h]) => h >= 40), JSON.stringify(playerControls));
+  assert('музыка: у плеера есть громкость и крупные кнопки', Boolean(playerControls.volume) && playerControls.sizes.length >= 3 && playerControls.sizes.every(([, h]) => h >= 40), JSON.stringify(playerControls));
+  assert('музыка: «Следующий» и «Пропустить» — разные кнопки', playerControls.labels.some((l) => l.includes('Следующий')) && playerControls.labels.some((l) => l.includes('Пропустить')) && playerControls.rules >= 2, JSON.stringify(playerControls));
+  const skipButtonEnabled = await evaluate(`(() => { const b = Array.from(document.querySelectorAll('.music-transport .ui-button')).find((x) => x.textContent.includes('Пропустить')); return !!b && !b.disabled; })()`);
+  let skipDialogOk = true;
+  if (skipButtonEnabled) {
+    await evaluate(`Array.from(document.querySelectorAll('.music-transport .ui-button')).find((b) => b.textContent.includes('Пропустить')).click(); true`);
+    await sleep(350);
+    skipDialogOk = await evaluate(`document.querySelectorAll('.skip-reason').length >= 4`);
+    await evaluate(`document.querySelector('.ui-modal [aria-label="Закрыть"]')?.click(); true`);
+    await sleep(250);
+  }
+  assert('музыка: диалог пропуска с причинами', skipDialogOk);
 
   assert('переключение на «Оверлей»', await clickTab('Оверлей'));
   await sleep(900);
-  assert('оверлей: экран открылся', (await evaluate(`document.querySelector('.page-title')?.textContent`)) === 'Оверлей чата');
+  assert('оверлей: экран открылся', (await evaluate(`document.querySelector('.page-title')?.textContent`)) === 'Оверлеи');
   const preview = await evaluate(`document.querySelector('.overlay-preview__frame')?.src || ''`);
   assert('оверлей: превью — реальный сервер', preview.includes('127.0.0.1:8770/chat-overlay'), preview);
   await sleep(700);

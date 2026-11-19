@@ -314,6 +314,7 @@ fn main() {
             core::stop_all_sounds,
             core::music_toggle_pause,
             core::music_restart,
+            core::music_next,
             core::music_skip,
             core::music_seek,
             core::music_clear_queue,

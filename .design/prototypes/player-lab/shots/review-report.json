@@ -1,0 +1,182 @@
+{
+ "screen0": "Музыка",
+ "screen": "Музыка",
+ "viewport": {
+  "w": 1694,
+  "h": 1063,
+  "dpr": 1
+ },
+ "transport": {
+  "next": {
+   "text": "Следующий трек",
+   "title": "",
+   "rect": {
+    "x": 572.5,
+    "y": 333.421875,
+    "width": 177.03125,
+    "height": 42,
+    "top": 333.421875,
+    "right": 749.53125,
+    "bottom": 375.421875,
+    "left": 572.5
+   },
+   "cs": {
+    "font": "14px",
+    "bg": "rgb(26, 26, 30)",
+    "color": "rgb(228, 228, 234)"
+   }
+  },
+  "skip": {
+   "text": "Пропустить…",
+   "title": "",
+   "rect": {
+    "x": 758.53125,
+    "y": 333.421875,
+    "width": 126.375,
+    "height": 42,
+    "top": 333.421875,
+    "right": 884.90625,
+    "bottom": 375.421875,
+    "left": 758.53125
+   },
+   "cs": {
+    "font": "14px",
+    "bg": "rgba(239, 68, 68, 0.06)",
+    "color": "rgb(242, 139, 139)"
+   }
+  },
+  "play": {
+   "rect": {
+    "x": 459,
+    "y": 333.421875,
+    "width": 104.5,
+    "height": 42,
+    "top": 333.421875,
+    "right": 563.5,
+    "bottom": 375.421875,
+    "left": 459
+   },
+   "label": null
+  },
+  "hintText": [
+   "Space",
+   "Shift",
+   "Space",
+   "Shift"
+  ]
+ },
+ "skipClicked": "Пропустить…",
+ "skipDialog": {
+  "text": "Пропустить заявку?\n\n«madk1d, VILLIAN - 8 миля (official music video)» будет снят с эфира.\n\n×\nНе та песня\nзритель ошибся с выбором\nНет звука / не загрузилась\nбитый файл или тишина\nНарушение правил\nнецензурная лексика, спам\nСсылка не работает\nвидео удалено или закрыто\nБаллы вернутся зрителю, событие попадёт в журнал.\nОтмена\nПропустить и вернуть баллы",
+  "buttons": [
+   "×",
+   "Отмена",
+   "Пропустить и вернуть баллы"
+  ],
+  "inputs": [
+   {
+    "type": "radio",
+    "checked": true
+   },
+   {
+    "type": "radio",
+    "checked": false
+   },
+   {
+    "type": "radio",
+    "checked": false
+   },
+   {
+    "type": "radio",
+    "checked": false
+   }
+  ]
+ },
+ "skipDialogClosed": true,
+ "rules": "Правила и модерация\n→\nСледующий трек\nТрек засчитывается, баллы не возвращаются. Просто переход по эфиру.\n⏭\nПропустить с причиной\nЗаявка отменяется, баллы возвращаются зрителю, причина попадает в журнал.\nSpace пауза\nShift+→ следующий\nS пропуск\n↑/↓ громкость\nПропустить с причиной",
+ "queue": [
+  "1 | madk1d, VILLIAN - 8 миля (official music video) | @manual · 1:56 | ИГРАЕТ | ↑ | ×"
+ ],
+ "overlay": "yt-dlp status visible",
+ "at1600": {
+  "innerWidth": 1600,
+  "innerHeight": 900,
+  "next": {
+   "x": 572.5,
+   "y": 331.59375,
+   "width": 177.03125,
+   "height": 42,
+   "top": 331.59375,
+   "right": 749.53125,
+   "bottom": 373.59375,
+   "left": 572.5
+  },
+  "skip": null,
+  "volume": null,
+  "gapNextSkip": null,
+  "bodyScroll": {
+   "sw": 1600,
+   "cw": 1600,
+   "sh": 900,
+   "ch": 900
+  },
+  "overflow": []
+ },
+ "at1800": {
+  "innerWidth": 1800,
+  "innerHeight": 1000,
+  "next": {
+   "x": 572.5,
+   "y": 334.8125,
+   "width": 177.03125,
+   "height": 42,
+   "top": 334.8125,
+   "right": 749.53125,
+   "bottom": 376.8125,
+   "left": 572.5
+  },
+  "skip": null,
+  "volume": null,
+  "gapNextSkip": null,
+  "bodyScroll": {
+   "sw": 1800,
+   "cw": 1800,
+   "sh": 1000,
+   "ch": 1000
+  },
+  "overflow": []
+ },
+ "overlayScreen": "Оверлеи",
+ "overlayTabs": [
+  {
+   "text": "Чатсообщения",
+   "selected": "true",
+   "cls": "is-active"
+  },
+  {
+   "text": "Музыкасейчас играет",
+   "selected": "false",
+   "cls": ""
+  }
+ ],
+ "overlayChat": {
+  "clicked": false,
+  "text": ""
+ },
+ "overlayMusic": {
+  "clicked": false,
+  "text": ""
+ },
+ "overlayTabState": [
+  {
+   "text": "Чатсообщения",
+   "selected": "true",
+   "cls": "is-active"
+  },
+  {
+   "text": "Музыкасейчас играет",
+   "selected": "false",
+   "cls": ""
+  }
+ ]
+}

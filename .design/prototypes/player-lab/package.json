@@ -1,0 +1,16 @@
+{
+  "name": "reward-sounds-player-lab",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Reward Sounds — player & queue concept lab (A/B), fake data, no Tauri.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5175",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5176"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

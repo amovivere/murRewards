@@ -128,7 +128,10 @@ pub enum MusicEvent {
         reason: String,
     },
     /// Стример пропустил трек.
-    Skipped { redemption_id: String },
+    Skipped {
+        redemption_id: String,
+        reason: String,
+    },
 }
 
 pub(super) enum Cmd {
@@ -147,7 +150,9 @@ pub(super) enum Cmd {
     Manual {
         user_input: String,
     },
-    Skip,
+    Skip(String),
+    /// Перейти к следующему треку: текущий считается отработанным (без возврата баллов).
+    Next,
     ClearQueue,
     RemoveItem(String),
     MoveUp(String),
@@ -241,8 +246,13 @@ impl MusicService {
         let _ = self.tx.send(Cmd::ChatCommand);
     }
 
-    pub fn skip(&self) {
-        let _ = self.tx.send(Cmd::Skip);
+    pub fn skip(&self, reason: impl Into<String>) {
+        let _ = self.tx.send(Cmd::Skip(reason.into()));
+    }
+
+    /// Закрывает текущий трек как отработанный и включает следующий.
+    pub fn next(&self) {
+        let _ = self.tx.send(Cmd::Next);
     }
 
     pub fn clear_queue(&self) {
@@ -517,13 +527,25 @@ fn run(
                 }
                 }
             }
-            Ok(Cmd::Skip) => {
+            Ok(Cmd::Next) => {
+                if let Some(item) = current.take() {
+                    awaiting_start = None;
+                    player.stop().ok();
+                    queue.complete(&item.redemption_id, ItemState::Done);
+                    let _ = events.send(MusicEvent::Finished {
+                        redemption_id: item.redemption_id,
+                    });
+                    persist_queue(&queue, &queue_file, config.restore_queue);
+                }
+            }
+            Ok(Cmd::Skip(reason)) => {
                 if let Some(item) = current.take() {
                     awaiting_start = None;
                     player.stop().ok();
                     queue.complete(&item.redemption_id, ItemState::Skipped);
                     let _ = events.send(MusicEvent::Skipped {
                         redemption_id: item.redemption_id,
+                        reason,
                     });
                     persist_queue(&queue, &queue_file, config.restore_queue);
                 }
@@ -540,6 +562,7 @@ fn run(
                     // Баллы за удалённые заявки возвращаем: CANCELED в Twitch.
                     let _ = events.send(MusicEvent::Skipped {
                         redemption_id,
+                        reason: "очередь очищена".to_string(),
                     });
                 }
                 prefetch.clear();
@@ -556,12 +579,16 @@ fn run(
                         queue.complete(&item.redemption_id, ItemState::Skipped);
                         let _ = events.send(MusicEvent::Skipped {
                             redemption_id: item.redemption_id,
+                            reason: "трек убран из очереди".to_string(),
                         });
                     }
                 } else {
                     queue.remove(&redemption_id);
                     // Вернуть баллы и за удалённую из очереди заявку.
-                    let _ = events.send(MusicEvent::Skipped { redemption_id });
+                    let _ = events.send(MusicEvent::Skipped {
+                        redemption_id,
+                        reason: "трек убран из очереди".to_string(),
+                    });
                 }
                 persist_queue(&queue, &queue_file, config.restore_queue);
             }

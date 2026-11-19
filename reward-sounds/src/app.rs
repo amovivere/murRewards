@@ -1147,7 +1147,7 @@ impl RewardSoundsApp {
                         twitch::RedemptionStatus::Canceled,
                     );
                 }
-                MusicEvent::Skipped { redemption_id } => {
+                MusicEvent::Skipped { redemption_id, .. } => {
                     // Пропущенный трек не считается сыгранным — баллы возвращаем.
                     self.set_redemption_status(
                         &redemption_id,
@@ -5719,7 +5719,7 @@ impl RewardSoundsApp {
             self.touch();
         }
         if skip {
-            self.music.skip();
+            self.music.skip("без причины");
             self.touch();
         }
     }

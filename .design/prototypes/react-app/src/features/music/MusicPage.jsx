@@ -13,6 +13,13 @@ const MOCK_CURRENT = {
   state: 'playing',
 };
 
+const SKIP_REASONS = [
+  { id: 'wrong', label: 'Не та песня', hint: 'зритель ошибся с выбором' },
+  { id: 'nosound', label: 'Нет звука / не загрузилась', hint: 'битый файл или тишина' },
+  { id: 'rules', label: 'Нарушение правил', hint: 'нецензурная лексика, спам' },
+  { id: 'broken', label: 'Ссылка не работает', hint: 'видео удалено или закрыто' },
+];
+
 function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
   const [maxQueue, setMaxQueue] = useState(10);
   const [maxDuration, setMaxDuration] = useState(15);
@@ -210,12 +217,22 @@ function formatTime(total) {
   return `${Math.floor(value / 60)}:${String(Math.floor(value % 60)).padStart(2, '0')}`;
 }
 
+function itemState(item) {
+  if (item.state === 'playing') return { label: 'играет', tone: 'ok' };
+  if (item.state === 'failed' || item.state === 'error') return { label: 'ошибка', tone: 'error' };
+  if (item.state === 'skipped' || item.state === 'cancelled') return { label: 'пропущен', tone: 'muted' };
+  if (item.prefetched) return { label: 'готов', tone: 'ok' };
+  return { label: 'в очереди', tone: 'muted' };
+}
+
 export default function MusicPage({ backend }) {
   const [musicOpen, setMusicOpen] = useState(false);
   const [obsOpen, setObsOpen] = useState(false);
   const [clearOpen, setClearOpen] = useState(false);
   const [clearing, setClearing] = useState(false);
   const [removeTarget, setRemoveTarget] = useState(null);
+  const [skipOpen, setSkipOpen] = useState(false);
+  const [skipReason, setSkipReason] = useState('wrong');
   const [toast, setToast] = useState('');
   const [url, setUrl] = useState(() => sessionStorage.getItem('rs.music.url') || '');
 
@@ -232,6 +249,9 @@ export default function MusicPage({ backend }) {
   const items = real ? music?.items || [] : [];
   const duration = player.duration_sec || current?.duration_sec || 0;
   const progress = duration ? Math.min(100, (player.position_sec / duration) * 100) : 0;
+  const nextItem = items.find((item) => item.id !== current?.id && item.state === 'queued')
+    || items.find((item) => item.id !== current?.id);
+  const queuedCount = items.filter((item) => item.state === 'queued').length;
   const [volume, setVolume] = useState(() => Math.round((music?.volume ?? 0.7) * 100));
   const volumeTouched = useRef(0);
   const volumeTimer = useRef(null);
@@ -328,6 +348,66 @@ export default function MusicPage({ backend }) {
     await action('music_seek', { sec: Math.round(ratio * duration) });
   }
 
+  async function nextTrack() {
+    if (!nextItem) {
+      notify('В очереди больше нет треков');
+      return;
+    }
+    if (!real) {
+      notify('Следующий трек (прототип)');
+      return;
+    }
+    try {
+      await backend.call('music_next');
+      notify('Трек засчитан — включаю следующий');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  function openSkip() {
+    setSkipReason('wrong');
+    setSkipOpen(true);
+  }
+
+  async function confirmSkip() {
+    const reason = SKIP_REASONS.find((item) => item.id === skipReason) || SKIP_REASONS[0];
+    await action('music_skip', { reason: reason.label });
+    setSkipOpen(false);
+    notify(`Пропущено: ${reason.label.toLowerCase()} · баллы вернутся зрителю`);
+  }
+
+  useEffect(() => {
+    function onKeyDown(event) {
+      const tag = (event.target?.tagName || '').toLowerCase();
+      if (['input', 'textarea', 'select'].includes(tag) || document.querySelector('.ui-modal')) return;
+      if (event.code === 'Space') {
+        event.preventDefault();
+        action('music_toggle_pause');
+      } else if (event.shiftKey && event.key === 'ArrowRight') {
+        event.preventDefault();
+        nextTrack();
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        if (duration) action('music_seek', { sec: Math.min(duration, player.position_sec + 5) });
+      } else if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        if (duration) action('music_seek', { sec: Math.max(0, player.position_sec - 5) });
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        changeMusicVolume(Math.min(100, volume + 5));
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        changeMusicVolume(Math.max(0, volume - 5));
+      } else if (event.key.toLowerCase() === 's') {
+        event.preventDefault();
+        openSkip();
+      }
+    }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  });
+
   return (
     <div className="page">
       <div className="page-head">
@@ -342,74 +422,109 @@ export default function MusicPage({ backend }) {
         </div>
       </div>
 
-      <Panel
-        title="Сейчас играет"
-        description={current ? `${current.title} · заказал @${current.user_login} · YouTube` : 'Ничего не играет'}
-        actions={<Pill tone={real && music?.ready ? 'ok' : 'neutral'}>{real && music?.ready ? 'готово' : 'ожидание'}</Pill>}
-      >
-        {current ? (
-          <div className="player">
-            <div className="player__cover"><Icon name="music" size={26} /></div>
-            <div className="player__main">
-              <div className="player__title-row">
-                <div>
-                  <div className="player__track">{current.title}</div>
-                  <div className="player__meta">@{current.user_login} · YouTube · {formatTime(duration)}</div>
-                </div>
-                <div className="player__controls">
-                  <Button
-                    variant="secondary"
-                    size="md"
-                    icon={<Icon name={player.paused ? 'play' : 'pause'} size={18} />}
-                    aria-label={player.paused ? 'Продолжить' : 'Пауза'}
-                    title={player.paused ? 'Продолжить' : 'Пауза'}
-                    onClick={() => action('music_toggle_pause')}
-                  />
-                  <Button variant="secondary" size="md" icon={<Icon name="next" size={18} />} aria-label="Следующий трек" title="Следующий трек" onClick={() => action('music_skip')} />
-                  <Button variant="ghost" size="md" onClick={() => action('music_skip')}>Пропустить трек</Button>
-                </div>
-              </div>
-              <div className="player__bottom">
-                <div className="player__progress">
-                  <span>{formatTime(player.position_sec)}</span>
-                  <div className="progress-track" role="slider" aria-label="Перемотка трека" aria-valuemin={0} aria-valuemax={duration} aria-valuenow={player.position_sec} tabIndex={0} onClick={seek} onKeyDown={(event) => {
-                    if (event.key === 'ArrowRight') action('music_seek', { sec: Math.min(duration, player.position_sec + 5) });
-                    if (event.key === 'ArrowLeft') action('music_seek', { sec: Math.max(0, player.position_sec - 5) });
-                  }}>
-                    <div className="progress-fill" style={{ width: `${progress}%` }} />
-                    <div className="progress-knob" style={{ left: `${progress}%` }} />
-                  </div>
-                  <span>{formatTime(duration)}</span>
-                </div>
-                <div className="player__volume">
-                  <Icon name="volume" size={16} />
-                  <input
-                    className="ui-range"
-                    type="range"
-                    min={0}
-                    max={100}
-                    step={1}
-                    value={volume}
-                    aria-label="Громкость музыки"
-                    onChange={(event) => changeMusicVolume(event.target.value)}
-                  />
-                  <span>{volume}%</span>
-                </div>
-              </div>
+      <section className="music-stage">
+        <div className={`music-stage__cover${player.paused || !current ? ' is-paused' : ''}`}>
+          <div className="music-stage__vinyl"><Icon name="music" size={34} /></div>
+          <div className="music-stage__eq" aria-hidden="true">
+            <i /><i /><i /><i /><i />
+          </div>
+        </div>
+
+        <div className="music-stage__body">
+          <div className="eyebrow">СЕЙЧАС ИГРАЕТ</div>
+          <h2 className="music-stage__title">{current?.title || 'Ничего не играет'}</h2>
+          <div className="music-stage__meta">
+            {current ? `@${current.user_login} · YouTube · ${formatTime(duration)}` : 'Активируй награду-музыку или добавь ссылку вручную'}
+          </div>
+
+          <div className="music-stage__progress">
+            <span>{formatTime(player.position_sec)}</span>
+            <div
+              className="progress-track"
+              role="slider"
+              aria-label="Перемотка трека"
+              aria-valuemin={0}
+              aria-valuemax={duration}
+              aria-valuenow={player.position_sec}
+              tabIndex={0}
+              onClick={seek}
+              onKeyDown={(event) => {
+                if (event.key === 'ArrowRight') action('music_seek', { sec: Math.min(duration, player.position_sec + 5) });
+                if (event.key === 'ArrowLeft') action('music_seek', { sec: Math.max(0, player.position_sec - 5) });
+              }}
+            >
+              <div className="progress-fill" style={{ width: `${progress}%` }} />
+              <div className="progress-knob" style={{ left: `${progress}%` }} />
+            </div>
+            <span>{formatTime(duration)}</span>
+          </div>
+
+          <div className="music-transport">
+            <Button
+              variant="primary"
+              size="lg"
+              icon={<Icon name={player.paused ? 'play' : 'pause'} size={20} />}
+              onClick={() => action('music_toggle_pause')}
+              disabled={!current}
+            >
+              {player.paused ? 'Продолжить' : 'Пауза'}
+            </Button>
+            <Button variant="secondary" size="lg" icon={<Icon name="next" size={18} />} onClick={nextTrack} disabled={!current || !nextItem}>
+              Следующий трек
+            </Button>
+            <Button variant="danger-ghost" size="lg" onClick={openSkip} disabled={!current}>
+              Пропустить…
+            </Button>
+            <div className="music-transport__volume">
+              <Icon name="volume" size={16} />
+              <input
+                className="ui-range"
+                type="range"
+                min={0}
+                max={100}
+                step={1}
+                value={volume}
+                aria-label="Громкость музыки"
+                onChange={(event) => changeMusicVolume(event.target.value)}
+              />
+              <span>{volume}%</span>
             </div>
           </div>
-        ) : (
-          <div className="empty-state">
-            <div className="empty-state__title">Ничего не играет</div>
-            <div className="empty-state__hint">Активируй награду-музыку или добавь ссылку вручную.</div>
+
+          <div className="music-stage__hints">
+            <span><kbd>Space</kbd> пауза</span>
+            <span><kbd>Shift</kbd> + <kbd>→</kbd> следующий</span>
+            <span><kbd>S</kbd> пропустить с причиной</span>
           </div>
-        )}
-      </Panel>
+        </div>
+
+        <aside className="music-stage__aside">
+          <div className="eyebrow">ДАЛЬШЕ В ОЧЕРЕДИ</div>
+          {nextItem ? (
+            <>
+              <div className="music-next-card">
+                <div className="music-next-card__index">1</div>
+                <div>
+                  <div className="music-next-card__title">{nextItem.title}</div>
+                  <div className="music-next-card__meta">@{nextItem.user_login} · {formatTime(nextItem.duration_sec)}</div>
+                </div>
+              </div>
+              <div className="music-next-more">Всего {items.length} из {music?.max_queue || 10}{nextItem.prefetched ? ' · следующий уже загружен' : ''}</div>
+            </>
+          ) : (
+            <div className="music-next-empty">Очередь пуста — можно добавить ссылку ниже.</div>
+          )}
+          <div className={`music-stage__status${real && music?.ready ? ' is-ok' : ''}`}>
+            <span className="dot dot--ok" />
+            {real && music?.ready ? 'yt-dlp готов' : 'ожидание'}
+          </div>
+        </aside>
+      </section>
 
       <div className="two-col">
         <Panel
           title="Очередь"
-          description={`${items.length} из ${music?.max_queue || 10}`}
+          description={`${queuedCount} в очереди · ${items.length} всего`}
           actions={<Button variant="danger-ghost" size="sm" disabled={items.length === 0} onClick={() => setClearOpen(true)}>Очистить</Button>}
         >
           {items.length === 0 ? (
@@ -424,10 +539,11 @@ export default function MusicPage({ backend }) {
                   <span className="queue-index">{index + 1}</span>
                   <div className="queue-info">
                     <div className="queue-title">{item.title}</div>
-                    <div className="queue-meta">@{item.user_login} · {formatTime(item.duration_sec)} · {item.state}</div>
+                    <div className="queue-meta">@{item.user_login} · {formatTime(item.duration_sec)}</div>
                   </div>
+                  <span className={`queue-state queue-state--${itemState(item).tone}`}>{itemState(item).label}</span>
                   <button className="icon-ghost" title="Выше" aria-label="Поднять трек выше" disabled={index === 0} onClick={() => action('music_move_up', { id: item.id })}>↑</button>
-                  <button className="icon-ghost" title="Убрать" aria-label="Убрать трек из очереди" onClick={() => setRemoveTarget(item)}>×</button>
+                  <button className="icon-ghost" title="Убрать с возвратом баллов" aria-label="Убрать трек из очереди, вернуть баллы" onClick={() => setRemoveTarget(item)}>×</button>
                 </div>
               ))}
             </div>
@@ -446,6 +562,29 @@ export default function MusicPage({ backend }) {
         </Panel>
 
         <div className="stack">
+          <Panel title="Правила и модерация">
+            <div className="rules-row">
+              <span className="rules-row__icon">→</span>
+              <div>
+                <div className="rules-row__title">Следующий трек</div>
+                <div className="rules-row__hint">Трек засчитывается, баллы не возвращаются. Просто переход по эфиру.</div>
+              </div>
+            </div>
+            <div className="rules-row">
+              <span className="rules-row__icon is-danger">⏭</span>
+              <div>
+                <div className="rules-row__title">Пропустить с причиной</div>
+                <div className="rules-row__hint">Заявка отменяется, баллы возвращаются зрителю, причина попадает в журнал.</div>
+              </div>
+            </div>
+            <div className="rules-hotkeys">
+              <span><kbd>Space</kbd> пауза</span>
+              <span><kbd>Shift</kbd>+<kbd>→</kbd> следующий</span>
+              <span><kbd>S</kbd> пропуск</span>
+              <span><kbd>↑</kbd>/<kbd>↓</kbd> громкость</span>
+            </div>
+          </Panel>
+
           <Panel title="OBS — строка «Сейчас играет»" actions={<Button variant="ghost" size="sm" onClick={() => setObsOpen(true)}>Настроить</Button>}>
             <div className="inline-row">
               <code className="url-code">http://127.0.0.1:8770/overlay</code>
@@ -463,6 +602,33 @@ export default function MusicPage({ backend }) {
           </Panel>
         </div>
       </div>
+
+      <Modal
+        open={skipOpen}
+        onClose={() => setSkipOpen(false)}
+        title="Пропустить заявку?"
+        subtitle={current ? `«${current.title}» будет снят с эфира.` : 'Текущая заявка будет снята.'}
+        width={520}
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setSkipOpen(false)}>Отмена</Button>
+            <Button variant="danger" onClick={confirmSkip}>Пропустить и вернуть баллы</Button>
+          </>
+        }
+      >
+        <div className="skip-reasons">
+          {SKIP_REASONS.map((reason) => (
+            <label key={reason.id} className={`skip-reason${skipReason === reason.id ? ' is-active' : ''}`}>
+              <input type="radio" name="skip-reason" checked={skipReason === reason.id} onChange={() => setSkipReason(reason.id)} />
+              <span>
+                <strong>{reason.label}</strong>
+                <small>{reason.hint}</small>
+              </span>
+            </label>
+          ))}
+        </div>
+        <div className="modal-hint">Баллы вернутся зрителю, событие попадёт в журнал.</div>
+      </Modal>
 
       <MusicSettingsModal
         open={musicOpen}
@@ -501,8 +667,8 @@ export default function MusicPage({ backend }) {
       <ConfirmModal
         open={Boolean(removeTarget)}
         title="Убрать трек из очереди?"
-        text={removeTarget ? `«${removeTarget.title}» будет удалён из очереди.` : ''}
-        confirmLabel="Убрать"
+        text={removeTarget ? `«${removeTarget.title}» будет удалён из очереди, баллы вернутся зрителю.` : ''}
+        confirmLabel="Убрать и вернуть баллы"
         danger
         onClose={() => setRemoveTarget(null)}
         onConfirm={removeItem}

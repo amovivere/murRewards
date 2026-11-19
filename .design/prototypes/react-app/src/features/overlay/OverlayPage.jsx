@@ -130,7 +130,6 @@ function MusicOverlaySection({ backend, notify }) {
             </div>
             <div className="modal-hint">0 секунд — показывать всё время, пока играет трек.</div>
             <div className="overlay-music-actions">
-              <Button variant="secondary" full onClick={show}>Открыть превью в OBS</Button>
               <Button variant="primary" full onClick={save} disabled={saving}>{saving ? 'Сохраняем…' : 'Применить'}</Button>
             </div>
           </Panel>

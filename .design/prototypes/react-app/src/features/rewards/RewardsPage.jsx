@@ -3,7 +3,7 @@ import Button from '../../components/ui/Button.jsx';
 import ColorPalette from '../../components/ui/ColorPalette.jsx';
 import Icon from '../../components/ui/Icon.jsx';
 import Modal from '../../components/ui/Modal.jsx';
-import { SliderRow, ToggleRow } from '../../components/ui/Field.jsx';
+import { Select, SliderRow, ToggleRow } from '../../components/ui/Field.jsx';
 
 const INITIAL_REWARDS = [
   { id: 1, name: 'Ты новичок?', cost: 200, color: '#F55A5F', file: 'newbie.mp3', volume: 200, active: true },
@@ -49,8 +49,24 @@ function mapReward(reward) {
       opacity: 0.95,
       duration_ms: 4000,
       safe_margin_pct: 6,
+      cover: '',
+      placement: 'random',
+      delay_ms: 0,
+      no_repeat: false,
+      max_shows: 0,
+      show_cooldown_sec: 0,
     },
   };
+}
+
+function isVideoFile(name) {
+  return /\.(mp4|webm|ogv|ogg)$/i.test(name || '');
+}
+
+function coverIndexFor(reward) {
+  if (!reward?.images?.length) return 0;
+  const index = reward.images.findIndex((image) => image.path === reward.imageSettings?.cover);
+  return index >= 0 ? index : 0;
 }
 
 function modeLabel(reward) {
@@ -157,6 +173,8 @@ function EditRewardModal({
   onRemoveImage,
   onImageSettings,
   onPreviewImage,
+  onReorderImages,
+  onImageWeight,
 }) {
   const [name, setName] = useState('');
   const [cost, setCost] = useState('100');
@@ -225,13 +243,54 @@ function EditRewardModal({
             </div>
             <div className="editor-gallery">
               {reward.images.map((image, index) => (
-                <div className="editor-photo" key={image.path || index}>
-                  <img
-                    src={`http://127.0.0.1:8770/image-reward/thumb/${encodeURIComponent(reward.id)}/${index}?v=${encodeURIComponent(image.path)}`}
-                    alt={image.name}
-                    loading="lazy"
+                <div
+                  className={`editor-photo${reward.imageSettings.cover === image.path ? ' is-cover' : ''}`}
+                  key={image.path || index}
+                  draggable
+                  onDragStart={(event) => {
+                    event.dataTransfer.effectAllowed = 'move';
+                    event.dataTransfer.setData('text/plain', String(index));
+                  }}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={(event) => {
+                    event.preventDefault();
+                    const from = Number(event.dataTransfer.getData('text/plain'));
+                    if (!Number.isInteger(from) || from === index) return;
+                    const paths = reward.images.map((item) => item.path);
+                    const [moved] = paths.splice(from, 1);
+                    paths.splice(index, 0, moved);
+                    onReorderImages?.(reward, paths);
+                  }}
+                >
+                  {isVideoFile(image.name) ? (
+                    <div className="editor-photo__video"><Icon name="play" size={24} /><span>{image.name.split('.').pop()}</span></div>
+                  ) : (
+                    <img
+                      src={`http://127.0.0.1:8770/image-reward/thumb/${encodeURIComponent(reward.id)}/${index}?v=${encodeURIComponent(image.path)}`}
+                      alt={image.name}
+                      loading="lazy"
+                    />
+                  )}
+                  <span className="editor-photo__index">{index + 1}</span>
+                  <button
+                    type="button"
+                    className="editor-photo__cover"
+                    title="Сделать обложкой"
+                    aria-label={`Сделать ${image.name} обложкой`}
+                    onClick={() => onImageSettings?.(reward, { cover: image.path })}
+                  >
+                    ★
+                  </button>
+                  <input
+                    className="editor-photo__weight"
+                    type="number"
+                    min={1}
+                    max={100}
+                    value={image.weight || 1}
+                    title="Вес при случайном выборе"
+                    aria-label={`Вес ${image.name}`}
+                    onChange={(event) => onImageWeight?.(reward, index, Number(event.target.value) || 1)}
                   />
-                  {index === 0 ? <span className="editor-photo__cover">обложка</span> : null}
                   <button type="button" className="editor-photo__remove" aria-label={`Убрать ${image.name}`} onClick={() => onRemoveImage?.(reward, image)}>×</button>
                 </div>
               ))}
@@ -242,7 +301,7 @@ function EditRewardModal({
                 </button>
               ) : null}
             </div>
-            <div className="modal-hint">При активации покажется одна случайная картинка.</div>
+            <div className="modal-hint">Перетаскивай для порядка; ★ — обложка; число — вес случайного выбора.</div>
 
             {reward.images.length > 0 ? (
               <div className="editor-appearance">
@@ -264,6 +323,21 @@ function EditRewardModal({
                 <SliderRow label="Длительность" value={(reward.imageSettings.duration_ms / 1000).toFixed(1)} min={1} max={10} step={0.5} unit=" с" onChange={(value) => onImageSettings?.(reward, { durationMs: Math.round(value * 1000) })} />
                 <SliderRow label="Прозрачность" value={Math.round(reward.imageSettings.opacity * 100)} min={50} max={100} unit="%" onChange={(value) => onImageSettings?.(reward, { opacity: value / 100 })} />
                 <SliderRow label="Safe area" value={Math.round(reward.imageSettings.safe_margin_pct)} min={0} max={15} unit="%" onChange={(value) => onImageSettings?.(reward, { safeMarginPct: value })} />
+                <label className="modal-field">
+                  <span>ПОЯВЛЕНИЕ</span>
+                  <Select value={reward.imageSettings.placement || 'random'} onChange={(value) => onImageSettings?.(reward, { placement: value })}>
+                    <option value="random">Случайно по экрану</option>
+                    <option value="center">Центр</option>
+                    <option value="top-left">Сверху слева</option>
+                    <option value="top-right">Сверху справа</option>
+                    <option value="bottom-left">Снизу слева</option>
+                    <option value="bottom-right">Снизу справа</option>
+                  </Select>
+                </label>
+                <SliderRow label="Задержка" value={(reward.imageSettings.delay_ms || 0) / 1000} min={0} max={5} step={0.5} unit=" с" onChange={(value) => onImageSettings?.(reward, { delayMs: Math.round(value * 1000) })} />
+                <ToggleRow label="Без повторов подряд" checked={Boolean(reward.imageSettings.no_repeat)} onChange={(value) => onImageSettings?.(reward, { noRepeat: value })} trailing={reward.imageSettings.no_repeat ? 'вкл' : 'выкл'} />
+                <SliderRow label="Лимит показов" value={reward.imageSettings.max_shows || 0} min={0} max={50} unit=" раз" onChange={(value) => onImageSettings?.(reward, { maxShows: value })} />
+                <SliderRow label="Кулдаун показа" value={reward.imageSettings.show_cooldown_sec || 0} min={0} max={300} step={5} unit=" с" onChange={(value) => onImageSettings?.(reward, { showCooldownSec: value })} />
               </div>
             ) : null}
           </section>
@@ -626,6 +700,29 @@ export default function RewardsPage({ backend }) {
     }
   }
 
+  async function reorderImages(reward, paths) {
+    if (!real) return;
+    try {
+      const next = await backend.call('reorder_reward_images', { rewardId: reward.id, paths });
+      const updated = next?.rewards?.find((item) => item.id === reward.id);
+      if (updated) setEditTarget(mapReward(updated));
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function setImageWeight(reward, index, weight) {
+    if (!real) return;
+    const weights = reward.images.map((image, imageIndex) => (imageIndex === index ? weight : image.weight || 1));
+    try {
+      const next = await backend.call('set_reward_image_weights', { rewardId: reward.id, weights });
+      const updated = next?.rewards?.find((item) => item.id === reward.id);
+      if (updated) setEditTarget(mapReward(updated));
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
   async function previewReward(reward) {
     if (reward.file) await previewSound(reward);
     if (reward.images.length) await previewRewardImage(reward);
@@ -758,11 +855,15 @@ export default function RewardsPage({ backend }) {
             <div className="reward-b-card">
               <div className="reward-b-cover">
                 {reward.images.length > 0 ? (
-                  <img
-                    src={`http://127.0.0.1:8770/image-reward/thumb/${encodeURIComponent(reward.id)}/0?v=${reward.images[0]?.path || ''}`}
-                    alt=""
-                    loading="lazy"
-                  />
+                  isVideoFile(reward.images[coverIndexFor(reward)]?.name) ? (
+                    <div className="reward-b-cover__empty"><Icon name="play" size={24} /></div>
+                  ) : (
+                    <img
+                      src={`http://127.0.0.1:8770/image-reward/thumb/${encodeURIComponent(reward.id)}/${coverIndexFor(reward)}?v=${reward.images[coverIndexFor(reward)]?.path || ''}`}
+                      alt=""
+                      loading="lazy"
+                    />
+                  )
                 ) : (
                   <div className="reward-b-cover__empty">
                     <Icon name={reward.file ? 'music' : 'image'} size={22} />
@@ -855,6 +956,8 @@ export default function RewardsPage({ backend }) {
         onRemoveImage={removeImage}
         onImageSettings={setImageSettings}
         onPreviewImage={previewRewardImage}
+        onReorderImages={reorderImages}
+        onImageWeight={setImageWeight}
       />
       <DeleteRewardModal reward={deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={confirmDelete} returnFocus={menuTriggerRef.current} />
       {toast ? <div className="ui-toast" role="status" aria-live="polite">{toast}</div> : null}

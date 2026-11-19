@@ -46,6 +46,7 @@ pub struct LocalBindingView {
 pub struct ImageInfoView {
     pub path: String,
     pub name: String,
+    pub weight: u32,
 }
 
 /// Настройки появления картинки.
@@ -59,6 +60,12 @@ pub struct ImageAppearanceView {
     pub opacity: f64,
     pub duration_ms: u64,
     pub safe_margin_pct: f64,
+    pub cover: String,
+    pub placement: String,
+    pub delay_ms: u64,
+    pub no_repeat: bool,
+    pub max_shows: u32,
+    pub show_cooldown_sec: u64,
 }
 
 /// Награда в том виде, в котором её удобно рисовать.
@@ -269,6 +276,8 @@ impl AppCore {
             pause_yandex: settings.music.pause_yandex,
             request_cooldown_sec: settings.music.request_cooldown_sec,
             blocked_videos: settings.music.blocked_videos.clone(),
+            autodj: settings.music.autodj,
+            autodj_playlist: settings.music.autodj_playlist.clone(),
             channel: settings.twitch.login.clone(),
             restore_queue: settings.music.restore_queue,
             overlay_seconds: settings.music.overlay_seconds,
@@ -283,6 +292,7 @@ impl AppCore {
             music_config,
             settings.music.ytdlp_path.clone(),
             music_temp,
+            paths.data_dir.clone(),
         );
         let audio_engine = audio::AudioEngine::spawn();
         let playback_state = Arc::new(Mutex::new(PlaybackState::default()));
@@ -920,6 +930,17 @@ impl AppCore {
                                     .file_name()
                                     .map(|name| name.to_string_lossy().into_owned())
                                     .unwrap_or_else(|| path.clone()),
+                                weight: image
+                                    .weights
+                                    .get(
+                                        image
+                                            .images
+                                            .iter()
+                                            .position(|item| item == path)
+                                            .unwrap_or(0),
+                                    )
+                                    .copied()
+                                    .unwrap_or(1),
                             })
                             .collect()
                     })
@@ -958,6 +979,12 @@ impl AppCore {
                         opacity: image.opacity,
                         duration_ms: image.duration_ms,
                         safe_margin_pct: image.safe_margin_pct,
+                        cover: image.cover.clone(),
+                        placement: image.placement.clone(),
+                        delay_ms: image.delay_ms,
+                        no_repeat: image.no_repeat,
+                        max_shows: image.max_shows,
+                        show_cooldown_sec: image.show_cooldown_sec,
                     }),
                 }
             })
@@ -1415,7 +1442,7 @@ pub fn add_reward_images(
     reward_id: String,
 ) -> Result<CoreView, String> {
     let Some(files) = rfd::FileDialog::new()
-        .add_filter("Изображения", &["png", "jpg", "jpeg", "webp"])
+        .add_filter("Медиа", &["png", "jpg", "jpeg", "webp", "gif", "mp4", "webm", "ogv"])
         .set_title("Добавить картинки к награде")
         .pick_files()
     else {
@@ -1438,11 +1465,16 @@ pub fn add_reward_images(
             .and_then(|ext| ext.to_str())
             .unwrap_or("")
             .to_ascii_lowercase();
-        if !matches!(ext.as_str(), "png" | "jpg" | "jpeg" | "webp") {
+        if !matches!(ext.as_str(), "png" | "jpg" | "jpeg" | "webp" | "gif" | "mp4" | "webm" | "ogv") {
             continue;
         }
         let size = std::fs::metadata(source).map(|meta| meta.len()).unwrap_or(0);
-        if size == 0 || size > 8 * 1024 * 1024 {
+        let limit = if matches!(ext.as_str(), "mp4" | "webm" | "ogv") {
+            32 * 1024 * 1024
+        } else {
+            8 * 1024 * 1024
+        };
+        if size == 0 || size > limit {
             continue;
         }
         let stamp = std::time::SystemTime::now()
@@ -1481,6 +1513,10 @@ pub fn add_reward_images(
         };
         entry.images.extend(added);
         entry.images.truncate(8);
+        while entry.weights.len() < entry.images.len() {
+            entry.weights.push(1);
+        }
+        entry.weights.truncate(entry.images.len());
         let normalized = entry.clone().normalized();
         *entry = normalized;
     }
@@ -1494,6 +1530,7 @@ pub fn remove_reward_image(
     reward_id: String,
     path: String,
 ) -> CoreView {
+    let data_dir = core.paths.data_dir.clone();
     {
         let mut inner = core.lock();
         if let Some(entry) = inner
@@ -1503,7 +1540,91 @@ pub fn remove_reward_image(
             .iter_mut()
             .find(|image| image.reward_id == reward_id)
         {
-            entry.images.retain(|item| item != &path);
+            if let Some(index) = entry.images.iter().position(|item| item == &path) {
+                entry.images.remove(index);
+                if index < entry.weights.len() {
+                    entry.weights.remove(index);
+                }
+            }
+            if entry.cover == path {
+                entry.cover.clear();
+            }
+        }
+    }
+    // Удаляем только файлы, скопированные приложением в свою папку.
+    let image_root = data_dir.join("image-rewards");
+    let target = std::path::PathBuf::from(&path);
+    if target.starts_with(&image_root) {
+        let _ = std::fs::remove_file(&target);
+    }
+    core.save();
+    core.view()
+}
+
+#[tauri::command]
+pub fn reorder_reward_images(
+    core: State<'_, Arc<AppCore>>,
+    reward_id: String,
+    paths: Vec<String>,
+) -> CoreView {
+    {
+        let mut inner = core.lock();
+        if let Some(entry) = inner
+            .settings
+            .music
+            .image_rewards
+            .iter_mut()
+            .find(|image| image.reward_id == reward_id)
+        {
+            if paths.len() == entry.images.len()
+                && paths.iter().all(|path| entry.images.contains(path))
+            {
+                let pairs = entry
+                    .images
+                    .iter()
+                    .enumerate()
+                    .map(|(index, path)| {
+                        (
+                            path.clone(),
+                            entry.weights.get(index).copied().unwrap_or(1),
+                        )
+                    })
+                    .collect::<Vec<_>>();
+                let mut reordered_weights = Vec::new();
+                for path in &paths {
+                    let weight = pairs
+                        .iter()
+                        .find(|(item, _)| item == path)
+                        .map(|(_, weight)| *weight)
+                        .unwrap_or(1);
+                    reordered_weights.push(weight);
+                }
+                entry.images = paths;
+                entry.weights = reordered_weights;
+            }
+        }
+    }
+    core.save();
+    core.view()
+}
+
+#[tauri::command]
+pub fn set_reward_image_weights(
+    core: State<'_, Arc<AppCore>>,
+    reward_id: String,
+    weights: Vec<u32>,
+) -> CoreView {
+    {
+        let mut inner = core.lock();
+        if let Some(entry) = inner
+            .settings
+            .music
+            .image_rewards
+            .iter_mut()
+            .find(|image| image.reward_id == reward_id)
+        {
+            entry.weights = weights;
+            *entry = entry.clone().normalized();
         }
     }
     core.save();
@@ -1522,6 +1643,12 @@ pub struct ImageSettingsPatch {
     pub opacity: Option<f64>,
     pub duration_ms: Option<u64>,
     pub safe_margin_pct: Option<f64>,
+    pub cover: Option<String>,
+    pub placement: Option<String>,
+    pub delay_ms: Option<u64>,
+    pub no_repeat: Option<bool>,
+    pub max_shows: Option<u32>,
+    pub show_cooldown_sec: Option<u64>,
 }
 
 #[tauri::command]
@@ -1579,6 +1706,24 @@ pub fn set_reward_image_settings(
         }
         if let Some(value) = patch.safe_margin_pct {
             entry.safe_margin_pct = value;
+        }
+        if let Some(value) = &patch.cover {
+            entry.cover = value.clone();
+        }
+        if let Some(value) = &patch.placement {
+            entry.placement = value.clone();
+        }
+        if let Some(value) = patch.delay_ms {
+            entry.delay_ms = value;
+        }
+        if let Some(value) = patch.no_repeat {
+            entry.no_repeat = value;
+        }
+        if let Some(value) = patch.max_shows {
+            entry.max_shows = value;
+        }
+        if let Some(value) = patch.show_cooldown_sec {
+            entry.show_cooldown_sec = value;
         }
         *entry = entry.clone().normalized();
     }
@@ -2081,6 +2226,18 @@ pub fn music_next(core: State<'_, Arc<AppCore>>) -> CoreView {
 }
 
 #[tauri::command]
+pub fn music_start_autodj(core: State<'_, Arc<AppCore>>) -> CoreView {
+    core.lock().music.start_autodj();
+    core.view()
+}
+
+#[tauri::command]
+pub fn music_retry_item(core: State<'_, Arc<AppCore>>, redemption_id: String) -> CoreView {
+    core.lock().music.retry(&redemption_id);
+    core.view()
+}
+
+#[tauri::command]
 pub fn music_undo_skip(core: State<'_, Arc<AppCore>>) -> CoreView {
     core.lock().music.undo_skip();
     core.view()
@@ -2449,6 +2606,8 @@ fn music_config(settings: &Settings) -> music::Config {
         pause_yandex: settings.music.pause_yandex,
         request_cooldown_sec: settings.music.request_cooldown_sec,
         blocked_videos: settings.music.blocked_videos.clone(),
+        autodj: settings.music.autodj,
+        autodj_playlist: settings.music.autodj_playlist.clone(),
         channel: settings.twitch.login.clone(),
         restore_queue: settings.music.restore_queue,
         overlay_seconds: settings.music.overlay_seconds,

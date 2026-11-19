@@ -306,6 +306,8 @@ impl RewardSoundsApp {
             pause_yandex: settings.music.pause_yandex,
             request_cooldown_sec: settings.music.request_cooldown_sec,
             blocked_videos: settings.music.blocked_videos.clone(),
+            autodj: settings.music.autodj,
+            autodj_playlist: settings.music.autodj_playlist.clone(),
             channel: settings.twitch.login.clone(),
             restore_queue: settings.music.restore_queue,
             overlay_seconds: settings.music.overlay_seconds,
@@ -318,6 +320,7 @@ impl RewardSoundsApp {
             music_config,
             settings.music.ytdlp_path.clone(),
             music_temp,
+            paths.data_dir.clone(),
         );
         let music_cost_input = settings.music.reward_cost.to_string();
 
@@ -1201,6 +1204,8 @@ impl RewardSoundsApp {
             pause_yandex: self.settings.music.pause_yandex,
             request_cooldown_sec: self.settings.music.request_cooldown_sec,
             blocked_videos: self.settings.music.blocked_videos.clone(),
+            autodj: self.settings.music.autodj,
+            autodj_playlist: self.settings.music.autodj_playlist.clone(),
             channel: self.settings.twitch.login.clone(),
             restore_queue: self.settings.music.restore_queue,
             overlay_seconds: self.settings.music.overlay_seconds,

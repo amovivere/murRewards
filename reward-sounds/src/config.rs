@@ -54,6 +54,20 @@ pub struct ImageRewardSettings {
     pub mode: String,
     /// Файлы изображений (пути внутри AppData).
     pub images: Vec<String>,
+    /// Вес каждой картинки для случайного выбора (по умолчанию 1).
+    pub weights: Vec<u32>,
+    /// Выбранная обложка (путь); пусто — первая картинка.
+    pub cover: String,
+    /// random | center | top-left | top-right | bottom-left | bottom-right
+    pub placement: String,
+    /// Задержка перед появлением, миллисекунды.
+    pub delay_ms: u64,
+    /// Не выбирать ту же картинку два раза подряд.
+    pub no_repeat: bool,
+    /// Максимум показов за запуск приложения (0 — без лимита).
+    pub max_shows: u32,
+    /// Кулдаун между показами этой награды, секунды.
+    pub show_cooldown_sec: u64,
     /// Максимальный угол поворота, градусы.
     pub max_angle_deg: f64,
     /// Размер картинки в процентах ширины OBS-сцены.
@@ -78,6 +92,13 @@ impl Default for ImageRewardSettings {
             reward_id: String::new(),
             mode: "both".to_string(),
             images: Vec::new(),
+            weights: Vec::new(),
+            cover: String::new(),
+            placement: "random".to_string(),
+            delay_ms: 0,
+            no_repeat: false,
+            max_shows: 0,
+            show_cooldown_sec: 0,
             max_angle_deg: 40.0,
             size_pct: 32.0,
             random_size: false,
@@ -107,6 +128,25 @@ impl ImageRewardSettings {
         self.duration_ms = self.duration_ms.clamp(500, 15000);
         self.safe_margin_pct = self.safe_margin_pct.clamp(0.0, 20.0);
         self.images.retain(|path| !path.trim().is_empty());
+        while self.weights.len() < self.images.len() {
+            self.weights.push(1);
+        }
+        self.weights.truncate(self.images.len());
+        for weight in &mut self.weights {
+            *weight = (*weight).clamp(1, 100);
+        }
+        if !self.cover.is_empty() && !self.images.iter().any(|path| path == &self.cover) {
+            self.cover.clear();
+        }
+        self.placement = match self.placement.as_str() {
+            "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right" => {
+                self.placement.clone()
+            }
+            _ => "random".to_string(),
+        };
+        self.delay_ms = self.delay_ms.min(10_000);
+        self.max_shows = self.max_shows.min(1000);
+        self.show_cooldown_sec = self.show_cooldown_sec.min(86_400);
         self
     }
 }

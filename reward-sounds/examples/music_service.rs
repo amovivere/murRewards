@@ -30,6 +30,8 @@ fn main() {
         pause_yandex: false,
         request_cooldown_sec: 0,
         blocked_videos: Vec::new(),
+        autodj: false,
+        autodj_playlist: Vec::new(),
         channel: String::new(),
         restore_queue: false,
         overlay_seconds: 10,
@@ -38,7 +40,7 @@ fn main() {
         cookies_file: String::new(),
     };
 
-    let service = MusicService::spawn(config, ytdlp_arg, temp_dir);
+    let service = MusicService::spawn(config, ytdlp_arg, temp_dir, paths.data_dir.clone());
     println!("служба запущена");
 
     service.request(

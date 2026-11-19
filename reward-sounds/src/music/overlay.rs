@@ -111,7 +111,7 @@ fn handle(mut stream: TcpStream, state: &Arc<Mutex<Snapshot>>) {
             let _ = stream.write_all(body);
             return;
         };
-        let content_type = crate::image_reward::content_type_for(&bytes);
+        let content_type = crate::image_reward::library_content_type(reward_id, index);
         let header = format!(
             "HTTP/1.1 200 OK\r\nContent-Type: {content_type}\r\nCache-Control: no-cache\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
             bytes.len()
@@ -133,7 +133,7 @@ fn handle(mut stream: TcpStream, state: &Arc<Mutex<Snapshot>>) {
             let _ = stream.write_all(body);
             return;
         };
-        let content_type = crate::image_reward::content_type_for(&bytes);
+        let content_type = crate::image_reward::media_content_type();
         let header = format!(
             "HTTP/1.1 200 OK\r\nContent-Type: {content_type}\r\nCache-Control: no-store\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
             bytes.len()

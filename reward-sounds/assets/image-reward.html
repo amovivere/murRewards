@@ -20,7 +20,7 @@
   }
   #card.show { opacity: var(--opacity, .95); transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) scale(1.04); }
   #card.settle { transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) scale(1); }
-  #card img { display: block; width: 100%; height: auto; border-radius: 14px; }
+  #card img, #card video { display: block; width: 100%; height: auto; border-radius: 14px; }
   #flash {
     position: fixed; inset: 0; opacity: 0; pointer-events: none;
     background: radial-gradient(circle at var(--x, 40%) var(--y, 40%), rgba(255,255,255,.22), transparent 38%);
@@ -52,10 +52,17 @@
     if (current === data.id + data.angle + data.x + data.y) return;
     current = data.id + data.angle + data.x + data.y;
     clearTimers();
-    const img = document.createElement('img');
-    img.src = data.media + '&v=' + Date.now();
-    img.alt = '';
-    card.replaceChildren(img);
+    const isVideo = data.kind === 'video';
+    const media = document.createElement(isVideo ? 'video' : 'img');
+    media.src = data.media + '&v=' + Date.now();
+    if (isVideo) {
+      media.autoplay = true;
+      media.muted = true;
+      media.loop = true;
+      media.playsInline = true;
+    }
+    media.alt = '';
+    card.replaceChildren(media);
     card.style.setProperty('--x', data.x + '%');
     card.style.setProperty('--y', data.y + '%');
     card.style.setProperty('--angle', data.angle.toFixed(1) + 'deg');

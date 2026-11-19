@@ -3982,7 +3982,7 @@ dependencies = [
 
 [[package]]
 name = "reward-sounds"
-version = "1.8.0"
+version = "1.9.0"
 dependencies = [
  "dirs 5.0.1",
  "eframe",
@@ -4003,7 +4003,7 @@ dependencies = [
 
 [[package]]
 name = "reward-sounds-tauri"
-version = "1.8.0"
+version = "1.9.0"
 dependencies = [
  "log",
  "reward-sounds",

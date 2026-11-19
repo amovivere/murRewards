@@ -21,7 +21,6 @@ const SKIP_REASONS = [
 ];
 
 const SCENES_KEY = 'rs.music.scenes';
-let autoDjArmedInMemory = false;
 const DEFAULT_SCENES = [
   { id: 'stream', name: 'Стрим', patch: { enabled: true, maxQueue: 10, maxDurationSec: 480, requestCooldownSec: 0, autodj: false } },
   { id: 'requests', name: 'Только заявки', patch: { enabled: true, maxQueue: 8, maxDurationSec: 300, requestCooldownSec: 60, autodj: false } },
@@ -294,8 +293,6 @@ export default function MusicPage({ backend }) {
   const [sceneName, setSceneName] = useState('');
   const [toast, setToast] = useState('');
   const undoTimer = useRef(null);
-  const autoDjRef = useRef({ at: 0, index: 0 });
-  const [autoDjArmed, setAutoDjArmed] = useState(() => autoDjArmedInMemory);
   const [url, setUrl] = useState(() => sessionStorage.getItem('rs.music.url') || '');
 
   useEffect(() => {
@@ -342,18 +339,6 @@ export default function MusicPage({ backend }) {
     return () => window.clearTimeout(volumeTimer.current);
   }, []);
 
-  useEffect(() => {
-    if (!autoDjArmed || !real || !music?.autodj) return;
-    const playlist = (music.autodj_playlist || []).filter(Boolean);
-    if (!playlist.length || current || queuedCount > 0) return;
-    const now = Date.now();
-    if (now - autoDjRef.current.at < 12000) return;
-    autoDjRef.current.at = now;
-    const url = playlist[autoDjRef.current.index % playlist.length];
-    autoDjRef.current.index += 1;
-    backend.call('music_add_manual', { url }).catch((error) => notify(String(error)));
-  }, [real, autoDjArmed, music?.autodj, music?.autodj_playlist, current, queuedCount]);
-
   function changeMusicVolume(next) {
     const value = Math.max(0, Math.min(100, Number(next) || 0));
     volumeTouched.current = Date.now();
@@ -383,8 +368,12 @@ export default function MusicPage({ backend }) {
     }
   }
 
-  async function startAutoDj() {
-    if (!music?.autodj) {
+  async function retryItem(item) {
+    await action('music_retry_item', { redemptionId: item.id });
+    notify('Заявка возвращена в очередь');
+  }
+
+  async function startAutoDj() {    if (!music?.autodj) {
       notify('AutoDJ выключен — включите его в настройках музыки');
       return;
     }
@@ -393,21 +382,12 @@ export default function MusicPage({ backend }) {
       notify('Добавьте ссылки в плейлист AutoDJ');
       return;
     }
-    if (current || queuedCount > 0) {
-      notify('Трек уже загружается');
-      return;
-    }
-    setAutoDjArmed(true);
-    autoDjArmedInMemory = true;
     if (!real) {
       notify('AutoDJ запущен (прототип)');
       return;
     }
-    autoDjRef.current.at = Date.now();
-    const url = playlist[autoDjRef.current.index % playlist.length];
-    autoDjRef.current.index += 1;
     try {
-      await backend.call('music_add_manual', { url });
+      await backend.call('music_start_autodj');
       notify('AutoDJ запущен — очередь пуста, играет плейлист');
     } catch (error) {
       notify(String(error));
@@ -726,6 +706,9 @@ export default function MusicPage({ backend }) {
                     <div className="queue-meta">@{item.user_login} · {formatTime(item.duration_sec)}</div>
                   </div>
                   <span className={`queue-state queue-state--${itemState(item).tone}`}>{itemState(item).label}</span>
+                  {item.state === 'failed' ? (
+                    <button className="icon-ghost" title="Повторить заявку" aria-label="Повторить заявку" onClick={() => retryItem(item)}>↻</button>
+                  ) : null}
                   <button className="icon-ghost" title="Выше" aria-label="Поднять трек выше" disabled={index === 0} onClick={() => action('music_move_up', { id: item.id })}>↑</button>
                   <button className="icon-ghost" title="Убрать с возвратом баллов" aria-label="Убрать трек из очереди, вернуть баллы" onClick={() => setRemoveTarget(item)}>×</button>
                 </div>

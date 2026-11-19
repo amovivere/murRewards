@@ -246,6 +246,22 @@ impl Queue {
         Some(item)
     }
 
+    /// Возвращает упавшую заявку в очередь для повторной попытки.
+    pub fn retry_failed(&mut self, redemption_id: &str) -> bool {
+        match self
+            .items
+            .iter_mut()
+            .find(|item| item.redemption_id == redemption_id)
+        {
+            Some(item) if item.state == ItemState::Failed => {
+                item.state = ItemState::Queued;
+                item.error = None;
+                true
+            }
+            _ => false,
+        }
+    }
+
     /// Возвращает пропущенную заявку в начало очереди.
     pub fn requeue_front(&mut self, redemption_id: &str) -> bool {
         let Some(index) = self
@@ -485,6 +501,19 @@ mod tests {
         queue.complete("redemption-a", ItemState::Done);
         assert_eq!(queue.pending(), 0, "завершённые не занимают место");
         assert!(queue.has_room());
+    }
+
+    #[test]
+    fn retry_failed_returns_item_to_queue() {
+        let mut queue = Queue::new(10, 480);
+        queue.push(item("a", "1")).unwrap();
+        let first = queue.take_next().expect("первая заявка");
+        queue.fail(&first.redemption_id, "ошибка загрузки");
+        assert!(queue.retry_failed(&first.redemption_id));
+        let retried = queue.take_next().expect("после повтора");
+        assert_eq!(retried.redemption_id, first.redemption_id);
+        assert_eq!(retried.state, ItemState::Playing);
+        assert!(retried.error.is_none());
     }
 
     #[test]

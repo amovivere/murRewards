@@ -34,6 +34,10 @@ pub struct Config {
     pub request_cooldown_sec: u64,
     /// ID видео, запрещённые к заказу.
     pub blocked_videos: Vec<String>,
+    /// Включён ли AutoDJ.
+    pub autodj: bool,
+    /// Ссылки плейлиста AutoDJ.
+    pub autodj_playlist: Vec<String>,
     /// Канал Twitch (нужен для чтения команды из чата).
     pub channel: String,
     /// Восстанавливать очередь после перезапуска.
@@ -64,6 +68,8 @@ impl Default for Config {
             cookies_file: String::new(),
             request_cooldown_sec: 0,
             blocked_videos: Vec::new(),
+            autodj: false,
+            autodj_playlist: Vec::new(),
         }
     }
 }
@@ -160,6 +166,8 @@ pub(super) enum Cmd {
     /// Перейти к следующему треку: текущий считается отработанным (без возврата баллов).
     Next,
     UndoSkip,
+    StartAutoDj,
+    Retry(String),
     ClearQueue,
     RemoveItem(String),
     MoveUp(String),
@@ -189,7 +197,12 @@ pub struct MusicService {
 
 impl MusicService {
     /// Запускает службу. `ytdlp_path` — путь к `yt-dlp.exe` (`auto` — искать самому).
-    pub fn spawn(config: Config, ytdlp_path: String, temp_dir: PathBuf) -> Self {
+    pub fn spawn(
+        config: Config,
+        ytdlp_path: String,
+        temp_dir: PathBuf,
+        data_dir: PathBuf,
+    ) -> Self {
         let (tx, rx) = mpsc::channel();
         let (event_tx, event_rx) = mpsc::channel();
         let state = Arc::new(Mutex::new(Snapshot {
@@ -203,7 +216,7 @@ impl MusicService {
         super::overlay::spawn(Arc::clone(&state), super::overlay::PORT);
         let spawned = thread::Builder::new()
             .name("reward-sounds-music-service".to_string())
-            .spawn(move || run(config, ytdlp_path, temp_dir, rx, inner_tx, thread_state, event_tx));
+            .spawn(move || run(config, ytdlp_path, temp_dir, data_dir, rx, inner_tx, thread_state, event_tx));
 
         if let Err(err) = spawned {
             log::error!("Не удалось запустить службу музыки: {err}");
@@ -267,6 +280,16 @@ impl MusicService {
         let _ = self.tx.send(Cmd::UndoSkip);
     }
 
+    /// Запускает AutoDJ (плейлист заполняется только после явной команды Play).
+    pub fn start_autodj(&self) {
+        let _ = self.tx.send(Cmd::StartAutoDj);
+    }
+
+    /// Повторяет упавшую заявку.
+    pub fn retry(&self, redemption_id: &str) {
+        let _ = self.tx.send(Cmd::Retry(redemption_id.to_string()));
+    }
+
     pub fn clear_queue(&self) {
         let _ = self.tx.send(Cmd::ClearQueue);
     }
@@ -327,6 +350,7 @@ fn run(
     mut config: Config,
     ytdlp_path: String,
     temp_dir: PathBuf,
+    data_dir: PathBuf,
     rx: Receiver<Cmd>,
     tx: Sender<Cmd>,
     state: Arc<Mutex<Snapshot>>,
@@ -358,12 +382,23 @@ fn run(
     let mut seen_running = false;
     /// Подключён ли читатель чата (команда `!трек` реально доступна).
     let mut chat_online = false;
+    /// AutoDJ включается только после кнопки Play; дальше работает в сервисе.
+    let mut autodj_armed = false;
+    let mut autodj_index = 0usize;
+    let mut last_autodj_at: Option<Instant> = None;
 
-    let data_dir = temp_dir
-        .parent()
-        .map(|path| path.to_path_buf())
-        .unwrap_or_else(|| temp_dir.clone());
+    let data_dir = data_dir;
     let queue_file = data_dir.join("queue.json");
+    // Старые версии хранили очередь в системном TEMP. Переносим её один раз.
+    let legacy_queue = temp_dir
+        .parent()
+        .map(|path| path.join("queue.json"))
+        .unwrap_or_else(|| temp_dir.join("queue.json"));
+    if !queue_file.exists() && legacy_queue.is_file() {
+        if std::fs::copy(&legacy_queue, &queue_file).is_ok() {
+            log::info!("Музыка: очередь перенесена из TEMP в папку настроек");
+        }
+    }
     if config.restore_queue {
         let mut restored = Queue::load(&queue_file);
         restored.set_limits(config.max_queue, config.max_duration_sec);
@@ -588,6 +623,9 @@ fn run(
                         reason,
                     });
                     persist_queue(&queue, &queue_file, config.restore_queue);
+                    if autodj_armed {
+                        last_autodj_at = None;
+                    }
                 }
             }
             Ok(Cmd::UndoSkip) => {
@@ -596,6 +634,17 @@ fn run(
                         log::info!("Музыка: пропуск отменён — «{}» возвращён", item.label());
                         persist_queue(&queue, &queue_file, config.restore_queue);
                     }
+                }
+            }
+            Ok(Cmd::StartAutoDj) => {
+                autodj_armed = true;
+                last_autodj_at = None;
+                log::info!("Музыка: AutoDJ включён кнопкой Play");
+            }
+            Ok(Cmd::Retry(redemption_id)) => {
+                if queue.retry_failed(&redemption_id) {
+                    log::info!("Музыка: заявка {redemption_id} возвращена в очередь");
+                    persist_queue(&queue, &queue_file, config.restore_queue);
                 }
             }
             Ok(Cmd::ClearQueue) => {
@@ -740,6 +789,9 @@ fn run(
                     redemption_id: item.redemption_id.clone(),
                 });
                 current = None;
+                if autodj_armed {
+                    last_autodj_at = None;
+                }
             } else if let Some(error) = player_state.error.clone() {
                 queue.fail(&item.redemption_id, error.clone());
                 persist_queue(&queue, &queue_file, config.restore_queue);
@@ -750,6 +802,9 @@ fn run(
                     reason: error,
                 });
                 current = None;
+                if autodj_armed {
+                    last_autodj_at = None;
+                }
             }
         }
 
@@ -822,6 +877,33 @@ fn run(
                         }
                     }
                 }
+            }
+        }
+
+        // 3.5. AutoDJ: очередь пуста, плеер свободен — берём следующий URL.
+        //      Запускается только после Cmd::StartAutoDj (кнопка Play).
+        if autodj_armed
+            && config.enabled
+            && config.autodj
+            && !config.autodj_playlist.is_empty()
+            && current.is_none()
+            && queue.pending() == 0
+            && validating.is_empty()
+            && last_autodj_at
+                .map(|at| at.elapsed() >= std::time::Duration::from_secs(6))
+                .unwrap_or(true)
+        {
+            let playlist: Vec<&String> = config
+                .autodj_playlist
+                .iter()
+                .filter(|url| !url.trim().is_empty())
+                .collect();
+            if !playlist.is_empty() {
+                let url = playlist[autodj_index % playlist.len()].clone();
+                autodj_index += 1;
+                last_autodj_at = Some(Instant::now());
+                log::info!("Музыка: AutoDJ ставит следующий трек");
+                let _ = tx.send(Cmd::Manual { user_input: url });
             }
         }
 

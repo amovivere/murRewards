@@ -800,14 +800,24 @@ fn refresh(
         .map_err(|err| format!("Не удалось связаться с Twitch. ({err})"))?;
 
     if response.status != 200 {
+        let message = server_message(&response);
         log::warn!(
-            "Twitch: обновление токена отклонено (HTTP {})",
+            "Twitch: обновление токена отклонено (HTTP {}: {message})",
             response.status
         );
-        let _ = events.send(Event::SessionExpired(
-            "Сессия Twitch истекла. Подключите аккаунт заново — звуки при этом сохранятся."
-                .to_string(),
-        ));
+        if response.status == 400
+            && (message.contains("invalid_grant") || message.contains("Invalid refresh token"))
+        {
+            let _ = events.send(Event::SessionExpired(
+                "Сессия Twitch истекла. Подключите аккаунт заново — звуки при этом сохранятся."
+                    .to_string(),
+            ));
+        } else {
+            let _ = events.send(Event::Failed(format!(
+                "Twitch временно не обновил вход (HTTP {}). Попробуем позже.",
+                response.status
+            )));
+        }
         return Ok(());
     }
 

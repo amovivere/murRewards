@@ -1,6 +1,6 @@
 [package]
 name = "reward-sounds"
-version = "1.8.0"
+version = "1.9.0"
 edition = "2021"
 rust-version = "1.76"
 description = "Reward Sounds — воспроизведение локальных звуков при активации наград Twitch Channel Points"

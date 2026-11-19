@@ -245,7 +245,9 @@ impl AppCore {
             overlay_font: settings.music.overlay_font,
             cookies_file: settings.music.cookies_file.clone(),
         };
-        let music_temp = paths.data_dir.join("tmp");
+        // Временные файлы yt-dlp/PyInstaller держим в системном TEMP:
+        // в Roaming-папке PyInstaller иногда не может создать временный каталог.
+        let music_temp = std::env::temp_dir().join("RewardSoundsMusic");
         let music_service = music::MusicService::spawn(
             music_config,
             settings.music.ytdlp_path.clone(),

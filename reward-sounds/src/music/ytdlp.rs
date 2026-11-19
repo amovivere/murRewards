@@ -319,10 +319,11 @@ impl YtDlp {
     /// Готовит процесс: без окна консоли и со своей временной папкой.
     fn command(&self) -> Command {
         let mut command = Command::new(&self.exe);
-        let _ = std::fs::create_dir_all(&self.temp_dir);
+        let custom_temp = std::fs::create_dir_all(&self.temp_dir).is_ok();
+        if custom_temp {
+            command.env("TEMP", &self.temp_dir).env("TMP", &self.temp_dir);
+        }
         command
-            .env("TEMP", &self.temp_dir)
-            .env("TMP", &self.temp_dir)
             // Иначе yt-dlp пишет названия в системной кодировке (cp866),
             // и кириллица приходит испорченной.
             .env("PYTHONIOENCODING", "utf-8")

@@ -3710,3 +3710,34 @@ a:focus-visible {
   color: #8d8d98;
   font-size: 10px;
 }
+
+.scene-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 9px;
+}
+
+.scene-chip {
+  border: 1px solid #30303a;
+  border-radius: 999px;
+  background: #17171c;
+  color: #b9b9c4;
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.scene-chip:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  color: #f0eaff;
+}
+
+.scene-save {
+  gap: 6px;
+}
+
+.scene-save .ui-input {
+  flex: 1;
+  min-width: 0;
+}

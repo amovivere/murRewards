@@ -82,6 +82,10 @@ pub struct MusicSettings {
     pub request_cooldown_sec: u64,
     /// ID видео YouTube, которые нельзя заказывать.
     pub blocked_videos: Vec<String>,
+    /// Включать резервный плейлист, когда очередь пуста.
+    pub autodj: bool,
+    /// Ссылки YouTube для AutoDJ.
+    pub autodj_playlist: Vec<String>,
     /// Сколько секунд показывать строку «Сейчас играет» в оверлее.
     pub overlay_seconds: u64,
     /// Где показывать строку: `top` или `bottom`.
@@ -108,6 +112,8 @@ impl Default for MusicSettings {
             pause_yandex: true,
             request_cooldown_sec: 0,
             blocked_videos: Vec::new(),
+            autodj: false,
+            autodj_playlist: Vec::new(),
             overlay_seconds: 10,
             overlay_position: "top".to_string(),
             overlay_font: 17,

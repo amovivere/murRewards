@@ -140,6 +140,8 @@ pub struct MusicView {
     pub pause_yandex: bool,
     pub request_cooldown_sec: u64,
     pub blocked_videos: Vec<String>,
+    pub autodj: bool,
+    pub autodj_playlist: Vec<String>,
     pub restore_queue: bool,
     pub prefetch: bool,
     pub volume: f64,
@@ -1091,6 +1093,8 @@ fn music_view(snapshot: &music::Snapshot, settings: &Settings) -> MusicView {
         pause_yandex: settings.music.pause_yandex,
         request_cooldown_sec: settings.music.request_cooldown_sec,
         blocked_videos: settings.music.blocked_videos.clone(),
+        autodj: settings.music.autodj,
+        autodj_playlist: settings.music.autodj_playlist.clone(),
         restore_queue: settings.music.restore_queue,
         prefetch: settings.music.prefetch,
         volume: settings.music.music_volume,
@@ -1873,6 +1877,8 @@ pub struct MusicSettingsPatch {
     pub pause_yandex: Option<bool>,
     pub request_cooldown_sec: Option<u64>,
     pub blocked_videos: Option<Vec<String>>,
+    pub autodj: Option<bool>,
+    pub autodj_playlist: Option<Vec<String>>,
     pub restore_queue: Option<bool>,
     pub prefetch: Option<bool>,
     pub overlay_seconds: Option<u64>,
@@ -1905,6 +1911,16 @@ fn apply_music_patch(music: &mut reward_sounds::config::MusicSettings, patch: &M
             .iter()
             .map(|id| id.trim().to_string())
             .filter(|id| !id.is_empty())
+            .collect();
+    }
+    if let Some(value) = patch.autodj {
+        music.autodj = value;
+    }
+    if let Some(value) = &patch.autodj_playlist {
+        music.autodj_playlist = value
+            .iter()
+            .map(|url| url.trim().to_string())
+            .filter(|url| !url.is_empty())
             .collect();
     }
     if let Some(value) = patch.restore_queue {
@@ -2160,6 +2176,8 @@ mod tests {
             pause_yandex: None,
             request_cooldown_sec: None,
             blocked_videos: None,
+            autodj: None,
+            autodj_playlist: None,
             restore_queue: None,
             prefetch: None,
             overlay_seconds: None,

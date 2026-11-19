@@ -20,6 +20,23 @@ const SKIP_REASONS = [
   { id: 'broken', label: 'Ссылка не работает', hint: 'видео удалено или закрыто' },
 ];
 
+const SCENES_KEY = 'rs.music.scenes';
+const DEFAULT_SCENES = [
+  { id: 'stream', name: 'Стрим', patch: { enabled: true, maxQueue: 10, maxDurationSec: 480, requestCooldownSec: 0, autodj: false } },
+  { id: 'requests', name: 'Только заявки', patch: { enabled: true, maxQueue: 8, maxDurationSec: 300, requestCooldownSec: 60, autodj: false } },
+  { id: 'break', name: 'Перерыв', patch: { enabled: true, maxQueue: 10, maxDurationSec: 600, requestCooldownSec: 0, autodj: true } },
+];
+
+function loadScenes() {
+  try {
+    const raw = localStorage.getItem(SCENES_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {
+    /* ignore */
+  }
+  return DEFAULT_SCENES;
+}
+
 function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
   const [maxQueue, setMaxQueue] = useState(10);
   const [maxDuration, setMaxDuration] = useState(15);
@@ -30,6 +47,8 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
   const [restoreQueue, setRestoreQueue] = useState(true);
   const [cooldown, setCooldown] = useState(0);
   const [blocked, setBlocked] = useState('');
+  const [autodj, setAutodj] = useState(false);
+  const [autodjPlaylist, setAutodjPlaylist] = useState('');
   const [cookiesFile, setCookiesFile] = useState('');
   const [cookiesOk, setCookiesOk] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -45,6 +64,8 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
     setRestoreQueue(music.restore_queue !== false);
     setCooldown(music.request_cooldown_sec || 0);
     setBlocked((music.blocked_videos || []).join('\n'));
+    setAutodj(Boolean(music.autodj));
+    setAutodjPlaylist((music.autodj_playlist || []).join('\n'));
     setCookiesFile(music.cookies_file || '');
     setCookiesOk(null);
     if (music.cookies_file) {
@@ -69,6 +90,8 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
         enabled: autoplay,
         requestCooldownSec: cooldown,
         blockedVideos: blocked.split(/[\n,]+/).map((id) => id.trim()).filter(Boolean),
+        autodj,
+        autodjPlaylist: autodjPlaylist.split(/[\n,]+/).map((url) => url.trim()).filter(Boolean),
         cookiesFile,
       });
       onClose();
@@ -103,7 +126,20 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
           <ToggleRow label="Предзагрузка следующего трека" checked={prefetch} onChange={setPrefetch} trailing={prefetch ? 'вкл' : 'выкл'} />
           <ToggleRow label="Пауза Яндекс Музыки" checked={pauseYandex} onChange={setPauseYandex} trailing={pauseYandex ? 'вкл' : 'выкл'} />
           <ToggleRow label="Восстанавливать очередь" checked={restoreQueue} onChange={setRestoreQueue} trailing={restoreQueue ? 'вкл' : 'выкл'} />
+          <ToggleRow label="AutoDJ при пустой очереди" checked={autodj} onChange={setAutodj} trailing={autodj ? 'вкл' : 'выкл'} />
         </div>
+        {autodj ? (
+          <label className="modal-field">
+            <span>ПЛЕЙЛИСТ AUTODJ</span>
+            <textarea
+              className="ui-input modal-textarea"
+              value={autodjPlaylist}
+              placeholder="Ссылки YouTube, по одной на строку"
+              onChange={(event) => setAutodjPlaylist(event.target.value)}
+            />
+            <div className="modal-hint">Когда очередь пуста, приложение включит следующий трек из этого списка.</div>
+          </label>
+        ) : null}
         <div className="modal-hint">Оверлей показывается только когда играет трек.</div>
         <label className="modal-field">
           <span>БЛОК-ЛИСТ ВИДЕО</span>
@@ -253,8 +289,11 @@ export default function MusicPage({ backend }) {
   const [blockCurrent, setBlockCurrent] = useState(false);
   const [optimisticPaused, setOptimisticPaused] = useState(null);
   const [undoVisible, setUndoVisible] = useState(false);
+  const [scenes, setScenes] = useState(loadScenes);
+  const [sceneName, setSceneName] = useState('');
   const [toast, setToast] = useState('');
   const undoTimer = useRef(null);
+  const autoDjRef = useRef({ at: 0, index: 0 });
   const [url, setUrl] = useState(() => sessionStorage.getItem('rs.music.url') || '');
 
   useEffect(() => {
@@ -299,6 +338,18 @@ export default function MusicPage({ backend }) {
   useEffect(() => {
     return () => window.clearTimeout(volumeTimer.current);
   }, []);
+
+  useEffect(() => {
+    if (!real || !music?.autodj) return;
+    const playlist = (music.autodj_playlist || []).filter(Boolean);
+    if (!playlist.length || current || queuedCount > 0) return;
+    const now = Date.now();
+    if (now - autoDjRef.current.at < 12000) return;
+    autoDjRef.current.at = now;
+    const url = playlist[autoDjRef.current.index % playlist.length];
+    autoDjRef.current.index += 1;
+    backend.call('music_add_manual', { url }).catch((error) => notify(String(error)));
+  }, [real, music?.autodj, music?.autodj_playlist, current, queuedCount]);
 
   function changeMusicVolume(next) {
     const value = Math.max(0, Math.min(100, Number(next) || 0));
@@ -397,6 +448,44 @@ export default function MusicPage({ backend }) {
     const ratio = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
     await action('music_seek', { sec: Math.round(ratio * duration) });
   }
+
+  useEffect(() => {
+    localStorage.setItem(SCENES_KEY, JSON.stringify(scenes));
+  }, [scenes]);
+
+  async function applyScene(scene) {
+    if (!real) {
+      notify(`Сцена «${scene.name}» (прототип)`);
+      return;
+    }
+    try {
+      await backend.call('set_music_settings', { patch: scene.patch });
+      notify(`Сцена «${scene.name}» применена`);
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  async function saveCurrentScene() {
+    const name = sceneName.trim();
+    if (!name) {
+      notify('Введите название сцены');
+      return;
+    }
+    const patch = {
+      enabled: music?.enabled !== false,
+      maxQueue: music?.max_queue || 10,
+      maxDurationSec: music?.max_duration_sec || 480,
+      requestCooldownSec: music?.request_cooldown_sec || 0,
+      autodj: Boolean(music?.autodj),
+      autodjPlaylist: music?.autodj_playlist || [],
+      blockedVideos: music?.blocked_videos || [],
+    };
+    setScenes((current) => [...current, { id: `scene-${Date.now()}`, name, patch }]);
+    setSceneName('');
+    notify(`Сцена «${name}» сохранена`);
+  }
+
 
   async function nextTrack() {
     if (!nextItem) {
@@ -660,6 +749,27 @@ export default function MusicPage({ backend }) {
             <div className="muted-line">
               Блок-лист: {music?.blocked_videos?.length || 0} · кулдаун: {music?.request_cooldown_sec || 0} с
             </div>
+          </Panel>
+
+          <Panel title="Сцены">
+            <div className="scene-list">
+              {scenes.map((scene) => (
+                <button key={scene.id} type="button" className="scene-chip" onClick={() => applyScene(scene)}>
+                  {scene.name}
+                </button>
+              ))}
+            </div>
+            <div className="inline-row scene-save">
+              <input
+                className="ui-input"
+                value={sceneName}
+                placeholder="Название сцены"
+                onChange={(event) => setSceneName(event.target.value)}
+                onKeyDown={(event) => event.key === 'Enter' && saveCurrentScene()}
+              />
+              <Button variant="secondary" size="sm" onClick={saveCurrentScene}>Сохранить</Button>
+            </div>
+            <div className="modal-hint">Сцена применяет лимиты, кулдаун, блок-лист и AutoDJ.</div>
           </Panel>
 
           <Panel title="OBS — строка «Сейчас играет»" actions={<Button variant="ghost" size="sm" onClick={() => setObsOpen(true)}>Настроить</Button>}>

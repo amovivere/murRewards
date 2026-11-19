@@ -38,6 +38,8 @@ pub struct Config {
     pub autodj: bool,
     /// Перемешивать ли плейлист AutoDJ.
     pub autodj_shuffle: bool,
+    /// Прерывать AutoDJ заявкой и возвращаться к нему после очереди.
+    pub autodj_interrupt: bool,
     /// Ссылки плейлиста AutoDJ.
     pub autodj_playlist: Vec<String>,
     /// Канал Twitch (нужен для чтения команды из чата).
@@ -72,6 +74,7 @@ impl Default for Config {
             blocked_videos: Vec::new(),
             autodj: false,
             autodj_shuffle: false,
+            autodj_interrupt: true,
             autodj_playlist: Vec::new(),
         }
     }
@@ -358,6 +361,17 @@ impl Drop for MusicService {
     }
 }
 
+fn is_autodj_item(item: &QueueItem) -> bool {
+    item.redemption_id.starts_with("autodj-")
+}
+
+fn request_is_waiting(queue: &Queue) -> bool {
+    queue
+        .items()
+        .iter()
+        .any(|item| item.state == ItemState::Queued && !is_autodj_item(item))
+}
+
 fn run(
     mut config: Config,
     ytdlp_path: String,
@@ -399,6 +413,9 @@ fn run(
     let mut autodj_index = 0usize;
     let mut last_autodj_index: Option<usize> = None;
     let mut last_autodj_at: Option<Instant> = None;
+    let mut autodj_bytes: Option<Vec<u8>> = None;
+    /// (заявка AutoDJ, байты, позиция) — пауза перед заявкой зрителя.
+    let mut autodj_resume: Option<(QueueItem, Vec<u8>, u64)> = None;
 
     let data_dir = data_dir;
     let queue_file = data_dir.join("queue.json");
@@ -584,6 +601,11 @@ fn run(
                         track_started_at = Some(std::time::Instant::now());
                         start_generation = player.state().generation;
                         seen_running = false;
+                        if is_autodj_item(item) {
+                            autodj_bytes = Some(bytes.clone());
+                        } else {
+                            autodj_bytes = None;
+                        }
                         if let Err(err) = player.play(bytes, item.duration_sec) {
                             log::error!("Музыка: плеер не запустился: {err}");
                             queue.fail(&item.redemption_id, err.clone());
@@ -618,6 +640,14 @@ fn run(
                 }
             }
             Ok(Cmd::Next) => {
+                if current.as_ref().is_some_and(is_autodj_item) {
+                    if let Some(item) = current.take() {
+                        player.stop().ok();
+                        queue.remove(&item.redemption_id);
+                        autodj_bytes = None;
+                    }
+                    continue;
+                }
                 if let Some(item) = current.take() {
                     awaiting_start = None;
                     player.stop().ok();
@@ -629,6 +659,14 @@ fn run(
                 }
             }
             Ok(Cmd::Skip(reason)) => {
+                if current.as_ref().is_some_and(is_autodj_item) {
+                    if let Some(item) = current.take() {
+                        player.stop().ok();
+                        queue.remove(&item.redemption_id);
+                        autodj_bytes = None;
+                    }
+                    continue;
+                }
                 if let Some(item) = current.take() {
                     awaiting_start = None;
                     player.stop().ok();
@@ -660,8 +698,10 @@ fn run(
             Ok(Cmd::StopAutoDj) => {
                 autodj_armed = false;
                 last_autodj_at = None;
+                autodj_bytes = None;
+                autodj_resume = None;
                 if let Some(item) = current.take() {
-                    if item.redemption_id.starts_with("autodj-") {
+                    if is_autodj_item(&item) {
                         awaiting_start = None;
                         player.stop().ok();
                         queue.remove(&item.redemption_id);
@@ -856,6 +896,9 @@ fn run(
                 let _ = events.send(MusicEvent::Finished {
                     redemption_id: item.redemption_id.clone(),
                 });
+                if is_autodj_item(&item) {
+                    autodj_bytes = None;
+                }
                 current = None;
                 if autodj_armed {
                     last_autodj_at = None;
@@ -869,9 +912,33 @@ fn run(
                     redemption_id: item.redemption_id.clone(),
                     reason: error,
                 });
+                if is_autodj_item(&item) {
+                    autodj_bytes = None;
+                }
                 current = None;
                 if autodj_armed {
                     last_autodj_at = None;
+                }
+            }
+        }
+
+        // 2.5. Заявка зрителя важнее AutoDJ: мягко останавливаем AutoDJ,
+        //      сохраняя байты и позицию, чтобы вернуться после очереди.
+        if autodj_armed
+            && config.autodj_interrupt
+            && current.as_ref().is_some_and(is_autodj_item)
+            && request_is_waiting(&queue)
+        {
+            let position = player.state().position_sec;
+            player.stop().ok();
+            if let Some(item) = current.take() {
+                queue.remove(&item.redemption_id);
+                if let Some(bytes) = autodj_bytes.take() {
+                    log::info!(
+                        "Музыка: AutoDJ приостановлен на {} с ради заявки",
+                        position
+                    );
+                    autodj_resume = Some((item, bytes, position));
                 }
             }
         }
@@ -916,6 +983,11 @@ fn run(
                         track_started_at = Some(std::time::Instant::now());
                         start_generation = player.state().generation;
                         seen_running = false;
+                        if is_autodj_item(&item) {
+                            autodj_bytes = Some(ready.bytes.clone());
+                        } else {
+                            autodj_bytes = None;
+                        }
                         if let Err(err) = player.play(ready.bytes, item.duration_sec) {
                             log::error!("Музыка: плеер не запустился: {err}");
                             queue.fail(&item.redemption_id, err.clone());
@@ -931,6 +1003,9 @@ fn run(
                         if let Some(exe) = exe.clone() {
                             awaiting_start = Some(item.video_id.clone());
                             loading.insert(item.video_id.clone());
+                            if !is_autodj_item(&item) {
+                                autodj_bytes = None;
+                            }
                             spawn_download(
                                 exe,
                                 temp_dir.clone(),
@@ -943,6 +1018,25 @@ fn run(
                         } else {
                             queue.fail(&item.redemption_id, "yt-dlp не найден");
                         }
+                    }
+                }
+            }
+        }
+
+        // 3.4. Очередь зрителей пуста — возвращаем AutoDJ с того же места.
+        if current.is_none() && autodj_resume.is_some() && !request_is_waiting(&queue) {
+            let (item, bytes, position) = autodj_resume.take().expect("resume есть");
+            if !bytes.is_empty() {
+                player.set_volume(config.volume).ok();
+                match player.play(bytes.clone(), item.duration_sec) {
+                    Ok(()) => {
+                        player.seek(position).ok();
+                        current = Some(item);
+                        autodj_bytes = Some(bytes);
+                        log::info!("Музыка: AutoDJ продолжен с {} с", position);
+                    }
+                    Err(err) => {
+                        log::warn!("Музыка: не удалось вернуть AutoDJ: {err}");
                     }
                 }
             }

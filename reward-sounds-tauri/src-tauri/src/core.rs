@@ -173,6 +173,7 @@ pub struct MusicView {
     pub blocked_videos: Vec<String>,
     pub autodj: bool,
     pub autodj_shuffle: bool,
+    pub autodj_interrupt: bool,
     pub autodj_playlist: Vec<String>,
     pub autodj_active: bool,
     pub restore_queue: bool,
@@ -280,6 +281,7 @@ impl AppCore {
             blocked_videos: settings.music.blocked_videos.clone(),
             autodj: settings.music.autodj,
             autodj_shuffle: settings.music.autodj_shuffle,
+            autodj_interrupt: settings.music.autodj_interrupt,
             autodj_playlist: settings.music.autodj_playlist.clone(),
             channel: settings.twitch.login.clone(),
             restore_queue: settings.music.restore_queue,
@@ -1219,6 +1221,7 @@ fn music_view(snapshot: &music::Snapshot, settings: &Settings) -> MusicView {
         blocked_videos: settings.music.blocked_videos.clone(),
         autodj: settings.music.autodj,
         autodj_shuffle: settings.music.autodj_shuffle,
+        autodj_interrupt: settings.music.autodj_interrupt,
         autodj_playlist: settings.music.autodj_playlist.clone(),
         autodj_active: snapshot.autodj_active,
         restore_queue: settings.music.restore_queue,
@@ -2341,6 +2344,7 @@ pub struct MusicSettingsPatch {
     pub blocked_videos: Option<Vec<String>>,
     pub autodj: Option<bool>,
     pub autodj_shuffle: Option<bool>,
+    pub autodj_interrupt: Option<bool>,
     pub autodj_playlist: Option<Vec<String>>,
     pub restore_queue: Option<bool>,
     pub prefetch: Option<bool>,
@@ -2381,6 +2385,9 @@ fn apply_music_patch(music: &mut reward_sounds::config::MusicSettings, patch: &M
     }
     if let Some(value) = patch.autodj_shuffle {
         music.autodj_shuffle = value;
+    }
+    if let Some(value) = patch.autodj_interrupt {
+        music.autodj_interrupt = value;
     }
     if let Some(value) = &patch.autodj_playlist {
         music.autodj_playlist = value
@@ -2623,6 +2630,7 @@ fn music_config(settings: &Settings) -> music::Config {
         blocked_videos: settings.music.blocked_videos.clone(),
         autodj: settings.music.autodj,
         autodj_shuffle: settings.music.autodj_shuffle,
+        autodj_interrupt: settings.music.autodj_interrupt,
         autodj_playlist: settings.music.autodj_playlist.clone(),
         channel: settings.twitch.login.clone(),
         restore_queue: settings.music.restore_queue,
@@ -2647,6 +2655,7 @@ mod tests {
             blocked_videos: None,
             autodj: None,
             autodj_shuffle: None,
+            autodj_interrupt: None,
             autodj_playlist: None,
             restore_queue: None,
             prefetch: None,

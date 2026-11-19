@@ -49,6 +49,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
   const [blocked, setBlocked] = useState('');
   const [autodj, setAutodj] = useState(false);
   const [autodjShuffle, setAutodjShuffle] = useState(false);
+  const [autodjInterrupt, setAutodjInterrupt] = useState(true);
   const [autodjPlaylist, setAutodjPlaylist] = useState('');
   const [cookiesFile, setCookiesFile] = useState('');
   const [cookiesOk, setCookiesOk] = useState(null);
@@ -67,6 +68,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
     setBlocked((music.blocked_videos || []).join('\n'));
     setAutodj(Boolean(music.autodj));
     setAutodjShuffle(Boolean(music.autodj_shuffle));
+    setAutodjInterrupt(music.autodj_interrupt !== false);
     setAutodjPlaylist((music.autodj_playlist || []).join('\n'));
     setCookiesFile(music.cookies_file || '');
     setCookiesOk(null);
@@ -94,6 +96,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
         blockedVideos: blocked.split(/[\n,]+/).map((id) => id.trim()).filter(Boolean),
         autodj,
         autodjShuffle,
+        autodjInterrupt,
         autodjPlaylist: autodjPlaylist.split(/[\n,]+/).map((url) => url.trim()).filter(Boolean),
         cookiesFile,
       });
@@ -131,6 +134,7 @@ function MusicSettingsModal({ open, music, onClose, onSave, backend }) {
           <ToggleRow label="Восстанавливать очередь" checked={restoreQueue} onChange={setRestoreQueue} trailing={restoreQueue ? 'вкл' : 'выкл'} />
           <ToggleRow label="AutoDJ при пустой очереди" checked={autodj} onChange={setAutodj} trailing={autodj ? 'вкл' : 'выкл'} />
           <ToggleRow label="Перемешивать плейлист AutoDJ" checked={autodjShuffle} onChange={setAutodjShuffle} trailing={autodjShuffle ? 'вкл' : 'выкл'} />
+          <ToggleRow label="Прерывать AutoDJ заявкой" checked={autodjInterrupt} onChange={setAutodjInterrupt} trailing={autodjInterrupt ? 'вкл' : 'выкл'} />
         </div>
         {autodj ? (
           <label className="modal-field">
@@ -320,6 +324,7 @@ export default function MusicPage({ backend }) {
   const failedCount = items.filter((item) => item.state === 'failed').length;
   const paused = optimisticPaused ?? player.paused;
   const autoDjReady = Boolean(music?.autodj && (music.autodj_playlist || []).length > 0);
+  const currentIsAutoDj = current?.user_login === 'AutoDJ';
 
   useEffect(() => {
     if (optimisticPaused === null) return undefined;
@@ -513,6 +518,7 @@ export default function MusicPage({ backend }) {
       requestCooldownSec: music?.request_cooldown_sec || 0,
       autodj: Boolean(music?.autodj),
       autodjShuffle: Boolean(music?.autodj_shuffle),
+      autodjInterrupt: music?.autodj_interrupt !== false,
       autodjPlaylist: music?.autodj_playlist || [],
       blockedVideos: music?.blocked_videos || [],
     };
@@ -673,10 +679,10 @@ export default function MusicPage({ backend }) {
             >
               {!current ? 'Play' : paused ? 'Продолжить' : 'Пауза'}
             </Button>
-            <Button variant="secondary" size="lg" icon={<Icon name="next" size={18} />} onClick={nextTrack} disabled={!current || !nextItem}>
+            <Button variant="secondary" size="lg" icon={<Icon name="next" size={18} />} onClick={nextTrack} disabled={!current || !nextItem || currentIsAutoDj}>
               Следующий трек
             </Button>
-            <Button variant="danger-ghost" size="lg" onClick={openSkip} disabled={!current}>
+            <Button variant="danger-ghost" size="lg" onClick={openSkip} disabled={!current || currentIsAutoDj}>
               Пропустить…
             </Button>
             {music?.autodj_active ? (

@@ -325,6 +325,12 @@ pub fn clear() {
 mod tests {
     use super::*;
 
+    static TEST_LOCK: Mutex<()> = Mutex::new(());
+
+    fn lock() -> std::sync::MutexGuard<'static, ()> {
+        TEST_LOCK.lock().unwrap_or_else(|err| err.into_inner())
+    }
+
     fn sample_settings(images: Vec<String>) -> ImageRewardSettings {
         ImageRewardSettings {
             reward_id: "test-reward".to_string(),
@@ -335,6 +341,7 @@ mod tests {
 
     #[test]
     fn random_size_stays_between_limits() {
+        let _guard = lock();
         let dir = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("target/test-tmp");
         std::fs::create_dir_all(&dir).expect("тестовая папка");
         let path = dir.join("image-random-size.png");
@@ -358,6 +365,7 @@ mod tests {
 
     #[test]
     fn respects_show_limit() {
+        let _guard = lock();
         let dir = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("target/test-tmp");
         std::fs::create_dir_all(&dir).expect("тестовая папка");
         let path = dir.join("image-limit.png");
@@ -373,6 +381,7 @@ mod tests {
 
     #[test]
     fn no_repeat_chooses_other_image() {
+        let _guard = lock();
         let dir = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("target/test-tmp");
         std::fs::create_dir_all(&dir).expect("тестовая папка");
         let first = dir.join("image-a.png");

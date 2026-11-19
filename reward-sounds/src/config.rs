@@ -58,6 +58,12 @@ pub struct ImageRewardSettings {
     pub max_angle_deg: f64,
     /// Размер картинки в процентах ширины OBS-сцены.
     pub size_pct: f64,
+    /// Случайный размер при каждом показе.
+    pub random_size: bool,
+    /// Минимальный размер, если random_size.
+    pub size_min_pct: f64,
+    /// Максимальный размер, если random_size.
+    pub size_max_pct: f64,
     /// Прозрачность 0.0–1.0.
     pub opacity: f64,
     /// Сколько миллисекунд показывать.
@@ -74,6 +80,9 @@ impl Default for ImageRewardSettings {
             images: Vec::new(),
             max_angle_deg: 40.0,
             size_pct: 32.0,
+            random_size: false,
+            size_min_pct: 22.0,
+            size_max_pct: 46.0,
             opacity: 0.95,
             duration_ms: 4000,
             safe_margin_pct: 6.0,
@@ -89,6 +98,11 @@ impl ImageRewardSettings {
         };
         self.max_angle_deg = self.max_angle_deg.clamp(0.0, 40.0);
         self.size_pct = self.size_pct.clamp(8.0, 80.0);
+        self.size_min_pct = self.size_min_pct.clamp(8.0, 80.0);
+        self.size_max_pct = self.size_max_pct.clamp(8.0, 80.0);
+        if self.size_min_pct > self.size_max_pct {
+            std::mem::swap(&mut self.size_min_pct, &mut self.size_max_pct);
+        }
         self.opacity = self.opacity.clamp(0.1, 1.0);
         self.duration_ms = self.duration_ms.clamp(500, 15000);
         self.safe_margin_pct = self.safe_margin_pct.clamp(0.0, 20.0);

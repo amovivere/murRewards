@@ -205,6 +205,15 @@ async function run() {
   })()`);
   assert('оверлей: превью загружено и помещается в окно', Boolean(previewFit) && previewFit.loaded && previewFit.bottom <= previewFit.contentBottom, JSON.stringify(previewFit));
 
+  await evaluate(`Array.from(document.querySelectorAll('.overlay-tabs button')).find((b) => b.textContent.includes('Картинки'))?.click(); true`);
+  await sleep(500);
+  const imagesOverlay = await evaluate(`(() => ({
+    active: document.querySelector('.overlay-tabs button.is-active')?.textContent || '',
+    url: document.querySelector('.overlay-images-tab code')?.textContent || '',
+    frame: document.querySelector('.overlay-images-tab iframe')?.getAttribute('src') || ''
+  }))()`);
+  assert('оверлей: вкладка «Картинки» с Browser Source и превью', imagesOverlay.active.includes('Картинки') && imagesOverlay.url.includes('/image-reward') && imagesOverlay.frame.includes('/image-reward?preview=1'), JSON.stringify(imagesOverlay));
+
   assert('переключение на «Настройки»', await clickTab('Настройки'));
   await sleep(700);
   assert('настройки: экран открылся', (await evaluate(`document.querySelector('.page-title')?.textContent`)) === 'Настройки');

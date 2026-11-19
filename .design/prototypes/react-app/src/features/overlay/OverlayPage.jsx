@@ -159,6 +159,102 @@ function MusicOverlaySection({ backend, notify }) {
   );
 }
 
+function ImagesOverlaySection({ backend, notify }) {
+  const real = Boolean(backend?.available && backend?.view);
+  const rewards = (backend?.view?.rewards || []).filter((reward) => (reward.images || []).length > 0);
+  const url = 'http://127.0.0.1:8770/image-reward';
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(url);
+      notify('URL оверлея картинок скопирован');
+    } catch {
+      notify(url);
+    }
+  }
+
+  async function preview(reward) {
+    if (!real) {
+      notify('Превью доступно в приложении');
+      return;
+    }
+    try {
+      const shown = await backend.call('preview_reward_image', { rewardId: reward.id });
+      notify(shown ? `«${reward.title}» показана в превью` : 'В карточке нет картинок');
+    } catch (error) {
+      notify(String(error));
+    }
+  }
+
+  return (
+    <div className="overlay-images-tab">
+      <div className="overlay-layout">
+        <div className="overlay-controls">
+          <Panel
+            title="Картинки наград"
+            description="Картинка появляется в случайной точке OBS под случайным углом до ±40°."
+            actions={<Pill tone={real ? 'ok' : 'neutral'}>{real ? 'готово' : 'прототип'}</Pill>}
+          >
+            <div className="overlay-url-bar overlay-url-bar--inline">
+              <div>
+                <div className="overlay-url-bar__label">Browser Source</div>
+                <code>{url}</code>
+              </div>
+              <div className="overlay-url-bar__actions">
+                <Button variant="secondary" size="sm" icon={<Icon name="copy" />} onClick={copy}>Скопировать</Button>
+                <Button variant="ghost" size="sm" icon={<Icon name="external" />} onClick={() => invoke('open_url', { url }).catch((error) => notify(String(error)))}>
+                  Открыть
+                </Button>
+              </div>
+            </div>
+            <div className="modal-hint">
+              Добавь Browser Source 1920×1080, прозрачный фон. Картинки и их размер/угол настраиваются в карточке награды → «Редактор».
+            </div>
+          </Panel>
+
+          <Panel title="Карточки с картинками" description="Нажми «Показать», чтобы проверить появление в превью.">
+            {rewards.length ? (
+              <div className="overlay-image-cards">
+                {rewards.map((reward) => (
+                  <div className="overlay-image-card" key={reward.id}>
+                    <div className="overlay-image-card__cover">
+                      <img src={`http://127.0.0.1:8770/image-reward/thumb/${encodeURIComponent(reward.id)}/0`} alt="" loading="lazy" />
+                      <span>{reward.images.length}</span>
+                    </div>
+                    <div className="overlay-image-card__body">
+                      <strong>{reward.title}</strong>
+                      <span>±{Math.round(reward.image?.max_angle_deg ?? 40)}° · {(reward.image?.duration_ms ?? 4000) / 1000} с</span>
+                    </div>
+                    <Button variant="secondary" size="sm" onClick={() => preview(reward)}>Показать</Button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">
+                <div className="empty-state__title">Пока нет картинок</div>
+                <div className="empty-state__hint">Открой карточку награды → «Редактор» → «Картинки».</div>
+              </div>
+            )}
+          </Panel>
+        </div>
+
+        <aside className="overlay-preview">
+          <div className="overlay-preview__head">
+            <div>
+              <div className="overlay-preview__title">Превью OBS</div>
+              <div className="overlay-preview__hint">1920 × 1080 · прозрачный фон</div>
+            </div>
+            <Pill tone="neutral">Browser Source</Pill>
+          </div>
+          <div className="overlay-preview__frame-wrap overlay-preview__frame-wrap--image">
+            <iframe title="Превью картинок наград" src={`${url}?preview=1`} />
+          </div>
+        </aside>
+      </div>
+    </div>
+  );
+}
+
 export default function OverlayPage({ backend }) {
   const [overlayTab, setOverlayTab] = useState('chat');
   const [state, setState] = useState(loadState);
@@ -356,7 +452,7 @@ export default function OverlayPage({ backend }) {
           <div className="eyebrow">ИНСТРУМЕНТЫ · OBS</div>
           <h1 className="page-title">Оверлеи</h1>
           <p className="page-subtitle">
-            Отдельные оверлеи для OBS: чат и строка «Сейчас играет». У каждого свои настройки и Browser Source.
+            Отдельные оверлеи для OBS: чат, строка «Сейчас играет» и картинки наград. У каждого свои настройки и Browser Source.
           </p>
         </div>
         <div className="page-actions">
@@ -394,7 +490,17 @@ export default function OverlayPage({ backend }) {
           Музыка
           <span className="overlay-tabs__hint">сейчас играет</span>
         </button>
-        <span className="overlay-tabs__note">Позже сюда добавятся другие оверлеи</span>
+        <button
+          role="tab"
+          aria-selected={overlayTab === 'images'}
+          className={overlayTab === 'images' ? 'is-active' : ''}
+          onClick={() => setOverlayTab('images')}
+        >
+          <Icon name="image" size={16} />
+          Картинки
+          <span className="overlay-tabs__hint">награды</span>
+        </button>
+        <span className="overlay-tabs__note">Все оверлеи работают на 127.0.0.1:8770</span>
       </div>
 
       {overlayTab === 'chat' ? (
@@ -720,8 +826,10 @@ export default function OverlayPage({ backend }) {
         </aside>
       </div>
         </>
-      ) : (
+      ) : overlayTab === 'music' ? (
         <MusicOverlaySection backend={backend} notify={notify} />
+      ) : (
+        <ImagesOverlaySection backend={backend} notify={notify} />
       )}
 
       <Modal

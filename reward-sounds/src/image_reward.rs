@@ -88,8 +88,15 @@ pub fn show(settings: &ImageRewardSettings) -> bool {
     let index = ((seed as usize) + (seed >> 17) as usize) % valid.len();
     let path = PathBuf::from(valid[index]);
     let angle = (random_unit(seed, 7) * 2.0 - 1.0) * settings.max_angle_deg;
+    let size = if settings.random_size {
+        let min = settings.size_min_pct.min(settings.size_max_pct);
+        let max = settings.size_min_pct.max(settings.size_max_pct);
+        min + random_unit(seed, 41) * (max - min)
+    } else {
+        settings.size_pct
+    };
     let margin = settings.safe_margin_pct.clamp(0.0, 20.0);
-    let span = (100.0 - settings.size_pct).clamp(0.0, 100.0);
+    let span = (100.0 - size).clamp(0.0, 100.0);
     let x = margin + random_unit(seed, 13) * (span - margin * 2.0).max(0.0);
     let y = margin + random_unit(seed, 29) * (100.0 - margin * 2.0).max(0.0);
     let shown = Shown {
@@ -98,7 +105,7 @@ pub fn show(settings: &ImageRewardSettings) -> bool {
         x: x.clamp(0.0, 100.0),
         y: y.clamp(0.0, 100.0),
         angle,
-        size_pct: settings.size_pct,
+        size_pct: size,
         opacity: settings.opacity,
         expires: Instant::now() + Duration::from_millis(settings.duration_ms.max(500)),
         duration_ms: settings.duration_ms.max(500),
@@ -160,5 +167,41 @@ pub fn content_type_for(bytes: &[u8]) -> &'static str {
 pub fn clear() {
     if let Ok(mut state) = state().lock() {
         *state = None;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn sample_settings(images: Vec<String>) -> ImageRewardSettings {
+        ImageRewardSettings {
+            reward_id: "test-reward".to_string(),
+            images,
+            ..ImageRewardSettings::default()
+        }
+    }
+
+    #[test]
+    fn random_size_stays_between_limits() {
+        let dir = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("target/test-tmp");
+        std::fs::create_dir_all(&dir).expect("тестовая папка");
+        let path = dir.join("image-random-size.png");
+        std::fs::write(&path, b"not-a-real-image").expect("тестовый файл");
+        let mut settings = sample_settings(vec![path.to_string_lossy().into_owned()]);
+        settings.random_size = true;
+        settings.size_min_pct = 20.0;
+        settings.size_max_pct = 30.0;
+        for _ in 0..8 {
+            assert!(show(&settings));
+            let shown = current().expect("показ");
+            assert!(
+                (20.0..=30.0).contains(&shown.size_pct),
+                "размер {} вне диапазона",
+                shown.size_pct
+            );
+        }
+        clear();
+        let _ = std::fs::remove_file(path);
     }
 }

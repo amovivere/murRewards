@@ -4372,3 +4372,92 @@ a:focus-visible {
     grid-template-columns: 260px minmax(0, 1fr) 260px;
   }
 }
+
+/* ==== вкладка «Картинки» в оверлеях ==== */
+.overlay-images-tab .overlay-layout {
+  align-items: start;
+}
+
+.overlay-url-bar--inline {
+  margin-top: 4px;
+}
+
+.overlay-image-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.overlay-image-card {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px;
+  border: 1px solid #2b2b34;
+  border-radius: 9px;
+  background: #15151a;
+}
+
+.overlay-image-card__cover {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #3b2d55, #1d2438);
+}
+
+.overlay-image-card__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay-image-card__cover span {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  min-width: 15px;
+  height: 15px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 8px;
+}
+
+.overlay-image-card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.overlay-image-card__body strong {
+  display: block;
+  color: #e9e9f1;
+  font-size: 11.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.overlay-image-card__body span {
+  display: block;
+  margin-top: 2px;
+  color: #888893;
+  font-size: 10px;
+}
+
+.overlay-preview__frame-wrap--image {
+  aspect-ratio: 16 / 9;
+  background: #0b0b0e;
+}
+
+.overlay-preview__frame-wrap--image iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #0b0b0e;
+}

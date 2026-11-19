@@ -53,6 +53,9 @@ pub struct ImageInfoView {
 pub struct ImageAppearanceView {
     pub max_angle_deg: f64,
     pub size_pct: f64,
+    pub random_size: bool,
+    pub size_min_pct: f64,
+    pub size_max_pct: f64,
     pub opacity: f64,
     pub duration_ms: u64,
     pub safe_margin_pct: f64,
@@ -927,6 +930,9 @@ impl AppCore {
                     image: image_settings.map(|image| ImageAppearanceView {
                         max_angle_deg: image.max_angle_deg,
                         size_pct: image.size_pct,
+                        random_size: image.random_size,
+                        size_min_pct: image.size_min_pct,
+                        size_max_pct: image.size_max_pct,
                         opacity: image.opacity,
                         duration_ms: image.duration_ms,
                         safe_margin_pct: image.safe_margin_pct,
@@ -1488,6 +1494,9 @@ pub struct ImageSettingsPatch {
     pub mode: Option<String>,
     pub max_angle_deg: Option<f64>,
     pub size_pct: Option<f64>,
+    pub random_size: Option<bool>,
+    pub size_min_pct: Option<f64>,
+    pub size_max_pct: Option<f64>,
     pub opacity: Option<f64>,
     pub duration_ms: Option<u64>,
     pub safe_margin_pct: Option<f64>,
@@ -1530,6 +1539,15 @@ pub fn set_reward_image_settings(
         }
         if let Some(value) = patch.size_pct {
             entry.size_pct = value;
+        }
+        if let Some(value) = patch.random_size {
+            entry.random_size = value;
+        }
+        if let Some(value) = patch.size_min_pct {
+            entry.size_min_pct = value;
+        }
+        if let Some(value) = patch.size_max_pct {
+            entry.size_max_pct = value;
         }
         if let Some(value) = patch.opacity {
             entry.opacity = value;

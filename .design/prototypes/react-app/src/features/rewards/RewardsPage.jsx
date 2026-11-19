@@ -3,7 +3,7 @@ import Button from '../../components/ui/Button.jsx';
 import ColorPalette from '../../components/ui/ColorPalette.jsx';
 import Icon from '../../components/ui/Icon.jsx';
 import Modal from '../../components/ui/Modal.jsx';
-import { SliderRow } from '../../components/ui/Field.jsx';
+import { SliderRow, ToggleRow } from '../../components/ui/Field.jsx';
 
 const INITIAL_REWARDS = [
   { id: 1, name: 'Ты новичок?', cost: 200, color: '#F55A5F', file: 'newbie.mp3', volume: 200, active: true },
@@ -43,6 +43,9 @@ function mapReward(reward) {
     imageSettings: reward.image || {
       max_angle_deg: 40,
       size_pct: 32,
+      random_size: false,
+      size_min_pct: 22,
+      size_max_pct: 46,
       opacity: 0.95,
       duration_ms: 4000,
       safe_margin_pct: 6,
@@ -244,7 +247,20 @@ function EditRewardModal({
             {reward.images.length > 0 ? (
               <div className="editor-appearance">
                 <SliderRow label="Максимальный угол" value={Math.round(reward.imageSettings.max_angle_deg)} min={0} max={40} unit="°" onChange={(value) => onImageSettings?.(reward, { maxAngleDeg: value })} />
-                <SliderRow label="Размер" value={Math.round(reward.imageSettings.size_pct)} min={12} max={60} unit="%" onChange={(value) => onImageSettings?.(reward, { sizePct: value })} />
+                <ToggleRow
+                  label="Случайный размер"
+                  checked={Boolean(reward.imageSettings.random_size)}
+                  onChange={(value) => onImageSettings?.(reward, { randomSize: value })}
+                  trailing={reward.imageSettings.random_size ? 'вкл' : 'выкл'}
+                />
+                {reward.imageSettings.random_size ? (
+                  <>
+                    <SliderRow label="Мин. размер" value={Math.round(reward.imageSettings.size_min_pct)} min={8} max={80} unit="%" onChange={(value) => onImageSettings?.(reward, { sizeMinPct: value })} />
+                    <SliderRow label="Макс. размер" value={Math.round(reward.imageSettings.size_max_pct)} min={8} max={80} unit="%" onChange={(value) => onImageSettings?.(reward, { sizeMaxPct: value })} />
+                  </>
+                ) : (
+                  <SliderRow label="Размер" value={Math.round(reward.imageSettings.size_pct)} min={12} max={60} unit="%" onChange={(value) => onImageSettings?.(reward, { sizePct: value })} />
+                )}
                 <SliderRow label="Длительность" value={(reward.imageSettings.duration_ms / 1000).toFixed(1)} min={1} max={10} step={0.5} unit=" с" onChange={(value) => onImageSettings?.(reward, { durationMs: Math.round(value * 1000) })} />
                 <SliderRow label="Прозрачность" value={Math.round(reward.imageSettings.opacity * 100)} min={50} max={100} unit="%" onChange={(value) => onImageSettings?.(reward, { opacity: value / 100 })} />
                 <SliderRow label="Safe area" value={Math.round(reward.imageSettings.safe_margin_pct)} min={0} max={15} unit="%" onChange={(value) => onImageSettings?.(reward, { safeMarginPct: value })} />
@@ -785,6 +801,9 @@ export default function RewardsPage({ backend }) {
                     <Icon name="image" size={13} />
                     <span>{reward.images.length} картинок</span>
                     <span>±{Math.round(reward.imageSettings.max_angle_deg)}°</span>
+                    <span>{reward.imageSettings.random_size
+                      ? `${Math.round(reward.imageSettings.size_min_pct)}–${Math.round(reward.imageSettings.size_max_pct)}%`
+                      : `${Math.round(reward.imageSettings.size_pct)}%`}</span>
                     <span>{(reward.imageSettings.duration_ms / 1000).toFixed(1)} с</span>
                   </div>
                 ) : null}

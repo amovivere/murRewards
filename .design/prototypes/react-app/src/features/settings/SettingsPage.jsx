@@ -246,7 +246,7 @@ export default function SettingsPage({ backend, onNavigate }) {
           />
           <ToggleRow
             label="Закрывать в трей"
-            hint="Крестик прячет окно"
+            hint="Вкл — крестик прячет окно; выкл — полностью закрывает приложение"
             checked={closeToTray}
             onChange={(value) => {
               setCloseToTray(value);

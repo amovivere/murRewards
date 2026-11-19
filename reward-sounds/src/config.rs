@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 use serde::{Deserialize, Serialize};
 
 /// Версия формата настроек. Нужна для будущих обновлений без потери данных.
-pub const CONFIG_VERSION: u32 = 3;
+pub const CONFIG_VERSION: u32 = 4;
 
 /// Привязка звука к награде Twitch.
 ///
@@ -486,6 +486,12 @@ impl Settings {
 
         match toml::from_str::<Settings>(&text) {
             Ok(mut settings) => {
+                // До версии 4 крестик по умолчанию полностью закрывал приложение.
+                // Меняем поведение для старых конфигов; после сохранения версия 4,
+                // поэтому выбранное пользователем «полное закрытие» сохраняется.
+                if settings.version < 4 {
+                    settings.close_to_tray = true;
+                }
                 // Старый формат (из предыдущей версии приложения) хранил список
                 // наград: [[rewards]] с полями name / sound / reward_id.
                 // Импортируем пути как звуки, но только если новый список пуст,
@@ -869,6 +875,38 @@ path = "C:\\a.mp3"
         assert_eq!(settings.reward_sound("r1").unwrap().volume, 1.0);
         // Старый файл без режима отображения открывается списком.
         assert!(!settings.grid_view);
+    }
+
+    #[test]
+    fn old_config_closes_to_tray_by_default() {
+        let text = r#"
+version = 3
+volume = 0.8
+close_to_tray = false
+"#;
+        let dir = temp_dir("close-to-tray-migration");
+        let file = dir.join("config.toml");
+        std::fs::write(&file, text).unwrap();
+
+        let (settings, warning) = Settings::load(&file);
+        assert!(warning.is_none());
+        assert!(settings.close_to_tray);
+    }
+
+    #[test]
+    fn explicit_full_close_is_kept_in_new_config() {
+        let text = r#"
+version = 4
+volume = 0.8
+close_to_tray = false
+"#;
+        let dir = temp_dir("close-to-tray-explicit");
+        let file = dir.join("config.toml");
+        std::fs::write(&file, text).unwrap();
+
+        let (settings, warning) = Settings::load(&file);
+        assert!(warning.is_none());
+        assert!(!settings.close_to_tray);
     }
 
     #[test]
